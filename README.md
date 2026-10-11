@@ -53,6 +53,8 @@ bni-eccosystem-intelligence/
 ├── scripts/
 │   └── build_catatan_uji.py     # membuat catatan_uji_validasi.csv/.md dari output notebook 01
 ├── pages/                       # halaman Streamlit
+├── requirements.txt             # versi pustaka terkunci (snapshot .venv)
+├── .env.example                 # contoh variabel lingkungan (.env tidak masuk git)
 └── app.py                       # dashboard Streamlit
 ```
 
@@ -61,7 +63,8 @@ Semua notebook mencari akar proyek (folder yang berisi `pyproject.toml`), jadi p
 ## Menjalankan
 
 ```bash
-uv sync                                   # pasang dependensi
+uv sync                                   # pasang dependensi (atau tanpa uv: pip install -r requirements.txt)
+cp .env.example .env                      # isi OPENAI_API_KEY bila memakai fitur LLM
 # lalu jalankan notebooks/01_Dataset_Generation_and_Validation.ipynb (±5 menit), atau tanpa validasi:
 python src/egi_generator.py --seed 2026   # hanya membangkitkan data ke data/raw/ (±1 menit)
 python scripts/build_catatan_uji.py       # perbarui catatan uji setelah notebook 01 dijalankan ulang
