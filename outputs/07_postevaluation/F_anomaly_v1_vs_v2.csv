@@ -1,0 +1,5 @@
+versi,kelompok,presisi_top_k,presisi_top_k_jenis_apa_pun,k,alarm_baru_per_bulan,alarm_palsu_per_100_nasabah_per_bulan,lead_median_distress,pct_distress_lead_ge_1bln
+"v1 (NB04/NB06, resmi)",non-test (pemilihan),0.30416666666666664,0.475,30,102.08333333333333,5.75,1.0,0.7384615384615385
+"v1 (NB04/NB06, resmi)",test (laporan),0.3416666666666667,0.5583333333333333,5,18.375,5.75,0.0,0.375
+"v2 (NB07, shadow)",non-test (pemilihan),0.3013888888888889,0.46944444444444444,30,90.08333333333333,4.986111111111112,1.0,0.7384615384615385
+"v2 (NB07, shadow)",test (laporan),0.3416666666666667,0.55,5,16.083333333333332,4.875,0.0,0.375

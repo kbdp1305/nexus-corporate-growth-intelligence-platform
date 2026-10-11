@@ -10,5 +10,6 @@
 **Anomali (perusahaan non-test, 24 bulan)**
 - Champion aturan: presisi top-30 30.4%, alarm palsu 5.75 per 100 nasabah per bulan, lead distress median 1 bln.
 - Challenger skor gabungan: presisi top-30 26.7%, lead distress median 1 bln → shadow.
+- Challenger 2 Isolation Forest (anggaran alarm = champion): presisi top-30 jenis apa pun 37.6% (champion 47.5%), lead distress median 0 bln → tidak lolos, tetap pembanding.
 
 **Catatan implementasi:** XGBoost & LightGBM asli.

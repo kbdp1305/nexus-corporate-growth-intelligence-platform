@@ -1,0 +1,27 @@
+{
+ "version": "anomaly-rules-v1 (NB04)",
+ "start_month": "2024-07",
+ "k_top": 30,
+ "spike": {
+  "spike_candidate_eq": 1
+ },
+ "buyer_exit": {
+  "buyer_exit_share_min": 0.15
+ },
+ "contagion": {
+  "exp_shocked_anchor_t_min": 0.2
+ },
+ "wallet_erosion": {
+  "chg_3v6_monthly_pct_max": 0.02,
+  "timing_delta_t_lt": 0.25,
+  "capture_chg_6m_le": 0.0
+ },
+ "distress": {
+  "timing_jump_3v9_min": 0.3,
+  "timing_delta_t_min": 0.25
+ },
+ "expansion": {
+  "cusum_up_monthly_pct_gt": 0.98,
+  "chg_3v6_monthly_pct_gt": 0.98
+ }
+}

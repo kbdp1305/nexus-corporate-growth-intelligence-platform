@@ -1,0 +1,7 @@
+temuan EDA,fitur terkuat,peringkat terbaik (dari 36),porsi |SHAP| kelompok
+Timing bayar gaji/pajak (F2),pajak telat 30 bln,7,0.14161646
+Laporan tidak diserahkan — MNAR (D),laporan keuangan diserahkan,34,0.0
+Konsentrasi pembeli (F3),porsi pembeli terbesar,3,0.099803776
+Paparan anchor yang melemah (F4),paparan ke anchor melemah,30,0.0010924318
+"Rasio keuangan (+ relatif-peer, F1)",DER (utang/ekuitas),1,0.3590333
+Arus kas & wallet (F6),outflow ÷ inflow 12 bln,4,0.21277958

@@ -1,0 +1,11 @@
+,fold 0,fold 1,fold 2,fold 3,fold 4,fitur
+fin_log_der,1.0,1.0,1.0,1.0,1.0,DER (utang/ekuitas)
+fin_log_cr,3.0,2.0,2.0,3.0,2.0,current ratio
+top_buyer_share,2.0,3.0,3.0,2.0,3.0,porsi pembeli terbesar
+out_in_12m,4.0,4.0,6.0,4.0,4.0,outflow ÷ inflow 12 bln
+log_limit,6.0,7.0,4.0,6.0,5.0,besar limit kredit
+fin_npm,15.0,5.0,8.0,12.0,9.0,margin laba bersih
+tax_late_30m,8.0,10.0,5.0,5.0,6.0,pajak telat 30 bln
+inflow_cv_sa,7.0,6.0,12.0,7.0,8.0,volatilitas inflow
+fin_sicr,5.0,8.0,9.0,8.0,7.0,interest coverage
+pay_late_30m,12.0,12.0,7.0,15.0,12.0,gaji telat 30 bln

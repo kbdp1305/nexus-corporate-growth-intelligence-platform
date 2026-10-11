@@ -1,0 +1,35 @@
+asumsi,nilai
+margin_kredit,0.03
+margin_non_kredit,0.01
+LGD,0.45
+horizon_tahun,1.0
+PD_Low,0.01
+PD_Medium,0.05
+PD_High,0.2
+biaya_aksi_S1 Kecil_Rp_juta,0.5
+biaya_aksi_S2 Menengah_Rp_juta,2.0
+biaya_aksi_S3 Besar_Rp_juta,5.0
+ukuran_deal_S1 Kecil_P02_Rp_juta,98.3
+ukuran_deal_S1 Kecil_P03_Rp_juta,217.9
+ukuran_deal_S1 Kecil_P04_Rp_juta,53.3
+ukuran_deal_S1 Kecil_P05_Rp_juta,744.1
+ukuran_deal_S1 Kecil_P06_Rp_juta,165.1
+ukuran_deal_S1 Kecil_P07_Rp_juta,91.3
+ukuran_deal_S1 Kecil_P08_Rp_juta,77.8
+ukuran_deal_S2 Menengah_P02_Rp_juta,486.9
+ukuran_deal_S2 Menengah_P03_Rp_juta,438.6
+ukuran_deal_S2 Menengah_P04_Rp_juta,413.1
+ukuran_deal_S2 Menengah_P05_Rp_juta,365.8
+ukuran_deal_S2 Menengah_P06_Rp_juta,338.1
+ukuran_deal_S2 Menengah_P07_Rp_juta,124.0
+ukuran_deal_S2 Menengah_P08_Rp_juta,450.5
+ukuran_deal_S3 Besar_P02_Rp_juta,2019.1
+ukuran_deal_S3 Besar_P03_Rp_juta,1624.7
+ukuran_deal_S3 Besar_P04_Rp_juta,2465.9
+ukuran_deal_S3 Besar_P05_Rp_juta,1623.4
+ukuran_deal_S3 Besar_P06_Rp_juta,1640.6
+ukuran_deal_S3 Besar_P07_Rp_juta,124.0
+ukuran_deal_S3 Besar_P08_Rp_juta,2238.7
+medium_credit_factor,0.5
+why_now_bonus,0.05
+why_now_bulan,3.0

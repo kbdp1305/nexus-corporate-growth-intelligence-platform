@@ -1,0 +1,3 @@
+model,status,penyeimbangan,test_macro_F1_keputusan,test_recall_High,test_flag_High,test_biaya,test_AUC_High,test_Brier,test_pct_otomatis
+XGB champion (M3_t),champion final,balanced,0.6328916426869643,0.8928571428571429,53.0,93.0,0.9318936877076411,0.33943267784865033,44.5
+M1_v0 (NB05),pembanding / shadow,balanced,0.5741446208112875,0.8214285714285714,56.0,108.0,0.9125830564784053,0.35374350326930126,50.0

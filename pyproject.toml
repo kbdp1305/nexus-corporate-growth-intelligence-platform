@@ -18,4 +18,10 @@ dependencies = [
     "scipy>=1.18.1",
     "shap>=0.52.0",
     "xgboost>=3.4.1",
+    "streamlit>=1.65.0",
+    "plotly>=7.1.0",
+    "pydeck>=0.9.3",
+    "reportlab>=5.0.1",
+    "python-dotenv>=1.2.4",
+    "openai>=3.29.0",
 ]

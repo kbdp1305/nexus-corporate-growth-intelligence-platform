@@ -1,0 +1,94 @@
+{
+ "waktu_kunci": "2026-10-11T16:27:02",
+ "hash": {
+  "models\\05_optimization\\champion__set_core.joblib": "4c205055bc98ddc7383bddd5aa2b248e9e02b89163c898f1d459dd71a7c4f446",
+  "models\\05_optimization\\manifest.json": "f69074bbeaeffcad4a007b914789c12283615d55f5c2251d1eabb485534552f4",
+  "models\\06_final\\anomaly_rules.json": "9f000c0fd1bd33b0eee644004afb690bd5c9a6ef81ac2f03996de179051dca17",
+  "models\\06_final\\challenger__set_prospect_noIW.joblib": "800c278e8311c9e79d1cc9fb0e0620fd66e8339ab8fd467e8394856c921fba9e",
+  "models\\06_final\\champion__set_core.joblib": "f25816a975b1be76e463469e4e905d34d65c423f5900b597e750d13dfd7bb733",
+  "models\\06_final\\champion__set_noncredit.joblib": "8c7a206eaa1291750d94e48459b213cc9decaf16759937df333351812d24ab06",
+  "models\\06_final\\champion__set_prospect.joblib": "d86166164282fcebc98f211bf94c912f6d611690a65953c70a1eb7bb9a398e71",
+  "models\\06_final\\domain_model.joblib": "cfdd4b08f91f4902843c3f8b6c21549dcaa89d4a7222b8a366295d158ad292fc",
+  "models\\06_final\\manifest.json": "2796c5b098e33b29c1d354118a2da5cc00f65132fe10f7192c4a8b961a7d055f"
+ },
+ "model_dinilai_di_test": {
+  "champion": "M3_t XGBoost ordinal monoton (tuning NB05)",
+  "pembanding": "M1_v0 (models/05_optimization)"
+ },
+ "konfigurasi": {
+  "target_recall_High": 0.9,
+  "alpha": 0.1,
+  "penyeimbangan": "balanced",
+  "kalibrasi": "temperature+prior",
+  "K_TOP": 30,
+  "asumsi_bisnis": {
+   "PD_Low": 0.01,
+   "PD_Medium": 0.05,
+   "PD_High": 0.2,
+   "LGD": 0.45,
+   "mitigasi": 0.3,
+   "biaya_review_Rp_juta": 2.0
+  },
+  "matriks_biaya": [
+   [
+    0,
+    1,
+    2
+   ],
+   [
+    3,
+    0,
+    1
+   ],
+   [
+    10,
+    5,
+    0
+   ]
+  ]
+ },
+ "aturan_keputusan": {
+  "set_core": {
+   "ambang_P_High": 0.1475934963951675,
+   "q_per_kelas": {
+    "Low": 0.5251570864656816,
+    "Medium": 0.8929765399287556,
+    "High": 0.867105321053198
+   }
+  },
+  "set_noncredit": {
+   "ambang_P_High": 0.14330081513719628,
+   "q_per_kelas": {
+    "Low": 0.5312093871314142,
+    "Medium": 0.8987032427364924,
+    "High": 0.8649463983722624
+   }
+  },
+  "set_prospect": {
+   "ambang_P_High": 0.10584255852249198,
+   "q_per_kelas": {
+    "Low": 0.5727102904404546,
+    "Medium": 0.8922853510644316,
+    "High": 0.900245925377866
+   }
+  },
+  "set_prospect_noIW": {
+   "ambang_P_High": 0.12033051612962223,
+   "q_per_kelas": {
+    "Low": 0.5816719813091182,
+    "Medium": 0.8910947551964155,
+    "High": 0.8862369848102379
+   }
+  }
+ },
+ "OOF_champion": {
+  "bal_logloss": 0.6374840873391819,
+  "macro_F1_keputusan": 0.6525482068922807,
+  "recall_High": 0.908256880733945,
+  "flag_High": 189,
+  "biaya": 359,
+  "Brier_kalibrasi": 0.3054234469808897,
+  "cakupan_High": 0.9174311926605505,
+  "pct_otomatis": 51.87500000000001
+ }
+}

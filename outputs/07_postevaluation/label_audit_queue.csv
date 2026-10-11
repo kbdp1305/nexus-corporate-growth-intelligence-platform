@@ -1,0 +1,152 @@
+company_id,split,industry,risk_class,pred_class,p_low,p_medium,p_high,reason_1,reason_2,kelas_usulan,skor_curiga
+C0287,train,Aktivitas kesehatan,Medium,Low,0.9946,0.0048,0.0006,porsi pembeli terbesar rendah (9%; median 30%),pajak telat 30 bln rendah (7%; median 10%),Low,0.9898
+C0654,train,Perdagangan eceran,Medium,Low,0.9911,0.0083,0.0006,porsi pembeli terbesar rendah (9%; median 30%),utilisasi fasilitas rendah (30%; median 57%),Low,0.9828
+C1126,train,Perdagangan besar,Medium,Low,0.9844,0.0138,0.0019,pajak telat 30 bln rendah (3%; median 10%),gaji telat 30 bln rendah (7%; median 13%),Low,0.9706
+C1893,train,Aktivitas kesehatan,Medium,Low,0.9844,0.0146,0.0009,gaji telat 30 bln rendah (3%; median 13%),pajak telat 30 bln rendah (3%; median 10%),Low,0.9698000000000001
+C1704,train,Perdagangan besar,Medium,Low,0.9843,0.0154,0.0003,porsi pembeli terbesar rendah (26%; median 30%),pajak telat 30 bln rendah (0%; median 10%),Low,0.9689
+C1105,train,Aktivitas kesehatan,Medium,Low,0.9715,0.0274,0.0011,porsi pembeli terbesar rendah (16%; median 30%),pajak telat 30 bln rendah (0%; median 10%),Low,0.9441
+C0094,valid,Aktivitas kesehatan,Medium,Low,0.9653,0.0343,0.0004,pajak telat 30 bln rendah (3%; median 10%),DER (utang/ekuitas) tinggi (0.27; median 0.17),Low,0.931
+C1221,valid,Konstruksi gedung,Medium,Low,0.9548,0.0253,0.0198,gaji telat 30 bln rendah (3%; median 13%),pajak telat 30 bln rendah (7%; median 10%),Low,0.9295
+C0099,valid,Industri makanan & minuman,Medium,Low,0.9621,0.0353,0.0026,pajak telat 30 bln rendah (3%; median 10%),DER (utang/ekuitas) rendah (-1.04; median 0.17),Low,0.9268
+C1574,train,Perdagangan eceran,Medium,High,0.028,0.0343,0.9377,DER (utang/ekuitas) tinggi (1.28; median 0.17),outflow ÷ inflow 12 bln tinggi (1.23; median 0.93),High,0.9034
+C0979,train,Industri makanan & minuman,Medium,Low,0.9406,0.047,0.0124,pajak telat 30 bln rendah (0%; median 10%),gaji telat 30 bln rendah (7%; median 13%),Low,0.8936
+C1936,train,Perdagangan eceran,Medium,High,0.0446,0.0428,0.9126,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),besar limit kredit rendah (-0.54; median 2.02),High,0.8698
+C0811,test,Konstruksi gedung,Medium,Low,0.9222,0.0741,0.0037,pajak telat 30 bln rendah (7%; median 10%),current ratio tinggi (0.76; median 0.38),Low,0.8481000000000001
+C1164,test,Perdagangan besar,Medium,Low,0.9115,0.0742,0.0143,gaji telat 30 bln rendah (7%; median 13%),pajak telat 30 bln rendah (7%; median 10%),Low,0.8372999999999999
+C1449,valid,Industri kimia,Medium,High,0.0993,0.044,0.8566,porsi pembeli terbesar tinggi (49%; median 30%),DER (utang/ekuitas) tinggi (1.04; median 0.17),High,0.8126
+C1286,test,Perdagangan eceran,Medium,Low,0.9006,0.0931,0.0062,pajak telat 30 bln rendah (3%; median 10%),porsi pembeli terbesar rendah (21%; median 30%),Low,0.8075
+C1818,train,Real estat,High,Low,0.849,0.1008,0.0502,pajak telat 30 bln rendah (3%; median 10%),porsi pembeli terbesar rendah (10%; median 30%),Low,0.7988
+C1235,train,Konstruksi gedung,Medium,Low,0.895,0.1005,0.0045,pajak telat 30 bln rendah (3%; median 10%),margin laba bersih tinggi (0.06; median 0.02),Low,0.7945
+C1674,train,Perdagangan besar,Medium,Low,0.8919,0.107,0.0011,porsi pembeli terbesar rendah (28%; median 30%),outflow ÷ inflow 12 bln rendah (0.90; median 0.93),Low,0.7849
+C1374,train,Industri tekstil & pakaian,Medium,Low,0.8919,0.107,0.0011,porsi pembeli terbesar rendah (26%; median 30%),DER (utang/ekuitas) rendah (-0.27; median 0.17),Low,0.7849
+C1405,train,Perdagangan eceran,Medium,High,0.0366,0.0896,0.8737,DER (utang/ekuitas) tinggi (0.91; median 0.17),outflow ÷ inflow 12 bln tinggi (1.02; median 0.93),High,0.7841
+C0518,train,Industri tekstil & pakaian,Medium,Low,0.8877,0.1069,0.0054,gaji telat 30 bln rendah (7%; median 13%),pajak telat 30 bln rendah (7%; median 10%),Low,0.7808
+C0821,train,Industri makanan & minuman,Medium,Low,0.8842,0.1146,0.0012,pajak telat 30 bln rendah (7%; median 10%),DER (utang/ekuitas) rendah (-0.14; median 0.17),Low,0.7696
+C0875,valid,Industri tekstil & pakaian,Medium,Low,0.8711,0.1165,0.0124,porsi pembeli terbesar rendah (22%; median 30%),DER (utang/ekuitas) rendah (-0.47; median 0.17),Low,0.7545999999999999
+C0641,train,Teknologi informasi,Medium,Low,0.8738,0.1244,0.0018,porsi pembeli terbesar tinggi (31%; median 30%),volatilitas inflow rendah (0.10; median 0.16),Low,0.7494000000000001
+C1043,valid,Industri tekstil & pakaian,Medium,Low,0.8707,0.1266,0.0027,porsi pembeli terbesar rendah (21%; median 30%),besar limit kredit tinggi (4.15; median 2.02),Low,0.7441
+C1393,train,Perdagangan besar,Medium,Low,0.8642,0.1276,0.0082,gaji telat 30 bln rendah (3%; median 13%),pajak telat 30 bln rendah (3%; median 10%),Low,0.7365999999999999
+C0690,train,Industri kimia,Medium,Low,0.8662,0.1299,0.0039,pajak telat 30 bln rendah (3%; median 10%),porsi pembeli terbesar rendah (29%; median 30%),Low,0.7363
+C0960,valid,Industri makanan & minuman,Medium,High,0.0736,0.0953,0.8311,DER (utang/ekuitas) tinggi (1.18; median 0.17),current ratio rendah (0.18; median 0.38),High,0.7358
+C0912,train,Industri makanan & minuman,Medium,Low,0.8513,0.1202,0.0285,porsi pembeli terbesar rendah (3%; median 30%),DER (utang/ekuitas) rendah (0.05; median 0.17),Low,0.7311
+C0034,train,Industri tekstil & pakaian,High,Medium,0.1269,0.7978,0.0753,porsi pembeli terbesar tinggi (64%; median 30%),pajak telat 30 bln tinggi (27%; median 10%),Medium,0.7224999999999999
+C1844,test,Perdagangan besar,Medium,Low,0.8505,0.1309,0.0186,gaji telat 30 bln rendah (3%; median 13%),pajak telat 30 bln rendah (3%; median 10%),Low,0.7196
+C0902,train,Real estat,Medium,High,0.0235,0.1317,0.8448,DER (utang/ekuitas) tinggi (1.68; median 0.17),outflow ÷ inflow 12 bln tinggi (1.00; median 0.93),High,0.7131
+C1531,train,Konstruksi gedung,Medium,Low,0.8487,0.1486,0.0027,porsi pembeli terbesar tinggi (31%; median 30%),besar limit kredit tinggi (4.09; median 2.02),Low,0.7001
+C1511,test,Perdagangan besar,Medium,High,0.016,0.1458,0.8382,porsi pembeli terbesar tinggi (59%; median 30%),DER (utang/ekuitas) tinggi (0.76; median 0.17),High,0.6923999999999999
+C1607,train,Konstruksi gedung,Medium,High,0.0249,0.1414,0.8337,porsi pembeli terbesar tinggi (52%; median 30%),DER (utang/ekuitas) tinggi (0.95; median 0.17),High,0.6923
+C0399,test,Industri tekstil & pakaian,High,Medium,0.1304,0.7775,0.0921,DER (utang/ekuitas) tinggi (0.74; median 0.17),pajak telat 30 bln tinggi (17%; median 10%),Medium,0.6854
+C1681,train,Teknologi informasi,Medium,Low,0.8398,0.1579,0.0023,porsi pembeli terbesar rendah (17%; median 30%),DER (utang/ekuitas) rendah (-0.94; median 0.17),Low,0.6819
+C0905,train,Perdagangan besar,Medium,Low,0.8322,0.1592,0.0086,current ratio tinggi (0.96; median 0.38),pajak telat 30 bln rendah (3%; median 10%),Low,0.673
+C1749,test,Industri kimia,Medium,Low,0.8267,0.1546,0.0187,porsi pembeli terbesar rendah (11%; median 30%),DER (utang/ekuitas) tinggi (0.34; median 0.17),Low,0.6721
+C0485,train,Perdagangan besar,Medium,High,0.0224,0.1578,0.8199,DER (utang/ekuitas) tinggi (0.83; median 0.17),volatilitas inflow tinggi (0.36; median 0.16),High,0.6620999999999999
+C1095,train,Perdagangan besar,Low,Medium,0.113,0.7624,0.1246,porsi pembeli terbesar tinggi (43%; median 30%),pajak telat 30 bln tinggi (17%; median 10%),Medium,0.6494
+C0698,train,Perdagangan eceran,High,Medium,0.1883,0.7008,0.1109,pajak telat 30 bln tinggi (57%; median 10%),DER (utang/ekuitas) tinggi (0.39; median 0.17),Medium,0.5899
+C1075,test,Konstruksi gedung,Medium,High,0.0325,0.1888,0.7786,current ratio rendah (-0.33; median 0.38),DER (utang/ekuitas) tinggi (1.74; median 0.17),High,0.5898
+C1225,train,Perdagangan eceran,High,High,0.0789,0.7548,0.1663,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),volatilitas inflow tinggi (0.29; median 0.16),Medium,0.5885
+C1343,train,Konstruksi gedung,High,Medium,0.2692,0.6573,0.0735,outflow ÷ inflow 12 bln tinggi (1.00; median 0.93),DER (utang/ekuitas) tinggi (0.40; median 0.17),Medium,0.5838
+C0222,valid,Perdagangan eceran,High,Medium,0.1597,0.7112,0.1291,pajak telat 30 bln tinggi (30%; median 10%),outflow ÷ inflow 12 bln tinggi (1.02; median 0.93),Medium,0.5821000000000001
+C1109,test,Industri tekstil & pakaian,High,Medium,0.1376,0.7208,0.1416,outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),gaji telat 30 bln tinggi (23%; median 13%),Medium,0.5791999999999999
+C0917,train,Perdagangan besar,High,Medium,0.1867,0.6916,0.1217,pajak telat 30 bln tinggi (27%; median 10%),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),Medium,0.5699
+C1182,train,Aktivitas kesehatan,Medium,High,0.0515,0.1994,0.7491,DER (utang/ekuitas) tinggi (1.13; median 0.17),outflow ÷ inflow 12 bln tinggi (1.15; median 0.93),High,0.5497
+C0106,valid,Perdagangan besar,Low,Medium,0.1756,0.7195,0.105,porsi pembeli terbesar tinggi (69%; median 30%),pajak telat 30 bln tinggi (17%; median 10%),Medium,0.5439
+C1186,train,Konstruksi gedung,High,High,0.162,0.6904,0.1476,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),current ratio rendah (-0.10; median 0.38),Medium,0.5428
+C0139,test,Konstruksi gedung,Medium,High,0.079,0.191,0.7299,current ratio rendah (-0.40; median 0.38),DER (utang/ekuitas) tinggi (0.99; median 0.17),High,0.5388999999999999
+C0344,test,Angkutan & logistik,Low,High,0.1108,0.2464,0.6429,DER (utang/ekuitas) tinggi (1.30; median 0.17),outflow ÷ inflow 12 bln tinggi (1.00; median 0.93),High,0.5321
+C1410,valid,Konstruksi gedung,High,Medium,0.3965,0.5673,0.0362,porsi pembeli terbesar tinggi (47%; median 30%),outflow ÷ inflow 12 bln tinggi (1.15; median 0.93),Medium,0.5311
+C1946,train,Angkutan & logistik,High,High,0.1171,0.7069,0.1761,outflow ÷ inflow 12 bln tinggi (1.00; median 0.93),porsi omzet lewat BNI rendah (40%; median 55%),Medium,0.5307999999999999
+C1776,train,Industri makanan & minuman,Low,High,0.0552,0.5811,0.3636,DER (utang/ekuitas) tinggi (1.02; median 0.17),volatilitas inflow tinggi (0.28; median 0.16),Medium,0.5258999999999999
+C1845,test,Angkutan & logistik,High,High,0.0981,0.7119,0.19,DER (utang/ekuitas) tinggi (1.27; median 0.17),volatilitas inflow tinggi (0.52; median 0.16),Medium,0.5219
+C1007,train,Real estat,Low,Medium,0.2346,0.7553,0.0101,pajak telat 30 bln tinggi (17%; median 10%),margin laba bersih rendah (-0.04; median 0.02),Medium,0.5206999999999999
+C0012,train,Industri kimia,High,Medium,0.3649,0.5712,0.064,gaji telat 30 bln tinggi (33%; median 13%),volatilitas inflow tinggi (0.30; median 0.16),Medium,0.5072000000000001
+C1908,train,Industri tekstil & pakaian,High,High,0.143,0.6817,0.1753,besar limit kredit rendah (-0.58; median 2.02),outflow ÷ inflow 12 bln tinggi (0.99; median 0.93),Medium,0.5064
+C1584,train,Industri kimia,Low,Medium,0.1867,0.6846,0.1287,pajak telat 30 bln tinggi (23%; median 10%),outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),Medium,0.4979
+C1376,train,Teknologi informasi,Low,Medium,0.2308,0.726,0.0432,pajak telat 30 bln tinggi (17%; median 10%),DER (utang/ekuitas) rendah (-0.26; median 0.17),Medium,0.4952
+C0640,train,Konstruksi gedung,Low,Medium,0.2279,0.7108,0.0613,pajak telat 30 bln tinggi (20%; median 10%),DER (utang/ekuitas) tinggi (1.01; median 0.17),Medium,0.4829
+C0874,train,Perdagangan besar,Medium,High,0.0783,0.2216,0.7001,porsi pembeli terbesar tinggi (58%; median 30%),gaji telat 12 bln tinggi (95%; median 17%),High,0.4784999999999999
+C1750,test,Perdagangan besar,High,High,0.0794,0.6989,0.2217,porsi pembeli terbesar tinggi (68%; median 30%),volatilitas inflow tinggi (0.55; median 0.16),Medium,0.47719999999999996
+C0552,train,Perdagangan besar,High,High,0.0435,0.7168,0.2397,porsi pembeli terbesar tinggi (75%; median 30%),DER (utang/ekuitas) tinggi (0.91; median 0.17),Medium,0.47709999999999997
+C0837,train,Teknologi informasi,High,High,0.0613,0.706,0.2328,porsi pembeli terbesar tinggi (66%; median 30%),gaji telat 30 bln tinggi (61%; median 13%),Medium,0.47319999999999995
+C0643,train,Industri makanan & minuman,Low,High,0.1559,0.6263,0.2179,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),porsi pembeli terbesar tinggi (43%; median 30%),Medium,0.47039999999999993
+C0048,train,Industri makanan & minuman,Low,High,0.1633,0.6225,0.2142,porsi pembeli terbesar tinggi (66%; median 30%),volatilitas inflow tinggi (0.41; median 0.16),Medium,0.45920000000000005
+C1450,test,Angkutan & logistik,Low,High,0.1369,0.5917,0.2714,DER (utang/ekuitas) tinggi (1.54; median 0.17),porsi omzet lewat BNI rendah (43%; median 55%),Medium,0.4548
+C0213,train,Industri makanan & minuman,Low,Medium,0.234,0.68,0.0861,porsi pembeli terbesar tinggi (42%; median 30%),margin laba bersih rendah (-0.05; median 0.02),Medium,0.44600000000000006
+C0800,train,Industri makanan & minuman,High,High,0.1604,0.6408,0.1988,current ratio rendah (-0.33; median 0.38),outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),Medium,0.44200000000000006
+C0891,train,Perdagangan eceran,Medium,High,0.0313,0.2663,0.7024,outflow ÷ inflow 12 bln tinggi (2.25; median 0.93),current ratio rendah (-0.20; median 0.38),High,0.43610000000000004
+C1265,train,Perdagangan besar,Low,Medium,0.2545,0.6864,0.0591,porsi pembeli terbesar tinggi (44%; median 30%),current ratio rendah (-0.10; median 0.38),Medium,0.4319
+C0820,train,Real estat,High,High,0.1964,0.6175,0.186,current ratio rendah (0.10; median 0.38),industri real estat,Medium,0.43150000000000005
+C1089,train,Perdagangan besar,Low,Medium,0.2389,0.6677,0.0935,pajak telat 30 bln tinggi (17%; median 10%),DER (utang/ekuitas) tinggi (0.58; median 0.17),Medium,0.42879999999999996
+C0768,test,Real estat,Medium,High,0.1329,0.2225,0.6445,outflow ÷ inflow 12 bln tinggi (1.23; median 0.93),porsi pembeli terbesar tinggi (46%; median 30%),High,0.42199999999999993
+C0310,train,Perdagangan besar,Medium,High,0.1122,0.2337,0.6542,porsi pembeli terbesar tinggi (55%; median 30%),current ratio rendah (-0.03; median 0.38),High,0.4205
+C0195,train,Angkutan & logistik,Medium,High,0.0242,0.2786,0.6972,DER (utang/ekuitas) tinggi (1.88; median 0.17),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),High,0.4186
+C0769,train,Perdagangan besar,High,High,0.0691,0.6747,0.2562,current ratio rendah (-0.47; median 0.38),outflow ÷ inflow 12 bln tinggi (1.06; median 0.93),Medium,0.4185
+C1069,train,Perdagangan besar,Low,Medium,0.2793,0.6957,0.0251,porsi pembeli terbesar tinggi (49%; median 30%),porsi omzet lewat BNI rendah (31%; median 55%),Medium,0.4164
+C0417,train,Aktivitas kesehatan,Low,Medium,0.2656,0.6814,0.053,pajak telat 30 bln tinggi (30%; median 10%),DER (utang/ekuitas) tinggi (1.18; median 0.17),Medium,0.4158
+C0107,train,Industri tekstil & pakaian,High,High,0.0913,0.655,0.2537,current ratio rendah (-0.01; median 0.38),interest coverage rendah (0.13; median 0.84),Medium,0.40130000000000005
+C0124,valid,Konstruksi gedung,Medium,High,0.0441,0.2773,0.6785,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),besar limit kredit rendah (0.17; median 2.02),High,0.4012
+C0579,train,Perdagangan besar,Low,Medium,0.2356,0.6352,0.1291,outflow ÷ inflow 12 bln tinggi (1.76; median 0.93),DER (utang/ekuitas) tinggi (0.37; median 0.17),Medium,0.39959999999999996
+C0614,valid,Angkutan & logistik,Low,Medium,0.2398,0.6365,0.1237,outflow ÷ inflow 12 bln tinggi (0.99; median 0.93),current ratio rendah (-0.37; median 0.38),Medium,0.39669999999999994
+C1121,train,Angkutan & logistik,Low,Medium,0.2525,0.6472,0.1003,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),gaji telat 30 bln tinggi (27%; median 13%),Medium,0.3947
+C0710,test,Konstruksi gedung,High,High,0.2695,0.5623,0.1682,porsi pembeli terbesar tinggi (69%; median 30%),gaji telat 30 bln tinggi (37%; median 13%),Medium,0.3941
+C0704,train,Perdagangan eceran,High,Medium,0.3468,0.5203,0.1329,pajak telat 30 bln tinggi (57%; median 10%),DER (utang/ekuitas) tidak tersedia,Medium,0.38739999999999997
+C0454,valid,Angkutan & logistik,High,High,0.1567,0.605,0.2383,DER (utang/ekuitas) tinggi (1.22; median 0.17),besar limit kredit rendah (1.09; median 2.02),Medium,0.36669999999999997
+C1292,valid,Industri makanan & minuman,Low,Medium,0.2854,0.6429,0.0717,DER (utang/ekuitas) tinggi (1.05; median 0.17),porsi omzet lewat BNI rendah (16%; median 55%),Medium,0.35750000000000004
+C1299,valid,Angkutan & logistik,High,High,0.2272,0.5622,0.2106,porsi pembeli terbesar tinggi (50%; median 30%),DER (utang/ekuitas) tinggi (1.35; median 0.17),Medium,0.3516
+C1206,test,Angkutan & logistik,High,High,0.0957,0.6265,0.2778,DER (utang/ekuitas) tinggi (1.94; median 0.17),current ratio rendah (-0.01; median 0.38),Medium,0.34869999999999995
+C1685,train,Industri makanan & minuman,Low,High,0.2349,0.5818,0.1832,porsi pembeli terbesar tinggi (49%; median 30%),interest coverage tidak tersedia,Medium,0.3469
+C1351,train,Perdagangan besar,Low,Medium,0.2886,0.6323,0.0791,pajak telat 30 bln tinggi (30%; median 10%),gaji telat 30 bln tinggi (46%; median 13%),Medium,0.34369999999999995
+C1974,train,Angkutan & logistik,Medium,High,0.0385,0.3106,0.6509,current ratio rendah (-0.27; median 0.38),DER (utang/ekuitas) tinggi (1.90; median 0.17),High,0.34030000000000005
+C0258,train,Industri kimia,Low,High,0.1472,0.4793,0.3736,current ratio rendah (0.07; median 0.38),besar limit kredit rendah (1.09; median 2.02),Medium,0.3321
+C0613,test,Teknologi informasi,Low,Medium,0.3279,0.6534,0.0187,pajak telat 30 bln tinggi (17%; median 10%),DER (utang/ekuitas) rendah (0.14; median 0.17),Medium,0.32549999999999996
+C0072,valid,Konstruksi gedung,High,High,0.0908,0.6156,0.2936,porsi pembeli terbesar tinggi (74%; median 30%),volatilitas inflow tinggi (0.29; median 0.16),Medium,0.322
+C0525,train,Konstruksi gedung,High,High,0.0706,0.6257,0.3038,DER (utang/ekuitas) tinggi (1.52; median 0.17),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),Medium,0.3219
+C0980,test,Angkutan & logistik,Low,High,0.2353,0.5539,0.2108,DER (utang/ekuitas) tinggi (1.43; median 0.17),outflow ÷ inflow 12 bln tinggi (1.01; median 0.93),Medium,0.31859999999999994
+C1876,train,Perdagangan besar,Low,High,0.1869,0.4845,0.3286,DER (utang/ekuitas) tinggi (0.86; median 0.17),gaji telat 12 bln tinggi (42%; median 17%),Medium,0.2976
+C1330,train,Industri makanan & minuman,Low,High,0.1936,0.4807,0.3257,outflow ÷ inflow 12 bln tinggi (1.14; median 0.93),current ratio rendah (-0.06; median 0.38),Medium,0.2871
+C0603,valid,Perdagangan eceran,High,High,0.1097,0.5884,0.3018,current ratio rendah (-0.14; median 0.38),pajak telat 30 bln tinggi (47%; median 10%),Medium,0.2866
+C0069,test,Aktivitas kesehatan,Low,High,0.1776,0.4529,0.3695,outflow ÷ inflow 12 bln tinggi (1.21; median 0.93),current ratio rendah (-0.11; median 0.38),Medium,0.2753
+C1102,test,Aktivitas kesehatan,Medium,High,0.1256,0.3002,0.5742,current ratio rendah (-0.15; median 0.38),DER (utang/ekuitas) tinggi (2.30; median 0.17),High,0.274
+C0200,train,Konstruksi gedung,High,High,0.0947,0.5891,0.3162,porsi pembeli terbesar tinggi (52%; median 30%),DER (utang/ekuitas) tinggi (1.03; median 0.17),Medium,0.2729
+C0276,test,Industri tekstil & pakaian,Low,Medium,0.3556,0.6227,0.0217,porsi pembeli terbesar tinggi (50%; median 30%),porsi omzet lewat BNI rendah (27%; median 55%),Medium,0.2671
+C1789,train,Konstruksi gedung,Low,High,0.2904,0.5547,0.155,DER (utang/ekuitas) tinggi (0.68; median 0.17),current ratio rendah (0.02; median 0.38),Medium,0.2643
+C0360,test,Perdagangan eceran,High,High,0.3003,0.4816,0.218,volatilitas inflow tinggi (0.30; median 0.16),pajak telat 30 bln tinggi (40%; median 10%),Medium,0.26359999999999995
+C0412,test,Industri kimia,Low,Medium,0.3344,0.5844,0.0812,porsi pembeli terbesar tinggi (70%; median 30%),DER (utang/ekuitas) tinggi (1.10; median 0.17),Medium,0.25000000000000006
+C1395,train,Industri kimia,Low,Medium,0.3404,0.5871,0.0725,pajak telat 30 bln tinggi (20%; median 10%),DER (utang/ekuitas) tinggi (1.15; median 0.17),Medium,0.24669999999999997
+C1459,test,Perdagangan eceran,Low,High,0.2582,0.5036,0.2382,outflow ÷ inflow 12 bln tinggi (1.02; median 0.93),current ratio rendah (-0.14; median 0.38),Medium,0.24540000000000006
+C0205,train,Aktivitas kesehatan,Medium,High,0.0738,0.3409,0.5853,DER (utang/ekuitas) tinggi (1.61; median 0.17),current ratio rendah (-0.20; median 0.38),High,0.24440000000000006
+C0263,valid,Perdagangan eceran,Medium,High,0.0621,0.3606,0.5774,current ratio rendah (-0.27; median 0.38),interest coverage rendah (-0.54; median 0.84),High,0.21680000000000005
+C0023,train,Angkutan & logistik,High,High,0.1567,0.5295,0.3138,porsi pembeli terbesar tinggi (47%; median 30%),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),Medium,0.21569999999999995
+C0968,train,Perdagangan besar,High,High,0.0895,0.5612,0.3494,current ratio rendah (-0.06; median 0.38),DER (utang/ekuitas) tinggi (1.05; median 0.17),Medium,0.21180000000000004
+C1037,valid,Perdagangan besar,Low,Medium,0.3829,0.5917,0.0254,porsi pembeli terbesar tinggi (46%; median 30%),DER (utang/ekuitas) tinggi (1.17; median 0.17),Medium,0.20879999999999999
+C0760,valid,Aktivitas kesehatan,Low,Medium,0.3422,0.546,0.1117,DER (utang/ekuitas) tinggi (1.53; median 0.17),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),Medium,0.20380000000000004
+C1227,valid,Aktivitas kesehatan,Low,Medium,0.3644,0.5677,0.0679,outflow ÷ inflow 12 bln tinggi (1.09; median 0.93),margin laba bersih rendah (-0.02; median 0.02),Medium,0.20329999999999998
+C0141,test,Industri tekstil & pakaian,High,High,0.0633,0.5699,0.3667,porsi pembeli terbesar tinggi (50%; median 30%),industri industri tekstil pakaian,Medium,0.20319999999999994
+C0252,train,Perdagangan besar,Low,Medium,0.352,0.5516,0.0963,porsi pembeli terbesar tinggi (39%; median 30%),DER (utang/ekuitas) tinggi (0.31; median 0.17),Medium,0.1996
+C1774,train,Perdagangan besar,Low,Medium,0.4078,0.5804,0.0118,pajak telat 30 bln tinggi (23%; median 10%),gaji telat 30 bln tinggi (30%; median 13%),Medium,0.17260000000000003
+C0692,train,Industri tekstil & pakaian,High,High,0.0548,0.5561,0.3891,outflow ÷ inflow 12 bln tinggi (1.01; median 0.93),volatilitas inflow tinggi (0.30; median 0.16),Medium,0.16700000000000004
+C1049,test,Industri kimia,Low,Medium,0.3891,0.5486,0.0622,pajak telat 30 bln tinggi (17%; median 10%),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),Medium,0.15949999999999998
+C1911,train,Konstruksi gedung,High,High,0.0911,0.5324,0.3764,current ratio rendah (-0.63; median 0.38),besar limit kredit rendah (-0.11; median 2.02),Medium,0.15599999999999997
+C0079,train,Perdagangan besar,Low,Medium,0.4237,0.5735,0.0027,pajak telat 30 bln tinggi (20%; median 10%),gaji telat 30 bln tinggi (27%; median 13%),Medium,0.1498
+C1663,test,Industri tekstil & pakaian,High,High,0.0356,0.551,0.4133,outflow ÷ inflow 12 bln tinggi (1.14; median 0.93),industri industri tekstil pakaian,Medium,0.13770000000000004
+C1324,valid,Aktivitas kesehatan,High,High,0.1221,0.5054,0.3724,current ratio rendah (-0.19; median 0.38),DER (utang/ekuitas) tinggi (1.04; median 0.17),Medium,0.13299999999999995
+C0487,train,Perdagangan besar,Low,Medium,0.3639,0.4944,0.1417,pajak telat 30 bln tinggi (67%; median 10%),gaji telat 30 bln tinggi (80%; median 13%),Medium,0.1305
+C1421,train,Perdagangan besar,Low,Medium,0.3955,0.5241,0.0804,pajak telat 30 bln tinggi (50%; median 10%),gaji telat 30 bln tinggi (70%; median 13%),Medium,0.1286
+C0883,train,Teknologi informasi,Low,High,0.3406,0.4666,0.1927,outflow ÷ inflow 12 bln tinggi (1.08; median 0.93),porsi pembeli terbesar tinggi (42%; median 30%),Medium,0.126
+C1010,train,Perdagangan besar,Low,Medium,0.3827,0.5021,0.1152,porsi pembeli terbesar tinggi (45%; median 30%),outflow ÷ inflow 12 bln tinggi (0.96; median 0.93),Medium,0.1194
+C1356,test,Aktivitas kesehatan,Low,Medium,0.3815,0.4928,0.1257,pajak telat 30 bln tinggi (20%; median 10%),outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),Medium,0.11130000000000001
+C1645,test,Perdagangan besar,High,High,0.0568,0.5266,0.4166,outflow ÷ inflow 12 bln tinggi (0.98; median 0.93),porsi pembeli terbesar tinggi (46%; median 30%),Medium,0.10999999999999993
+C1353,train,Konstruksi gedung,High,High,0.0679,0.519,0.4131,volatilitas inflow tinggi (0.43; median 0.16),DER (utang/ekuitas) tinggi (0.70; median 0.17),Medium,0.1059
+C1560,train,Perdagangan besar,Low,Medium,0.3963,0.4946,0.1092,DER (utang/ekuitas) tinggi (0.59; median 0.17),current ratio rendah (0.06; median 0.38),Medium,0.0983
+C1510,valid,Perdagangan besar,Low,Medium,0.4441,0.5388,0.0171,pajak telat 30 bln tinggi (17%; median 10%),margin laba bersih rendah (-0.06; median 0.02),Medium,0.09469999999999995
+C0299,test,Perdagangan eceran,High,High,0.0779,0.5038,0.4183,interest coverage rendah (-0.27; median 0.84),gaji telat 30 bln tinggi (65%; median 13%),Medium,0.08550000000000002
+C1320,train,Industri kimia,Low,Medium,0.387,0.4725,0.1405,porsi pembeli terbesar tinggi (57%; median 30%),outflow ÷ inflow 12 bln tinggi (1.00; median 0.93),Medium,0.08549999999999996
+C1471,train,Industri tekstil & pakaian,High,High,0.077,0.5037,0.4194,DER (utang/ekuitas) tinggi (0.80; median 0.17),porsi pembeli terbesar tinggi (39%; median 30%),Medium,0.08430000000000004
+C1259,train,Perdagangan eceran,Low,Medium,0.4516,0.5286,0.0198,DER (utang/ekuitas) tinggi (0.61; median 0.17),outflow ÷ inflow 12 bln tinggi (0.96; median 0.93),Medium,0.07699999999999996
+C1346,train,Perdagangan eceran,Low,Medium,0.452,0.5283,0.0197,DER (utang/ekuitas) tinggi (0.20; median 0.17),volatilitas inflow tinggi (0.23; median 0.16),Medium,0.07629999999999998
+C0291,train,Konstruksi gedung,Low,Medium,0.4531,0.523,0.0239,outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),volatilitas inflow tinggi (0.26; median 0.16),Medium,0.06990000000000002
+C0040,train,Konstruksi gedung,Low,Medium,0.4612,0.53,0.0088,porsi pembeli terbesar tinggi (52%; median 30%),porsi omzet lewat BNI rendah (41%; median 55%),Medium,0.06880000000000003
+C0632,valid,Industri tekstil & pakaian,Low,Medium,0.4663,0.5216,0.0121,outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),gaji telat 30 bln tinggi (23%; median 13%),Medium,0.05529999999999996
+C0897,valid,Real estat,High,High,0.0613,0.4969,0.4418,porsi pembeli terbesar tinggi (53%; median 30%),volatilitas inflow tinggi (0.43; median 0.16),Medium,0.05509999999999998
+C1788,train,Aktivitas kesehatan,Low,Medium,0.4748,0.5111,0.014,gaji telat 30 bln tinggi (27%; median 13%),utilisasi fasilitas tinggi (67%; median 57%),Medium,0.0363
+C0056,valid,Angkutan & logistik,High,High,0.1217,0.4531,0.4252,DER (utang/ekuitas) tinggi (1.28; median 0.17),outflow ÷ inflow 12 bln tinggi (0.97; median 0.93),Medium,0.02789999999999998
+C0474,train,Industri kimia,Low,Medium,0.4846,0.5009,0.0145,pajak telat 30 bln tinggi (53%; median 10%),gaji telat 30 bln tinggi (74%; median 13%),Medium,0.016300000000000037

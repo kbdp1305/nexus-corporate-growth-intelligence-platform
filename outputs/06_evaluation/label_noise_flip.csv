@@ -1,0 +1,3 @@
+kelompok,n,prediksi = label,prediksi = kelas sebenarnya
+label benar,956,0.7228033472803347,
+label salah (flip),44,0.29545454545454547,0.6818181818181818

@@ -1,0 +1,2001 @@
+company_id,segment,segment_confidence,split,customer_type
+C0001,S2 Menengah,0.587,train,Existing credit client
+C0002,S3 Besar,0.676,unlabeled,Existing non-credit client
+C0003,S2 Menengah,0.021,unlabeled,Prospect
+C0004,S3 Besar,0.502,unlabeled,Existing non-credit client
+C0005,S3 Besar,0.686,train,Existing credit client
+C0006,S2 Menengah,0.124,train,Existing credit client
+C0007,S2 Menengah,0.047,unlabeled,Existing non-credit client
+C0008,S2 Menengah,0.541,unlabeled,Existing non-credit client
+C0009,S2 Menengah,0.465,train,Existing credit client
+C0010,S2 Menengah,0.193,train,Existing credit client
+C0011,S1 Kecil,0.213,train,Existing credit client
+C0012,S2 Menengah,0.557,train,Existing credit client
+C0013,S1 Kecil,0.533,unlabeled,Prospect
+C0014,S1 Kecil,0.517,train,Existing credit client
+C0015,S2 Menengah,0.358,train,Existing credit client
+C0016,S1 Kecil,0.744,unlabeled,Existing non-credit client
+C0017,S2 Menengah,0.319,unlabeled,Prospect
+C0018,S3 Besar,0.186,valid,Existing credit client
+C0019,S1 Kecil,0.606,valid,Existing credit client
+C0020,S3 Besar,0.412,unlabeled,Prospect
+C0021,S3 Besar,0.564,train,Existing credit client
+C0022,S2 Menengah,0.112,unlabeled,Prospect
+C0023,S2 Menengah,0.688,train,Existing credit client
+C0024,S1 Kecil,0.809,test,Existing credit client
+C0025,S2 Menengah,0.621,unlabeled,Existing non-credit client
+C0026,S1 Kecil,0.312,train,Existing credit client
+C0027,S2 Menengah,0.166,train,Existing credit client
+C0028,S2 Menengah,0.136,train,Existing credit client
+C0029,S1 Kecil,0.196,train,Existing credit client
+C0030,S1 Kecil,0.251,valid,Existing credit client
+C0031,S2 Menengah,0.713,unlabeled,Existing non-credit client
+C0032,S1 Kecil,0.139,unlabeled,Prospect
+C0033,S2 Menengah,0.517,test,Existing credit client
+C0034,S2 Menengah,0.734,train,Existing credit client
+C0035,S2 Menengah,0.354,train,Existing credit client
+C0036,S1 Kecil,0.464,train,Existing credit client
+C0037,S1 Kecil,0.728,unlabeled,Existing non-credit client
+C0038,S2 Menengah,0.712,train,Existing credit client
+C0039,S1 Kecil,0.786,unlabeled,Prospect
+C0040,S2 Menengah,0.506,train,Existing credit client
+C0041,S2 Menengah,0.355,train,Existing credit client
+C0042,S1 Kecil,0.365,unlabeled,Prospect
+C0043,S1 Kecil,0.611,unlabeled,Existing non-credit client
+C0044,S2 Menengah,0.005,unlabeled,Prospect
+C0045,S2 Menengah,0.394,unlabeled,Existing non-credit client
+C0046,S2 Menengah,0.271,unlabeled,Prospect
+C0047,S1 Kecil,0.009,unlabeled,Prospect
+C0048,S1 Kecil,0.258,train,Existing credit client
+C0049,S3 Besar,0.698,valid,Existing credit client
+C0050,S3 Besar,0.254,train,Existing credit client
+C0051,S1 Kecil,0.598,train,Existing credit client
+C0052,S1 Kecil,0.314,unlabeled,Existing non-credit client
+C0053,S2 Menengah,0.512,valid,Existing credit client
+C0054,S2 Menengah,0.105,unlabeled,Prospect
+C0055,S1 Kecil,0.236,test,Existing credit client
+C0056,S1 Kecil,0.633,valid,Existing credit client
+C0057,S2 Menengah,0.184,unlabeled,Existing non-credit client
+C0058,S1 Kecil,0.417,unlabeled,Prospect
+C0059,S2 Menengah,0.809,unlabeled,Prospect
+C0060,S2 Menengah,0.49,unlabeled,Existing non-credit client
+C0061,S2 Menengah,0.599,train,Existing credit client
+C0062,S2 Menengah,0.598,unlabeled,Prospect
+C0063,S3 Besar,0.457,train,Existing credit client
+C0064,S3 Besar,0.13,train,Existing credit client
+C0065,S2 Menengah,0.653,unlabeled,Prospect
+C0066,S1 Kecil,0.626,unlabeled,Prospect
+C0067,S3 Besar,0.322,unlabeled,Existing non-credit client
+C0068,S2 Menengah,0.673,unlabeled,Existing non-credit client
+C0069,S2 Menengah,0.256,test,Existing credit client
+C0070,S1 Kecil,0.632,unlabeled,Existing non-credit client
+C0071,S1 Kecil,0.596,unlabeled,Existing non-credit client
+C0072,S1 Kecil,0.032,valid,Existing credit client
+C0073,S1 Kecil,0.473,train,Existing credit client
+C0074,S1 Kecil,0.67,unlabeled,Existing non-credit client
+C0075,S3 Besar,0.704,train,Existing credit client
+C0076,S3 Besar,0.199,train,Existing credit client
+C0077,S1 Kecil,0.145,unlabeled,Prospect
+C0078,S2 Menengah,0.694,train,Existing credit client
+C0079,S3 Besar,0.701,train,Existing credit client
+C0080,S1 Kecil,0.654,test,Existing credit client
+C0081,S2 Menengah,0.681,unlabeled,Prospect
+C0082,S1 Kecil,0.728,unlabeled,Prospect
+C0083,S1 Kecil,0.327,unlabeled,Prospect
+C0084,S1 Kecil,0.58,unlabeled,Prospect
+C0085,S2 Menengah,0.462,unlabeled,Existing non-credit client
+C0086,S2 Menengah,0.678,unlabeled,Prospect
+C0087,S2 Menengah,0.134,unlabeled,Existing non-credit client
+C0088,S2 Menengah,0.248,unlabeled,Existing non-credit client
+C0089,S1 Kecil,0.65,unlabeled,Prospect
+C0090,S2 Menengah,0.498,test,Existing credit client
+C0091,S3 Besar,0.52,unlabeled,Existing non-credit client
+C0092,S1 Kecil,0.549,unlabeled,Prospect
+C0093,S2 Menengah,0.361,unlabeled,Existing non-credit client
+C0094,S2 Menengah,0.593,valid,Existing credit client
+C0095,S1 Kecil,0.497,unlabeled,Prospect
+C0096,S3 Besar,0.767,unlabeled,Existing non-credit client
+C0097,S1 Kecil,0.544,valid,Existing credit client
+C0098,S1 Kecil,0.107,train,Existing credit client
+C0099,S2 Menengah,0.243,valid,Existing credit client
+C0100,S1 Kecil,0.749,unlabeled,Existing non-credit client
+C0101,S1 Kecil,0.305,train,Existing credit client
+C0102,S2 Menengah,0.428,valid,Existing credit client
+C0103,S1 Kecil,0.189,test,Existing credit client
+C0104,S3 Besar,0.135,unlabeled,Existing non-credit client
+C0105,S1 Kecil,0.695,unlabeled,Prospect
+C0106,S2 Menengah,0.272,valid,Existing credit client
+C0107,S3 Besar,0.609,train,Existing credit client
+C0108,S2 Menengah,0.177,unlabeled,Prospect
+C0109,S3 Besar,0.442,unlabeled,Existing non-credit client
+C0110,S2 Menengah,0.665,unlabeled,Prospect
+C0111,S2 Menengah,0.435,unlabeled,Prospect
+C0112,S2 Menengah,0.782,unlabeled,Existing non-credit client
+C0113,S2 Menengah,0.653,train,Existing credit client
+C0114,S1 Kecil,0.297,unlabeled,Existing non-credit client
+C0115,S3 Besar,0.64,valid,Existing credit client
+C0116,S1 Kecil,0.497,train,Existing credit client
+C0117,S1 Kecil,0.544,unlabeled,Prospect
+C0118,S2 Menengah,0.14,train,Existing credit client
+C0119,S1 Kecil,0.651,unlabeled,Prospect
+C0120,S3 Besar,0.66,valid,Existing credit client
+C0121,S1 Kecil,0.529,unlabeled,Prospect
+C0122,S1 Kecil,0.526,unlabeled,Prospect
+C0123,S3 Besar,0.867,valid,Existing credit client
+C0124,S1 Kecil,0.81,valid,Existing credit client
+C0125,S2 Menengah,0.401,test,Existing credit client
+C0126,S3 Besar,0.615,train,Existing credit client
+C0127,S1 Kecil,0.267,unlabeled,Prospect
+C0128,S2 Menengah,0.575,valid,Existing credit client
+C0129,S1 Kecil,0.322,unlabeled,Existing non-credit client
+C0130,S1 Kecil,0.565,unlabeled,Prospect
+C0131,S3 Besar,0.727,unlabeled,Existing non-credit client
+C0132,S3 Besar,0.611,test,Existing credit client
+C0133,S1 Kecil,0.315,train,Existing credit client
+C0134,S2 Menengah,0.041,train,Existing credit client
+C0135,S3 Besar,0.621,train,Existing credit client
+C0136,S2 Menengah,0.745,unlabeled,Existing non-credit client
+C0137,S2 Menengah,0.494,unlabeled,Prospect
+C0138,S1 Kecil,0.769,unlabeled,Existing non-credit client
+C0139,S2 Menengah,0.637,test,Existing credit client
+C0140,S1 Kecil,0.836,unlabeled,Prospect
+C0141,S1 Kecil,0.666,test,Existing credit client
+C0142,S1 Kecil,0.734,train,Existing credit client
+C0143,S1 Kecil,0.144,train,Existing credit client
+C0144,S2 Menengah,0.465,valid,Existing credit client
+C0145,S3 Besar,0.456,train,Existing credit client
+C0146,S3 Besar,0.575,unlabeled,Prospect
+C0147,S1 Kecil,0.45,train,Existing credit client
+C0148,S3 Besar,0.818,train,Existing credit client
+C0149,S3 Besar,0.448,train,Existing credit client
+C0150,S2 Menengah,0.132,unlabeled,Prospect
+C0151,S2 Menengah,0.354,unlabeled,Prospect
+C0152,S2 Menengah,0.518,unlabeled,Prospect
+C0153,S1 Kecil,0.214,train,Existing credit client
+C0154,S1 Kecil,0.524,unlabeled,Prospect
+C0155,S2 Menengah,0.416,train,Existing credit client
+C0156,S1 Kecil,0.296,unlabeled,Prospect
+C0157,S3 Besar,0.36,valid,Existing credit client
+C0158,S3 Besar,0.61,train,Existing credit client
+C0159,S1 Kecil,0.73,unlabeled,Existing non-credit client
+C0160,S2 Menengah,0.135,train,Existing credit client
+C0161,S2 Menengah,0.462,train,Existing credit client
+C0162,S1 Kecil,0.635,unlabeled,Prospect
+C0163,S3 Besar,0.331,train,Existing credit client
+C0164,S1 Kecil,0.44,train,Existing credit client
+C0165,S2 Menengah,0.718,unlabeled,Prospect
+C0166,S3 Besar,0.715,test,Existing credit client
+C0167,S2 Menengah,0.505,unlabeled,Existing non-credit client
+C0168,S1 Kecil,0.52,unlabeled,Prospect
+C0169,S2 Menengah,0.096,unlabeled,Existing non-credit client
+C0170,S1 Kecil,0.605,train,Existing credit client
+C0171,S1 Kecil,0.723,unlabeled,Prospect
+C0172,S2 Menengah,0.659,unlabeled,Existing non-credit client
+C0173,S1 Kecil,0.375,unlabeled,Prospect
+C0174,S2 Menengah,0.46,unlabeled,Existing non-credit client
+C0175,S1 Kecil,0.358,unlabeled,Prospect
+C0176,S1 Kecil,0.587,train,Existing credit client
+C0177,S2 Menengah,0.514,unlabeled,Prospect
+C0178,S3 Besar,0.42,unlabeled,Existing non-credit client
+C0179,S1 Kecil,0.523,unlabeled,Prospect
+C0180,S1 Kecil,0.674,unlabeled,Prospect
+C0181,S2 Menengah,0.478,train,Existing credit client
+C0182,S1 Kecil,0.647,unlabeled,Prospect
+C0183,S1 Kecil,0.674,train,Existing credit client
+C0184,S2 Menengah,0.354,unlabeled,Prospect
+C0185,S2 Menengah,0.009,unlabeled,Prospect
+C0186,S2 Menengah,0.569,unlabeled,Prospect
+C0187,S1 Kecil,0.103,unlabeled,Existing non-credit client
+C0188,S3 Besar,0.51,train,Existing credit client
+C0189,S2 Menengah,0.173,valid,Existing credit client
+C0190,S2 Menengah,0.581,train,Existing credit client
+C0191,S3 Besar,0.018,train,Existing credit client
+C0192,S3 Besar,0.74,test,Existing credit client
+C0193,S3 Besar,0.651,train,Existing credit client
+C0194,S2 Menengah,0.605,test,Existing credit client
+C0195,S2 Menengah,0.579,train,Existing credit client
+C0196,S3 Besar,0.774,train,Existing credit client
+C0197,S1 Kecil,0.746,unlabeled,Prospect
+C0198,S2 Menengah,0.393,valid,Existing credit client
+C0199,S3 Besar,0.566,train,Existing credit client
+C0200,S3 Besar,0.63,train,Existing credit client
+C0201,S1 Kecil,0.71,unlabeled,Prospect
+C0202,S2 Menengah,0.274,valid,Existing credit client
+C0203,S2 Menengah,0.684,valid,Existing credit client
+C0204,S1 Kecil,0.357,unlabeled,Existing non-credit client
+C0205,S2 Menengah,0.648,train,Existing credit client
+C0206,S2 Menengah,0.49,test,Existing credit client
+C0207,S2 Menengah,0.088,train,Existing credit client
+C0208,S1 Kecil,0.627,unlabeled,Existing non-credit client
+C0209,S2 Menengah,0.222,unlabeled,Existing non-credit client
+C0210,S3 Besar,0.132,train,Existing credit client
+C0211,S2 Menengah,0.783,test,Existing credit client
+C0212,S1 Kecil,0.257,unlabeled,Prospect
+C0213,S2 Menengah,0.419,train,Existing credit client
+C0214,S1 Kecil,0.672,unlabeled,Prospect
+C0215,S1 Kecil,0.583,unlabeled,Prospect
+C0216,S1 Kecil,0.715,unlabeled,Prospect
+C0217,S2 Menengah,0.389,unlabeled,Existing non-credit client
+C0218,S1 Kecil,0.135,unlabeled,Prospect
+C0219,S2 Menengah,0.832,test,Existing credit client
+C0220,S1 Kecil,0.301,unlabeled,Prospect
+C0221,S1 Kecil,0.472,train,Existing credit client
+C0222,S1 Kecil,0.122,valid,Existing credit client
+C0223,S3 Besar,0.326,unlabeled,Existing non-credit client
+C0224,S1 Kecil,0.725,unlabeled,Existing non-credit client
+C0225,S1 Kecil,0.497,unlabeled,Prospect
+C0226,S3 Besar,0.329,train,Existing credit client
+C0227,S3 Besar,0.628,train,Existing credit client
+C0228,S1 Kecil,0.347,train,Existing credit client
+C0229,S1 Kecil,0.714,unlabeled,Prospect
+C0230,S1 Kecil,0.683,unlabeled,Prospect
+C0231,S2 Menengah,0.201,train,Existing credit client
+C0232,S1 Kecil,0.585,unlabeled,Prospect
+C0233,S1 Kecil,0.439,train,Existing credit client
+C0234,S3 Besar,0.247,unlabeled,Existing non-credit client
+C0235,S1 Kecil,0.39,train,Existing credit client
+C0236,S1 Kecil,0.424,unlabeled,Prospect
+C0237,S1 Kecil,0.371,train,Existing credit client
+C0238,S1 Kecil,0.608,unlabeled,Prospect
+C0239,S1 Kecil,0.322,unlabeled,Prospect
+C0240,S3 Besar,0.853,train,Existing credit client
+C0241,S3 Besar,0.538,unlabeled,Existing non-credit client
+C0242,S3 Besar,0.851,train,Existing credit client
+C0243,S1 Kecil,0.427,unlabeled,Prospect
+C0244,S2 Menengah,0.025,unlabeled,Existing non-credit client
+C0245,S3 Besar,0.404,valid,Existing credit client
+C0246,S1 Kecil,0.686,unlabeled,Prospect
+C0247,S2 Menengah,0.139,valid,Existing credit client
+C0248,S2 Menengah,0.332,valid,Existing credit client
+C0249,S2 Menengah,0.58,unlabeled,Prospect
+C0250,S2 Menengah,0.017,unlabeled,Prospect
+C0251,S2 Menengah,0.584,unlabeled,Prospect
+C0252,S1 Kecil,0.521,train,Existing credit client
+C0253,S2 Menengah,0.422,unlabeled,Prospect
+C0254,S2 Menengah,0.443,valid,Existing credit client
+C0255,S1 Kecil,0.657,unlabeled,Prospect
+C0256,S2 Menengah,0.231,unlabeled,Existing non-credit client
+C0257,S1 Kecil,0.472,unlabeled,Prospect
+C0258,S2 Menengah,0.598,train,Existing credit client
+C0259,S1 Kecil,0.651,unlabeled,Prospect
+C0260,S1 Kecil,0.64,test,Existing credit client
+C0261,S1 Kecil,0.593,unlabeled,Prospect
+C0262,S2 Menengah,0.272,valid,Existing credit client
+C0263,S2 Menengah,0.136,valid,Existing credit client
+C0264,S3 Besar,0.6,train,Existing credit client
+C0265,S1 Kecil,0.259,unlabeled,Prospect
+C0266,S2 Menengah,0.126,test,Existing credit client
+C0267,S3 Besar,0.641,unlabeled,Existing non-credit client
+C0268,S1 Kecil,0.639,unlabeled,Prospect
+C0269,S2 Menengah,0.432,train,Existing credit client
+C0270,S1 Kecil,0.026,unlabeled,Existing non-credit client
+C0271,S2 Menengah,0.722,unlabeled,Existing non-credit client
+C0272,S3 Besar,0.411,train,Existing credit client
+C0273,S1 Kecil,0.579,unlabeled,Prospect
+C0274,S1 Kecil,0.6,valid,Existing credit client
+C0275,S3 Besar,0.474,train,Existing credit client
+C0276,S2 Menengah,0.208,test,Existing credit client
+C0277,S1 Kecil,0.729,train,Existing credit client
+C0278,S3 Besar,0.642,valid,Existing credit client
+C0279,S3 Besar,0.552,test,Existing credit client
+C0280,S3 Besar,0.281,train,Existing credit client
+C0281,S1 Kecil,0.449,train,Existing credit client
+C0282,S2 Menengah,0.567,test,Existing credit client
+C0283,S3 Besar,0.506,train,Existing credit client
+C0284,S1 Kecil,0.485,unlabeled,Prospect
+C0285,S1 Kecil,0.702,train,Existing credit client
+C0286,S2 Menengah,0.232,unlabeled,Existing non-credit client
+C0287,S2 Menengah,0.6,train,Existing credit client
+C0288,S1 Kecil,0.77,unlabeled,Existing non-credit client
+C0289,S2 Menengah,0.559,train,Existing credit client
+C0290,S3 Besar,0.021,unlabeled,Existing non-credit client
+C0291,S2 Menengah,0.493,train,Existing credit client
+C0292,S1 Kecil,0.598,valid,Existing credit client
+C0293,S2 Menengah,0.349,unlabeled,Existing non-credit client
+C0294,S1 Kecil,0.587,unlabeled,Prospect
+C0295,S2 Menengah,0.02,unlabeled,Prospect
+C0296,S1 Kecil,0.519,unlabeled,Prospect
+C0297,S3 Besar,0.806,train,Existing credit client
+C0298,S2 Menengah,0.704,train,Existing credit client
+C0299,S3 Besar,0.381,test,Existing credit client
+C0300,S1 Kecil,0.68,unlabeled,Prospect
+C0301,S1 Kecil,0.506,unlabeled,Existing non-credit client
+C0302,S3 Besar,0.741,train,Existing credit client
+C0303,S2 Menengah,0.286,unlabeled,Existing non-credit client
+C0304,S3 Besar,0.209,train,Existing credit client
+C0305,S2 Menengah,0.176,test,Existing credit client
+C0306,S1 Kecil,0.489,unlabeled,Prospect
+C0307,S2 Menengah,0.673,train,Existing credit client
+C0308,S1 Kecil,0.537,unlabeled,Prospect
+C0309,S2 Menengah,0.136,unlabeled,Existing non-credit client
+C0310,S2 Menengah,0.43,train,Existing credit client
+C0311,S2 Menengah,0.478,train,Existing credit client
+C0312,S2 Menengah,0.754,valid,Existing credit client
+C0313,S2 Menengah,0.637,train,Existing credit client
+C0314,S2 Menengah,0.621,unlabeled,Prospect
+C0315,S3 Besar,0.098,train,Existing credit client
+C0316,S3 Besar,0.185,unlabeled,Prospect
+C0317,S2 Menengah,0.338,unlabeled,Prospect
+C0318,S1 Kecil,0.72,valid,Existing credit client
+C0319,S1 Kecil,0.527,unlabeled,Existing non-credit client
+C0320,S3 Besar,0.132,unlabeled,Existing non-credit client
+C0321,S2 Menengah,0.145,unlabeled,Existing non-credit client
+C0322,S1 Kecil,0.714,unlabeled,Existing non-credit client
+C0323,S1 Kecil,0.505,train,Existing credit client
+C0324,S1 Kecil,0.849,unlabeled,Prospect
+C0325,S2 Menengah,0.542,train,Existing credit client
+C0326,S1 Kecil,0.193,train,Existing credit client
+C0327,S1 Kecil,0.867,unlabeled,Prospect
+C0328,S3 Besar,0.616,unlabeled,Existing non-credit client
+C0329,S1 Kecil,0.638,unlabeled,Prospect
+C0330,S1 Kecil,0.317,train,Existing credit client
+C0331,S2 Menengah,0.264,train,Existing credit client
+C0332,S2 Menengah,0.333,test,Existing credit client
+C0333,S3 Besar,0.609,test,Existing credit client
+C0334,S2 Menengah,0.036,train,Existing credit client
+C0335,S3 Besar,0.641,unlabeled,Existing non-credit client
+C0336,S1 Kecil,0.383,unlabeled,Existing non-credit client
+C0337,S1 Kecil,0.25,unlabeled,Prospect
+C0338,S1 Kecil,0.671,unlabeled,Existing non-credit client
+C0339,S2 Menengah,0.023,unlabeled,Existing non-credit client
+C0340,S2 Menengah,0.014,train,Existing credit client
+C0341,S2 Menengah,0.438,unlabeled,Prospect
+C0342,S2 Menengah,0.62,unlabeled,Existing non-credit client
+C0343,S1 Kecil,0.878,unlabeled,Prospect
+C0344,S2 Menengah,0.366,test,Existing credit client
+C0345,S3 Besar,0.418,train,Existing credit client
+C0346,S2 Menengah,0.158,unlabeled,Prospect
+C0347,S2 Menengah,0.749,unlabeled,Existing non-credit client
+C0348,S1 Kecil,0.872,unlabeled,Prospect
+C0349,S1 Kecil,0.681,unlabeled,Prospect
+C0350,S1 Kecil,0.604,test,Existing credit client
+C0351,S1 Kecil,0.653,unlabeled,Prospect
+C0352,S1 Kecil,0.811,unlabeled,Prospect
+C0353,S2 Menengah,0.713,unlabeled,Existing non-credit client
+C0354,S2 Menengah,0.831,valid,Existing credit client
+C0355,S2 Menengah,0.414,unlabeled,Prospect
+C0356,S3 Besar,0.335,unlabeled,Existing non-credit client
+C0357,S3 Besar,0.796,train,Existing credit client
+C0358,S2 Menengah,0.662,unlabeled,Existing non-credit client
+C0359,S2 Menengah,0.384,unlabeled,Prospect
+C0360,S2 Menengah,0.684,test,Existing credit client
+C0361,S1 Kecil,0.149,unlabeled,Prospect
+C0362,S2 Menengah,0.309,test,Existing credit client
+C0363,S2 Menengah,0.672,unlabeled,Existing non-credit client
+C0364,S3 Besar,0.624,test,Existing credit client
+C0365,S1 Kecil,0.67,test,Existing credit client
+C0366,S3 Besar,0.315,train,Existing credit client
+C0367,S2 Menengah,0.022,unlabeled,Prospect
+C0368,S1 Kecil,0.584,unlabeled,Prospect
+C0369,S2 Menengah,0.422,unlabeled,Existing non-credit client
+C0370,S1 Kecil,0.671,test,Existing credit client
+C0371,S1 Kecil,0.487,unlabeled,Prospect
+C0372,S2 Menengah,0.1,unlabeled,Prospect
+C0373,S2 Menengah,0.21,unlabeled,Existing non-credit client
+C0374,S3 Besar,0.68,train,Existing credit client
+C0375,S2 Menengah,0.666,train,Existing credit client
+C0376,S2 Menengah,0.734,unlabeled,Prospect
+C0377,S1 Kecil,0.622,unlabeled,Prospect
+C0378,S1 Kecil,0.326,unlabeled,Prospect
+C0379,S2 Menengah,0.579,valid,Existing credit client
+C0380,S1 Kecil,0.179,train,Existing credit client
+C0381,S3 Besar,0.635,train,Existing credit client
+C0382,S3 Besar,0.574,train,Existing credit client
+C0383,S2 Menengah,0.299,unlabeled,Existing non-credit client
+C0384,S2 Menengah,0.131,train,Existing credit client
+C0385,S1 Kecil,0.759,train,Existing credit client
+C0386,S3 Besar,0.53,train,Existing credit client
+C0387,S1 Kecil,0.091,unlabeled,Prospect
+C0388,S3 Besar,0.186,test,Existing credit client
+C0389,S2 Menengah,0.503,train,Existing credit client
+C0390,S1 Kecil,0.604,unlabeled,Prospect
+C0391,S2 Menengah,0.523,unlabeled,Existing non-credit client
+C0392,S2 Menengah,0.18,unlabeled,Prospect
+C0393,S3 Besar,0.546,train,Existing credit client
+C0394,S1 Kecil,0.788,unlabeled,Existing non-credit client
+C0395,S2 Menengah,0.531,unlabeled,Prospect
+C0396,S1 Kecil,0.517,unlabeled,Existing non-credit client
+C0397,S1 Kecil,0.67,unlabeled,Prospect
+C0398,S1 Kecil,0.122,unlabeled,Existing non-credit client
+C0399,S3 Besar,0.674,test,Existing credit client
+C0400,S2 Menengah,0.3,train,Existing credit client
+C0401,S2 Menengah,0.235,unlabeled,Prospect
+C0402,S3 Besar,0.454,unlabeled,Existing non-credit client
+C0403,S1 Kecil,0.283,test,Existing credit client
+C0404,S3 Besar,0.744,unlabeled,Existing non-credit client
+C0405,S2 Menengah,0.256,train,Existing credit client
+C0406,S2 Menengah,0.645,train,Existing credit client
+C0407,S1 Kecil,0.301,valid,Existing credit client
+C0408,S3 Besar,0.631,valid,Existing credit client
+C0409,S3 Besar,0.317,unlabeled,Existing non-credit client
+C0410,S1 Kecil,0.565,unlabeled,Existing non-credit client
+C0411,S2 Menengah,0.603,test,Existing credit client
+C0412,S2 Menengah,0.635,test,Existing credit client
+C0413,S1 Kecil,0.04,test,Existing credit client
+C0414,S1 Kecil,0.285,unlabeled,Prospect
+C0415,S3 Besar,0.249,train,Existing credit client
+C0416,S2 Menengah,0.483,train,Existing credit client
+C0417,S2 Menengah,0.695,train,Existing credit client
+C0418,S2 Menengah,0.342,train,Existing credit client
+C0419,S3 Besar,0.619,test,Existing credit client
+C0420,S2 Menengah,0.34,unlabeled,Prospect
+C0421,S2 Menengah,0.55,test,Existing credit client
+C0422,S1 Kecil,0.559,unlabeled,Prospect
+C0423,S1 Kecil,0.573,train,Existing credit client
+C0424,S2 Menengah,0.415,train,Existing credit client
+C0425,S1 Kecil,0.796,unlabeled,Prospect
+C0426,S1 Kecil,0.156,unlabeled,Prospect
+C0427,S2 Menengah,0.183,unlabeled,Existing non-credit client
+C0428,S2 Menengah,0.366,test,Existing credit client
+C0429,S1 Kecil,0.406,unlabeled,Prospect
+C0430,S2 Menengah,0.283,unlabeled,Existing non-credit client
+C0431,S2 Menengah,0.284,unlabeled,Prospect
+C0432,S1 Kecil,0.847,test,Existing credit client
+C0433,S1 Kecil,0.202,train,Existing credit client
+C0434,S2 Menengah,0.451,unlabeled,Prospect
+C0435,S2 Menengah,0.627,train,Existing credit client
+C0436,S2 Menengah,0.511,valid,Existing credit client
+C0437,S3 Besar,0.554,valid,Existing credit client
+C0438,S1 Kecil,0.465,unlabeled,Prospect
+C0439,S1 Kecil,0.757,unlabeled,Prospect
+C0440,S1 Kecil,0.759,unlabeled,Prospect
+C0441,S1 Kecil,0.812,unlabeled,Prospect
+C0442,S2 Menengah,0.467,valid,Existing credit client
+C0443,S2 Menengah,0.522,unlabeled,Existing non-credit client
+C0444,S2 Menengah,0.478,valid,Existing credit client
+C0445,S1 Kecil,0.598,unlabeled,Prospect
+C0446,S2 Menengah,0.593,train,Existing credit client
+C0447,S2 Menengah,0.105,unlabeled,Existing non-credit client
+C0448,S1 Kecil,0.486,train,Existing credit client
+C0449,S2 Menengah,0.787,test,Existing credit client
+C0450,S1 Kecil,0.733,unlabeled,Prospect
+C0451,S2 Menengah,0.487,test,Existing credit client
+C0452,S2 Menengah,0.655,test,Existing credit client
+C0453,S2 Menengah,0.619,unlabeled,Prospect
+C0454,S2 Menengah,0.137,valid,Existing credit client
+C0455,S1 Kecil,0.642,unlabeled,Prospect
+C0456,S3 Besar,0.48,valid,Existing credit client
+C0457,S2 Menengah,0.361,unlabeled,Prospect
+C0458,S1 Kecil,0.41,unlabeled,Prospect
+C0459,S1 Kecil,0.685,unlabeled,Prospect
+C0460,S2 Menengah,0.489,unlabeled,Prospect
+C0461,S2 Menengah,0.3,train,Existing credit client
+C0462,S2 Menengah,0.238,unlabeled,Prospect
+C0463,S3 Besar,0.023,train,Existing credit client
+C0464,S2 Menengah,0.268,unlabeled,Existing non-credit client
+C0465,S1 Kecil,0.607,unlabeled,Existing non-credit client
+C0466,S1 Kecil,0.136,unlabeled,Prospect
+C0467,S2 Menengah,0.792,train,Existing credit client
+C0468,S2 Menengah,0.24,train,Existing credit client
+C0469,S1 Kecil,0.365,unlabeled,Prospect
+C0470,S2 Menengah,0.538,unlabeled,Prospect
+C0471,S1 Kecil,0.069,unlabeled,Prospect
+C0472,S2 Menengah,0.611,train,Existing credit client
+C0473,S1 Kecil,0.246,valid,Existing credit client
+C0474,S3 Besar,0.318,train,Existing credit client
+C0475,S3 Besar,0.506,train,Existing credit client
+C0476,S2 Menengah,0.659,test,Existing credit client
+C0477,S1 Kecil,0.635,unlabeled,Existing non-credit client
+C0478,S2 Menengah,0.212,unlabeled,Existing non-credit client
+C0479,S3 Besar,0.095,unlabeled,Prospect
+C0480,S1 Kecil,0.499,unlabeled,Prospect
+C0481,S2 Menengah,0.093,train,Existing credit client
+C0482,S1 Kecil,0.602,unlabeled,Prospect
+C0483,S1 Kecil,0.503,unlabeled,Prospect
+C0484,S2 Menengah,0.379,unlabeled,Prospect
+C0485,S1 Kecil,0.432,train,Existing credit client
+C0486,S2 Menengah,0.677,train,Existing credit client
+C0487,S1 Kecil,0.23,train,Existing credit client
+C0488,S1 Kecil,0.241,unlabeled,Existing non-credit client
+C0489,S1 Kecil,0.577,train,Existing credit client
+C0490,S1 Kecil,0.701,unlabeled,Existing non-credit client
+C0491,S3 Besar,0.162,unlabeled,Prospect
+C0492,S1 Kecil,0.685,unlabeled,Existing non-credit client
+C0493,S1 Kecil,0.803,unlabeled,Prospect
+C0494,S3 Besar,0.487,valid,Existing credit client
+C0495,S1 Kecil,0.278,unlabeled,Existing non-credit client
+C0496,S3 Besar,0.487,test,Existing credit client
+C0497,S2 Menengah,0.401,unlabeled,Prospect
+C0498,S3 Besar,0.648,valid,Existing credit client
+C0499,S1 Kecil,0.077,train,Existing credit client
+C0500,S2 Menengah,0.509,train,Existing credit client
+C0501,S1 Kecil,0.554,train,Existing credit client
+C0502,S1 Kecil,0.464,train,Existing credit client
+C0503,S1 Kecil,0.262,unlabeled,Existing non-credit client
+C0504,S2 Menengah,0.037,train,Existing credit client
+C0505,S2 Menengah,0.256,train,Existing credit client
+C0506,S2 Menengah,0.444,unlabeled,Prospect
+C0507,S2 Menengah,0.604,unlabeled,Existing non-credit client
+C0508,S1 Kecil,0.147,unlabeled,Existing non-credit client
+C0509,S1 Kecil,0.774,unlabeled,Prospect
+C0510,S2 Menengah,0.02,test,Existing credit client
+C0511,S1 Kecil,0.34,train,Existing credit client
+C0512,S2 Menengah,0.499,train,Existing credit client
+C0513,S2 Menengah,0.318,unlabeled,Existing non-credit client
+C0514,S2 Menengah,0.634,unlabeled,Existing non-credit client
+C0515,S1 Kecil,0.684,unlabeled,Prospect
+C0516,S2 Menengah,0.233,valid,Existing credit client
+C0517,S1 Kecil,0.521,train,Existing credit client
+C0518,S3 Besar,0.658,train,Existing credit client
+C0519,S2 Menengah,0.244,unlabeled,Prospect
+C0520,S1 Kecil,0.399,test,Existing credit client
+C0521,S1 Kecil,0.439,unlabeled,Prospect
+C0522,S2 Menengah,0.604,unlabeled,Prospect
+C0523,S2 Menengah,0.629,unlabeled,Prospect
+C0524,S2 Menengah,0.671,valid,Existing credit client
+C0525,S3 Besar,0.313,train,Existing credit client
+C0526,S2 Menengah,0.29,unlabeled,Existing non-credit client
+C0527,S1 Kecil,0.332,unlabeled,Existing non-credit client
+C0528,S1 Kecil,0.705,unlabeled,Prospect
+C0529,S1 Kecil,0.132,unlabeled,Prospect
+C0530,S2 Menengah,0.155,unlabeled,Prospect
+C0531,S1 Kecil,0.139,valid,Existing credit client
+C0532,S1 Kecil,0.682,valid,Existing credit client
+C0533,S2 Menengah,0.562,train,Existing credit client
+C0534,S1 Kecil,0.513,unlabeled,Existing non-credit client
+C0535,S2 Menengah,0.162,train,Existing credit client
+C0536,S2 Menengah,0.851,train,Existing credit client
+C0537,S1 Kecil,0.522,unlabeled,Existing non-credit client
+C0538,S3 Besar,0.462,train,Existing credit client
+C0539,S2 Menengah,0.35,valid,Existing credit client
+C0540,S3 Besar,0.715,valid,Existing credit client
+C0541,S2 Menengah,0.584,unlabeled,Existing non-credit client
+C0542,S2 Menengah,0.512,unlabeled,Prospect
+C0543,S2 Menengah,0.568,train,Existing credit client
+C0544,S3 Besar,0.788,valid,Existing credit client
+C0545,S2 Menengah,0.549,train,Existing credit client
+C0546,S2 Menengah,0.126,unlabeled,Existing non-credit client
+C0547,S2 Menengah,0.437,test,Existing credit client
+C0548,S1 Kecil,0.649,test,Existing credit client
+C0549,S2 Menengah,0.39,unlabeled,Existing non-credit client
+C0550,S1 Kecil,0.314,unlabeled,Prospect
+C0551,S2 Menengah,0.532,unlabeled,Existing non-credit client
+C0552,S1 Kecil,0.024,train,Existing credit client
+C0553,S1 Kecil,0.478,unlabeled,Prospect
+C0554,S1 Kecil,0.556,unlabeled,Prospect
+C0555,S2 Menengah,0.797,test,Existing credit client
+C0556,S1 Kecil,0.358,unlabeled,Existing non-credit client
+C0557,S1 Kecil,0.709,train,Existing credit client
+C0558,S3 Besar,0.039,unlabeled,Prospect
+C0559,S2 Menengah,0.376,unlabeled,Prospect
+C0560,S2 Menengah,0.579,unlabeled,Existing non-credit client
+C0561,S3 Besar,0.378,unlabeled,Prospect
+C0562,S2 Menengah,0.156,unlabeled,Prospect
+C0563,S2 Menengah,0.155,valid,Existing credit client
+C0564,S2 Menengah,0.279,train,Existing credit client
+C0565,S1 Kecil,0.184,train,Existing credit client
+C0566,S1 Kecil,0.613,unlabeled,Prospect
+C0567,S1 Kecil,0.041,unlabeled,Existing non-credit client
+C0568,S1 Kecil,0.5,unlabeled,Existing non-credit client
+C0569,S3 Besar,0.295,test,Existing credit client
+C0570,S3 Besar,0.518,valid,Existing credit client
+C0571,S3 Besar,0.193,unlabeled,Existing non-credit client
+C0572,S2 Menengah,0.684,unlabeled,Existing non-credit client
+C0573,S1 Kecil,0.489,unlabeled,Prospect
+C0574,S1 Kecil,0.554,train,Existing credit client
+C0575,S2 Menengah,0.818,unlabeled,Existing non-credit client
+C0576,S1 Kecil,0.188,unlabeled,Prospect
+C0577,S1 Kecil,0.613,train,Existing credit client
+C0578,S2 Menengah,0.647,unlabeled,Prospect
+C0579,S1 Kecil,0.258,train,Existing credit client
+C0580,S2 Menengah,0.719,train,Existing credit client
+C0581,S2 Menengah,0.469,train,Existing credit client
+C0582,S1 Kecil,0.341,unlabeled,Prospect
+C0583,S2 Menengah,0.652,unlabeled,Existing non-credit client
+C0584,S1 Kecil,0.76,unlabeled,Prospect
+C0585,S2 Menengah,0.636,unlabeled,Existing non-credit client
+C0586,S1 Kecil,0.357,unlabeled,Prospect
+C0587,S2 Menengah,0.485,unlabeled,Prospect
+C0588,S2 Menengah,0.064,unlabeled,Existing non-credit client
+C0589,S2 Menengah,0.259,train,Existing credit client
+C0590,S1 Kecil,0.719,train,Existing credit client
+C0591,S1 Kecil,0.395,unlabeled,Prospect
+C0592,S2 Menengah,0.338,unlabeled,Prospect
+C0593,S2 Menengah,0.248,unlabeled,Prospect
+C0594,S1 Kecil,0.642,valid,Existing credit client
+C0595,S1 Kecil,0.291,test,Existing credit client
+C0596,S3 Besar,0.323,unlabeled,Existing non-credit client
+C0597,S2 Menengah,0.367,test,Existing credit client
+C0598,S2 Menengah,0.451,unlabeled,Prospect
+C0599,S1 Kecil,0.248,train,Existing credit client
+C0600,S2 Menengah,0.216,unlabeled,Prospect
+C0601,S1 Kecil,0.574,unlabeled,Prospect
+C0602,S1 Kecil,0.635,unlabeled,Existing non-credit client
+C0603,S2 Menengah,0.574,valid,Existing credit client
+C0604,S3 Besar,0.134,test,Existing credit client
+C0605,S2 Menengah,0.729,valid,Existing credit client
+C0606,S2 Menengah,0.63,train,Existing credit client
+C0607,S2 Menengah,0.78,unlabeled,Existing non-credit client
+C0608,S2 Menengah,0.789,unlabeled,Prospect
+C0609,S2 Menengah,0.647,unlabeled,Existing non-credit client
+C0610,S2 Menengah,0.233,unlabeled,Prospect
+C0611,S1 Kecil,0.046,unlabeled,Prospect
+C0612,S1 Kecil,0.66,unlabeled,Existing non-credit client
+C0613,S3 Besar,0.411,test,Existing credit client
+C0614,S2 Menengah,0.35,valid,Existing credit client
+C0615,S1 Kecil,0.774,unlabeled,Existing non-credit client
+C0616,S2 Menengah,0.255,unlabeled,Prospect
+C0617,S1 Kecil,0.439,unlabeled,Prospect
+C0618,S2 Menengah,0.323,unlabeled,Existing non-credit client
+C0619,S1 Kecil,0.675,unlabeled,Prospect
+C0620,S2 Menengah,0.667,valid,Existing credit client
+C0621,S1 Kecil,0.378,unlabeled,Prospect
+C0622,S1 Kecil,0.58,unlabeled,Prospect
+C0623,S2 Menengah,0.612,unlabeled,Existing non-credit client
+C0624,S2 Menengah,0.412,unlabeled,Prospect
+C0625,S1 Kecil,0.474,unlabeled,Prospect
+C0626,S1 Kecil,0.353,unlabeled,Prospect
+C0627,S2 Menengah,0.573,valid,Existing credit client
+C0628,S1 Kecil,0.782,unlabeled,Prospect
+C0629,S2 Menengah,0.226,train,Existing credit client
+C0630,S1 Kecil,0.151,unlabeled,Prospect
+C0631,S1 Kecil,0.13,unlabeled,Existing non-credit client
+C0632,S3 Besar,0.828,valid,Existing credit client
+C0633,S2 Menengah,0.678,train,Existing credit client
+C0634,S2 Menengah,0.537,train,Existing credit client
+C0635,S1 Kecil,0.62,unlabeled,Prospect
+C0636,S2 Menengah,0.571,unlabeled,Existing non-credit client
+C0637,S3 Besar,0.539,valid,Existing credit client
+C0638,S1 Kecil,0.391,unlabeled,Existing non-credit client
+C0639,S2 Menengah,0.553,train,Existing credit client
+C0640,S3 Besar,0.81,train,Existing credit client
+C0641,S2 Menengah,0.358,train,Existing credit client
+C0642,S1 Kecil,0.066,valid,Existing credit client
+C0643,S2 Menengah,0.383,train,Existing credit client
+C0644,S1 Kecil,0.477,valid,Existing credit client
+C0645,S2 Menengah,0.022,train,Existing credit client
+C0646,S1 Kecil,0.403,test,Existing credit client
+C0647,S1 Kecil,0.081,unlabeled,Prospect
+C0648,S2 Menengah,0.147,unlabeled,Existing non-credit client
+C0649,S2 Menengah,0.6,valid,Existing credit client
+C0650,S2 Menengah,0.779,unlabeled,Prospect
+C0651,S2 Menengah,0.286,train,Existing credit client
+C0652,S1 Kecil,0.432,train,Existing credit client
+C0653,S2 Menengah,0.215,train,Existing credit client
+C0654,S2 Menengah,0.594,train,Existing credit client
+C0655,S2 Menengah,0.414,unlabeled,Prospect
+C0656,S2 Menengah,0.441,unlabeled,Existing non-credit client
+C0657,S2 Menengah,0.478,unlabeled,Prospect
+C0658,S2 Menengah,0.423,unlabeled,Prospect
+C0659,S3 Besar,0.605,unlabeled,Existing non-credit client
+C0660,S2 Menengah,0.517,unlabeled,Prospect
+C0661,S2 Menengah,0.191,unlabeled,Existing non-credit client
+C0662,S1 Kecil,0.614,unlabeled,Prospect
+C0663,S1 Kecil,0.62,unlabeled,Prospect
+C0664,S1 Kecil,0.274,unlabeled,Prospect
+C0665,S2 Menengah,0.019,unlabeled,Prospect
+C0666,S1 Kecil,0.594,train,Existing credit client
+C0667,S1 Kecil,0.646,unlabeled,Prospect
+C0668,S3 Besar,0.258,train,Existing credit client
+C0669,S1 Kecil,0.527,unlabeled,Existing non-credit client
+C0670,S1 Kecil,0.253,unlabeled,Prospect
+C0671,S1 Kecil,0.606,unlabeled,Prospect
+C0672,S2 Menengah,0.362,unlabeled,Existing non-credit client
+C0673,S2 Menengah,0.663,valid,Existing credit client
+C0674,S2 Menengah,0.782,train,Existing credit client
+C0675,S1 Kecil,0.675,unlabeled,Existing non-credit client
+C0676,S3 Besar,0.675,unlabeled,Existing non-credit client
+C0677,S1 Kecil,0.503,unlabeled,Prospect
+C0678,S1 Kecil,0.54,valid,Existing credit client
+C0679,S2 Menengah,0.296,unlabeled,Existing non-credit client
+C0680,S3 Besar,0.655,unlabeled,Existing non-credit client
+C0681,S1 Kecil,0.727,unlabeled,Prospect
+C0682,S2 Menengah,0.093,train,Existing credit client
+C0683,S1 Kecil,0.451,test,Existing credit client
+C0684,S3 Besar,0.422,train,Existing credit client
+C0685,S2 Menengah,0.435,unlabeled,Prospect
+C0686,S2 Menengah,0.52,valid,Existing credit client
+C0687,S3 Besar,0.269,train,Existing credit client
+C0688,S1 Kecil,0.252,valid,Existing credit client
+C0689,S1 Kecil,0.661,unlabeled,Prospect
+C0690,S2 Menengah,0.615,train,Existing credit client
+C0691,S2 Menengah,0.216,unlabeled,Prospect
+C0692,S1 Kecil,0.549,train,Existing credit client
+C0693,S1 Kecil,0.314,unlabeled,Existing non-credit client
+C0694,S3 Besar,0.466,unlabeled,Prospect
+C0695,S2 Menengah,0.348,valid,Existing credit client
+C0696,S1 Kecil,0.575,unlabeled,Prospect
+C0697,S2 Menengah,0.413,train,Existing credit client
+C0698,S2 Menengah,0.763,train,Existing credit client
+C0699,S2 Menengah,0.692,train,Existing credit client
+C0700,S1 Kecil,0.685,unlabeled,Prospect
+C0701,S3 Besar,0.66,valid,Existing credit client
+C0702,S1 Kecil,0.574,unlabeled,Existing non-credit client
+C0703,S1 Kecil,0.667,train,Existing credit client
+C0704,S2 Menengah,0.705,train,Existing credit client
+C0705,S1 Kecil,0.652,test,Existing credit client
+C0706,S1 Kecil,0.192,valid,Existing credit client
+C0707,S3 Besar,0.686,train,Existing credit client
+C0708,S2 Menengah,0.607,train,Existing credit client
+C0709,S1 Kecil,0.501,train,Existing credit client
+C0710,S2 Menengah,0.092,test,Existing credit client
+C0711,S1 Kecil,0.818,unlabeled,Prospect
+C0712,S1 Kecil,0.677,unlabeled,Existing non-credit client
+C0713,S3 Besar,0.617,unlabeled,Existing non-credit client
+C0714,S1 Kecil,0.61,unlabeled,Prospect
+C0715,S2 Menengah,0.066,unlabeled,Prospect
+C0716,S2 Menengah,0.327,unlabeled,Existing non-credit client
+C0717,S3 Besar,0.534,valid,Existing credit client
+C0718,S1 Kecil,0.286,unlabeled,Existing non-credit client
+C0719,S2 Menengah,0.067,unlabeled,Prospect
+C0720,S1 Kecil,0.6,train,Existing credit client
+C0721,S2 Menengah,0.224,unlabeled,Existing non-credit client
+C0722,S2 Menengah,0.378,unlabeled,Existing non-credit client
+C0723,S3 Besar,0.399,unlabeled,Existing non-credit client
+C0724,S1 Kecil,0.8,unlabeled,Existing non-credit client
+C0725,S2 Menengah,0.52,unlabeled,Existing non-credit client
+C0726,S1 Kecil,0.216,unlabeled,Existing non-credit client
+C0727,S1 Kecil,0.531,unlabeled,Existing non-credit client
+C0728,S1 Kecil,0.267,unlabeled,Existing non-credit client
+C0729,S1 Kecil,0.609,unlabeled,Prospect
+C0730,S2 Menengah,0.461,train,Existing credit client
+C0731,S1 Kecil,0.673,unlabeled,Existing non-credit client
+C0732,S1 Kecil,0.636,unlabeled,Prospect
+C0733,S2 Menengah,0.687,train,Existing credit client
+C0734,S1 Kecil,0.468,train,Existing credit client
+C0735,S3 Besar,0.584,valid,Existing credit client
+C0736,S1 Kecil,0.724,train,Existing credit client
+C0737,S1 Kecil,0.807,unlabeled,Prospect
+C0738,S1 Kecil,0.278,unlabeled,Existing non-credit client
+C0739,S1 Kecil,0.496,valid,Existing credit client
+C0740,S2 Menengah,0.604,valid,Existing credit client
+C0741,S2 Menengah,0.153,train,Existing credit client
+C0742,S3 Besar,0.58,train,Existing credit client
+C0743,S2 Menengah,0.138,unlabeled,Prospect
+C0744,S1 Kecil,0.493,unlabeled,Prospect
+C0745,S2 Menengah,0.629,unlabeled,Existing non-credit client
+C0746,S1 Kecil,0.637,train,Existing credit client
+C0747,S2 Menengah,0.214,unlabeled,Prospect
+C0748,S2 Menengah,0.512,unlabeled,Existing non-credit client
+C0749,S2 Menengah,0.6,unlabeled,Prospect
+C0750,S2 Menengah,0.075,unlabeled,Prospect
+C0751,S3 Besar,0.663,unlabeled,Prospect
+C0752,S3 Besar,0.557,unlabeled,Existing non-credit client
+C0753,S2 Menengah,0.668,unlabeled,Prospect
+C0754,S1 Kecil,0.353,unlabeled,Existing non-credit client
+C0755,S2 Menengah,0.501,train,Existing credit client
+C0756,S1 Kecil,0.605,unlabeled,Prospect
+C0757,S2 Menengah,0.254,train,Existing credit client
+C0758,S1 Kecil,0.567,train,Existing credit client
+C0759,S1 Kecil,0.417,unlabeled,Prospect
+C0760,S2 Menengah,0.662,valid,Existing credit client
+C0761,S2 Menengah,0.633,train,Existing credit client
+C0762,S3 Besar,0.25,unlabeled,Prospect
+C0763,S1 Kecil,0.521,unlabeled,Existing non-credit client
+C0764,S1 Kecil,0.634,unlabeled,Existing non-credit client
+C0765,S2 Menengah,0.476,train,Existing credit client
+C0766,S3 Besar,0.568,valid,Existing credit client
+C0767,S1 Kecil,0.64,unlabeled,Prospect
+C0768,S1 Kecil,0.304,test,Existing credit client
+C0769,S1 Kecil,0.38,train,Existing credit client
+C0770,S2 Menengah,0.277,unlabeled,Existing non-credit client
+C0771,S3 Besar,0.409,train,Existing credit client
+C0772,S3 Besar,0.079,test,Existing credit client
+C0773,S1 Kecil,0.675,unlabeled,Prospect
+C0774,S2 Menengah,0.158,unlabeled,Prospect
+C0775,S1 Kecil,0.856,unlabeled,Prospect
+C0776,S2 Menengah,0.326,train,Existing credit client
+C0777,S3 Besar,0.49,unlabeled,Existing non-credit client
+C0778,S2 Menengah,0.318,test,Existing credit client
+C0779,S2 Menengah,0.326,unlabeled,Prospect
+C0780,S1 Kecil,0.65,unlabeled,Prospect
+C0781,S3 Besar,0.57,train,Existing credit client
+C0782,S3 Besar,0.393,train,Existing credit client
+C0783,S2 Menengah,0.348,unlabeled,Existing non-credit client
+C0784,S2 Menengah,0.354,test,Existing credit client
+C0785,S1 Kecil,0.737,unlabeled,Prospect
+C0786,S1 Kecil,0.634,valid,Existing credit client
+C0787,S3 Besar,0.614,train,Existing credit client
+C0788,S2 Menengah,0.11,unlabeled,Prospect
+C0789,S2 Menengah,0.367,test,Existing credit client
+C0790,S1 Kecil,0.509,unlabeled,Prospect
+C0791,S2 Menengah,0.112,train,Existing credit client
+C0792,S2 Menengah,0.24,test,Existing credit client
+C0793,S1 Kecil,0.761,unlabeled,Existing non-credit client
+C0794,S2 Menengah,0.577,test,Existing credit client
+C0795,S1 Kecil,0.634,unlabeled,Prospect
+C0796,S2 Menengah,0.276,unlabeled,Prospect
+C0797,S2 Menengah,0.5,unlabeled,Existing non-credit client
+C0798,S3 Besar,0.592,unlabeled,Existing non-credit client
+C0799,S1 Kecil,0.026,unlabeled,Prospect
+C0800,S2 Menengah,0.336,train,Existing credit client
+C0801,S2 Menengah,0.387,unlabeled,Existing non-credit client
+C0802,S1 Kecil,0.517,unlabeled,Prospect
+C0803,S2 Menengah,0.086,test,Existing credit client
+C0804,S1 Kecil,0.435,train,Existing credit client
+C0805,S1 Kecil,0.486,unlabeled,Existing non-credit client
+C0806,S1 Kecil,0.771,unlabeled,Existing non-credit client
+C0807,S2 Menengah,0.549,unlabeled,Existing non-credit client
+C0808,S2 Menengah,0.394,train,Existing credit client
+C0809,S3 Besar,0.424,train,Existing credit client
+C0810,S3 Besar,0.637,train,Existing credit client
+C0811,S1 Kecil,0.512,test,Existing credit client
+C0812,S3 Besar,0.527,valid,Existing credit client
+C0813,S1 Kecil,0.53,unlabeled,Prospect
+C0814,S1 Kecil,0.69,train,Existing credit client
+C0815,S1 Kecil,0.52,unlabeled,Prospect
+C0816,S1 Kecil,0.372,train,Existing credit client
+C0817,S3 Besar,0.611,unlabeled,Prospect
+C0818,S2 Menengah,0.016,unlabeled,Prospect
+C0819,S1 Kecil,0.495,unlabeled,Prospect
+C0820,S1 Kecil,0.124,train,Existing credit client
+C0821,S3 Besar,0.697,train,Existing credit client
+C0822,S1 Kecil,0.468,unlabeled,Prospect
+C0823,S2 Menengah,0.48,test,Existing credit client
+C0824,S2 Menengah,0.526,train,Existing credit client
+C0825,S2 Menengah,0.505,unlabeled,Existing non-credit client
+C0826,S2 Menengah,0.454,test,Existing credit client
+C0827,S2 Menengah,0.648,train,Existing credit client
+C0828,S2 Menengah,0.182,test,Existing credit client
+C0829,S1 Kecil,0.722,unlabeled,Prospect
+C0830,S2 Menengah,0.265,valid,Existing credit client
+C0831,S1 Kecil,0.752,unlabeled,Prospect
+C0832,S1 Kecil,0.705,unlabeled,Prospect
+C0833,S3 Besar,0.607,train,Existing credit client
+C0834,S2 Menengah,0.583,unlabeled,Prospect
+C0835,S2 Menengah,0.73,test,Existing credit client
+C0836,S1 Kecil,0.462,unlabeled,Prospect
+C0837,S2 Menengah,0.743,train,Existing credit client
+C0838,S1 Kecil,0.699,unlabeled,Prospect
+C0839,S1 Kecil,0.205,unlabeled,Prospect
+C0840,S3 Besar,0.214,unlabeled,Existing non-credit client
+C0841,S2 Menengah,0.565,test,Existing credit client
+C0842,S2 Menengah,0.173,unlabeled,Prospect
+C0843,S3 Besar,0.36,unlabeled,Prospect
+C0844,S1 Kecil,0.658,train,Existing credit client
+C0845,S2 Menengah,0.536,unlabeled,Existing non-credit client
+C0846,S1 Kecil,0.604,unlabeled,Prospect
+C0847,S3 Besar,0.573,unlabeled,Prospect
+C0848,S3 Besar,0.733,train,Existing credit client
+C0849,S1 Kecil,0.64,unlabeled,Prospect
+C0850,S2 Menengah,0.427,unlabeled,Prospect
+C0851,S2 Menengah,0.29,train,Existing credit client
+C0852,S1 Kecil,0.102,test,Existing credit client
+C0853,S1 Kecil,0.777,valid,Existing credit client
+C0854,S2 Menengah,0.211,unlabeled,Prospect
+C0855,S2 Menengah,0.589,train,Existing credit client
+C0856,S1 Kecil,0.62,unlabeled,Existing non-credit client
+C0857,S1 Kecil,0.53,unlabeled,Prospect
+C0858,S3 Besar,0.227,train,Existing credit client
+C0859,S1 Kecil,0.056,unlabeled,Existing non-credit client
+C0860,S3 Besar,0.58,unlabeled,Existing non-credit client
+C0861,S1 Kecil,0.6,valid,Existing credit client
+C0862,S2 Menengah,0.538,unlabeled,Prospect
+C0863,S2 Menengah,0.388,train,Existing credit client
+C0864,S2 Menengah,0.621,unlabeled,Existing non-credit client
+C0865,S3 Besar,0.521,train,Existing credit client
+C0866,S1 Kecil,0.45,train,Existing credit client
+C0867,S2 Menengah,0.425,unlabeled,Existing non-credit client
+C0868,S1 Kecil,0.255,test,Existing credit client
+C0869,S1 Kecil,0.702,train,Existing credit client
+C0870,S1 Kecil,0.763,unlabeled,Prospect
+C0871,S1 Kecil,0.469,unlabeled,Prospect
+C0872,S1 Kecil,0.608,valid,Existing credit client
+C0873,S2 Menengah,0.329,unlabeled,Existing non-credit client
+C0874,S2 Menengah,0.488,train,Existing credit client
+C0875,S1 Kecil,0.442,valid,Existing credit client
+C0876,S1 Kecil,0.723,unlabeled,Prospect
+C0877,S1 Kecil,0.284,train,Existing credit client
+C0878,S3 Besar,0.472,test,Existing credit client
+C0879,S1 Kecil,0.511,unlabeled,Prospect
+C0880,S1 Kecil,0.642,unlabeled,Prospect
+C0881,S1 Kecil,0.51,unlabeled,Existing non-credit client
+C0882,S2 Menengah,0.194,valid,Existing credit client
+C0883,S1 Kecil,0.07,train,Existing credit client
+C0884,S1 Kecil,0.403,test,Existing credit client
+C0885,S2 Menengah,0.513,unlabeled,Prospect
+C0886,S2 Menengah,0.185,unlabeled,Prospect
+C0887,S1 Kecil,0.182,unlabeled,Existing non-credit client
+C0888,S3 Besar,0.685,test,Existing credit client
+C0889,S1 Kecil,0.679,test,Existing credit client
+C0890,S1 Kecil,0.854,train,Existing credit client
+C0891,S2 Menengah,0.051,train,Existing credit client
+C0892,S1 Kecil,0.586,test,Existing credit client
+C0893,S3 Besar,0.523,train,Existing credit client
+C0894,S3 Besar,0.498,unlabeled,Existing non-credit client
+C0895,S2 Menengah,0.514,unlabeled,Existing non-credit client
+C0896,S2 Menengah,0.718,unlabeled,Existing non-credit client
+C0897,S1 Kecil,0.264,valid,Existing credit client
+C0898,S2 Menengah,0.62,test,Existing credit client
+C0899,S1 Kecil,0.657,unlabeled,Existing non-credit client
+C0900,S2 Menengah,0.522,train,Existing credit client
+C0901,S3 Besar,0.474,unlabeled,Existing non-credit client
+C0902,S1 Kecil,0.758,train,Existing credit client
+C0903,S2 Menengah,0.746,train,Existing credit client
+C0904,S1 Kecil,0.68,unlabeled,Prospect
+C0905,S3 Besar,0.556,train,Existing credit client
+C0906,S1 Kecil,0.484,unlabeled,Prospect
+C0907,S1 Kecil,0.07,unlabeled,Existing non-credit client
+C0908,S1 Kecil,0.739,unlabeled,Prospect
+C0909,S2 Menengah,0.687,train,Existing credit client
+C0910,S1 Kecil,0.406,train,Existing credit client
+C0911,S1 Kecil,0.62,unlabeled,Prospect
+C0912,S1 Kecil,0.474,train,Existing credit client
+C0913,S2 Menengah,0.403,valid,Existing credit client
+C0914,S2 Menengah,0.457,unlabeled,Prospect
+C0915,S2 Menengah,0.481,train,Existing credit client
+C0916,S1 Kecil,0.186,unlabeled,Prospect
+C0917,S3 Besar,0.503,train,Existing credit client
+C0918,S3 Besar,0.176,unlabeled,Existing non-credit client
+C0919,S2 Menengah,0.745,train,Existing credit client
+C0920,S2 Menengah,0.534,unlabeled,Existing non-credit client
+C0921,S2 Menengah,0.757,valid,Existing credit client
+C0922,S1 Kecil,0.7,valid,Existing credit client
+C0923,S2 Menengah,0.566,unlabeled,Prospect
+C0924,S2 Menengah,0.503,unlabeled,Prospect
+C0925,S1 Kecil,0.532,valid,Existing credit client
+C0926,S2 Menengah,0.743,test,Existing credit client
+C0927,S2 Menengah,0.423,train,Existing credit client
+C0928,S2 Menengah,0.803,valid,Existing credit client
+C0929,S1 Kecil,0.724,unlabeled,Prospect
+C0930,S1 Kecil,0.215,unlabeled,Prospect
+C0931,S1 Kecil,0.398,unlabeled,Prospect
+C0932,S1 Kecil,0.643,train,Existing credit client
+C0933,S3 Besar,0.588,train,Existing credit client
+C0934,S1 Kecil,0.639,unlabeled,Existing non-credit client
+C0935,S1 Kecil,0.685,unlabeled,Prospect
+C0936,S3 Besar,0.292,train,Existing credit client
+C0937,S2 Menengah,0.217,test,Existing credit client
+C0938,S1 Kecil,0.163,unlabeled,Prospect
+C0939,S1 Kecil,0.607,valid,Existing credit client
+C0940,S2 Menengah,0.439,unlabeled,Existing non-credit client
+C0941,S1 Kecil,0.733,train,Existing credit client
+C0942,S2 Menengah,0.318,unlabeled,Existing non-credit client
+C0943,S2 Menengah,0.174,unlabeled,Existing non-credit client
+C0944,S2 Menengah,0.728,unlabeled,Prospect
+C0945,S2 Menengah,0.395,train,Existing credit client
+C0946,S1 Kecil,0.551,unlabeled,Prospect
+C0947,S1 Kecil,0.224,unlabeled,Prospect
+C0948,S1 Kecil,0.096,train,Existing credit client
+C0949,S2 Menengah,0.754,test,Existing credit client
+C0950,S3 Besar,0.731,valid,Existing credit client
+C0951,S3 Besar,0.337,train,Existing credit client
+C0952,S1 Kecil,0.397,unlabeled,Prospect
+C0953,S2 Menengah,0.575,unlabeled,Prospect
+C0954,S1 Kecil,0.39,train,Existing credit client
+C0955,S3 Besar,0.678,train,Existing credit client
+C0956,S1 Kecil,0.523,test,Existing credit client
+C0957,S1 Kecil,0.231,unlabeled,Existing non-credit client
+C0958,S1 Kecil,0.739,train,Existing credit client
+C0959,S3 Besar,0.041,train,Existing credit client
+C0960,S2 Menengah,0.261,valid,Existing credit client
+C0961,S3 Besar,0.698,train,Existing credit client
+C0962,S1 Kecil,0.414,unlabeled,Prospect
+C0963,S1 Kecil,0.726,unlabeled,Prospect
+C0964,S2 Menengah,0.326,unlabeled,Prospect
+C0965,S2 Menengah,0.696,train,Existing credit client
+C0966,S3 Besar,0.731,valid,Existing credit client
+C0967,S2 Menengah,0.332,valid,Existing credit client
+C0968,S2 Menengah,0.266,train,Existing credit client
+C0969,S3 Besar,0.394,test,Existing credit client
+C0970,S1 Kecil,0.341,unlabeled,Existing non-credit client
+C0971,S3 Besar,0.23,train,Existing credit client
+C0972,S1 Kecil,0.605,unlabeled,Prospect
+C0973,S2 Menengah,0.438,unlabeled,Prospect
+C0974,S2 Menengah,0.789,unlabeled,Prospect
+C0975,S2 Menengah,0.619,unlabeled,Existing non-credit client
+C0976,S2 Menengah,0.672,unlabeled,Prospect
+C0977,S2 Menengah,0.615,unlabeled,Existing non-credit client
+C0978,S1 Kecil,0.008,unlabeled,Prospect
+C0979,S2 Menengah,0.375,train,Existing credit client
+C0980,S2 Menengah,0.196,test,Existing credit client
+C0981,S1 Kecil,0.744,unlabeled,Prospect
+C0982,S1 Kecil,0.227,unlabeled,Prospect
+C0983,S1 Kecil,0.092,unlabeled,Prospect
+C0984,S2 Menengah,0.604,test,Existing credit client
+C0985,S2 Menengah,0.549,train,Existing credit client
+C0986,S2 Menengah,0.428,unlabeled,Prospect
+C0987,S2 Menengah,0.003,train,Existing credit client
+C0988,S2 Menengah,0.056,unlabeled,Existing non-credit client
+C0989,S2 Menengah,0.798,unlabeled,Existing non-credit client
+C0990,S1 Kecil,0.054,unlabeled,Existing non-credit client
+C0991,S2 Menengah,0.358,train,Existing credit client
+C0992,S1 Kecil,0.669,unlabeled,Prospect
+C0993,S2 Menengah,0.811,test,Existing credit client
+C0994,S2 Menengah,0.168,unlabeled,Existing non-credit client
+C0995,S2 Menengah,0.675,unlabeled,Prospect
+C0996,S3 Besar,0.877,train,Existing credit client
+C0997,S2 Menengah,0.718,valid,Existing credit client
+C0998,S2 Menengah,0.631,test,Existing credit client
+C0999,S2 Menengah,0.708,unlabeled,Existing non-credit client
+C1000,S2 Menengah,0.288,unlabeled,Existing non-credit client
+C1001,S1 Kecil,0.776,unlabeled,Existing non-credit client
+C1002,S1 Kecil,0.687,unlabeled,Prospect
+C1003,S1 Kecil,0.725,unlabeled,Prospect
+C1004,S1 Kecil,0.586,train,Existing credit client
+C1005,S2 Menengah,0.373,unlabeled,Existing non-credit client
+C1006,S1 Kecil,0.421,unlabeled,Prospect
+C1007,S3 Besar,0.448,train,Existing credit client
+C1008,S1 Kecil,0.475,unlabeled,Existing non-credit client
+C1009,S1 Kecil,0.565,unlabeled,Prospect
+C1010,S1 Kecil,0.618,train,Existing credit client
+C1011,S1 Kecil,0.327,unlabeled,Existing non-credit client
+C1012,S2 Menengah,0.665,unlabeled,Existing non-credit client
+C1013,S1 Kecil,0.254,unlabeled,Existing non-credit client
+C1014,S1 Kecil,0.258,unlabeled,Existing non-credit client
+C1015,S2 Menengah,0.723,test,Existing credit client
+C1016,S1 Kecil,0.218,unlabeled,Prospect
+C1017,S1 Kecil,0.442,unlabeled,Prospect
+C1018,S2 Menengah,0.725,train,Existing credit client
+C1019,S3 Besar,0.261,unlabeled,Existing non-credit client
+C1020,S2 Menengah,0.206,unlabeled,Prospect
+C1021,S2 Menengah,0.421,unlabeled,Prospect
+C1022,S2 Menengah,0.655,train,Existing credit client
+C1023,S1 Kecil,0.497,unlabeled,Prospect
+C1024,S3 Besar,0.832,train,Existing credit client
+C1025,S1 Kecil,0.552,unlabeled,Prospect
+C1026,S2 Menengah,0.255,unlabeled,Existing non-credit client
+C1027,S1 Kecil,0.091,unlabeled,Prospect
+C1028,S3 Besar,0.776,test,Existing credit client
+C1029,S3 Besar,0.277,valid,Existing credit client
+C1030,S2 Menengah,0.781,train,Existing credit client
+C1031,S3 Besar,0.324,unlabeled,Prospect
+C1032,S3 Besar,0.321,train,Existing credit client
+C1033,S2 Menengah,0.159,unlabeled,Existing non-credit client
+C1034,S1 Kecil,0.081,unlabeled,Existing non-credit client
+C1035,S3 Besar,0.722,train,Existing credit client
+C1036,S2 Menengah,0.58,unlabeled,Existing non-credit client
+C1037,S3 Besar,0.349,valid,Existing credit client
+C1038,S1 Kecil,0.466,unlabeled,Prospect
+C1039,S2 Menengah,0.209,train,Existing credit client
+C1040,S3 Besar,0.025,unlabeled,Existing non-credit client
+C1041,S2 Menengah,0.561,unlabeled,Existing non-credit client
+C1042,S3 Besar,0.524,train,Existing credit client
+C1043,S3 Besar,0.563,valid,Existing credit client
+C1044,S3 Besar,0.222,train,Existing credit client
+C1045,S1 Kecil,0.405,unlabeled,Prospect
+C1046,S1 Kecil,0.784,unlabeled,Existing non-credit client
+C1047,S2 Menengah,0.558,unlabeled,Prospect
+C1048,S1 Kecil,0.65,unlabeled,Existing non-credit client
+C1049,S2 Menengah,0.344,test,Existing credit client
+C1050,S1 Kecil,0.668,unlabeled,Prospect
+C1051,S2 Menengah,0.396,unlabeled,Prospect
+C1052,S3 Besar,0.343,valid,Existing credit client
+C1053,S2 Menengah,0.759,unlabeled,Prospect
+C1054,S3 Besar,0.481,train,Existing credit client
+C1055,S2 Menengah,0.529,unlabeled,Prospect
+C1056,S1 Kecil,0.344,unlabeled,Existing non-credit client
+C1057,S1 Kecil,0.252,unlabeled,Prospect
+C1058,S2 Menengah,0.61,valid,Existing credit client
+C1059,S1 Kecil,0.599,unlabeled,Existing non-credit client
+C1060,S3 Besar,0.617,train,Existing credit client
+C1061,S3 Besar,0.483,unlabeled,Existing non-credit client
+C1062,S2 Menengah,0.67,test,Existing credit client
+C1063,S2 Menengah,0.556,valid,Existing credit client
+C1064,S2 Menengah,0.196,train,Existing credit client
+C1065,S2 Menengah,0.715,unlabeled,Prospect
+C1066,S2 Menengah,0.411,unlabeled,Prospect
+C1067,S1 Kecil,0.512,unlabeled,Prospect
+C1068,S1 Kecil,0.576,unlabeled,Prospect
+C1069,S3 Besar,0.665,train,Existing credit client
+C1070,S2 Menengah,0.505,valid,Existing credit client
+C1071,S1 Kecil,0.119,unlabeled,Prospect
+C1072,S1 Kecil,0.406,unlabeled,Existing non-credit client
+C1073,S1 Kecil,0.712,unlabeled,Prospect
+C1074,S1 Kecil,0.673,unlabeled,Existing non-credit client
+C1075,S3 Besar,0.594,test,Existing credit client
+C1076,S2 Menengah,0.703,train,Existing credit client
+C1077,S2 Menengah,0.694,train,Existing credit client
+C1078,S1 Kecil,0.616,unlabeled,Prospect
+C1079,S1 Kecil,0.776,unlabeled,Prospect
+C1080,S1 Kecil,0.704,valid,Existing credit client
+C1081,S1 Kecil,0.021,unlabeled,Prospect
+C1082,S2 Menengah,0.648,train,Existing credit client
+C1083,S3 Besar,0.702,train,Existing credit client
+C1084,S1 Kecil,0.842,unlabeled,Prospect
+C1085,S2 Menengah,0.696,train,Existing credit client
+C1086,S2 Menengah,0.619,train,Existing credit client
+C1087,S2 Menengah,0.318,valid,Existing credit client
+C1088,S3 Besar,0.675,unlabeled,Existing non-credit client
+C1089,S1 Kecil,0.542,train,Existing credit client
+C1090,S2 Menengah,0.044,train,Existing credit client
+C1091,S3 Besar,0.049,unlabeled,Existing non-credit client
+C1092,S1 Kecil,0.455,unlabeled,Prospect
+C1093,S1 Kecil,0.44,unlabeled,Existing non-credit client
+C1094,S2 Menengah,0.218,test,Existing credit client
+C1095,S1 Kecil,0.269,train,Existing credit client
+C1096,S1 Kecil,0.417,test,Existing credit client
+C1097,S1 Kecil,0.646,valid,Existing credit client
+C1098,S1 Kecil,0.705,unlabeled,Prospect
+C1099,S1 Kecil,0.638,unlabeled,Existing non-credit client
+C1100,S1 Kecil,0.706,unlabeled,Prospect
+C1101,S3 Besar,0.182,test,Existing credit client
+C1102,S3 Besar,0.575,test,Existing credit client
+C1103,S3 Besar,0.605,train,Existing credit client
+C1104,S1 Kecil,0.602,train,Existing credit client
+C1105,S3 Besar,0.202,train,Existing credit client
+C1106,S2 Menengah,0.196,train,Existing credit client
+C1107,S1 Kecil,0.603,unlabeled,Existing non-credit client
+C1108,S2 Menengah,0.155,train,Existing credit client
+C1109,S1 Kecil,0.656,test,Existing credit client
+C1110,S2 Menengah,0.583,train,Existing credit client
+C1111,S2 Menengah,0.379,unlabeled,Existing non-credit client
+C1112,S2 Menengah,0.338,test,Existing credit client
+C1113,S3 Besar,0.819,train,Existing credit client
+C1114,S2 Menengah,0.182,train,Existing credit client
+C1115,S3 Besar,0.243,unlabeled,Existing non-credit client
+C1116,S2 Menengah,0.454,train,Existing credit client
+C1117,S2 Menengah,0.524,train,Existing credit client
+C1118,S3 Besar,0.047,unlabeled,Existing non-credit client
+C1119,S3 Besar,0.58,train,Existing credit client
+C1120,S1 Kecil,0.063,unlabeled,Existing non-credit client
+C1121,S1 Kecil,0.863,train,Existing credit client
+C1122,S2 Menengah,0.185,unlabeled,Prospect
+C1123,S2 Menengah,0.334,train,Existing credit client
+C1124,S2 Menengah,0.119,unlabeled,Prospect
+C1125,S3 Besar,0.6,train,Existing credit client
+C1126,S2 Menengah,0.589,train,Existing credit client
+C1127,S1 Kecil,0.324,valid,Existing credit client
+C1128,S2 Menengah,0.716,train,Existing credit client
+C1129,S2 Menengah,0.191,unlabeled,Prospect
+C1130,S1 Kecil,0.43,unlabeled,Prospect
+C1131,S2 Menengah,0.664,unlabeled,Prospect
+C1132,S1 Kecil,0.56,unlabeled,Prospect
+C1133,S1 Kecil,0.663,train,Existing credit client
+C1134,S2 Menengah,0.764,train,Existing credit client
+C1135,S1 Kecil,0.027,unlabeled,Prospect
+C1136,S1 Kecil,0.474,unlabeled,Prospect
+C1137,S1 Kecil,0.837,unlabeled,Prospect
+C1138,S2 Menengah,0.802,train,Existing credit client
+C1139,S1 Kecil,0.474,unlabeled,Prospect
+C1140,S2 Menengah,0.543,train,Existing credit client
+C1141,S2 Menengah,0.413,train,Existing credit client
+C1142,S1 Kecil,0.677,unlabeled,Prospect
+C1143,S2 Menengah,0.489,train,Existing credit client
+C1144,S2 Menengah,0.583,unlabeled,Existing non-credit client
+C1145,S2 Menengah,0.416,train,Existing credit client
+C1146,S2 Menengah,0.484,unlabeled,Prospect
+C1147,S2 Menengah,0.281,train,Existing credit client
+C1148,S1 Kecil,0.214,unlabeled,Prospect
+C1149,S1 Kecil,0.123,unlabeled,Prospect
+C1150,S3 Besar,0.529,unlabeled,Existing non-credit client
+C1151,S2 Menengah,0.223,train,Existing credit client
+C1152,S1 Kecil,0.651,unlabeled,Existing non-credit client
+C1153,S2 Menengah,0.331,unlabeled,Existing non-credit client
+C1154,S2 Menengah,0.706,train,Existing credit client
+C1155,S1 Kecil,0.053,unlabeled,Prospect
+C1156,S3 Besar,0.609,train,Existing credit client
+C1157,S2 Menengah,0.467,unlabeled,Prospect
+C1158,S2 Menengah,0.606,valid,Existing credit client
+C1159,S1 Kecil,0.067,valid,Existing credit client
+C1160,S3 Besar,0.521,unlabeled,Existing non-credit client
+C1161,S1 Kecil,0.793,unlabeled,Existing non-credit client
+C1162,S1 Kecil,0.649,unlabeled,Prospect
+C1163,S2 Menengah,0.438,unlabeled,Existing non-credit client
+C1164,S2 Menengah,0.145,test,Existing credit client
+C1165,S2 Menengah,0.334,train,Existing credit client
+C1166,S1 Kecil,0.76,train,Existing credit client
+C1167,S2 Menengah,0.513,valid,Existing credit client
+C1168,S1 Kecil,0.459,unlabeled,Prospect
+C1169,S2 Menengah,0.628,train,Existing credit client
+C1170,S2 Menengah,0.302,unlabeled,Prospect
+C1171,S1 Kecil,0.33,train,Existing credit client
+C1172,S1 Kecil,0.464,unlabeled,Prospect
+C1173,S2 Menengah,0.761,unlabeled,Existing non-credit client
+C1174,S2 Menengah,0.525,train,Existing credit client
+C1175,S1 Kecil,0.609,test,Existing credit client
+C1176,S3 Besar,0.618,test,Existing credit client
+C1177,S1 Kecil,0.203,unlabeled,Existing non-credit client
+C1178,S1 Kecil,0.241,unlabeled,Prospect
+C1179,S1 Kecil,0.702,train,Existing credit client
+C1180,S2 Menengah,0.603,test,Existing credit client
+C1181,S3 Besar,0.187,unlabeled,Existing non-credit client
+C1182,S1 Kecil,0.613,train,Existing credit client
+C1183,S1 Kecil,0.431,unlabeled,Prospect
+C1184,S1 Kecil,0.708,train,Existing credit client
+C1185,S3 Besar,0.46,train,Existing credit client
+C1186,S1 Kecil,0.32,train,Existing credit client
+C1187,S3 Besar,0.554,test,Existing credit client
+C1188,S2 Menengah,0.659,train,Existing credit client
+C1189,S3 Besar,0.11,unlabeled,Prospect
+C1190,S3 Besar,0.411,unlabeled,Existing non-credit client
+C1191,S2 Menengah,0.616,train,Existing credit client
+C1192,S1 Kecil,0.445,unlabeled,Existing non-credit client
+C1193,S1 Kecil,0.583,unlabeled,Prospect
+C1194,S2 Menengah,0.419,train,Existing credit client
+C1195,S3 Besar,0.588,train,Existing credit client
+C1196,S1 Kecil,0.325,unlabeled,Prospect
+C1197,S2 Menengah,0.843,train,Existing credit client
+C1198,S1 Kecil,0.439,valid,Existing credit client
+C1199,S1 Kecil,0.19,test,Existing credit client
+C1200,S2 Menengah,0.558,unlabeled,Prospect
+C1201,S1 Kecil,0.558,unlabeled,Prospect
+C1202,S1 Kecil,0.56,unlabeled,Existing non-credit client
+C1203,S3 Besar,0.452,test,Existing credit client
+C1204,S2 Menengah,0.739,unlabeled,Prospect
+C1205,S1 Kecil,0.694,unlabeled,Prospect
+C1206,S3 Besar,0.233,test,Existing credit client
+C1207,S1 Kecil,0.699,unlabeled,Existing non-credit client
+C1208,S1 Kecil,0.646,train,Existing credit client
+C1209,S1 Kecil,0.578,unlabeled,Existing non-credit client
+C1210,S2 Menengah,0.722,unlabeled,Existing non-credit client
+C1211,S2 Menengah,0.627,train,Existing credit client
+C1212,S3 Besar,0.717,unlabeled,Existing non-credit client
+C1213,S2 Menengah,0.119,unlabeled,Prospect
+C1214,S1 Kecil,0.73,unlabeled,Prospect
+C1215,S1 Kecil,0.507,unlabeled,Prospect
+C1216,S2 Menengah,0.794,unlabeled,Existing non-credit client
+C1217,S1 Kecil,0.621,unlabeled,Prospect
+C1218,S2 Menengah,0.335,valid,Existing credit client
+C1219,S2 Menengah,0.372,unlabeled,Existing non-credit client
+C1220,S3 Besar,0.063,train,Existing credit client
+C1221,S2 Menengah,0.709,valid,Existing credit client
+C1222,S2 Menengah,0.461,test,Existing credit client
+C1223,S1 Kecil,0.612,unlabeled,Prospect
+C1224,S2 Menengah,0.401,test,Existing credit client
+C1225,S2 Menengah,0.157,train,Existing credit client
+C1226,S1 Kecil,0.254,unlabeled,Prospect
+C1227,S2 Menengah,0.386,valid,Existing credit client
+C1228,S1 Kecil,0.285,valid,Existing credit client
+C1229,S1 Kecil,0.784,train,Existing credit client
+C1230,S2 Menengah,0.046,unlabeled,Prospect
+C1231,S2 Menengah,0.685,unlabeled,Existing non-credit client
+C1232,S2 Menengah,0.339,valid,Existing credit client
+C1233,S3 Besar,0.502,unlabeled,Existing non-credit client
+C1234,S1 Kecil,0.348,train,Existing credit client
+C1235,S3 Besar,0.576,train,Existing credit client
+C1236,S3 Besar,0.75,train,Existing credit client
+C1237,S2 Menengah,0.227,train,Existing credit client
+C1238,S1 Kecil,0.343,unlabeled,Prospect
+C1239,S2 Menengah,0.295,train,Existing credit client
+C1240,S2 Menengah,0.142,train,Existing credit client
+C1241,S1 Kecil,0.512,train,Existing credit client
+C1242,S1 Kecil,0.715,unlabeled,Prospect
+C1243,S1 Kecil,0.693,unlabeled,Prospect
+C1244,S1 Kecil,0.514,valid,Existing credit client
+C1245,S2 Menengah,0.622,unlabeled,Prospect
+C1246,S1 Kecil,0.434,train,Existing credit client
+C1247,S2 Menengah,0.366,unlabeled,Prospect
+C1248,S2 Menengah,0.421,valid,Existing credit client
+C1249,S1 Kecil,0.707,train,Existing credit client
+C1250,S2 Menengah,0.424,unlabeled,Prospect
+C1251,S2 Menengah,0.604,unlabeled,Prospect
+C1252,S1 Kecil,0.493,test,Existing credit client
+C1253,S1 Kecil,0.632,test,Existing credit client
+C1254,S1 Kecil,0.447,unlabeled,Prospect
+C1255,S2 Menengah,0.703,unlabeled,Existing non-credit client
+C1256,S2 Menengah,0.746,train,Existing credit client
+C1257,S2 Menengah,0.481,valid,Existing credit client
+C1258,S1 Kecil,0.612,unlabeled,Prospect
+C1259,S3 Besar,0.55,train,Existing credit client
+C1260,S3 Besar,0.551,train,Existing credit client
+C1261,S1 Kecil,0.492,test,Existing credit client
+C1262,S1 Kecil,0.834,train,Existing credit client
+C1263,S1 Kecil,0.722,train,Existing credit client
+C1264,S1 Kecil,0.569,train,Existing credit client
+C1265,S2 Menengah,0.626,train,Existing credit client
+C1266,S1 Kecil,0.857,unlabeled,Existing non-credit client
+C1267,S2 Menengah,0.556,train,Existing credit client
+C1268,S1 Kecil,0.516,unlabeled,Prospect
+C1269,S2 Menengah,0.489,unlabeled,Existing non-credit client
+C1270,S2 Menengah,0.726,valid,Existing credit client
+C1271,S2 Menengah,0.053,unlabeled,Prospect
+C1272,S3 Besar,0.77,unlabeled,Existing non-credit client
+C1273,S1 Kecil,0.631,unlabeled,Prospect
+C1274,S1 Kecil,0.671,test,Existing credit client
+C1275,S1 Kecil,0.803,test,Existing credit client
+C1276,S2 Menengah,0.605,unlabeled,Existing non-credit client
+C1277,S2 Menengah,0.255,train,Existing credit client
+C1278,S1 Kecil,0.802,unlabeled,Prospect
+C1279,S1 Kecil,0.213,unlabeled,Prospect
+C1280,S2 Menengah,0.459,test,Existing credit client
+C1281,S2 Menengah,0.508,unlabeled,Existing non-credit client
+C1282,S1 Kecil,0.463,train,Existing credit client
+C1283,S2 Menengah,0.441,unlabeled,Prospect
+C1284,S3 Besar,0.598,train,Existing credit client
+C1285,S2 Menengah,0.637,unlabeled,Existing non-credit client
+C1286,S2 Menengah,0.353,test,Existing credit client
+C1287,S2 Menengah,0.71,train,Existing credit client
+C1288,S2 Menengah,0.506,test,Existing credit client
+C1289,S2 Menengah,0.477,unlabeled,Existing non-credit client
+C1290,S1 Kecil,0.719,unlabeled,Prospect
+C1291,S1 Kecil,0.657,test,Existing credit client
+C1292,S2 Menengah,0.312,valid,Existing credit client
+C1293,S2 Menengah,0.461,train,Existing credit client
+C1294,S3 Besar,0.312,unlabeled,Prospect
+C1295,S2 Menengah,0.056,unlabeled,Existing non-credit client
+C1296,S2 Menengah,0.354,train,Existing credit client
+C1297,S3 Besar,0.525,unlabeled,Prospect
+C1298,S3 Besar,0.339,unlabeled,Existing non-credit client
+C1299,S2 Menengah,0.275,valid,Existing credit client
+C1300,S1 Kecil,0.273,unlabeled,Existing non-credit client
+C1301,S1 Kecil,0.131,unlabeled,Existing non-credit client
+C1302,S1 Kecil,0.603,unlabeled,Prospect
+C1303,S1 Kecil,0.516,unlabeled,Prospect
+C1304,S1 Kecil,0.733,unlabeled,Prospect
+C1305,S1 Kecil,0.221,train,Existing credit client
+C1306,S2 Menengah,0.589,unlabeled,Existing non-credit client
+C1307,S1 Kecil,0.482,valid,Existing credit client
+C1308,S2 Menengah,0.733,test,Existing credit client
+C1309,S1 Kecil,0.65,unlabeled,Existing non-credit client
+C1310,S2 Menengah,0.268,train,Existing credit client
+C1311,S1 Kecil,0.346,train,Existing credit client
+C1312,S1 Kecil,0.654,unlabeled,Existing non-credit client
+C1313,S3 Besar,0.424,train,Existing credit client
+C1314,S2 Menengah,0.475,unlabeled,Prospect
+C1315,S1 Kecil,0.483,unlabeled,Prospect
+C1316,S2 Menengah,0.619,train,Existing credit client
+C1317,S3 Besar,0.573,train,Existing credit client
+C1318,S1 Kecil,0.113,unlabeled,Prospect
+C1319,S3 Besar,0.737,test,Existing credit client
+C1320,S2 Menengah,0.024,train,Existing credit client
+C1321,S2 Menengah,0.456,unlabeled,Existing non-credit client
+C1322,S3 Besar,0.69,unlabeled,Existing non-credit client
+C1323,S1 Kecil,0.818,unlabeled,Prospect
+C1324,S2 Menengah,0.134,valid,Existing credit client
+C1325,S1 Kecil,0.332,unlabeled,Prospect
+C1326,S1 Kecil,0.568,train,Existing credit client
+C1327,S1 Kecil,0.672,valid,Existing credit client
+C1328,S1 Kecil,0.084,unlabeled,Prospect
+C1329,S1 Kecil,0.451,unlabeled,Prospect
+C1330,S1 Kecil,0.716,train,Existing credit client
+C1331,S2 Menengah,0.41,test,Existing credit client
+C1332,S2 Menengah,0.661,train,Existing credit client
+C1333,S1 Kecil,0.132,unlabeled,Prospect
+C1334,S1 Kecil,0.457,test,Existing credit client
+C1335,S2 Menengah,0.767,train,Existing credit client
+C1336,S2 Menengah,0.571,train,Existing credit client
+C1337,S1 Kecil,0.71,train,Existing credit client
+C1338,S1 Kecil,0.351,valid,Existing credit client
+C1339,S2 Menengah,0.436,unlabeled,Prospect
+C1340,S2 Menengah,0.358,unlabeled,Prospect
+C1341,S1 Kecil,0.696,unlabeled,Prospect
+C1342,S2 Menengah,0.369,unlabeled,Existing non-credit client
+C1343,S2 Menengah,0.017,train,Existing credit client
+C1344,S2 Menengah,0.203,unlabeled,Prospect
+C1345,S2 Menengah,0.39,train,Existing credit client
+C1346,S1 Kecil,0.022,train,Existing credit client
+C1347,S2 Menengah,0.522,valid,Existing credit client
+C1348,S2 Menengah,0.405,unlabeled,Existing non-credit client
+C1349,S3 Besar,0.566,train,Existing credit client
+C1350,S1 Kecil,0.636,unlabeled,Prospect
+C1351,S2 Menengah,0.181,train,Existing credit client
+C1352,S2 Menengah,0.691,unlabeled,Existing non-credit client
+C1353,S1 Kecil,0.742,train,Existing credit client
+C1354,S2 Menengah,0.802,train,Existing credit client
+C1355,S3 Besar,0.726,train,Existing credit client
+C1356,S2 Menengah,0.221,test,Existing credit client
+C1357,S3 Besar,0.554,valid,Existing credit client
+C1358,S1 Kecil,0.808,train,Existing credit client
+C1359,S1 Kecil,0.627,valid,Existing credit client
+C1360,S1 Kecil,0.357,unlabeled,Existing non-credit client
+C1361,S2 Menengah,0.388,unlabeled,Prospect
+C1362,S1 Kecil,0.303,unlabeled,Existing non-credit client
+C1363,S3 Besar,0.753,train,Existing credit client
+C1364,S3 Besar,0.774,unlabeled,Existing non-credit client
+C1365,S1 Kecil,0.56,valid,Existing credit client
+C1366,S1 Kecil,0.682,unlabeled,Existing non-credit client
+C1367,S2 Menengah,0.337,train,Existing credit client
+C1368,S3 Besar,0.693,train,Existing credit client
+C1369,S2 Menengah,0.632,unlabeled,Existing non-credit client
+C1370,S2 Menengah,0.178,unlabeled,Existing non-credit client
+C1371,S1 Kecil,0.438,unlabeled,Existing non-credit client
+C1372,S2 Menengah,0.138,test,Existing credit client
+C1373,S1 Kecil,0.466,unlabeled,Existing non-credit client
+C1374,S1 Kecil,0.556,train,Existing credit client
+C1375,S3 Besar,0.782,unlabeled,Existing non-credit client
+C1376,S1 Kecil,0.536,train,Existing credit client
+C1377,S1 Kecil,0.486,test,Existing credit client
+C1378,S1 Kecil,0.368,unlabeled,Prospect
+C1379,S2 Menengah,0.587,train,Existing credit client
+C1380,S2 Menengah,0.18,valid,Existing credit client
+C1381,S1 Kecil,0.461,unlabeled,Prospect
+C1382,S1 Kecil,0.52,unlabeled,Prospect
+C1383,S1 Kecil,0.721,unlabeled,Prospect
+C1384,S2 Menengah,0.782,train,Existing credit client
+C1385,S1 Kecil,0.512,unlabeled,Existing non-credit client
+C1386,S3 Besar,0.591,unlabeled,Prospect
+C1387,S3 Besar,0.456,train,Existing credit client
+C1388,S1 Kecil,0.709,unlabeled,Prospect
+C1389,S2 Menengah,0.4,train,Existing credit client
+C1390,S2 Menengah,0.156,unlabeled,Prospect
+C1391,S1 Kecil,0.643,unlabeled,Prospect
+C1392,S1 Kecil,0.501,train,Existing credit client
+C1393,S2 Menengah,0.601,train,Existing credit client
+C1394,S1 Kecil,0.634,unlabeled,Prospect
+C1395,S3 Besar,0.543,train,Existing credit client
+C1396,S2 Menengah,0.426,train,Existing credit client
+C1397,S3 Besar,0.349,unlabeled,Existing non-credit client
+C1398,S3 Besar,0.71,train,Existing credit client
+C1399,S2 Menengah,0.373,unlabeled,Existing non-credit client
+C1400,S2 Menengah,0.71,unlabeled,Prospect
+C1401,S2 Menengah,0.544,unlabeled,Existing non-credit client
+C1402,S1 Kecil,0.569,train,Existing credit client
+C1403,S2 Menengah,0.579,unlabeled,Existing non-credit client
+C1404,S1 Kecil,0.655,unlabeled,Existing non-credit client
+C1405,S1 Kecil,0.522,train,Existing credit client
+C1406,S2 Menengah,0.622,valid,Existing credit client
+C1407,S2 Menengah,0.49,test,Existing credit client
+C1408,S1 Kecil,0.39,train,Existing credit client
+C1409,S1 Kecil,0.212,train,Existing credit client
+C1410,S1 Kecil,0.681,valid,Existing credit client
+C1411,S1 Kecil,0.492,unlabeled,Prospect
+C1412,S1 Kecil,0.685,unlabeled,Prospect
+C1413,S1 Kecil,0.526,train,Existing credit client
+C1414,S3 Besar,0.183,test,Existing credit client
+C1415,S3 Besar,0.541,unlabeled,Existing non-credit client
+C1416,S1 Kecil,0.543,unlabeled,Prospect
+C1417,S1 Kecil,0.794,unlabeled,Prospect
+C1418,S1 Kecil,0.414,train,Existing credit client
+C1419,S2 Menengah,0.529,train,Existing credit client
+C1420,S2 Menengah,0.608,unlabeled,Existing non-credit client
+C1421,S2 Menengah,0.335,train,Existing credit client
+C1422,S3 Besar,0.584,train,Existing credit client
+C1423,S2 Menengah,0.699,unlabeled,Existing non-credit client
+C1424,S3 Besar,0.431,train,Existing credit client
+C1425,S3 Besar,0.631,train,Existing credit client
+C1426,S2 Menengah,0.199,valid,Existing credit client
+C1427,S1 Kecil,0.09,unlabeled,Prospect
+C1428,S2 Menengah,0.349,train,Existing credit client
+C1429,S1 Kecil,0.629,unlabeled,Prospect
+C1430,S2 Menengah,0.484,test,Existing credit client
+C1431,S1 Kecil,0.669,unlabeled,Prospect
+C1432,S1 Kecil,0.633,test,Existing credit client
+C1433,S1 Kecil,0.577,train,Existing credit client
+C1434,S1 Kecil,0.189,unlabeled,Prospect
+C1435,S3 Besar,0.552,valid,Existing credit client
+C1436,S1 Kecil,0.719,test,Existing credit client
+C1437,S2 Menengah,0.466,unlabeled,Prospect
+C1438,S2 Menengah,0.615,train,Existing credit client
+C1439,S1 Kecil,0.233,train,Existing credit client
+C1440,S3 Besar,0.12,test,Existing credit client
+C1441,S2 Menengah,0.64,unlabeled,Existing non-credit client
+C1442,S1 Kecil,0.495,unlabeled,Prospect
+C1443,S1 Kecil,0.525,test,Existing credit client
+C1444,S3 Besar,0.933,unlabeled,Prospect
+C1445,S2 Menengah,0.482,unlabeled,Prospect
+C1446,S1 Kecil,0.61,unlabeled,Prospect
+C1447,S1 Kecil,0.725,unlabeled,Prospect
+C1448,S2 Menengah,0.433,test,Existing credit client
+C1449,S1 Kecil,0.443,valid,Existing credit client
+C1450,S3 Besar,0.271,test,Existing credit client
+C1451,S1 Kecil,0.136,unlabeled,Prospect
+C1452,S3 Besar,0.092,unlabeled,Existing non-credit client
+C1453,S1 Kecil,0.447,unlabeled,Prospect
+C1454,S2 Menengah,0.516,test,Existing credit client
+C1455,S3 Besar,0.36,unlabeled,Existing non-credit client
+C1456,S3 Besar,0.655,train,Existing credit client
+C1457,S1 Kecil,0.669,unlabeled,Prospect
+C1458,S1 Kecil,0.718,unlabeled,Prospect
+C1459,S2 Menengah,0.384,test,Existing credit client
+C1460,S2 Menengah,0.055,train,Existing credit client
+C1461,S1 Kecil,0.585,test,Existing credit client
+C1462,S1 Kecil,0.633,unlabeled,Prospect
+C1463,S1 Kecil,0.724,unlabeled,Prospect
+C1464,S2 Menengah,0.466,unlabeled,Existing non-credit client
+C1465,S2 Menengah,0.128,train,Existing credit client
+C1466,S1 Kecil,0.49,train,Existing credit client
+C1467,S1 Kecil,0.496,unlabeled,Existing non-credit client
+C1468,S3 Besar,0.049,train,Existing credit client
+C1469,S1 Kecil,0.352,valid,Existing credit client
+C1470,S2 Menengah,0.115,test,Existing credit client
+C1471,S3 Besar,0.472,train,Existing credit client
+C1472,S2 Menengah,0.558,unlabeled,Existing non-credit client
+C1473,S1 Kecil,0.639,unlabeled,Prospect
+C1474,S1 Kecil,0.189,unlabeled,Existing non-credit client
+C1475,S3 Besar,0.629,valid,Existing credit client
+C1476,S2 Menengah,0.117,test,Existing credit client
+C1477,S2 Menengah,0.531,train,Existing credit client
+C1478,S2 Menengah,0.439,train,Existing credit client
+C1479,S2 Menengah,0.798,unlabeled,Existing non-credit client
+C1480,S1 Kecil,0.354,valid,Existing credit client
+C1481,S1 Kecil,0.272,unlabeled,Existing non-credit client
+C1482,S2 Menengah,0.674,test,Existing credit client
+C1483,S2 Menengah,0.404,valid,Existing credit client
+C1484,S3 Besar,0.409,unlabeled,Existing non-credit client
+C1485,S1 Kecil,0.731,unlabeled,Prospect
+C1486,S1 Kecil,0.648,train,Existing credit client
+C1487,S2 Menengah,0.648,train,Existing credit client
+C1488,S2 Menengah,0.183,unlabeled,Prospect
+C1489,S2 Menengah,0.33,valid,Existing credit client
+C1490,S1 Kecil,0.555,train,Existing credit client
+C1491,S3 Besar,0.732,test,Existing credit client
+C1492,S3 Besar,0.282,unlabeled,Existing non-credit client
+C1493,S2 Menengah,0.63,train,Existing credit client
+C1494,S1 Kecil,0.791,unlabeled,Existing non-credit client
+C1495,S2 Menengah,0.598,unlabeled,Prospect
+C1496,S2 Menengah,0.331,test,Existing credit client
+C1497,S3 Besar,0.632,valid,Existing credit client
+C1498,S2 Menengah,0.597,train,Existing credit client
+C1499,S2 Menengah,0.747,unlabeled,Prospect
+C1500,S2 Menengah,0.697,valid,Existing credit client
+C1501,S1 Kecil,0.518,valid,Existing credit client
+C1502,S3 Besar,0.652,valid,Existing credit client
+C1503,S2 Menengah,0.278,unlabeled,Prospect
+C1504,S2 Menengah,0.561,train,Existing credit client
+C1505,S2 Menengah,0.274,train,Existing credit client
+C1506,S1 Kecil,0.111,unlabeled,Prospect
+C1507,S2 Menengah,0.512,train,Existing credit client
+C1508,S1 Kecil,0.53,train,Existing credit client
+C1509,S1 Kecil,0.494,unlabeled,Prospect
+C1510,S2 Menengah,0.346,valid,Existing credit client
+C1511,S3 Besar,0.203,test,Existing credit client
+C1512,S1 Kecil,0.114,unlabeled,Existing non-credit client
+C1513,S3 Besar,0.543,test,Existing credit client
+C1514,S1 Kecil,0.681,unlabeled,Prospect
+C1515,S2 Menengah,0.707,unlabeled,Prospect
+C1516,S1 Kecil,0.779,unlabeled,Existing non-credit client
+C1517,S2 Menengah,0.009,unlabeled,Existing non-credit client
+C1518,S2 Menengah,0.398,train,Existing credit client
+C1519,S2 Menengah,0.258,train,Existing credit client
+C1520,S2 Menengah,0.15,valid,Existing credit client
+C1521,S1 Kecil,0.214,train,Existing credit client
+C1522,S2 Menengah,0.466,test,Existing credit client
+C1523,S2 Menengah,0.635,unlabeled,Prospect
+C1524,S1 Kecil,0.711,valid,Existing credit client
+C1525,S2 Menengah,0.683,unlabeled,Existing non-credit client
+C1526,S2 Menengah,0.629,valid,Existing credit client
+C1527,S1 Kecil,0.705,unlabeled,Prospect
+C1528,S2 Menengah,0.749,unlabeled,Existing non-credit client
+C1529,S3 Besar,0.527,unlabeled,Prospect
+C1530,S2 Menengah,0.547,unlabeled,Prospect
+C1531,S3 Besar,0.492,train,Existing credit client
+C1532,S1 Kecil,0.769,unlabeled,Existing non-credit client
+C1533,S2 Menengah,0.569,train,Existing credit client
+C1534,S2 Menengah,0.249,train,Existing credit client
+C1535,S1 Kecil,0.181,unlabeled,Prospect
+C1536,S1 Kecil,0.393,unlabeled,Prospect
+C1537,S1 Kecil,0.669,unlabeled,Existing non-credit client
+C1538,S2 Menengah,0.705,test,Existing credit client
+C1539,S1 Kecil,0.497,unlabeled,Prospect
+C1540,S2 Menengah,0.119,train,Existing credit client
+C1541,S2 Menengah,0.468,unlabeled,Existing non-credit client
+C1542,S3 Besar,0.727,train,Existing credit client
+C1543,S3 Besar,0.597,unlabeled,Prospect
+C1544,S2 Menengah,0.745,unlabeled,Prospect
+C1545,S3 Besar,0.24,train,Existing credit client
+C1546,S2 Menengah,0.774,unlabeled,Existing non-credit client
+C1547,S2 Menengah,0.547,unlabeled,Existing non-credit client
+C1548,S1 Kecil,0.734,train,Existing credit client
+C1549,S2 Menengah,0.646,unlabeled,Prospect
+C1550,S1 Kecil,0.691,unlabeled,Prospect
+C1551,S2 Menengah,0.636,unlabeled,Prospect
+C1552,S2 Menengah,0.849,train,Existing credit client
+C1553,S2 Menengah,0.118,valid,Existing credit client
+C1554,S1 Kecil,0.441,train,Existing credit client
+C1555,S3 Besar,0.671,unlabeled,Existing non-credit client
+C1556,S2 Menengah,0.788,train,Existing credit client
+C1557,S1 Kecil,0.698,unlabeled,Prospect
+C1558,S2 Menengah,0.427,valid,Existing credit client
+C1559,S1 Kecil,0.73,unlabeled,Existing non-credit client
+C1560,S2 Menengah,0.166,train,Existing credit client
+C1561,S1 Kecil,0.46,train,Existing credit client
+C1562,S1 Kecil,0.485,unlabeled,Prospect
+C1563,S1 Kecil,0.334,unlabeled,Prospect
+C1564,S1 Kecil,0.297,unlabeled,Existing non-credit client
+C1565,S2 Menengah,0.667,unlabeled,Prospect
+C1566,S1 Kecil,0.656,unlabeled,Prospect
+C1567,S1 Kecil,0.19,test,Existing credit client
+C1568,S2 Menengah,0.493,unlabeled,Prospect
+C1569,S2 Menengah,0.733,unlabeled,Existing non-credit client
+C1570,S2 Menengah,0.661,unlabeled,Existing non-credit client
+C1571,S2 Menengah,0.534,unlabeled,Prospect
+C1572,S3 Besar,0.721,valid,Existing credit client
+C1573,S1 Kecil,0.706,unlabeled,Existing non-credit client
+C1574,S3 Besar,0.452,train,Existing credit client
+C1575,S1 Kecil,0.623,unlabeled,Prospect
+C1576,S1 Kecil,0.694,unlabeled,Prospect
+C1577,S2 Menengah,0.353,unlabeled,Existing non-credit client
+C1578,S1 Kecil,0.358,test,Existing credit client
+C1579,S2 Menengah,0.645,train,Existing credit client
+C1580,S2 Menengah,0.379,valid,Existing credit client
+C1581,S3 Besar,0.596,valid,Existing credit client
+C1582,S2 Menengah,0.604,train,Existing credit client
+C1583,S2 Menengah,0.371,test,Existing credit client
+C1584,S3 Besar,0.228,train,Existing credit client
+C1585,S1 Kecil,0.239,unlabeled,Prospect
+C1586,S2 Menengah,0.4,train,Existing credit client
+C1587,S2 Menengah,0.402,valid,Existing credit client
+C1588,S2 Menengah,0.131,valid,Existing credit client
+C1589,S2 Menengah,0.619,train,Existing credit client
+C1590,S1 Kecil,0.781,unlabeled,Prospect
+C1591,S2 Menengah,0.414,unlabeled,Prospect
+C1592,S2 Menengah,0.483,unlabeled,Existing non-credit client
+C1593,S2 Menengah,0.632,unlabeled,Existing non-credit client
+C1594,S2 Menengah,0.302,unlabeled,Prospect
+C1595,S1 Kecil,0.289,unlabeled,Prospect
+C1596,S1 Kecil,0.349,unlabeled,Existing non-credit client
+C1597,S2 Menengah,0.712,unlabeled,Existing non-credit client
+C1598,S3 Besar,0.682,valid,Existing credit client
+C1599,S1 Kecil,0.718,train,Existing credit client
+C1600,S1 Kecil,0.766,unlabeled,Existing non-credit client
+C1601,S2 Menengah,0.427,unlabeled,Prospect
+C1602,S1 Kecil,0.556,test,Existing credit client
+C1603,S2 Menengah,0.59,train,Existing credit client
+C1604,S2 Menengah,0.128,train,Existing credit client
+C1605,S2 Menengah,0.828,train,Existing credit client
+C1606,S2 Menengah,0.045,train,Existing credit client
+C1607,S2 Menengah,0.489,train,Existing credit client
+C1608,S1 Kecil,0.451,train,Existing credit client
+C1609,S1 Kecil,0.435,train,Existing credit client
+C1610,S2 Menengah,0.713,unlabeled,Prospect
+C1611,S2 Menengah,0.823,unlabeled,Prospect
+C1612,S3 Besar,0.327,valid,Existing credit client
+C1613,S2 Menengah,0.005,unlabeled,Prospect
+C1614,S3 Besar,0.2,train,Existing credit client
+C1615,S1 Kecil,0.345,unlabeled,Prospect
+C1616,S2 Menengah,0.662,unlabeled,Existing non-credit client
+C1617,S2 Menengah,0.64,unlabeled,Prospect
+C1618,S3 Besar,0.724,valid,Existing credit client
+C1619,S1 Kecil,0.67,unlabeled,Prospect
+C1620,S1 Kecil,0.825,train,Existing credit client
+C1621,S2 Menengah,0.39,train,Existing credit client
+C1622,S2 Menengah,0.203,train,Existing credit client
+C1623,S2 Menengah,0.34,unlabeled,Prospect
+C1624,S3 Besar,0.786,unlabeled,Existing non-credit client
+C1625,S2 Menengah,0.444,unlabeled,Existing non-credit client
+C1626,S3 Besar,0.093,unlabeled,Prospect
+C1627,S2 Menengah,0.281,unlabeled,Existing non-credit client
+C1628,S1 Kecil,0.587,unlabeled,Prospect
+C1629,S2 Menengah,0.705,train,Existing credit client
+C1630,S2 Menengah,0.739,train,Existing credit client
+C1631,S2 Menengah,0.659,unlabeled,Existing non-credit client
+C1632,S2 Menengah,0.619,valid,Existing credit client
+C1633,S1 Kecil,0.732,train,Existing credit client
+C1634,S3 Besar,0.274,valid,Existing credit client
+C1635,S2 Menengah,0.631,unlabeled,Prospect
+C1636,S1 Kecil,0.396,unlabeled,Prospect
+C1637,S1 Kecil,0.178,train,Existing credit client
+C1638,S2 Menengah,0.416,train,Existing credit client
+C1639,S2 Menengah,0.136,train,Existing credit client
+C1640,S2 Menengah,0.676,test,Existing credit client
+C1641,S1 Kecil,0.449,test,Existing credit client
+C1642,S1 Kecil,0.706,valid,Existing credit client
+C1643,S2 Menengah,0.503,train,Existing credit client
+C1644,S1 Kecil,0.728,unlabeled,Existing non-credit client
+C1645,S2 Menengah,0.872,test,Existing credit client
+C1646,S3 Besar,0.175,train,Existing credit client
+C1647,S2 Menengah,0.531,train,Existing credit client
+C1648,S1 Kecil,0.781,unlabeled,Prospect
+C1649,S3 Besar,0.621,train,Existing credit client
+C1650,S3 Besar,0.589,train,Existing credit client
+C1651,S2 Menengah,0.275,unlabeled,Prospect
+C1652,S2 Menengah,0.809,train,Existing credit client
+C1653,S1 Kecil,0.256,unlabeled,Prospect
+C1654,S2 Menengah,0.236,unlabeled,Prospect
+C1655,S1 Kecil,0.606,test,Existing credit client
+C1656,S2 Menengah,0.728,test,Existing credit client
+C1657,S1 Kecil,0.465,train,Existing credit client
+C1658,S1 Kecil,0.222,valid,Existing credit client
+C1659,S2 Menengah,0.326,train,Existing credit client
+C1660,S3 Besar,0.597,unlabeled,Prospect
+C1661,S2 Menengah,0.054,unlabeled,Existing non-credit client
+C1662,S2 Menengah,0.103,unlabeled,Prospect
+C1663,S1 Kecil,0.877,test,Existing credit client
+C1664,S1 Kecil,0.279,unlabeled,Prospect
+C1665,S1 Kecil,0.458,unlabeled,Existing non-credit client
+C1666,S2 Menengah,0.669,unlabeled,Existing non-credit client
+C1667,S2 Menengah,0.475,unlabeled,Prospect
+C1668,S3 Besar,0.096,train,Existing credit client
+C1669,S1 Kecil,0.447,unlabeled,Existing non-credit client
+C1670,S1 Kecil,0.245,unlabeled,Existing non-credit client
+C1671,S1 Kecil,0.562,unlabeled,Prospect
+C1672,S1 Kecil,0.527,unlabeled,Prospect
+C1673,S2 Menengah,0.77,train,Existing credit client
+C1674,S3 Besar,0.367,train,Existing credit client
+C1675,S3 Besar,0.415,unlabeled,Existing non-credit client
+C1676,S1 Kecil,0.522,train,Existing credit client
+C1677,S2 Menengah,0.609,unlabeled,Existing non-credit client
+C1678,S1 Kecil,0.639,test,Existing credit client
+C1679,S2 Menengah,0.243,unlabeled,Prospect
+C1680,S1 Kecil,0.121,unlabeled,Prospect
+C1681,S2 Menengah,0.222,train,Existing credit client
+C1682,S2 Menengah,0.566,valid,Existing credit client
+C1683,S2 Menengah,0.574,unlabeled,Existing non-credit client
+C1684,S2 Menengah,0.207,train,Existing credit client
+C1685,S3 Besar,0.673,train,Existing credit client
+C1686,S2 Menengah,0.581,unlabeled,Prospect
+C1687,S2 Menengah,0.179,unlabeled,Prospect
+C1688,S1 Kecil,0.503,unlabeled,Prospect
+C1689,S2 Menengah,0.641,train,Existing credit client
+C1690,S1 Kecil,0.592,unlabeled,Prospect
+C1691,S2 Menengah,0.621,unlabeled,Existing non-credit client
+C1692,S2 Menengah,0.136,unlabeled,Prospect
+C1693,S2 Menengah,0.164,unlabeled,Prospect
+C1694,S2 Menengah,0.521,valid,Existing credit client
+C1695,S2 Menengah,0.277,valid,Existing credit client
+C1696,S3 Besar,0.791,unlabeled,Prospect
+C1697,S2 Menengah,0.665,train,Existing credit client
+C1698,S2 Menengah,0.71,test,Existing credit client
+C1699,S3 Besar,0.082,train,Existing credit client
+C1700,S2 Menengah,0.478,unlabeled,Prospect
+C1701,S2 Menengah,0.43,test,Existing credit client
+C1702,S1 Kecil,0.514,unlabeled,Prospect
+C1703,S1 Kecil,0.292,train,Existing credit client
+C1704,S3 Besar,0.652,train,Existing credit client
+C1705,S2 Menengah,0.833,unlabeled,Prospect
+C1706,S2 Menengah,0.033,test,Existing credit client
+C1707,S2 Menengah,0.241,unlabeled,Prospect
+C1708,S2 Menengah,0.195,unlabeled,Existing non-credit client
+C1709,S2 Menengah,0.667,train,Existing credit client
+C1710,S2 Menengah,0.559,unlabeled,Existing non-credit client
+C1711,S3 Besar,0.645,train,Existing credit client
+C1712,S1 Kecil,0.676,train,Existing credit client
+C1713,S2 Menengah,0.015,train,Existing credit client
+C1714,S3 Besar,0.704,unlabeled,Prospect
+C1715,S2 Menengah,0.74,train,Existing credit client
+C1716,S2 Menengah,0.133,train,Existing credit client
+C1717,S1 Kecil,0.652,unlabeled,Existing non-credit client
+C1718,S2 Menengah,0.549,valid,Existing credit client
+C1719,S1 Kecil,0.712,unlabeled,Prospect
+C1720,S2 Menengah,0.499,train,Existing credit client
+C1721,S2 Menengah,0.5,train,Existing credit client
+C1722,S2 Menengah,0.593,unlabeled,Existing non-credit client
+C1723,S2 Menengah,0.832,test,Existing credit client
+C1724,S1 Kecil,0.254,unlabeled,Prospect
+C1725,S1 Kecil,0.27,train,Existing credit client
+C1726,S3 Besar,0.736,train,Existing credit client
+C1727,S1 Kecil,0.462,unlabeled,Prospect
+C1728,S2 Menengah,0.384,test,Existing credit client
+C1729,S2 Menengah,0.316,unlabeled,Existing non-credit client
+C1730,S1 Kecil,0.443,unlabeled,Prospect
+C1731,S1 Kecil,0.436,valid,Existing credit client
+C1732,S2 Menengah,0.227,valid,Existing credit client
+C1733,S2 Menengah,0.636,train,Existing credit client
+C1734,S1 Kecil,0.445,unlabeled,Existing non-credit client
+C1735,S1 Kecil,0.677,unlabeled,Prospect
+C1736,S1 Kecil,0.767,unlabeled,Prospect
+C1737,S1 Kecil,0.669,unlabeled,Prospect
+C1738,S2 Menengah,0.644,valid,Existing credit client
+C1739,S1 Kecil,0.363,unlabeled,Prospect
+C1740,S2 Menengah,0.652,unlabeled,Existing non-credit client
+C1741,S2 Menengah,0.058,unlabeled,Prospect
+C1742,S1 Kecil,0.168,train,Existing credit client
+C1743,S3 Besar,0.731,test,Existing credit client
+C1744,S1 Kecil,0.62,unlabeled,Prospect
+C1745,S2 Menengah,0.353,unlabeled,Prospect
+C1746,S2 Menengah,0.701,test,Existing credit client
+C1747,S3 Besar,0.565,train,Existing credit client
+C1748,S3 Besar,0.614,train,Existing credit client
+C1749,S3 Besar,0.091,test,Existing credit client
+C1750,S1 Kecil,0.629,test,Existing credit client
+C1751,S2 Menengah,0.514,train,Existing credit client
+C1752,S3 Besar,0.54,unlabeled,Existing non-credit client
+C1753,S2 Menengah,0.532,unlabeled,Existing non-credit client
+C1754,S3 Besar,0.153,test,Existing credit client
+C1755,S2 Menengah,0.108,train,Existing credit client
+C1756,S2 Menengah,0.129,unlabeled,Existing non-credit client
+C1757,S1 Kecil,0.116,train,Existing credit client
+C1758,S1 Kecil,0.348,valid,Existing credit client
+C1759,S1 Kecil,0.759,unlabeled,Prospect
+C1760,S1 Kecil,0.783,train,Existing credit client
+C1761,S2 Menengah,0.063,test,Existing credit client
+C1762,S3 Besar,0.791,unlabeled,Existing non-credit client
+C1763,S3 Besar,0.388,train,Existing credit client
+C1764,S1 Kecil,0.845,unlabeled,Prospect
+C1765,S1 Kecil,0.765,train,Existing credit client
+C1766,S1 Kecil,0.413,unlabeled,Prospect
+C1767,S2 Menengah,0.717,unlabeled,Prospect
+C1768,S2 Menengah,0.538,unlabeled,Existing non-credit client
+C1769,S2 Menengah,0.441,unlabeled,Existing non-credit client
+C1770,S2 Menengah,0.506,train,Existing credit client
+C1771,S3 Besar,0.858,valid,Existing credit client
+C1772,S1 Kecil,0.662,unlabeled,Existing non-credit client
+C1773,S3 Besar,0.61,test,Existing credit client
+C1774,S3 Besar,0.384,train,Existing credit client
+C1775,S2 Menengah,0.691,unlabeled,Existing non-credit client
+C1776,S1 Kecil,0.217,train,Existing credit client
+C1777,S1 Kecil,0.159,train,Existing credit client
+C1778,S2 Menengah,0.297,train,Existing credit client
+C1779,S1 Kecil,0.768,unlabeled,Prospect
+C1780,S2 Menengah,0.649,unlabeled,Prospect
+C1781,S3 Besar,0.531,valid,Existing credit client
+C1782,S2 Menengah,0.726,unlabeled,Prospect
+C1783,S2 Menengah,0.334,train,Existing credit client
+C1784,S1 Kecil,0.635,unlabeled,Prospect
+C1785,S3 Besar,0.269,train,Existing credit client
+C1786,S1 Kecil,0.719,unlabeled,Existing non-credit client
+C1787,S2 Menengah,0.099,test,Existing credit client
+C1788,S2 Menengah,0.79,train,Existing credit client
+C1789,S2 Menengah,0.735,train,Existing credit client
+C1790,S2 Menengah,0.199,train,Existing credit client
+C1791,S2 Menengah,0.813,valid,Existing credit client
+C1792,S1 Kecil,0.65,unlabeled,Existing non-credit client
+C1793,S1 Kecil,0.69,unlabeled,Prospect
+C1794,S1 Kecil,0.314,unlabeled,Existing non-credit client
+C1795,S2 Menengah,0.529,unlabeled,Prospect
+C1796,S2 Menengah,0.595,valid,Existing credit client
+C1797,S1 Kecil,0.264,unlabeled,Prospect
+C1798,S2 Menengah,0.597,unlabeled,Existing non-credit client
+C1799,S2 Menengah,0.544,unlabeled,Prospect
+C1800,S1 Kecil,0.677,unlabeled,Prospect
+C1801,S2 Menengah,0.403,valid,Existing credit client
+C1802,S1 Kecil,0.606,unlabeled,Prospect
+C1803,S2 Menengah,0.1,unlabeled,Existing non-credit client
+C1804,S2 Menengah,0.42,train,Existing credit client
+C1805,S2 Menengah,0.337,train,Existing credit client
+C1806,S2 Menengah,0.027,unlabeled,Prospect
+C1807,S3 Besar,0.481,train,Existing credit client
+C1808,S1 Kecil,0.629,unlabeled,Prospect
+C1809,S1 Kecil,0.401,unlabeled,Prospect
+C1810,S3 Besar,0.656,train,Existing credit client
+C1811,S1 Kecil,0.613,unlabeled,Prospect
+C1812,S3 Besar,0.444,train,Existing credit client
+C1813,S1 Kecil,0.591,unlabeled,Prospect
+C1814,S3 Besar,0.425,valid,Existing credit client
+C1815,S1 Kecil,0.44,test,Existing credit client
+C1816,S2 Menengah,0.541,unlabeled,Existing non-credit client
+C1817,S1 Kecil,0.365,unlabeled,Prospect
+C1818,S2 Menengah,0.241,train,Existing credit client
+C1819,S2 Menengah,0.415,unlabeled,Prospect
+C1820,S1 Kecil,0.698,train,Existing credit client
+C1821,S1 Kecil,0.422,unlabeled,Prospect
+C1822,S1 Kecil,0.275,unlabeled,Prospect
+C1823,S2 Menengah,0.685,train,Existing credit client
+C1824,S1 Kecil,0.618,unlabeled,Prospect
+C1825,S2 Menengah,0.572,unlabeled,Existing non-credit client
+C1826,S1 Kecil,0.573,valid,Existing credit client
+C1827,S2 Menengah,0.627,train,Existing credit client
+C1828,S2 Menengah,0.708,valid,Existing credit client
+C1829,S1 Kecil,0.702,unlabeled,Prospect
+C1830,S2 Menengah,0.654,test,Existing credit client
+C1831,S2 Menengah,0.423,test,Existing credit client
+C1832,S2 Menengah,0.436,train,Existing credit client
+C1833,S2 Menengah,0.16,unlabeled,Prospect
+C1834,S1 Kecil,0.114,train,Existing credit client
+C1835,S2 Menengah,0.548,unlabeled,Existing non-credit client
+C1836,S1 Kecil,0.546,unlabeled,Prospect
+C1837,S1 Kecil,0.626,unlabeled,Prospect
+C1838,S2 Menengah,0.444,unlabeled,Prospect
+C1839,S1 Kecil,0.32,test,Existing credit client
+C1840,S1 Kecil,0.466,unlabeled,Prospect
+C1841,S1 Kecil,0.29,unlabeled,Existing non-credit client
+C1842,S1 Kecil,0.335,unlabeled,Prospect
+C1843,S2 Menengah,0.336,train,Existing credit client
+C1844,S1 Kecil,0.371,test,Existing credit client
+C1845,S2 Menengah,0.639,test,Existing credit client
+C1846,S3 Besar,0.685,unlabeled,Prospect
+C1847,S1 Kecil,0.537,valid,Existing credit client
+C1848,S1 Kecil,0.307,valid,Existing credit client
+C1849,S1 Kecil,0.253,unlabeled,Existing non-credit client
+C1850,S1 Kecil,0.385,unlabeled,Prospect
+C1851,S2 Menengah,0.573,unlabeled,Existing non-credit client
+C1852,S1 Kecil,0.476,unlabeled,Prospect
+C1853,S3 Besar,0.506,train,Existing credit client
+C1854,S3 Besar,0.409,train,Existing credit client
+C1855,S2 Menengah,0.25,unlabeled,Prospect
+C1856,S2 Menengah,0.645,valid,Existing credit client
+C1857,S2 Menengah,0.354,unlabeled,Existing non-credit client
+C1858,S2 Menengah,0.805,unlabeled,Existing non-credit client
+C1859,S3 Besar,0.503,train,Existing credit client
+C1860,S3 Besar,0.788,valid,Existing credit client
+C1861,S3 Besar,0.44,unlabeled,Existing non-credit client
+C1862,S2 Menengah,0.544,test,Existing credit client
+C1863,S1 Kecil,0.433,train,Existing credit client
+C1864,S2 Menengah,0.189,valid,Existing credit client
+C1865,S3 Besar,0.189,test,Existing credit client
+C1866,S2 Menengah,0.394,train,Existing credit client
+C1867,S2 Menengah,0.699,test,Existing credit client
+C1868,S1 Kecil,0.473,unlabeled,Prospect
+C1869,S3 Besar,0.618,train,Existing credit client
+C1870,S2 Menengah,0.505,test,Existing credit client
+C1871,S2 Menengah,0.421,train,Existing credit client
+C1872,S2 Menengah,0.496,unlabeled,Existing non-credit client
+C1873,S1 Kecil,0.645,unlabeled,Prospect
+C1874,S2 Menengah,0.689,unlabeled,Existing non-credit client
+C1875,S2 Menengah,0.29,unlabeled,Prospect
+C1876,S2 Menengah,0.569,train,Existing credit client
+C1877,S3 Besar,0.01,unlabeled,Prospect
+C1878,S1 Kecil,0.599,unlabeled,Prospect
+C1879,S1 Kecil,0.34,test,Existing credit client
+C1880,S2 Menengah,0.487,unlabeled,Existing non-credit client
+C1881,S2 Menengah,0.509,train,Existing credit client
+C1882,S2 Menengah,0.346,valid,Existing credit client
+C1883,S1 Kecil,0.229,unlabeled,Prospect
+C1884,S3 Besar,0.623,test,Existing credit client
+C1885,S2 Menengah,0.494,unlabeled,Existing non-credit client
+C1886,S2 Menengah,0.595,train,Existing credit client
+C1887,S2 Menengah,0.167,unlabeled,Prospect
+C1888,S3 Besar,0.409,train,Existing credit client
+C1889,S3 Besar,0.716,train,Existing credit client
+C1890,S2 Menengah,0.491,train,Existing credit client
+C1891,S2 Menengah,0.332,unlabeled,Prospect
+C1892,S1 Kecil,0.439,unlabeled,Existing non-credit client
+C1893,S2 Menengah,0.428,train,Existing credit client
+C1894,S2 Menengah,0.343,valid,Existing credit client
+C1895,S2 Menengah,0.045,unlabeled,Prospect
+C1896,S3 Besar,0.363,unlabeled,Existing non-credit client
+C1897,S3 Besar,0.689,test,Existing credit client
+C1898,S1 Kecil,0.148,train,Existing credit client
+C1899,S2 Menengah,0.52,unlabeled,Prospect
+C1900,S2 Menengah,0.696,valid,Existing credit client
+C1901,S1 Kecil,0.573,unlabeled,Existing non-credit client
+C1902,S3 Besar,0.723,unlabeled,Existing non-credit client
+C1903,S3 Besar,0.399,train,Existing credit client
+C1904,S1 Kecil,0.711,train,Existing credit client
+C1905,S1 Kecil,0.633,unlabeled,Prospect
+C1906,S3 Besar,0.577,unlabeled,Prospect
+C1907,S2 Menengah,0.597,test,Existing credit client
+C1908,S1 Kecil,0.582,train,Existing credit client
+C1909,S1 Kecil,0.402,train,Existing credit client
+C1910,S3 Besar,0.503,unlabeled,Existing non-credit client
+C1911,S1 Kecil,0.703,train,Existing credit client
+C1912,S2 Menengah,0.657,valid,Existing credit client
+C1913,S1 Kecil,0.328,unlabeled,Prospect
+C1914,S1 Kecil,0.183,unlabeled,Prospect
+C1915,S2 Menengah,0.43,unlabeled,Existing non-credit client
+C1916,S2 Menengah,0.599,test,Existing credit client
+C1917,S2 Menengah,0.38,train,Existing credit client
+C1918,S1 Kecil,0.774,unlabeled,Existing non-credit client
+C1919,S1 Kecil,0.431,train,Existing credit client
+C1920,S2 Menengah,0.615,train,Existing credit client
+C1921,S2 Menengah,0.636,unlabeled,Prospect
+C1922,S2 Menengah,0.657,unlabeled,Prospect
+C1923,S1 Kecil,0.644,train,Existing credit client
+C1924,S2 Menengah,0.726,unlabeled,Prospect
+C1925,S1 Kecil,0.168,test,Existing credit client
+C1926,S1 Kecil,0.072,train,Existing credit client
+C1927,S1 Kecil,0.593,unlabeled,Prospect
+C1928,S1 Kecil,0.677,unlabeled,Existing non-credit client
+C1929,S2 Menengah,0.742,unlabeled,Prospect
+C1930,S2 Menengah,0.609,train,Existing credit client
+C1931,S1 Kecil,0.447,test,Existing credit client
+C1932,S3 Besar,0.663,train,Existing credit client
+C1933,S3 Besar,0.462,train,Existing credit client
+C1934,S1 Kecil,0.304,unlabeled,Prospect
+C1935,S1 Kecil,0.724,valid,Existing credit client
+C1936,S1 Kecil,0.583,train,Existing credit client
+C1937,S2 Menengah,0.271,test,Existing credit client
+C1938,S1 Kecil,0.782,train,Existing credit client
+C1939,S1 Kecil,0.116,unlabeled,Existing non-credit client
+C1940,S1 Kecil,0.658,unlabeled,Prospect
+C1941,S1 Kecil,0.704,unlabeled,Existing non-credit client
+C1942,S2 Menengah,0.123,unlabeled,Existing non-credit client
+C1943,S3 Besar,0.408,train,Existing credit client
+C1944,S1 Kecil,0.356,unlabeled,Existing non-credit client
+C1945,S2 Menengah,0.376,unlabeled,Prospect
+C1946,S1 Kecil,0.093,train,Existing credit client
+C1947,S2 Menengah,0.593,valid,Existing credit client
+C1948,S2 Menengah,0.2,train,Existing credit client
+C1949,S1 Kecil,0.706,unlabeled,Existing non-credit client
+C1950,S2 Menengah,0.6,test,Existing credit client
+C1951,S1 Kecil,0.519,valid,Existing credit client
+C1952,S2 Menengah,0.232,test,Existing credit client
+C1953,S2 Menengah,0.247,train,Existing credit client
+C1954,S3 Besar,0.64,test,Existing credit client
+C1955,S1 Kecil,0.296,train,Existing credit client
+C1956,S1 Kecil,0.065,unlabeled,Prospect
+C1957,S3 Besar,0.747,train,Existing credit client
+C1958,S3 Besar,0.648,unlabeled,Prospect
+C1959,S2 Menengah,0.381,train,Existing credit client
+C1960,S2 Menengah,0.014,train,Existing credit client
+C1961,S1 Kecil,0.535,unlabeled,Existing non-credit client
+C1962,S2 Menengah,0.056,train,Existing credit client
+C1963,S1 Kecil,0.618,unlabeled,Existing non-credit client
+C1964,S1 Kecil,0.554,test,Existing credit client
+C1965,S2 Menengah,0.526,unlabeled,Prospect
+C1966,S2 Menengah,0.037,train,Existing credit client
+C1967,S3 Besar,0.689,train,Existing credit client
+C1968,S2 Menengah,0.213,valid,Existing credit client
+C1969,S2 Menengah,0.567,valid,Existing credit client
+C1970,S3 Besar,0.354,valid,Existing credit client
+C1971,S2 Menengah,0.494,unlabeled,Prospect
+C1972,S3 Besar,0.416,train,Existing credit client
+C1973,S2 Menengah,0.473,unlabeled,Existing non-credit client
+C1974,S3 Besar,0.569,train,Existing credit client
+C1975,S2 Menengah,0.651,unlabeled,Prospect
+C1976,S1 Kecil,0.675,valid,Existing credit client
+C1977,S2 Menengah,0.786,train,Existing credit client
+C1978,S2 Menengah,0.081,unlabeled,Prospect
+C1979,S1 Kecil,0.13,unlabeled,Existing non-credit client
+C1980,S2 Menengah,0.096,test,Existing credit client
+C1981,S2 Menengah,0.621,train,Existing credit client
+C1982,S2 Menengah,0.429,test,Existing credit client
+C1983,S1 Kecil,0.766,unlabeled,Existing non-credit client
+C1984,S2 Menengah,0.681,unlabeled,Existing non-credit client
+C1985,S2 Menengah,0.784,train,Existing credit client
+C1986,S1 Kecil,0.432,train,Existing credit client
+C1987,S1 Kecil,0.71,unlabeled,Prospect
+C1988,S3 Besar,0.632,train,Existing credit client
+C1989,S2 Menengah,0.04,unlabeled,Prospect
+C1990,S2 Menengah,0.268,train,Existing credit client
+C1991,S1 Kecil,0.789,train,Existing credit client
+C1992,S1 Kecil,0.423,test,Existing credit client
+C1993,S2 Menengah,0.169,unlabeled,Existing non-credit client
+C1994,S2 Menengah,0.04,unlabeled,Prospect
+C1995,S1 Kecil,0.475,unlabeled,Prospect
+C1996,S2 Menengah,0.638,unlabeled,Prospect
+C1997,S1 Kecil,0.509,unlabeled,Prospect
+C1998,S2 Menengah,0.734,unlabeled,Existing non-credit client
+C1999,S2 Menengah,0.317,unlabeled,Prospect
+C2000,S1 Kecil,0.569,unlabeled,Existing non-credit client

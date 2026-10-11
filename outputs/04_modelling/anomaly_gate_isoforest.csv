@@ -1,0 +1,4 @@
+kriteria,champion,isolation_forest,lolos
+presisi top-k (jenis apa pun) ≥ champion,0.475,0.3763888888888889,❌
+lead median distress (bln) tidak memburuk,1.0,0.0,❌
+% distress ≥ 1 bln lebih awal (toleransi −2 poin),0.7384615384615385,0.375,❌

@@ -1,0 +1,5 @@
+komponen,versi resmi,usulan NB07,status usulan,dasar
+risiko nasabah kredit,XGBoost NB06,— (tidak diubah),-,analisis kesalahan C1–C3
+keputusan prospect,V0 ambang recall 90% nasabah,V1 keputusan biaya,shadow (pasca-evaluasi),"aturan tanpa label (cek label shift → keputusan biaya); GT: flag 54% → 47%, presisi 0.52 → 0.56"
+aturan anomali,anomaly-rules-v1 (NB04),"{""buyer_exit"": {""buyer_exit_share_min"": 0.2}, ""distress"": {""confirm_out_in_delta_min"": null, ""confirm_cusum_down_min"": null}, ""wallet_erosion"": {""chg_3v6_monthly_pct_max"": 0.02, ""capture_chg_6m_le"": 0.0}}",shadow (pasca-evaluasi),"grid di non-test, laporan di test"
+audit label rating,-,antrean 151 label,alat bantu analis,top-30 presisi 63% vs acak 4%

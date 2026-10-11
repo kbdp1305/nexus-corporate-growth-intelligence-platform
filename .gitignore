@@ -14,3 +14,6 @@ models/**/*.joblib
 
 # Paket asli per notebook (duplikat isi repo; simpan lokal / Drive)
 data/archive/*.zip
+
+# Log pemakaian dashboard (lokal)
+outputs/app/

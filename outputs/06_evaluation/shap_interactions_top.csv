@@ -1,0 +1,6 @@
+fitur_1,fitur_2,mean_abs_interaksi
+DER (utang/ekuitas),besar limit kredit,0.04255129
+DER (utang/ekuitas),volatilitas inflow,0.041527182
+besar limit kredit,porsi pembeli terbesar,0.03943154
+gaji telat 30 bln,outflow ÷ inflow 6 bln,0.036416784
+interest coverage,outflow ÷ inflow 12 bln,0.036055595

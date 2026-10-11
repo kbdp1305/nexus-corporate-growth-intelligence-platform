@@ -11,6 +11,6 @@
 | uji logika | 15/23 | 15/23 |
 
 - **HPO** (Optuna TPE): log-loss tuning default → terbaik: M3 0.711 → 0.631, M4 0.779 → 0.631, M2 0.738 → 0.725.
-- **Imbalance**: M1_P: balanced, M3_t: balanced.
+- **Imbalance** (7 skema, dipilih dari biaya di recall High 90%): M1_P: smote, M3_t: balanced; termurah per model: M1_P → smote (Δ -24), M3_t → balanced^0.5 (Δ -12).
 - **Prospect % High**: 60% (v0 NB04) → 56% (v1 set_prospect) → 56% (v1 set_prospect_IW). ESS bobot 70%, C2ST AUC 0.79.
 - **Kelompok fitur terpenting**: keuangan, timing bayar, konsentrasi pembeli.

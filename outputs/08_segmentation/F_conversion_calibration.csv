@@ -1,0 +1,3 @@
+model,log_loss_CV,AUC_CV
+segmen + produk,0.43063874218813136,0.6179305328241499
+segmen + produk + skor + celah,0.42748922965133407,0.635038538475527

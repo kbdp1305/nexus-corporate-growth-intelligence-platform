@@ -1,0 +1,7 @@
+isi,berkas,keterangan
+segmen,outputs/scores/segments.csv,"2.000 perusahaan, segmen + keyakinan"
+skor peluang nasabah,outputs/scores/opportunity_scores.csv,"ranking RM per segmen, alasan, produk disarankan, EV"
+skor per produk,outputs/scores/opportunity_products.csv,"nasabah × produk: need, P(konversi), EV + rentang"
+skor akuisisi prospect,outputs/scores/prospect_acquisition_scores.csv,"deskriptif, belum tervalidasi"
+asumsi,outputs/scores/assumptions_opportunity.csv,"margin, biaya, PD/LGD, ukuran deal"
+model,models/08_segmentation/,"segmenter.joblib, conversion_model.joblib, opportunity_config.json"

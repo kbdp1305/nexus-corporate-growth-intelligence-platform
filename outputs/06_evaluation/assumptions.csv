@@ -1,0 +1,8 @@
+asumsi,nilai
+PD_Low,0.01
+PD_Medium,0.05
+PD_High,0.2
+LGD,0.45
+mitigasi,0.3
+biaya_review_Rp_juta,2.0
+EAD,"limit fasilitas (exp(log_limit), Rp miliar)"

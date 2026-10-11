@@ -1,0 +1,4 @@
+segment,ev_top50,ev_low,ev_high,roi_median,p_convert_median
+S1 Kecil,8.19,-5.15,28.11,0.37,0.26339999999999997
+S2 Menengah,-33.36,-48.87,-11.15,-0.305,0.23425
+S3 Besar,121.03,20.01,365.99,0.39,0.3741

@@ -1,0 +1,10 @@
+streamlit>=1.40
+plotly>=5.20
+pydeck>=0.9
+reportlab>=4.0
+networkx>=3.0
+python-dotenv>=1.0
+pandas>=2.0
+numpy>=1.26
+scikit-learn>=1.5
+openai>=1.40

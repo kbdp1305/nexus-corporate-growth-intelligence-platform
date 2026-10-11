@@ -1,0 +1,102 @@
+{
+  "dibuat": "2026-10-11T17:36:53",
+  "ref_skor": "2026-06",
+  "k": 3,
+  "segmen": [
+    "S1 Kecil",
+    "S2 Menengah",
+    "S3 Besar"
+  ],
+  "fitur_skala": [
+    "log_emp",
+    "log_rev",
+    "log_assets",
+    "log_equity",
+    "log_rel_value",
+    "log_partners",
+    "log_degree"
+  ],
+  "fit_pada": "train + unlabeled",
+  "bobot": {
+    "S3 Besar": {
+      "dompet_belum_digarap": 3,
+      "ekosistem": 3,
+      "kebutuhan_modal": 2,
+      "celah_produk": 2,
+      "erosi_wallet": 3
+    },
+    "S2 Menengah": {
+      "dompet_belum_digarap": 2,
+      "ekosistem": 2,
+      "kebutuhan_modal": 3,
+      "celah_produk": 2,
+      "erosi_wallet": 3
+    },
+    "S1 Kecil": {
+      "dompet_belum_digarap": 1,
+      "ekosistem": 1,
+      "kebutuhan_modal": 2,
+      "celah_produk": 3,
+      "erosi_wallet": 2
+    }
+  },
+  "metode_celah_produk": "peer rate (champion)",
+  "produk_kredit": [
+    "P06",
+    "P07"
+  ],
+  "produk_ditawarkan": [
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06",
+    "P07",
+    "P08"
+  ],
+  "nama_produk": {
+    "P01": "P01",
+    "P02": "P02",
+    "P03": "P03",
+    "P04": "P04",
+    "P05": "P05",
+    "P06": "P06",
+    "P07": "P07",
+    "P08": "P08"
+  },
+  "why_now": {
+    "naik": [
+      "expansion",
+      "wallet_erosion"
+    ],
+    "hati_hati": [
+      "distress",
+      "buyer_exit",
+      "contagion"
+    ],
+    "bulan": 3,
+    "bonus": 0.05,
+    "sumber": "v2 (NB07, shadow)"
+  },
+  "penyesuaian_risiko": {
+    "High": "kredit ditunda",
+    "Medium": 0.5
+  },
+  "asumsi": {
+    "margin_kredit": 0.03,
+    "margin_non_kredit": 0.01,
+    "biaya_aksi_Rp_juta": {
+      "S1 Kecil": 0.5,
+      "S2 Menengah": 2.0,
+      "S3 Besar": 5.0
+    },
+    "PD": {
+      "Low": 0.01,
+      "Medium": 0.05,
+      "High": 0.2
+    },
+    "LGD": 0.45,
+    "horizon_tahun": 1
+  },
+  "top_n": 50
+}

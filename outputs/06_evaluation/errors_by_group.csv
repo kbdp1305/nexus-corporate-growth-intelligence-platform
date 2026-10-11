@@ -1,0 +1,19 @@
+nilai,n,pct_salah,biaya_rata2,dimensi
+Aktivitas kesehatan,19,0.2631578947368421,0.3157894736842105,industry
+Angkutan & logistik,17,0.4117647058823529,0.7058823529411765,industry
+Industri kimia,15,0.4,0.5333333333333333,industry
+Industri makanan & minuman,27,0.3333333333333333,0.37037037037037035,industry
+Industri tekstil & pakaian,24,0.25,0.625,industry
+Konstruksi gedung,20,0.3,0.5,industry
+Perdagangan besar,39,0.28205128205128205,0.38461538461538464,industry
+Perdagangan eceran,16,0.25,0.4375,industry
+Real estat,10,0.1,0.1,industry
+Teknologi informasi,13,0.38461538461538464,0.6923076923076923,industry
+Besar,36,0.3611111111111111,0.5555555555555556,size_class_reference
+Kecil,65,0.2153846153846154,0.35384615384615387,size_class_reference
+Menengah,99,0.3333333333333333,0.5050505050505051,size_class_reference
+1,200,0.3,0.465,has_report
+False,194,0.28350515463917525,0.4020618556701031,label_flip
+True,6,0.8333333333333334,2.5,label_flip
+Otomatis,89,0.11235955056179775,0.2247191011235955,keputusan
+Review analis,111,0.45045045045045046,0.6576576576576577,keputusan

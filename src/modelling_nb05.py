@@ -7,8 +7,9 @@ Kelas di modul ini (bukan di notebook) supaya model yang disimpan dengan joblib 
 
 Isi:
 - make_prep            : ColumnTransformer (PeerZScaler di dalam fold + kolom lain diteruskan)
-- RiskModel            : satu pembungkus untuk LR (L2 / elastic net) dan pohon ordinal monoton, dengan bobot seimbang,
-                         tanpa bobot, atau SMOTE (hanya di data latih), plus bobot sampel tambahan (importance weighting)
+- class_sample_weight  : bobot kelas: seimbang, tanpa bobot, seimbang^γ, cost-sensitive (matriks biaya §5.4), atau gabungan
+- RiskModel            : satu pembungkus untuk LR (L2 / elastic net) dan pohon ordinal monoton, dengan skema bobot di atas
+                         atau SMOTE (hanya di data latih), plus bobot sampel tambahan (importance weighting)
 - EnsembleModel        : rata-rata (berbobot) probabilitas beberapa RiskModel
 - PriorTemperatureCalibrator, IsotonicCalibrator, CalibratedModel
 - metrik: bal_logloss, macro_f1, recall_high, brier, ece
@@ -77,10 +78,41 @@ def simple_smote(X, y, k=5, seed=2026):
     return np.vstack(Xs), np.concatenate(ys)
 
 
+# ----------------------------------------------------------------------------- bobot kelas (penanganan tidak seimbang)
+COST_MATRIX = np.array([[0, 1, 2], [3, 0, 1], [10, 5, 0]])   # §5.4: baris = sebenarnya (Low/Medium/High), kolom = prediksi
+WEIGHTINGS = ['balanced', 'none', 'balanced^0.5', 'balanced^1.5', 'cost', 'cost_balanced', 'smote']
+
+
+def class_sample_weight(y, weighting='balanced'):
+    """Bobot sampel per kelas, dinormalisasi ke rata-rata 1 (skala regularisasi tetap sebanding antar-skema).
+    - 'balanced'      : n / (3 · n_k), sama dengan class_weight='balanced'
+    - 'none', 'smote' : semua 1 (SMOTE menyeimbangkan lewat sampel sintetis)
+    - 'balanced^γ'    : (n / (3 · n_k))^γ; γ < 1 lebih lunak, γ > 1 lebih menekankan kelas jarang
+    - 'cost'          : biaya salah klasifikasi terbesar kelas itu (Elkan, 2001): Low 2, Medium 3, High 10
+    - 'cost_balanced' : 'balanced' × 'cost'"""
+    y = np.asarray(y).astype(int)
+    if weighting == 'balanced':
+        return compute_sample_weight('balanced', y)
+    n_k = np.bincount(y, minlength=3).astype(float); bal = len(y) / (3 * np.maximum(n_k, 1))
+    if weighting in ('none', 'smote'):
+        w_k = np.ones(3)
+    elif weighting.startswith('balanced^'):
+        w_k = bal ** float(weighting.split('^')[1])
+    elif weighting == 'cost':
+        w_k = COST_MATRIX.max(1).astype(float)
+    elif weighting == 'cost_balanced':
+        w_k = bal * COST_MATRIX.max(1)
+    else:
+        raise ValueError(f'weighting tidak dikenal: {weighting!r}; pilihan: {WEIGHTINGS} atau balanced^<γ>')
+    w = w_k[y]
+    return w / w.mean()
+
+
 # ----------------------------------------------------------------------------- model
 class RiskModel(BaseEstimator, ClassifierMixin):
     """kind = 'lr' (params: C, l1_ratio) atau base pohon OrdinalMonotone: 'rf' | 'xgb' | 'lgb' | 'hgb_depth' | 'hgb_leaf'.
-    weighting = 'balanced' (bobot kelas seimbang) | 'none' | 'smote' (SMOTE hanya di data latih fold ini).
+    weighting = 'balanced' (bobot kelas seimbang) | 'none' | 'balanced^γ' | 'cost' | 'cost_balanced' (lihat class_sample_weight)
+                | 'smote' (SMOTE hanya di data latih fold ini).
     sample_weight di fit() dikalikan dengan bobot kelas (dipakai untuk importance weighting prospect)."""
 
     def __init__(self, kind='lr', cols=None, params=None, weighting='balanced', seed=2026):
@@ -97,7 +129,7 @@ class RiskModel(BaseEstimator, ClassifierMixin):
         y = np.asarray(y).astype(int)
         self.prep_ = make_prep(self.cols).fit(X)
         Xt = self.prep_.transform(X)
-        w = compute_sample_weight('balanced', y) if self.weighting == 'balanced' else np.ones(len(y))
+        w = class_sample_weight(y, self.weighting)
         if sample_weight is not None: w = w * np.asarray(sample_weight, float)
         if self.weighting == 'smote':
             self.smote_imp_ = SimpleImputer(strategy='median', keep_empty_features=True).fit(Xt)
