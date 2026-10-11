@@ -1,0 +1,79 @@
+lapis,tabel,uji,nilai,target,status,rujukan,tautan
+F1 Verifikasi,8 tabel master,kunci utama unik,semua unik,0 duplikat,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F1 Verifikasi,10 relasi antartabel,foreign key valid,semua valid,0 pelanggaran,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F1 Verifikasi,companies,koordinat di dalam Jabodetabek,0 di luar,0,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F1 Verifikasi,companies,berdiri ≤ 2023 & onboarding ≥ tahun berdiri,0 pelanggaran,0,LOLOS,logika bisnis,
+F1 Verifikasi,financials,aset = utang + ekuitas; aset lancar ≤ aset; laba ≤ omzet,0.0% / 0.0% / 0.0%,0% / 0% / 0%,LOLOS,identitas akuntansi,
+F1 Verifikasi,transactions,DQ disengaja: duplikat & nominal nol,"3,225 (0.30%) / 105","duplikat 0,1–0,6%",LOLOS,datasheet §4,
+F1 Verifikasi,product_holdings,prospect tidak memiliki produk BNI,0 baris,0,LOLOS,logika bisnis,
+F1 Verifikasi,credit_facilities × risk_labels,fasilitas & rating hanya (dan selalu) untuk nasabah kredit,cocok,cocok 1:1,LOLOS,logika bisnis,
+F1 Verifikasi,product_holdings,semua nasabah memiliki Giro (rekening operasional),100%,100%,LOLOS,logika bisnis,
+F1 Verifikasi,transactions,rentang tanggal transaksi,2024-01-01 s.d. 2026-06-30,2024-01-01 s.d. 2026-06-30,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F1 Verifikasi,transactions × relationships,tidak ada transaksi dengan mitra sebelum relasi dimulai,"0 pasangan dari 13,135",0,LOLOS,urutan sebab–akibat,
+F1 Verifikasi,transactions × relationships,pembeli yang keluar tidak membayar lagi setelah bulan keluar,0 transaksi,0,LOLOS,urutan sebab–akibat,
+F1 Verifikasi,product_holdings,produk dibuka antara onboarding dan cutoff,0 pelanggaran,0,LOLOS,urutan sebab–akibat,
+F2 Kewajaran,transactions,Benford digit pertama (MAD),0.0004 (close),"≤ 0,012",LOLOS,Nigrini 2012,https://doi.org/10.1002/9781119203094
+F2 Kewajaran,transactions,ekor tebal nominal: p99 / median,31×,≥ 20×,LOLOS,stylized fact,
+F2 Kewajaran,transactions,puncak Lebaran (indeks inflow 2025-03 / 2026-03),1.17 / 1.24,"> 1,05",LOLOS,BI: pola konsumsi Ramadan–Idulfitri,https://www.google.com/search?q=Survei%20Penjualan%20Eceran%20%28Indeks%20Penjualan%20Riil%29%20Bank%20Indonesia
+F2 Kewajaran,transactions,puncak Desember konstruksi (indeks),1.34,"> 1,10",LOLOS,pola realisasi proyek akhir tahun,
+F2 Kewajaran,transactions,payroll di akhir bulan (tgl ≥ 25),100%,≥ 80%,LOLOS,pola gajian,
+F2 Kewajaran,transactions,THR: payroll Maret vs bulan lain,1.88×,"1,6–2,2×",LOLOS,PP 36/2021 (THR),https://www.google.com/search?q=Peraturan%20Pemerintah%20tentang%20Pengupahan%20%28termasuk%20THR%29%20Republik%20Indonesia
+F2 Kewajaran,transactions,volatilitas inflow menurun dengan ukuran (median CV 2024),Kecil 0.21 > Menengah 0.18 > Besar 0.13,monoton turun,LOLOS,Stanley dkk. 1996,https://doi.org/10.1038/379804a0
+F2 Kewajaran,companies × financials,omzet ~ karyawan (Spearman),0.93,"≥ 0,5",LOLOS,kewajaran,
+F2 Kewajaran,companies × financials,median omzet Kecil < Menengah < Besar (Rp miliar),9 < 35 < 176,monoton,LOLOS,kewajaran,
+F2 Kewajaran,risk_labels,proporsi Low / Medium / High,61% / 25% / 14%,High 8–22%,LOLOS,kewajaran portofolio,
+F2 Kewajaran,relationships,derajat berekor tebal (maks / median),18× (maks 144),≥ 10×,LOLOS,Barabási & Albert 1999,https://doi.org/10.1126/science.286.5439.509
+F2 Kewajaran,relationships,"indeks ekor (Hill, 5% teratas) derajat",α = 2.13,"informasi (jaringan produksi Jepang ±1,3)",info,Fujiwara & Aoyama 2010,https://doi.org/10.1140/epjb/e2010-00275-2
+F2 Kewajaran,relationships,asortativitas derajat,-0.138,< 0 (disasortatif),LOLOS,Newman 2002,https://doi.org/10.1103/PhysRevLett.89.208701
+F2 Kewajaran,relationships,resiprositas (A jual ke B dan B jual ke A),2.4%,< 10%,LOLOS,struktur rantai pasok,
+F2 Kewajaran,relationships,relasi mengikuti rantai nilai (porsi jalur kuat vs acak),74% vs 37%,"≥ 1,5× acak",LOLOS,Tabel Input–Output (BPS),https://www.google.com/search?q=Tabel%20Input%E2%80%93Output%20Indonesia%20Badan%20Pusat%20Statistik
+F2 Kewajaran,relationships,mitra dagang berdekatan (median jarak nyata vs acak),5.1 km vs 14.7 km,"nyata < 0,8 × acak",LOLOS,Bernard dkk. 2019,https://doi.org/10.1086/700764
+F2 Kewajaran,relationships,modularitas Louvain vs graf acak berderajat sama,Q = 0.487 vs 0.289 (8 komunitas),"Q > Q_acak + 0,05",LOLOS,Blondel dkk. 2008; Newman 2006,https://doi.org/10.1073/pnas.0601602103 ; https://doi.org/10.1088/1742-5468/2008/10/P10008
+F3 Kondisi ekstrem,generator,porsi High: boom < normal < krisis,boom 6% < normal 18% < krisis 41%,monoton naik,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F3 Kondisi ekstrem,generator,krisis: DER naik & current ratio turun (median),DER 1.22→1.81; CR 1.41→1.17,DER↑ CR↓,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F3 Kondisi ekstrem,generator,krisis menambah kejadian distress,6.2% → 9.0%,naik,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F3 Kondisi ekstrem,generator,σ faktor tak teramati ↑ → plafon macro-F1 ↓,0.90 > 0.83 > 0.73 > 0.66,monoton turun,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F3 Kondisi ekstrem,generator,skala gravitasi ↑ → jarak mitra ↑ (median km),λ4: 2.6 < λ12: 6.9 < λ40: 9.7,monoton naik,LOLOS,Sargent 2013,https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F3 Kondisi ekstrem,generator,multi-seed (3 seed): plafon macro-F1 stabil,0.824 ± 0.005,"sd ≤ 0,03",LOLOS,Sargent 2013 (validitas internal),https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F3 Kondisi ekstrem,"generator (seed 7, data lengkap)",pola tertanam tetap muncul di seed lain,anchor 2/2 · dosis–respons -20% · pajak telat High/Low 3.3×,"anchor 2/2, dosis ≤ −10 poin, rasio ≥ 2×",LOLOS,Sargent 2013 (validitas internal),https://ideas.repec.org/a/taf/tjsmxx/v7y2013i1p12-24.html
+F4 Sinyal,risk_labels,plafon macro-F1 (oracle: tahu skor laten),0.833,"0,78–0,88",LOLOS,Bayes error,
+F4 Sinyal,risk_labels,"risiko dari laporan keuangan saja (LR, 5-fold)",macro-F1 0.634,"0,50–0,75 (tidak trivial)",LOLOS,Wu & Keogh 2021,https://doi.org/10.1109/TKDE.2021.3112126
+F4 Sinyal,risk_labels,"risiko dari laporan keuangan saja (RF, 5-fold)",macro-F1 0.610,"0,50–0,75 (tidak trivial)",LOLOS,Wu & Keogh 2021,https://doi.org/10.1109/TKDE.2021.3112126
+F4 Sinyal,gt_client_risk,kesalahan rating tercatat,4.4%,2–6%,LOLOS,Northcutt dkk. 2021,https://doi.org/10.1613/jair.1.12125
+F4 Sinyal,financials,laporan hilang MNAR: % hilang High vs Low (prospect),40% vs 9%,High ≥ 2× Low,LOLOS,Rubin 1976,https://doi.org/10.1093/biomet/63.3.581
+F4 Sinyal,companies,prospect vs nasabah: AUC propensity / pMSE,AUC 0.693 / pMSE 0.0244,"AUC 0,60–0,80 (beda wajar)",LOLOS,Woo dkk. 2009; Snoke dkk. 2018,https://doi.org/10.29012/jpc.v1i1.568 ; https://doi.org/10.1111/rssa.12358
+F4 Sinyal,gt_anomaly_events,aturan 1 baris menemukan anomali NAIK (AUC),0.763,"< 0,80",LOLOS,Wu & Keogh 2021,https://doi.org/10.1109/TKDE.2021.3112126
+F4 Sinyal,gt_anomaly_events,aturan 1 baris menemukan anomali TURUN (AUC),0.780,"< 0,80",LOLOS,Wu & Keogh 2021,https://doi.org/10.1109/TKDE.2021.3112126
+F4 Sinyal,gt_anomaly_events,jenis kejadian,"expansion 330, spike 198, contagion 142, distress 125, early_warning 125, wallet_erosion 115, buyer_exit 95",≥ 6 jenis,LOLOS,Why Now,
+F4 Sinyal,outcome,tingkat adopsi produk Jul–Sep,10.6%,8–18%,LOLOS,kewajaran,
+F4 Sinyal,outcome × gt_product_need,adopsi bila butuh vs tidak,42.6% vs 5.8%,lift ≥ 3×,LOLOS,konsistensi kausal,
+F4 Sinyal,product_holdings,produk dimiliki tanpa kebutuhan,3.9%,≤ 5%,LOLOS,konsistensi kausal,
+F4 Sinyal,rm_action_log × holdings,konversi RM tercatat sebagai produk baru (bulan sama),100%,100%,LOLOS,konsistensi kausal,
+F4 Sinyal,transactions × relationships,counterparty transaksi ada di jaringan,100%,≥ 95%,LOLOS,konsistensi kausal,
+F4 Sinyal,transactions,payroll rutin (≥ 27 dari 30 bulan),100% nasabah,≥ 95%,LOLOS,pola gajian,
+F4 Sinyal,rm_visit_notes,catatan dengan kalimat negasi (spesifikasi 40%),46% (n=450),40% ± 3 SE (33%–47%),LOLOS,verifikasi spesifikasi,
+F4 Sinyal,rm_visit_notes,baseline kata kunci mengekstrak isu (F1),P 0.61 · R 0.83 · F1 0.70,"0,40–0,85 (ada ruang untuk LLM)",LOLOS,ruang perbaikan GenAI,
+F4 Sinyal,geography × branches,kecamatan penetrasi terendah tanpa cabang,75% dari 8 terendah,≥ 50%,LOLOS,white-space tertanam,
+F4b Pemulihan pola,financials,DER relatif-peer lebih informatif daripada DER mentah (AUC High),0.827 → 0.888,"naik ≥ 0,03",LOLOS,pola level struktural,
+F4b Pemulihan pola,transactions,% pajak telat (6 bln): High vs Low,35% vs 8%,High ≥ 2× Low,LOLOS,early-warning system,
+F4b Pemulihan pola,transactions,% payroll ≥ tgl 28 (12 bln): High vs Low,40% vs 14%,High ≥ 2× Low,LOLOS,early-warning system,
+F4b Pemulihan pola,transactions (verifikasi GT),event study distress: t−3…t−1 vs baseline,tgl payroll +1.64 hari; inflow +1%,"payroll bergeser > 0,5 hari, inflow belum turun > 5%",LOLOS,MacKinlay 1997 (event study),https://www.jstor.org/stable/2729691
+F4b Pemulihan pola,relationships,% High: pembeli terbesar < 20% vs ≥ 50%,8% vs 27%,naik ≥ 2×,LOLOS,risiko konsentrasi,
+F4b Pemulihan pola,companies × transactions (verifikasi GT),anchor bermasalah terdeteksi dari inflow,"['C0299', 'C0409'] — cocok 2/2",2/2,LOLOS,efek berantai,
+F4b Pemulihan pola,relationships × transactions,dosis–respons: Δ inflow pemasok terpapar ≥ 20% vs tidak terpapar,-18% vs +8% (n=47),selisih ≤ −10 poin,LOLOS,Battiston dkk. 2012,https://doi.org/10.1038/srep00541
+F4b Pemulihan pola,transactions × financials (verifikasi GT),inflow BNI turun > 25% & omzet naik → memang pindah bank,67% dari 66 nasabah,≥ 50%,LOLOS,erosi wallet share,
+F4b Pemulihan pola,companies × risk_labels,% High: punya rekan grup High vs tidak,11% vs 11% (n=93),informasi (sampel kecil),info,Khanna & Yafeh 2007,https://doi.org/10.1257/jel.45.2.331
+F4b Pemulihan pola,gt_company_latent (verifikasi GT),korelasi kesehatan dalam grup (ICC kasar),0.41,"0,15–0,50",LOLOS,Khanna & Yafeh 2007,https://doi.org/10.1257/jel.45.2.331
+F5 Kebocoran,7 tabel fitur,tidak ada data setelah cutoff 30 Jun 2026,semua ≤ cutoff,semua ≤ cutoff,LOLOS,Kaufman dkk. 2012,https://doi.org/10.1145/2382577.2382579
+F5 Kebocoran,risk_labels,tanggal label = cutoff,2026-06-30,2026-06-30,LOLOS,Kaufman dkk. 2012,https://doi.org/10.1145/2382577.2382579
+F5 Kebocoran,outcome_product_adoption,outcome terjadi setelah cutoff (Jul–Sep 2026),observation_end 2026-06 → kolom adopted_jul_sep_2026,setelah cutoff,LOLOS,Kaufman dkk. 2012,https://doi.org/10.1145/2382577.2382579
+F5 Kebocoran,semua tabel,kolom ground truth tidak muncul di tabel teramati,tidak ada,tidak ada,LOLOS,Kaufman dkk. 2012,https://doi.org/10.1145/2382577.2382579
+F5 Kebocoran,pemindaian kolom,AUC tunggal tertinggi di antara kolom berperan fitur,0.815 (ebit_idr_bn),"< 0,90",LOLOS,Kaufman dkk. 2012,https://doi.org/10.1145/2382577.2382579
+F5 Kebocoran,credit_facilities,kolom proxy-label memang sangat prediktif → dilarang,"collectibility 0.85, max_dpd_12m 0.83, watchlist_flag 0.69, restructuring_flag 0.69",ditandai di kamus data,info,Kaufman dkk. 2012,https://doi.org/10.1145/2382577.2382579
+F5 Kebocoran,companies,"nomor urut company_id tidak terkait label (AUC, uji Mann–Whitney)",0.551 (z = 1.93),"|z| < 2,58 (p > 0,01)",LOLOS,Kaufman dkk. 2012; Hanley & McNeil 1982,https://doi.org/10.1145/2382577.2382579 ; https://doi.org/10.1148/radiology.143.1.7063747
+F5 Kebocoran,risk_labels,uji permutasi label (30×): F1 asli vs label acak,0.634 vs 0.255 ± 0.004; p = 0.032,"acak ≈ 0,33; p < 0,05",LOLOS,Ojala & Garriga 2010,https://jmlr.org/papers/v11/ojala10a.html
+F6 Privasi,semua tabel,tidak ada kolom data pribadi (NIK/NPWP/telepon/email/alamat),tidak ada,tidak ada,LOLOS,UU 27/2022 PDP,https://www.google.com/search?q=Undang-Undang%20tentang%20Pelindungan%20Data%20Pribadi%20Republik%20Indonesia
+F6 Privasi,"companies, entities, branches","semua nama entitas berakhiran ""(dummy)""",ya,ya,LOLOS,Jordon dkk. 2022,https://arxiv.org/abs/2205.03257
+F6 Privasi,companies,koordinat = pusat kecamatan + derau (bukan alamat),median 1.6 km dari pusat,informasi,info,Jordon dkk. 2022,https://arxiv.org/abs/2205.03257
+F7 Dokumentasi,DATASHEET.md,"datasheet tersedia (motivasi, komposisi, proses, aturan, keterbatasan, validasi)",7 KB,ada,LOLOS,Gebru dkk. 2021,https://doi.org/10.1145/3458723
+F7 Dokumentasi,data_dictionary.csv,kamus data mencakup semua tabel & memberi peran tiap kolom,213 kolom · 8 peran,semua tabel,LOLOS,Gebru dkk. 2021,https://doi.org/10.1145/3458723

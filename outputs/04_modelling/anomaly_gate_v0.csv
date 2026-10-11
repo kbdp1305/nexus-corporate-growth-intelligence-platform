@@ -1,0 +1,4 @@
+kriteria,champion,challenger,lolos
+presisi top-k ≥ champion,0.30416666666666664,0.26666666666666666,❌
+lead median distress (bln) tidak memburuk,1.0,1.0,✅
+% distress terdeteksi ≥ 1 bln lebih awal (toleransi −2 poin),0.7384615384615385,0.5510204081632653,❌

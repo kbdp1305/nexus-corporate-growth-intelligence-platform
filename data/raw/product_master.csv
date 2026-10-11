@@ -1,0 +1,9 @@
+product_id,product_name,product_category,target_segment,key_benefit,eligibility,pricing_note,owner_department
+P01,Giro,Funding,semua korporasi,"rekening operasional, cek/bilyet giro, terhubung cash management",badan usaha berizin,biaya administrasi bulanan,Funding
+P02,Deposito,Funding,korporasi dengan kas berlebih,imbal hasil tetap untuk dana mengendap,saldo minimal sesuai ketentuan,suku bunga negosiasi untuk nominal besar,Treasury / Funding
+P03,Virtual Account,Transactional,usaha dengan banyak pelanggan/pembayar,"rekonsiliasi otomatis penerimaan, mempercepat penagihan",nasabah giro BNI,biaya per transaksi,Transaction Banking
+P04,Cash Management,Transactional,korporasi menengah–besar,"kontrol likuiditas, pembayaran massal, laporan real-time",nasabah giro BNI,paket bulanan,Transaction Banking
+P05,Payroll,Transactional,perusahaan dengan banyak karyawan,"penggajian massal, rekening karyawan",nasabah giro BNI,gratis/negosiasi per jumlah karyawan,Transaction Banking (Payroll)
+P06,Kredit Modal Kerja,Lending,usaha dengan siklus kas/proyek,"membiayai persediaan, piutang, proyek",analisis kredit & agunan,suku bunga berdasarkan risiko — keputusan analis,Kredit Komersial
+P07,Kredit Investasi,Lending,usaha yang ekspansi/beli aset,"membiayai mesin, gudang, armada","analisis kredit, studi kelayakan",suku bunga berdasarkan risiko — keputusan analis,Kredit Komersial + Corporate Banking
+P08,Trade Finance,Trade,importir/eksportir,"L/C, SKBDN, lindung nilai valas",dokumen perdagangan,fee per dokumen,Trade Finance & Treasury

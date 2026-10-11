@@ -1,0 +1,41 @@
+location_id,province,city,district,centroid_lat,centroid_lon,area_km2,total_business_count,regional_gdp_idr_bn,poi_industrial_count,corporate_count
+L001,DKI Jakarta,Jakarta Pusat,Gambir,-6.19983,106.83722,21.9,2265,37308.0,2,498
+L002,DKI Jakarta,Jakarta Pusat,Tanah Abang,-6.18669,106.82322,38.9,3162,52339.0,4,773
+L003,DKI Jakarta,Jakarta Pusat,Menteng,-6.16629,106.82609,13.7,796,11403.0,1,187
+L004,DKI Jakarta,Jakarta Pusat,Senen,-6.16395,106.88474,12.6,467,7701.0,1,126
+L005,DKI Jakarta,Jakarta Pusat,Kemayoran,-6.20924,106.87054,17.7,1754,28565.0,2,377
+L006,DKI Jakarta,Jakarta Pusat,Sawah Besar,-6.16734,106.8563,14.9,884,14090.0,1,233
+L007,DKI Jakarta,Jakarta Selatan,Kebayoran Baru,-6.25515,106.83159,30.9,3639,69596.0,2,735
+L008,DKI Jakarta,Jakarta Selatan,Setiabudi,-6.24932,106.79009,25.6,776,11153.0,0,161
+L009,DKI Jakarta,Jakarta Selatan,Tebet,-6.27726,106.81851,17.1,1954,35187.0,2,470
+L010,DKI Jakarta,Jakarta Selatan,Cilandak,-6.29421,106.76707,16.7,1690,34702.0,5,400
+L011,DKI Jakarta,Jakarta Selatan,Pasar Minggu,-6.21364,106.79251,16.1,1326,23921.0,1,245
+L012,DKI Jakarta,Jakarta Selatan,Mampang Prapatan,-6.27443,106.85582,22.7,1343,19884.0,3,305
+L013,DKI Jakarta,Jakarta Selatan,Pancoran,-6.30085,106.79008,27.7,1799,25662.0,2,380
+L014,DKI Jakarta,Jakarta Selatan,Kebayoran Lama,-6.30204,106.81352,26.9,1734,30410.0,1,382
+L015,DKI Jakarta,Jakarta Utara,Penjaringan,-6.15617,106.82128,27.4,4236,90358.0,4,817
+L016,DKI Jakarta,Jakarta Utara,Tanjung Priok,-6.1013,106.85594,13.9,1309,21630.0,5,347
+L017,DKI Jakarta,Jakarta Utara,Koja,-6.11848,106.91356,22.1,12203,229179.0,10,2584
+L018,DKI Jakarta,Jakarta Utara,Cilincing,-6.07734,106.9054,38.8,5493,86133.0,3,1249
+L019,DKI Jakarta,Jakarta Utara,Kelapa Gading,-6.12457,106.85153,25.9,5230,104712.0,6,952
+L020,DKI Jakarta,Jakarta Utara,Pademangan,-6.16566,106.8664,18.4,1457,28184.0,3,371
+L021,DKI Jakarta,Jakarta Barat,Grogol Petamburan,-6.19355,106.82991,25.3,967,18327.0,0,177
+L022,DKI Jakarta,Jakarta Barat,Kebon Jeruk,-6.13512,106.76064,33.6,3288,51322.0,4,775
+L023,DKI Jakarta,Jakarta Barat,Cengkareng,-6.16892,106.80768,8.7,471,8855.0,1,124
+L024,DKI Jakarta,Jakarta Barat,Kalideres,-6.14225,106.77266,27.8,2155,40885.0,2,471
+L025,DKI Jakarta,Jakarta Barat,Tambora,-6.14166,106.76672,28.2,1667,26764.0,2,399
+L026,DKI Jakarta,Jakarta Barat,Palmerah,-6.20648,106.76112,35.9,2143,40102.0,2,415
+L027,DKI Jakarta,Jakarta Timur,Cakung,-6.2291,106.90473,37.3,13700,224174.0,10,2821
+L028,DKI Jakarta,Jakarta Timur,Pulo Gadung,-6.24653,106.88142,25.4,13915,207887.0,9,2650
+L029,DKI Jakarta,Jakarta Timur,Jatinegara,-6.23535,106.94869,8.6,1631,25840.0,7,404
+L030,DKI Jakarta,Jakarta Timur,Duren Sawit,-6.25806,106.86639,39.6,5577,99029.0,5,1248
+L031,DKI Jakarta,Jakarta Timur,Kramat Jati,-6.22984,106.90519,7.6,466,8196.0,3,115
+L032,DKI Jakarta,Jakarta Timur,Pasar Rebo,-6.27414,106.84512,20.0,3208,53468.0,9,747
+L033,Jawa Barat,Kota Bekasi,Bekasi Barat,-6.25241,106.98266,20.6,3091,62353.0,5,584
+L034,Jawa Barat,Kota Bekasi,Bekasi Timur,-6.23569,106.99172,16.9,1551,22431.0,3,406
+L035,Jawa Barat,Kota Bekasi,Bekasi Utara,-6.21761,106.98639,36.1,4773,86708.0,3,921
+L036,Jawa Barat,Kota Bekasi,Medan Satria,-6.21289,107.03807,19.0,7583,115579.0,10,1782
+L037,Banten,Kota Tangerang,Tangerang,-6.17782,106.65617,21.8,5019,106815.0,8,982
+L038,Banten,Kota Tangerang,Karawaci,-6.16857,106.64139,30.8,2052,33596.0,3,499
+L039,Banten,Kota Tangerang,Cipondoh,-6.25251,106.61809,23.5,7107,125343.0,8,1373
+L040,Banten,Kota Tangerang,Batuceper,-6.16094,106.65712,22.5,6005,128727.0,5,1363

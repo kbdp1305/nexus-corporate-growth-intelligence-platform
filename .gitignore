@@ -1,0 +1,16 @@
+# Environment & secrets
+.venv/
+.env
+__pycache__/
+*.py[oc]
+.ipynb_checkpoints/
+
+# Dataset hasil generator (bisa dibangkitkan ulang: notebook 01 atau `python src/egi_generator.py`).
+# transactions.csv ±104 MB > batas file GitHub 100 MB. Paket asli tersimpan di data/archive/.
+data/raw/transactions.csv
+
+# Model terlatih (biner besar; dibuat ulang dengan menjalankan notebook 04). manifest.json & model_files.csv tetap masuk git.
+models/**/*.joblib
+
+# Paket asli per notebook (duplikat isi repo; simpan lokal / Drive)
+data/archive/*.zip

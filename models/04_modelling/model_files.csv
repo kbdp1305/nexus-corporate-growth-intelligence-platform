@@ -1,0 +1,19 @@
+kode,model,feature_set,n_fitur,status,file,ukuran_MB
+M0,Dummy (kelas mayoritas),set_core,40,lantai,models/04_modelling/M0__set_core.joblib,0.01
+M0,Dummy (kelas mayoritas),set_noncredit,38,lantai,models/04_modelling/M0__set_noncredit.joblib,0.01
+M0,Dummy (kelas mayoritas),set_prospect,23,lantai,models/04_modelling/M0__set_prospect.joblib,0.01
+M1,Logistic regression (scorecard),set_core,40,champion,models/04_modelling/M1__set_core.joblib,0.01
+M1,Logistic regression (scorecard),set_noncredit,38,champion,models/04_modelling/M1__set_noncredit.joblib,0.01
+M1,Logistic regression (scorecard),set_prospect,23,champion,models/04_modelling/M1__set_prospect.joblib,0.01
+M2,Random Forest ordinal monoton,set_core,40,challenger (shadow),models/04_modelling/M2__set_core.joblib,1.75
+M2,Random Forest ordinal monoton,set_noncredit,38,challenger (shadow),models/04_modelling/M2__set_noncredit.joblib,1.68
+M2,Random Forest ordinal monoton,set_prospect,23,challenger (shadow),models/04_modelling/M2__set_prospect.joblib,1.59
+M3,XGBoost ordinal monoton,set_core,40,challenger (shadow),models/04_modelling/M3__set_core.joblib,0.13
+M3,XGBoost ordinal monoton,set_noncredit,38,challenger (shadow),models/04_modelling/M3__set_noncredit.joblib,0.13
+M3,XGBoost ordinal monoton,set_prospect,23,challenger (shadow),models/04_modelling/M3__set_prospect.joblib,0.12
+M4,LightGBM ordinal monoton,set_core,40,challenger (shadow),models/04_modelling/M4__set_core.joblib,0.35
+M4,LightGBM ordinal monoton,set_noncredit,38,challenger (shadow),models/04_modelling/M4__set_noncredit.joblib,0.34
+M4,LightGBM ordinal monoton,set_prospect,23,challenger (shadow),models/04_modelling/M4__set_prospect.joblib,0.33
+M3x,Boosting multikelas TANPA batasan (pembanding),set_core,40,pembanding (tanpa batasan monoton),models/04_modelling/M3x__set_core.joblib,0.23
+M3x,Boosting multikelas TANPA batasan (pembanding),set_noncredit,38,pembanding (tanpa batasan monoton),models/04_modelling/M3x__set_noncredit.joblib,0.22
+M3x,Boosting multikelas TANPA batasan (pembanding),set_prospect,23,pembanding (tanpa batasan monoton),models/04_modelling/M3x__set_prospect.joblib,0.2

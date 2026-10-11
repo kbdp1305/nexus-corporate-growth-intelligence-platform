@@ -1,0 +1,2001 @@
+company_id,customer_type,risk_score_latent,unobserved_factor,risk_score_realized,true_risk_class,observed_label,label_flipped,oracle_class
+C0001,Existing credit client,0.1227,-0.1005,0.0222,Low,Low,False,Low
+C0002,Existing non-credit client,-0.3655,0.3691,0.0036,Low,,False,Low
+C0003,Prospect,-0.6388,0.2611,-0.3777,Low,,False,Low
+C0004,Existing non-credit client,3.464,-0.3989,3.065,High,,False,High
+C0005,Existing credit client,-0.44,-0.1218,-0.5617,Low,Low,False,Low
+C0006,Existing credit client,-0.3054,0.0479,-0.2575,Low,Low,False,Low
+C0007,Existing non-credit client,0.2947,-0.1529,0.1418,Low,,False,Low
+C0008,Existing non-credit client,0.866,0.1444,1.0104,Medium,,False,Medium
+C0009,Existing credit client,-2.2656,-0.0537,-2.3193,Low,Low,False,Low
+C0010,Existing credit client,2.9627,0.1476,3.1103,High,High,False,High
+C0011,Existing credit client,0.8749,-0.1599,0.715,Low,Low,False,Medium
+C0012,Existing credit client,0.7612,0.2848,1.046,Medium,High,True,Medium
+C0013,Prospect,0.8168,0.0777,0.8945,Medium,,False,Medium
+C0014,Existing credit client,0.8381,0.1747,1.0128,Medium,Medium,False,Medium
+C0015,Existing credit client,-0.1486,-0.1399,-0.2884,Low,Low,False,Low
+C0016,Existing non-credit client,-0.2049,-0.0224,-0.2273,Low,,False,Low
+C0017,Prospect,1.5536,0.0736,1.6272,High,,False,Medium
+C0018,Existing credit client,-0.8174,-0.0669,-0.8843,Low,Low,False,Low
+C0019,Existing credit client,-1.1086,-0.2981,-1.4067,Low,Low,False,Low
+C0020,Prospect,0.3128,0.0785,0.3913,Low,,False,Low
+C0021,Existing credit client,-0.4526,-0.0161,-0.4687,Low,Low,False,Low
+C0022,Prospect,1.4726,0.092,1.5646,Medium,,False,Medium
+C0023,Existing credit client,1.5399,0.2775,1.8174,High,High,False,Medium
+C0024,Existing credit client,0.0079,0.2116,0.2195,Low,Low,False,Low
+C0025,Existing non-credit client,0.1571,-0.0454,0.1117,Low,,False,Low
+C0026,Existing credit client,0.6038,-0.154,0.4499,Low,Low,False,Low
+C0027,Existing credit client,0.7698,0.0123,0.7821,Medium,Medium,False,Medium
+C0028,Existing credit client,0.6713,-0.0137,0.6577,Low,Low,False,Low
+C0029,Existing credit client,1.052,0.0668,1.1187,Medium,Medium,False,Medium
+C0030,Existing credit client,1.2057,0.1185,1.3241,Medium,Medium,False,Medium
+C0031,Existing non-credit client,-0.0024,0.0095,0.0071,Low,,False,Low
+C0032,Prospect,-0.4785,-0.1057,-0.5842,Low,,False,Low
+C0033,Existing credit client,0.8382,0.0947,0.9329,Medium,Medium,False,Medium
+C0034,Existing credit client,1.6013,0.187,1.7883,High,High,False,Medium
+C0035,Existing credit client,0.2847,-0.1388,0.1459,Low,Low,False,Low
+C0036,Existing credit client,3.1893,0.1483,3.3376,High,High,False,High
+C0037,Existing non-credit client,0.953,0.0926,1.0456,Medium,,False,Medium
+C0038,Existing credit client,-0.6123,-0.2745,-0.8868,Low,Low,False,Low
+C0039,Prospect,1.3894,0.1408,1.5302,Medium,,False,Medium
+C0040,Existing credit client,0.1589,0.5522,0.7111,Low,Low,False,Low
+C0041,Existing credit client,-0.2562,0.3727,0.1166,Low,Low,False,Low
+C0042,Prospect,2.2004,-0.5583,1.642,High,,False,High
+C0043,Existing non-credit client,-0.8087,-0.0439,-0.8526,Low,,False,Low
+C0044,Prospect,1.7821,-0.2773,1.5048,Medium,,False,High
+C0045,Existing non-credit client,-0.043,-0.018,-0.061,Low,,False,Low
+C0046,Prospect,1.7259,0.4487,2.1746,High,,False,High
+C0047,Prospect,1.4788,-0.2005,1.2783,Medium,,False,Medium
+C0048,Existing credit client,0.804,-0.2563,0.5478,Low,Low,False,Medium
+C0049,Existing credit client,-1.5523,0.4654,-1.0869,Low,Low,False,Low
+C0050,Existing credit client,-0.2792,0.0172,-0.262,Low,Low,False,Low
+C0051,Existing credit client,1.0917,-0.1844,0.9073,Medium,Medium,False,Medium
+C0052,Existing non-credit client,1.7346,0.0064,1.741,High,,False,High
+C0053,Existing credit client,0.6727,0.1358,0.8085,Medium,Medium,False,Low
+C0054,Prospect,-0.3301,-0.2809,-0.611,Low,,False,Low
+C0055,Existing credit client,-0.4048,0.1159,-0.2889,Low,Low,False,Low
+C0056,Existing credit client,1.4197,0.3972,1.8169,High,High,False,Medium
+C0057,Existing non-credit client,0.8636,0.1183,0.9819,Medium,,False,Medium
+C0058,Prospect,1.1165,-0.2449,0.8716,Medium,,False,Medium
+C0059,Prospect,-0.1397,0.1696,0.0298,Low,,False,Low
+C0060,Existing non-credit client,1.2916,0.2669,1.5585,Medium,,False,Medium
+C0061,Existing credit client,0.6407,0.5181,1.1588,Medium,Medium,False,Low
+C0062,Prospect,1.0737,-0.2178,0.8559,Medium,,False,Medium
+C0063,Existing credit client,-1.7412,0.3567,-1.3845,Low,Low,False,Low
+C0064,Existing credit client,-0.1748,0.1009,-0.0739,Low,Low,False,Low
+C0065,Prospect,-0.5555,0.2584,-0.2971,Low,,False,Low
+C0066,Prospect,0.7258,-0.0556,0.6703,Low,,False,Low
+C0067,Existing non-credit client,0.5189,-0.3162,0.2028,Low,,False,Low
+C0068,Existing non-credit client,-0.1308,0.0781,-0.0527,Low,,False,Low
+C0069,Existing credit client,0.7715,-0.0785,0.693,Low,Low,False,Medium
+C0070,Existing non-credit client,-0.0802,-0.2994,-0.3796,Low,,False,Low
+C0071,Existing non-credit client,1.0118,0.4594,1.4712,Medium,,False,Medium
+C0072,Existing credit client,2.2958,-0.057,2.2388,High,High,False,High
+C0073,Existing credit client,-1.2044,0.6237,-0.5807,Low,Low,False,Low
+C0074,Existing non-credit client,1.5729,-0.0577,1.5151,Medium,,False,Medium
+C0075,Existing credit client,-0.8068,-0.3745,-1.1813,Low,Low,False,Low
+C0076,Existing credit client,0.7,0.2881,0.9881,Medium,Medium,False,Low
+C0077,Prospect,0.839,-0.0695,0.7695,Medium,,False,Medium
+C0078,Existing credit client,1.8856,0.0334,1.919,High,High,False,High
+C0079,Existing credit client,0.2108,0.2112,0.422,Low,Low,False,Low
+C0080,Existing credit client,0.3797,-0.1551,0.2246,Low,Low,False,Low
+C0081,Prospect,0.5169,0.1897,0.7066,Low,,False,Low
+C0082,Prospect,1.2071,0.273,1.4801,Medium,,False,Medium
+C0083,Prospect,2.074,-0.1433,1.9307,High,,False,High
+C0084,Prospect,1.6562,0.0545,1.7107,High,,False,High
+C0085,Existing non-credit client,0.374,0.1061,0.4802,Low,,False,Low
+C0086,Prospect,0.6865,-0.4129,0.2736,Low,,False,Low
+C0087,Existing non-credit client,2.4282,0.0581,2.4863,High,,False,High
+C0088,Existing non-credit client,1.9129,0.0678,1.9807,High,,False,High
+C0089,Prospect,2.0629,-0.1798,1.8832,High,,False,High
+C0090,Existing credit client,-0.7014,-0.007,-0.7084,Low,Low,False,Low
+C0091,Existing non-credit client,1.1513,-0.2742,0.8771,Medium,,False,Medium
+C0092,Prospect,1.1092,-0.0663,1.043,Medium,,False,Medium
+C0093,Existing non-credit client,0.1632,-0.3701,-0.2068,Low,,False,Low
+C0094,Existing credit client,-0.7994,-0.528,-1.3275,Low,Medium,True,Low
+C0095,Prospect,2.738,0.3368,3.0749,High,,False,High
+C0096,Existing non-credit client,-0.0647,-0.1933,-0.2581,Low,,False,Low
+C0097,Existing credit client,1.3213,-0.275,1.0463,Medium,Medium,False,Medium
+C0098,Existing credit client,0.2759,0.1559,0.4318,Low,Low,False,Low
+C0099,Existing credit client,-2.2284,-0.2653,-2.4937,Low,Medium,True,Low
+C0100,Existing non-credit client,1.3833,0.1366,1.5199,Medium,,False,Medium
+C0101,Existing credit client,0.2882,-0.0035,0.2847,Low,Medium,True,Low
+C0102,Existing credit client,-0.5612,-0.0514,-0.6126,Low,Low,False,Low
+C0103,Existing credit client,-0.2244,0.2429,0.0185,Low,Low,False,Low
+C0104,Existing non-credit client,-0.0896,-0.1852,-0.2748,Low,,False,Low
+C0105,Prospect,-0.889,0.1418,-0.7472,Low,,False,Low
+C0106,Existing credit client,1.1631,-0.4449,0.7182,Low,Low,False,Medium
+C0107,Existing credit client,2.0402,-0.0265,2.0137,High,High,False,High
+C0108,Prospect,-0.8196,-0.1038,-0.9234,Low,,False,Low
+C0109,Existing non-credit client,1.8368,-0.3807,1.4561,Medium,,False,High
+C0110,Prospect,0.7697,-0.0653,0.7044,Low,,False,Medium
+C0111,Prospect,2.5046,-0.0876,2.417,High,,False,High
+C0112,Existing non-credit client,0.5796,0.1053,0.6849,Low,,False,Low
+C0113,Existing credit client,-1.0397,-0.0114,-1.0511,Low,Low,False,Low
+C0114,Existing non-credit client,2.048,0.0967,2.1448,High,,False,High
+C0115,Existing credit client,0.3046,0.1516,0.4562,Low,Low,False,Low
+C0116,Existing credit client,2.1136,0.7567,2.8702,High,High,False,High
+C0117,Prospect,0.8143,0.2923,1.1066,Medium,,False,Medium
+C0118,Existing credit client,0.7943,0.0431,0.8374,Medium,Medium,False,Medium
+C0119,Prospect,1.8294,-0.1827,1.6467,High,,False,High
+C0120,Existing credit client,0.3892,-0.0237,0.3655,Low,Low,False,Low
+C0121,Prospect,2.053,-0.2234,1.8296,High,,False,High
+C0122,Prospect,0.467,-0.09,0.3771,Low,,False,Low
+C0123,Existing credit client,0.4336,-0.0196,0.414,Low,Medium,True,Low
+C0124,Existing credit client,0.9409,0.0327,0.9736,Medium,Medium,False,Medium
+C0125,Existing credit client,0.317,-0.2435,0.0736,Low,Low,False,Low
+C0126,Existing credit client,-0.8654,-0.3052,-1.1706,Low,Low,False,Low
+C0127,Prospect,2.4333,0.2626,2.6959,High,,False,High
+C0128,Existing credit client,-1.0497,0.3997,-0.65,Low,Low,False,Low
+C0129,Existing non-credit client,1.8333,0.3082,2.1415,High,,False,High
+C0130,Prospect,2.3302,0.036,2.3662,High,,False,High
+C0131,Existing non-credit client,1.1563,0.4479,1.6042,Medium,,False,Medium
+C0132,Existing credit client,-0.6345,-0.2064,-0.8409,Low,Low,False,Low
+C0133,Existing credit client,3.3877,-0.0671,3.3207,High,High,False,High
+C0134,Existing credit client,1.7963,0.0473,1.8436,High,High,False,High
+C0135,Existing credit client,-0.8434,0.0628,-0.7807,Low,Low,False,Low
+C0136,Existing non-credit client,0.4711,0.6451,1.1162,Medium,,False,Low
+C0137,Prospect,0.0195,0.02,0.0396,Low,,False,Low
+C0138,Existing non-credit client,-0.7082,0.4215,-0.2868,Low,,False,Low
+C0139,Existing credit client,1.5892,-0.2429,1.3462,Medium,Medium,False,Medium
+C0140,Prospect,0.3381,0.09,0.4281,Low,,False,Low
+C0141,Existing credit client,1.8744,0.0231,1.8976,High,High,False,High
+C0142,Existing credit client,0.5562,0.2385,0.7947,Medium,Medium,False,Low
+C0143,Existing credit client,1.8478,-0.0433,1.8045,High,High,False,High
+C0144,Existing credit client,-0.4008,0.0513,-0.3495,Low,Low,False,Low
+C0145,Existing credit client,-0.7214,0.2913,-0.43,Low,Low,False,Low
+C0146,Prospect,1.3924,0.1596,1.552,Medium,,False,Medium
+C0147,Existing credit client,2.7309,0.2032,2.9341,High,High,False,High
+C0148,Existing credit client,-0.3599,0.0127,-0.3472,Low,Low,False,Low
+C0149,Existing credit client,0.8436,0.1579,1.0015,Medium,Medium,False,Medium
+C0150,Prospect,0.8134,0.0574,0.8708,Medium,,False,Medium
+C0151,Prospect,0.945,0.1695,1.1145,Medium,,False,Medium
+C0152,Prospect,0.8932,0.1363,1.0296,Medium,,False,Medium
+C0153,Existing credit client,0.9468,-0.2874,0.6595,Low,Medium,True,Medium
+C0154,Prospect,1.3457,-0.1028,1.2429,Medium,,False,Medium
+C0155,Existing credit client,-0.2414,0.1348,-0.1065,Low,Low,False,Low
+C0156,Prospect,1.0858,0.0018,1.0876,Medium,,False,Medium
+C0157,Existing credit client,0.4942,0.5178,1.0119,Medium,Medium,False,Low
+C0158,Existing credit client,-0.3537,-0.2621,-0.6158,Low,Low,False,Low
+C0159,Existing non-credit client,-0.844,0.2738,-0.5702,Low,,False,Low
+C0160,Existing credit client,-0.7772,-0.0798,-0.8571,Low,Low,False,Low
+C0161,Existing credit client,0.1021,0.271,0.3731,Low,Low,False,Low
+C0162,Prospect,2.9425,-0.3546,2.5879,High,,False,High
+C0163,Existing credit client,-0.0434,-0.0267,-0.0701,Low,Low,False,Low
+C0164,Existing credit client,-1.5622,-0.3534,-1.9156,Low,Low,False,Low
+C0165,Prospect,1.3164,-0.0632,1.2531,Medium,,False,Medium
+C0166,Existing credit client,-0.9639,0.2774,-0.6865,Low,Low,False,Low
+C0167,Existing non-credit client,1.8015,-0.21,1.5915,Medium,,False,High
+C0168,Prospect,0.3453,0.2668,0.612,Low,,False,Low
+C0169,Existing non-credit client,-0.9593,-0.1246,-1.0839,Low,,False,Low
+C0170,Existing credit client,-0.796,0.2024,-0.5936,Low,Low,False,Low
+C0171,Prospect,-0.0125,0.1349,0.1224,Low,,False,Low
+C0172,Existing non-credit client,0.4863,-0.1129,0.3734,Low,,False,Low
+C0173,Prospect,-1.1035,0.1532,-0.9503,Low,,False,Low
+C0174,Existing non-credit client,0.4806,0.1341,0.6147,Low,,False,Low
+C0175,Prospect,1.6702,0.0736,1.7438,High,,False,High
+C0176,Existing credit client,0.3327,0.0437,0.3764,Low,Low,False,Low
+C0177,Prospect,-0.4085,0.0444,-0.3641,Low,,False,Low
+C0178,Existing non-credit client,0.5186,0.3551,0.8737,Medium,,False,Low
+C0179,Prospect,0.0607,-0.3458,-0.2851,Low,,False,Low
+C0180,Prospect,0.0808,0.0062,0.087,Low,,False,Low
+C0181,Existing credit client,-1.1064,-0.031,-1.1374,Low,Low,False,Low
+C0182,Prospect,0.9061,0.3009,1.207,Medium,,False,Medium
+C0183,Existing credit client,-0.8896,0.09,-0.7996,Low,Low,False,Low
+C0184,Prospect,2.0903,0.2795,2.3698,High,,False,High
+C0185,Prospect,0.9172,-0.1146,0.8025,Medium,,False,Medium
+C0186,Prospect,-0.1412,0.2113,0.0701,Low,,False,Low
+C0187,Existing non-credit client,-1.1026,0.3073,-0.7953,Low,,False,Low
+C0188,Existing credit client,-0.547,-0.2736,-0.8206,Low,Low,False,Low
+C0189,Existing credit client,-1.6134,0.1245,-1.4889,Low,Low,False,Low
+C0190,Existing credit client,1.7385,-0.0242,1.7143,High,High,False,High
+C0191,Existing credit client,-1.7854,0.0268,-1.7586,Low,Low,False,Low
+C0192,Existing credit client,-0.7645,0.0864,-0.6781,Low,Low,False,Low
+C0193,Existing credit client,0.4886,0.0282,0.5167,Low,Low,False,Low
+C0194,Existing credit client,2.2215,0.0262,2.2477,High,High,False,High
+C0195,Existing credit client,1.3527,-0.1297,1.223,Medium,Medium,False,Medium
+C0196,Existing credit client,1.5859,-0.1947,1.3912,Medium,Medium,False,Medium
+C0197,Prospect,1.7668,-0.1173,1.6495,High,,False,High
+C0198,Existing credit client,-0.3884,0.5994,0.211,Low,Low,False,Low
+C0199,Existing credit client,0.1951,-0.0101,0.1851,Low,Low,False,Low
+C0200,Existing credit client,1.4734,0.1888,1.6623,High,High,False,Medium
+C0201,Prospect,2.0761,0.1145,2.1906,High,,False,High
+C0202,Existing credit client,0.4027,-0.2975,0.1052,Low,Low,False,Low
+C0203,Existing credit client,-2.3417,-0.121,-2.4626,Low,Low,False,Low
+C0204,Existing non-credit client,0.2333,0.2544,0.4877,Low,,False,Low
+C0205,Existing credit client,1.4932,-0.0506,1.4426,Medium,Medium,False,Medium
+C0206,Existing credit client,-0.4851,0.111,-0.3741,Low,Low,False,Low
+C0207,Existing credit client,-0.1446,-0.0543,-0.1989,Low,Low,False,Low
+C0208,Existing non-credit client,-0.6094,-0.0319,-0.6413,Low,,False,Low
+C0209,Existing non-credit client,1.0266,0.1794,1.206,Medium,,False,Medium
+C0210,Existing credit client,-0.3264,-0.2299,-0.5564,Low,Low,False,Low
+C0211,Existing credit client,0.0709,-0.0703,0.0005,Low,Low,False,Low
+C0212,Prospect,0.6215,-0.1387,0.4828,Low,,False,Low
+C0213,Existing credit client,0.5309,-0.0684,0.4624,Low,Low,False,Low
+C0214,Prospect,3.2449,-0.2199,3.0251,High,,False,High
+C0215,Prospect,1.0791,-0.3823,0.6967,Low,,False,Medium
+C0216,Prospect,-0.146,0.201,0.055,Low,,False,Low
+C0217,Existing non-credit client,1.0743,0.1158,1.1902,Medium,,False,Medium
+C0218,Prospect,1.2697,0.205,1.4747,Medium,,False,Medium
+C0219,Existing credit client,1.3011,0.103,1.404,Medium,Medium,False,Medium
+C0220,Prospect,1.532,0.1346,1.6666,High,,False,Medium
+C0221,Existing credit client,2.8364,0.0411,2.8775,High,High,False,High
+C0222,Existing credit client,1.4976,0.3535,1.851,High,High,False,Medium
+C0223,Existing non-credit client,1.4562,-0.2197,1.2365,Medium,,False,Medium
+C0224,Existing non-credit client,0.4702,0.023,0.4932,Low,,False,Low
+C0225,Prospect,1.9633,0.0734,2.0367,High,,False,High
+C0226,Existing credit client,-0.6415,-0.1307,-0.7722,Low,Medium,True,Low
+C0227,Existing credit client,-1.5379,-0.3503,-1.8882,Low,Low,False,Low
+C0228,Existing credit client,2.6479,-0.0233,2.6246,High,High,False,High
+C0229,Prospect,0.8948,0.026,0.9208,Medium,,False,Medium
+C0230,Prospect,1.8909,0.0262,1.9171,High,,False,High
+C0231,Existing credit client,-0.3537,0.1872,-0.1665,Low,Low,False,Low
+C0232,Prospect,0.3531,-0.296,0.0572,Low,,False,Low
+C0233,Existing credit client,-0.6793,-0.5665,-1.2459,Low,Low,False,Low
+C0234,Existing non-credit client,-0.8239,0.6481,-0.1757,Low,,False,Low
+C0235,Existing credit client,-0.0906,-0.2538,-0.3444,Low,Low,False,Low
+C0236,Prospect,-0.2125,-0.1919,-0.4044,Low,,False,Low
+C0237,Existing credit client,0.5304,0.0283,0.5587,Low,Low,False,Low
+C0238,Prospect,1.7828,-0.4248,1.358,Medium,,False,High
+C0239,Prospect,-0.4135,-0.176,-0.5895,Low,,False,Low
+C0240,Existing credit client,0.5884,-0.1731,0.4153,Low,Low,False,Low
+C0241,Existing non-credit client,-2.0161,-0.2975,-2.3136,Low,,False,Low
+C0242,Existing credit client,0.1669,0.2631,0.4299,Low,Low,False,Low
+C0243,Prospect,1.4122,-0.2202,1.1921,Medium,,False,Medium
+C0244,Existing non-credit client,0.0341,-0.0156,0.0185,Low,,False,Low
+C0245,Existing credit client,-0.0054,0.3122,0.3068,Low,Low,False,Low
+C0246,Prospect,1.5879,-0.214,1.3739,Medium,,False,Medium
+C0247,Existing credit client,0.3058,0.1803,0.4862,Low,Low,False,Low
+C0248,Existing credit client,-0.0631,0.1242,0.0611,Low,Low,False,Low
+C0249,Prospect,-0.7233,-0.5396,-1.263,Low,,False,Low
+C0250,Prospect,-0.1467,-0.3171,-0.4639,Low,,False,Low
+C0251,Prospect,1.9672,-0.1787,1.7885,High,,False,High
+C0252,Existing credit client,1.1071,-0.0616,1.0455,Medium,Low,True,Medium
+C0253,Prospect,1.2166,-0.3036,0.913,Medium,,False,Medium
+C0254,Existing credit client,0.2923,-0.4074,-0.1151,Low,Low,False,Low
+C0255,Prospect,0.2126,0.3434,0.5559,Low,,False,Low
+C0256,Existing non-credit client,1.3182,-0.5477,0.7706,Medium,,False,Medium
+C0257,Prospect,2.5672,-0.0797,2.4875,High,,False,High
+C0258,Existing credit client,0.7769,-0.4222,0.3547,Low,Low,False,Medium
+C0259,Prospect,1.6545,0.671,2.3255,High,,False,High
+C0260,Existing credit client,-1.1389,0.1538,-0.9851,Low,Low,False,Low
+C0261,Prospect,1.5657,-0.3,1.2656,Medium,,False,Medium
+C0262,Existing credit client,1.2069,0.0559,1.2628,Medium,Medium,False,Medium
+C0263,Existing credit client,1.223,0.2513,1.4743,Medium,Medium,False,Medium
+C0264,Existing credit client,0.7093,0.1238,0.8331,Medium,Medium,False,Low
+C0265,Prospect,0.9281,-0.0716,0.8565,Medium,,False,Medium
+C0266,Existing credit client,2.3567,-0.237,2.1198,High,High,False,High
+C0267,Existing non-credit client,-0.5396,-0.0121,-0.5517,Low,,False,Low
+C0268,Prospect,1.6524,-0.0461,1.6063,High,,False,High
+C0269,Existing credit client,-1.7275,0.0668,-1.6607,Low,Low,False,Low
+C0270,Existing non-credit client,1.7028,-0.185,1.5178,Medium,,False,High
+C0271,Existing non-credit client,0.8861,-0.3169,0.5692,Low,,False,Medium
+C0272,Existing credit client,-0.0177,0.1503,0.1326,Low,Low,False,Low
+C0273,Prospect,2.3593,-0.1689,2.1904,High,,False,High
+C0274,Existing credit client,-0.3733,-0.2421,-0.6154,Low,Low,False,Low
+C0275,Existing credit client,1.0585,-0.0433,1.0152,Medium,Medium,False,Medium
+C0276,Existing credit client,0.7706,-0.3121,0.4585,Low,Low,False,Medium
+C0277,Existing credit client,-0.3517,0.4295,0.0778,Low,Low,False,Low
+C0278,Existing credit client,-0.2557,-0.1522,-0.4079,Low,Low,False,Low
+C0279,Existing credit client,-0.0089,0.2655,0.2566,Low,Low,False,Low
+C0280,Existing credit client,0.0942,0.4274,0.5216,Low,Low,False,Low
+C0281,Existing credit client,0.2438,0.2183,0.4621,Low,Low,False,Low
+C0282,Existing credit client,-0.4461,-0.0805,-0.5266,Low,Low,False,Low
+C0283,Existing credit client,1.1244,-0.0738,1.0506,Medium,Medium,False,Medium
+C0284,Prospect,2.1654,0.308,2.4734,High,,False,High
+C0285,Existing credit client,1.2968,0.4036,1.7004,High,High,False,Medium
+C0286,Existing non-credit client,0.8578,-0.0758,0.782,Medium,,False,Medium
+C0287,Existing credit client,-1.8704,0.2316,-1.6389,Low,Medium,True,Low
+C0288,Existing non-credit client,0.3422,-0.0554,0.2868,Low,,False,Low
+C0289,Existing credit client,0.21,0.4666,0.6766,Low,Low,False,Low
+C0290,Existing non-credit client,0.476,0.2113,0.6873,Low,,False,Low
+C0291,Existing credit client,0.4098,0.1099,0.5197,Low,Low,False,Low
+C0292,Existing credit client,-0.5978,-0.4477,-1.0455,Low,Low,False,Low
+C0293,Existing non-credit client,1.7137,-0.2788,1.4349,Medium,,False,High
+C0294,Prospect,2.5715,-0.5287,2.0428,High,,False,High
+C0295,Prospect,-0.874,0.1643,-0.7097,Low,,False,Low
+C0296,Prospect,0.9266,-0.2732,0.6534,Low,,False,Medium
+C0297,Existing credit client,0.686,-0.0363,0.6497,Low,Medium,True,Low
+C0298,Existing credit client,0.2002,-0.1265,0.0737,Low,Low,False,Low
+C0299,Existing credit client,1.634,0.2038,1.8379,High,High,False,High
+C0300,Prospect,1.8189,-0.0085,1.8103,High,,False,High
+C0301,Existing non-credit client,0.2449,-0.1959,0.049,Low,,False,Low
+C0302,Existing credit client,0.8342,0.2206,1.0548,Medium,Medium,False,Medium
+C0303,Existing non-credit client,0.557,0.3431,0.9001,Medium,,False,Low
+C0304,Existing credit client,-0.2733,-0.2484,-0.5217,Low,Low,False,Low
+C0305,Existing credit client,-1.0124,0.2227,-0.7897,Low,Low,False,Low
+C0306,Prospect,2.1198,0.2128,2.3326,High,,False,High
+C0307,Existing credit client,-0.3034,0.0995,-0.2039,Low,Low,False,Low
+C0308,Prospect,1.8153,0.1826,1.9979,High,,False,High
+C0309,Existing non-credit client,0.4684,0.2315,0.6999,Low,,False,Low
+C0310,Existing credit client,1.1385,0.0831,1.2216,Medium,Medium,False,Medium
+C0311,Existing credit client,0.0181,0.2074,0.2255,Low,Low,False,Low
+C0312,Existing credit client,0.3089,0.1464,0.4553,Low,Low,False,Low
+C0313,Existing credit client,1.3719,-0.0185,1.3533,Medium,Medium,False,Medium
+C0314,Prospect,-1.2461,-0.0933,-1.3394,Low,,False,Low
+C0315,Existing credit client,-1.898,0.1048,-1.7932,Low,Low,False,Low
+C0316,Prospect,1.1259,-0.6612,0.4646,Low,,False,Medium
+C0317,Prospect,0.8759,-0.0128,0.8631,Medium,,False,Medium
+C0318,Existing credit client,-0.0135,0.0324,0.0189,Low,Low,False,Low
+C0319,Existing non-credit client,2.1446,-0.3423,1.8023,High,,False,High
+C0320,Existing non-credit client,-0.3681,-0.1652,-0.5333,Low,,False,Low
+C0321,Existing non-credit client,-0.7396,0.3243,-0.4152,Low,,False,Low
+C0322,Existing non-credit client,-0.1607,0.0447,-0.1159,Low,,False,Low
+C0323,Existing credit client,1.4901,0.0796,1.5697,Medium,Medium,False,Medium
+C0324,Prospect,0.3099,0.1083,0.4182,Low,,False,Low
+C0325,Existing credit client,0.2555,-0.1266,0.1288,Low,Low,False,Low
+C0326,Existing credit client,-0.0221,-0.2485,-0.2706,Low,Low,False,Low
+C0327,Prospect,0.885,0.1295,1.0145,Medium,,False,Medium
+C0328,Existing non-credit client,-1.7397,0.2231,-1.5167,Low,,False,Low
+C0329,Prospect,1.8604,-0.0889,1.7715,High,,False,High
+C0330,Existing credit client,0.043,0.4711,0.5141,Low,Low,False,Low
+C0331,Existing credit client,-0.1077,-0.1124,-0.2201,Low,Low,False,Low
+C0332,Existing credit client,-0.3874,0.141,-0.2464,Low,Low,False,Low
+C0333,Existing credit client,-0.4076,0.0911,-0.3165,Low,Low,False,Low
+C0334,Existing credit client,1.8164,0.0776,1.894,High,High,False,High
+C0335,Existing non-credit client,-0.0743,0.0016,-0.0726,Low,,False,Low
+C0336,Existing non-credit client,0.2708,-0.2946,-0.0238,Low,,False,Low
+C0337,Prospect,0.156,-0.0099,0.1462,Low,,False,Low
+C0338,Existing non-credit client,-0.203,-0.065,-0.2681,Low,,False,Low
+C0339,Existing non-credit client,-0.1636,-0.1499,-0.3136,Low,,False,Low
+C0340,Existing credit client,-0.4222,-0.4122,-0.8344,Low,Low,False,Low
+C0341,Prospect,1.1643,-0.1107,1.0536,Medium,,False,Medium
+C0342,Existing non-credit client,1.85,0.0577,1.9077,High,,False,High
+C0343,Prospect,1.356,0.025,1.3811,Medium,,False,Medium
+C0344,Existing credit client,1.214,-0.6118,0.6022,Low,Low,False,Medium
+C0345,Existing credit client,-0.5327,0.0586,-0.4741,Low,Low,False,Low
+C0346,Prospect,-0.712,-0.2707,-0.9828,Low,,False,Low
+C0347,Existing non-credit client,-1.5226,-0.2789,-1.8014,Low,,False,Low
+C0348,Prospect,1.7763,-0.0624,1.7139,High,,False,High
+C0349,Prospect,0.676,0.0077,0.6837,Low,,False,Low
+C0350,Existing credit client,-1.5416,-0.3859,-1.9275,Low,Low,False,Low
+C0351,Prospect,-0.1037,0.0657,-0.038,Low,,False,Low
+C0352,Prospect,-0.6324,-0.1121,-0.7444,Low,,False,Low
+C0353,Existing non-credit client,1.4169,0.1492,1.5661,Medium,,False,Medium
+C0354,Existing credit client,1.7989,-0.0866,1.7122,High,High,False,High
+C0355,Prospect,3.0992,0.124,3.2231,High,,False,High
+C0356,Existing non-credit client,0.2022,-0.4114,-0.2092,Low,,False,Low
+C0357,Existing credit client,0.2008,0.0745,0.2753,Low,Low,False,Low
+C0358,Existing non-credit client,-0.3768,0.1212,-0.2556,Low,,False,Low
+C0359,Prospect,-2.2819,0.0465,-2.2355,Low,,False,Low
+C0360,Existing credit client,1.774,-0.0973,1.6767,High,High,False,High
+C0361,Prospect,-0.2806,-0.1045,-0.3851,Low,,False,Low
+C0362,Existing credit client,-0.1297,0.0961,-0.0337,Low,Low,False,Low
+C0363,Existing non-credit client,-0.8932,-0.1616,-1.0549,Low,,False,Low
+C0364,Existing credit client,-0.4174,-0.2998,-0.7172,Low,Low,False,Low
+C0365,Existing credit client,2.8779,0.0934,2.9713,High,High,False,High
+C0366,Existing credit client,1.2611,0.0108,1.2719,Medium,Medium,False,Medium
+C0367,Prospect,-1.7714,0.003,-1.7684,Low,,False,Low
+C0368,Prospect,1.0602,-0.0976,0.9626,Medium,,False,Medium
+C0369,Existing non-credit client,-1.3814,0.1063,-1.275,Low,,False,Low
+C0370,Existing credit client,0.3149,-0.4043,-0.0893,Low,Low,False,Low
+C0371,Prospect,2.7957,-0.1459,2.6498,High,,False,High
+C0372,Prospect,0.0527,0.5981,0.6508,Low,,False,Low
+C0373,Existing non-credit client,1.208,-0.1788,1.0292,Medium,,False,Medium
+C0374,Existing credit client,0.6266,0.1732,0.7999,Medium,Medium,False,Low
+C0375,Existing credit client,-0.5051,-0.6901,-1.1952,Low,Low,False,Low
+C0376,Prospect,0.5404,0.1301,0.6705,Low,,False,Low
+C0377,Prospect,1.298,0.0686,1.3666,Medium,,False,Medium
+C0378,Prospect,1.6864,-0.2235,1.4629,Medium,,False,High
+C0379,Existing credit client,-1.0708,-0.1485,-1.2193,Low,Low,False,Low
+C0380,Existing credit client,2.024,-0.0692,1.9548,High,High,False,High
+C0381,Existing credit client,0.1648,-0.0267,0.138,Low,Low,False,Low
+C0382,Existing credit client,-1.9173,-0.1641,-2.0814,Low,Low,False,Low
+C0383,Existing non-credit client,-0.0981,0.3776,0.2795,Low,,False,Low
+C0384,Existing credit client,1.538,-0.0412,1.4968,Medium,Medium,False,Medium
+C0385,Existing credit client,1.3779,-0.3122,1.0657,Medium,Medium,False,Medium
+C0386,Existing credit client,2.3137,-0.314,1.9997,High,High,False,High
+C0387,Prospect,0.6742,0.0584,0.7326,Medium,,False,Low
+C0388,Existing credit client,0.592,0.0014,0.5933,Low,Low,False,Low
+C0389,Existing credit client,0.7867,-0.4552,0.3314,Low,Low,False,Medium
+C0390,Prospect,2.2467,0.3059,2.5527,High,,False,High
+C0391,Existing non-credit client,-0.67,-0.1786,-0.8486,Low,,False,Low
+C0392,Prospect,3.4098,-0.0612,3.3486,High,,False,High
+C0393,Existing credit client,2.1112,-0.424,1.6872,High,High,False,High
+C0394,Existing non-credit client,-0.0276,0.0161,-0.0115,Low,,False,Low
+C0395,Prospect,0.9161,0.3414,1.2574,Medium,,False,Medium
+C0396,Existing non-credit client,0.1717,0.0672,0.2389,Low,,False,Low
+C0397,Prospect,1.653,0.0443,1.6973,High,,False,High
+C0398,Existing non-credit client,2.0266,-0.3197,1.7069,High,,False,High
+C0399,Existing credit client,1.1967,-0.1244,1.0723,Medium,High,True,Medium
+C0400,Existing credit client,1.3244,-0.1699,1.1545,Medium,Medium,False,Medium
+C0401,Prospect,0.9576,0.2601,1.2177,Medium,,False,Medium
+C0402,Existing non-credit client,0.6453,0.1929,0.8382,Medium,,False,Low
+C0403,Existing credit client,0.7292,0.4336,1.1628,Medium,Medium,False,Medium
+C0404,Existing non-credit client,0.1148,0.1272,0.2419,Low,,False,Low
+C0405,Existing credit client,2.0338,-0.0098,2.024,High,High,False,High
+C0406,Existing credit client,-0.9001,-0.2008,-1.1009,Low,Low,False,Low
+C0407,Existing credit client,0.0777,0.4725,0.5501,Low,Low,False,Low
+C0408,Existing credit client,-1.1662,-0.0842,-1.2504,Low,Low,False,Low
+C0409,Existing non-credit client,1.8588,-0.0379,1.8209,High,,False,High
+C0410,Existing non-credit client,0.139,0.2357,0.3747,Low,,False,Low
+C0411,Existing credit client,1.0499,0.1189,1.1688,Medium,Medium,False,Medium
+C0412,Existing credit client,1.8759,-0.4943,1.3815,Medium,Low,True,High
+C0413,Existing credit client,-0.8059,0.1558,-0.6501,Low,Low,False,Low
+C0414,Prospect,1.7966,-0.1349,1.6616,High,,False,High
+C0415,Existing credit client,0.3575,-0.1315,0.226,Low,Low,False,Low
+C0416,Existing credit client,-0.4583,-0.0384,-0.4967,Low,Low,False,Low
+C0417,Existing credit client,0.1289,-0.3807,-0.2518,Low,Low,False,Low
+C0418,Existing credit client,0.7209,0.0068,0.7277,Low,Low,False,Low
+C0419,Existing credit client,-0.4554,-0.1307,-0.5861,Low,Low,False,Low
+C0420,Prospect,1.3817,-0.4255,0.9561,Medium,,False,Medium
+C0421,Existing credit client,-0.5327,0.1435,-0.3892,Low,Low,False,Low
+C0422,Prospect,-0.128,0.1255,-0.0025,Low,,False,Low
+C0423,Existing credit client,-0.3927,-0.2046,-0.5973,Low,Low,False,Low
+C0424,Existing credit client,0.4959,-0.3621,0.1338,Low,Low,False,Low
+C0425,Prospect,0.9528,-0.3409,0.6119,Low,,False,Medium
+C0426,Prospect,2.4167,-0.1214,2.2953,High,,False,High
+C0427,Existing non-credit client,0.7132,-0.2359,0.4773,Low,,False,Low
+C0428,Existing credit client,-0.1623,0.0854,-0.0769,Low,Low,False,Low
+C0429,Prospect,0.1827,-0.1215,0.0612,Low,,False,Low
+C0430,Existing non-credit client,0.238,-0.8748,-0.6368,Low,,False,Low
+C0431,Prospect,0.1827,0.027,0.2097,Low,,False,Low
+C0432,Existing credit client,0.1254,0.228,0.3535,Low,Low,False,Low
+C0433,Existing credit client,-0.9921,0.5255,-0.4666,Low,Low,False,Low
+C0434,Prospect,1.3632,0.049,1.4122,Medium,,False,Medium
+C0435,Existing credit client,-0.1343,0.1748,0.0405,Low,Low,False,Low
+C0436,Existing credit client,-0.5826,0.1345,-0.4481,Low,Low,False,Low
+C0437,Existing credit client,0.0691,0.0719,0.141,Low,Low,False,Low
+C0438,Prospect,-0.1848,-0.5321,-0.7169,Low,,False,Low
+C0439,Prospect,2.8624,-0.0626,2.7998,High,,False,High
+C0440,Prospect,2.5481,-0.2957,2.2524,High,,False,High
+C0441,Prospect,3.1453,0.4391,3.5844,High,,False,High
+C0442,Existing credit client,0.9659,-0.0691,0.8967,Medium,Medium,False,Medium
+C0443,Existing non-credit client,-0.0159,0.7169,0.701,Low,,False,Low
+C0444,Existing credit client,-0.0703,0.2882,0.2179,Low,Low,False,Low
+C0445,Prospect,2.2982,0.2753,2.5735,High,,False,High
+C0446,Existing credit client,-1.6237,-0.3748,-1.9985,Low,Low,False,Low
+C0447,Existing non-credit client,1.1385,0.0296,1.1681,Medium,,False,Medium
+C0448,Existing credit client,-2.1007,-0.4229,-2.5236,Low,Low,False,Low
+C0449,Existing credit client,1.449,-0.0723,1.3767,Medium,Medium,False,Medium
+C0450,Prospect,2.7097,0.1544,2.8641,High,,False,High
+C0451,Existing credit client,-0.6142,0.2036,-0.4106,Low,Low,False,Low
+C0452,Existing credit client,1.9043,0.4129,2.3172,High,High,False,High
+C0453,Prospect,-1.7747,0.1254,-1.6493,Low,,False,Low
+C0454,Existing credit client,0.6422,0.4213,1.0635,Medium,High,True,Low
+C0455,Prospect,2.248,0.1562,2.4042,High,,False,High
+C0456,Existing credit client,2.5578,-0.2924,2.2655,High,High,False,High
+C0457,Prospect,0.2669,-0.1844,0.0825,Low,,False,Low
+C0458,Prospect,0.3983,-0.0605,0.3378,Low,,False,Low
+C0459,Prospect,3.1814,-0.4753,2.7061,High,,False,High
+C0460,Prospect,0.5066,0.2513,0.758,Medium,,False,Low
+C0461,Existing credit client,2.9146,0.3102,3.2248,High,High,False,High
+C0462,Prospect,1.3696,-0.058,1.3116,Medium,,False,Medium
+C0463,Existing credit client,0.6851,0.0886,0.7737,Medium,Medium,False,Low
+C0464,Existing non-credit client,-0.1464,-0.3565,-0.5029,Low,,False,Low
+C0465,Existing non-credit client,-0.1705,-0.0726,-0.2431,Low,,False,Low
+C0466,Prospect,-0.6151,-0.0006,-0.6158,Low,,False,Low
+C0467,Existing credit client,-0.2593,0.4826,0.2234,Low,Low,False,Low
+C0468,Existing credit client,-0.5665,-0.3538,-0.9203,Low,Low,False,Low
+C0469,Prospect,0.8862,-0.0202,0.8659,Medium,,False,Medium
+C0470,Prospect,0.7675,0.0501,0.8176,Medium,,False,Medium
+C0471,Prospect,1.4634,0.4773,1.9407,High,,False,Medium
+C0472,Existing credit client,-0.2414,-0.1306,-0.372,Low,Low,False,Low
+C0473,Existing credit client,0.2977,-0.1471,0.1507,Low,Low,False,Low
+C0474,Existing credit client,0.5539,0.1722,0.7261,Low,Low,False,Low
+C0475,Existing credit client,-0.3551,0.01,-0.3451,Low,Low,False,Low
+C0476,Existing credit client,0.8808,0.2345,1.1152,Medium,High,True,Medium
+C0477,Existing non-credit client,1.1886,0.1512,1.3398,Medium,,False,Medium
+C0478,Existing non-credit client,-0.1381,-0.296,-0.4341,Low,,False,Low
+C0479,Prospect,-1.1305,-0.2366,-1.3671,Low,,False,Low
+C0480,Prospect,1.4165,-0.0964,1.3202,Medium,,False,Medium
+C0481,Existing credit client,-0.7081,0.0388,-0.6692,Low,Low,False,Low
+C0482,Prospect,0.4569,0.0076,0.4645,Low,,False,Low
+C0483,Prospect,2.3316,0.4717,2.8033,High,,False,High
+C0484,Prospect,0.6143,0.1486,0.7629,Medium,,False,Low
+C0485,Existing credit client,1.7371,-0.1582,1.5789,Medium,Medium,False,High
+C0486,Existing credit client,-0.8834,-0.2885,-1.1719,Low,Low,False,Low
+C0487,Existing credit client,-0.1719,0.0172,-0.1548,Low,Low,False,Low
+C0488,Existing non-credit client,-1.531,0.1753,-1.3556,Low,,False,Low
+C0489,Existing credit client,-0.478,-0.1323,-0.6104,Low,Low,False,Low
+C0490,Existing non-credit client,-0.4701,0.2793,-0.1908,Low,,False,Low
+C0491,Prospect,-0.6167,-0.0198,-0.6365,Low,,False,Low
+C0492,Existing non-credit client,1.52,0.2477,1.7677,High,,False,Medium
+C0493,Prospect,0.4616,-0.0891,0.3725,Low,,False,Low
+C0494,Existing credit client,0.3586,-0.0175,0.3411,Low,Low,False,Low
+C0495,Existing non-credit client,0.8536,0.4835,1.3371,Medium,,False,Medium
+C0496,Existing credit client,2.4782,-0.2272,2.2509,High,High,False,High
+C0497,Prospect,0.9985,0.6393,1.6378,High,,False,Medium
+C0498,Existing credit client,-0.6613,0.3029,-0.3584,Low,Low,False,Low
+C0499,Existing credit client,0.5592,0.1507,0.7098,Low,Low,False,Low
+C0500,Existing credit client,-1.5205,-0.2739,-1.7944,Low,Low,False,Low
+C0501,Existing credit client,-0.2918,-0.3234,-0.6153,Low,Low,False,Low
+C0502,Existing credit client,1.3387,-0.0904,1.2483,Medium,Medium,False,Medium
+C0503,Existing non-credit client,-0.4954,0.2519,-0.2435,Low,,False,Low
+C0504,Existing credit client,-1.4296,0.0063,-1.4233,Low,Low,False,Low
+C0505,Existing credit client,0.8383,-0.0418,0.7966,Medium,Medium,False,Medium
+C0506,Prospect,0.2343,-0.2518,-0.0175,Low,,False,Low
+C0507,Existing non-credit client,0.8826,-0.1721,0.7106,Low,,False,Medium
+C0508,Existing non-credit client,2.0694,-0.4257,1.6438,High,,False,High
+C0509,Prospect,1.4326,-0.1494,1.2832,Medium,,False,Medium
+C0510,Existing credit client,-0.6092,-0.0186,-0.6278,Low,Low,False,Low
+C0511,Existing credit client,-0.8198,0.2269,-0.5929,Low,Low,False,Low
+C0512,Existing credit client,-0.3514,-0.1967,-0.548,Low,Low,False,Low
+C0513,Existing non-credit client,1.1258,-0.1827,0.9431,Medium,,False,Medium
+C0514,Existing non-credit client,0.0039,0.2532,0.257,Low,,False,Low
+C0515,Prospect,0.9419,-0.0337,0.9082,Medium,,False,Medium
+C0516,Existing credit client,1.3891,0.3185,1.7077,High,High,False,Medium
+C0517,Existing credit client,-0.3363,0.1167,-0.2196,Low,Low,False,Low
+C0518,Existing credit client,0.1061,-0.3365,-0.2305,Low,Medium,True,Low
+C0519,Prospect,0.5779,-0.3675,0.2104,Low,,False,Low
+C0520,Existing credit client,1.1394,0.0235,1.1629,Medium,Medium,False,Medium
+C0521,Prospect,-1.8135,-0.2144,-2.0279,Low,,False,Low
+C0522,Prospect,1.4489,-0.13,1.3189,Medium,,False,Medium
+C0523,Prospect,0.6728,0.0547,0.7275,Low,,False,Low
+C0524,Existing credit client,1.1708,-0.0289,1.142,Medium,Medium,False,Medium
+C0525,Existing credit client,1.4956,0.1802,1.6758,High,High,False,Medium
+C0526,Existing non-credit client,1.0121,-0.4464,0.5657,Low,,False,Medium
+C0527,Existing non-credit client,-1.3088,-0.136,-1.4448,Low,,False,Low
+C0528,Prospect,3.6916,0.059,3.7507,High,,False,High
+C0529,Prospect,0.8008,-0.0487,0.7522,Medium,,False,Medium
+C0530,Prospect,1.3247,-0.0265,1.2982,Medium,,False,Medium
+C0531,Existing credit client,0.9188,-0.0879,0.8309,Medium,Medium,False,Medium
+C0532,Existing credit client,0.787,0.1567,0.9437,Medium,Medium,False,Medium
+C0533,Existing credit client,-0.2581,-0.2606,-0.5187,Low,Low,False,Low
+C0534,Existing non-credit client,0.851,-0.6866,0.1644,Low,,False,Medium
+C0535,Existing credit client,-1.0612,0.1285,-0.9327,Low,Low,False,Low
+C0536,Existing credit client,-0.4848,-0.0812,-0.566,Low,Low,False,Low
+C0537,Existing non-credit client,-0.4973,0.1065,-0.3908,Low,,False,Low
+C0538,Existing credit client,0.9755,0.1767,1.1522,Medium,Medium,False,Medium
+C0539,Existing credit client,-2.8101,-0.1077,-2.9177,Low,Low,False,Low
+C0540,Existing credit client,0.1247,-0.3281,-0.2033,Low,Low,False,Low
+C0541,Existing non-credit client,2.0359,-0.2625,1.7735,High,,False,High
+C0542,Prospect,-0.8811,0.3142,-0.5669,Low,,False,Low
+C0543,Existing credit client,-1.3769,0.1951,-1.1818,Low,Low,False,Low
+C0544,Existing credit client,0.3755,-0.1902,0.1852,Low,Low,False,Low
+C0545,Existing credit client,0.5074,-0.2066,0.3008,Low,Low,False,Low
+C0546,Existing non-credit client,2.2699,-0.1687,2.1012,High,,False,High
+C0547,Existing credit client,0.4386,-0.4392,-0.0006,Low,Low,False,Low
+C0548,Existing credit client,0.8725,-0.0468,0.8257,Medium,Medium,False,Medium
+C0549,Existing non-credit client,0.834,-0.0157,0.8183,Medium,,False,Medium
+C0550,Prospect,0.8917,0.1954,1.0871,Medium,,False,Medium
+C0551,Existing non-credit client,1.6525,-0.097,1.5555,Medium,,False,High
+C0552,Existing credit client,1.8354,0.3465,2.1819,High,High,False,High
+C0553,Prospect,2.9927,0.0463,3.039,High,,False,High
+C0554,Prospect,-0.4206,-0.4509,-0.8715,Low,,False,Low
+C0555,Existing credit client,0.929,0.1551,1.0841,Medium,Medium,False,Medium
+C0556,Existing non-credit client,1.4199,-0.3541,1.0658,Medium,,False,Medium
+C0557,Existing credit client,1.1573,0.1606,1.3179,Medium,Medium,False,Medium
+C0558,Prospect,2.1706,-0.3341,1.8365,High,,False,High
+C0559,Prospect,-0.1754,0.349,0.1736,Low,,False,Low
+C0560,Existing non-credit client,0.2568,0.1292,0.3861,Low,,False,Low
+C0561,Prospect,1.4569,0.2584,1.7153,High,,False,Medium
+C0562,Prospect,1.2676,-0.1514,1.1162,Medium,,False,Medium
+C0563,Existing credit client,-0.8286,-0.1423,-0.9708,Low,Low,False,Low
+C0564,Existing credit client,-0.3378,-0.2362,-0.574,Low,Low,False,Low
+C0565,Existing credit client,1.6004,0.1668,1.7672,High,Medium,True,Medium
+C0566,Prospect,-0.8562,0.2273,-0.6288,Low,,False,Low
+C0567,Existing non-credit client,3.8489,0.4133,4.2622,High,,False,High
+C0568,Existing non-credit client,1.0031,0.2442,1.2473,Medium,,False,Medium
+C0569,Existing credit client,-0.3125,0.1535,-0.159,Low,Low,False,Low
+C0570,Existing credit client,-0.7926,0.2134,-0.5792,Low,Low,False,Low
+C0571,Existing non-credit client,-1.7953,0.0621,-1.7331,Low,,False,Low
+C0572,Existing non-credit client,2.7258,0.369,3.0948,High,,False,High
+C0573,Prospect,1.7617,0.4868,2.2484,High,,False,High
+C0574,Existing credit client,-0.4149,0.2836,-0.1314,Low,Low,False,Low
+C0575,Existing non-credit client,0.5896,-0.0645,0.5252,Low,,False,Low
+C0576,Prospect,2.4799,0.1441,2.624,High,,False,High
+C0577,Existing credit client,-1.2638,-0.1803,-1.4441,Low,Low,False,Low
+C0578,Prospect,1.7553,-0.6254,1.1298,Medium,,False,High
+C0579,Existing credit client,0.5339,-0.2582,0.2757,Low,Low,False,Low
+C0580,Existing credit client,0.9652,-0.0992,0.866,Medium,Medium,False,Medium
+C0581,Existing credit client,1.4665,0.0513,1.5178,Medium,Medium,False,Medium
+C0582,Prospect,2.5883,0.1124,2.7008,High,,False,High
+C0583,Existing non-credit client,-0.4757,0.0036,-0.4721,Low,,False,Low
+C0584,Prospect,0.5873,0.0559,0.6433,Low,,False,Low
+C0585,Existing non-credit client,2.118,-0.0445,2.0735,High,,False,High
+C0586,Prospect,0.9481,0.1914,1.1395,Medium,,False,Medium
+C0587,Prospect,0.5996,-0.2518,0.3478,Low,,False,Low
+C0588,Existing non-credit client,1.5658,0.2908,1.8566,High,,False,Medium
+C0589,Existing credit client,0.8189,-0.0387,0.7802,Medium,Medium,False,Medium
+C0590,Existing credit client,1.1555,-0.3112,0.8442,Medium,Medium,False,Medium
+C0591,Prospect,2.5831,0.4519,3.035,High,,False,High
+C0592,Prospect,2.773,-0.0164,2.7566,High,,False,High
+C0593,Prospect,0.6053,0.388,0.9933,Medium,,False,Low
+C0594,Existing credit client,-0.0196,-0.1118,-0.1315,Low,Low,False,Low
+C0595,Existing credit client,1.3709,0.2606,1.6315,High,High,False,Medium
+C0596,Existing non-credit client,0.0316,0.4483,0.4799,Low,,False,Low
+C0597,Existing credit client,-0.8414,-0.403,-1.2443,Low,Low,False,Low
+C0598,Prospect,0.9964,-0.1156,0.8808,Medium,,False,Medium
+C0599,Existing credit client,0.53,0.0202,0.5503,Low,Low,False,Low
+C0600,Prospect,1.3776,0.1845,1.562,Medium,,False,Medium
+C0601,Prospect,2.2157,-0.2937,1.9219,High,,False,High
+C0602,Existing non-credit client,-0.0996,0.3092,0.2097,Low,,False,Low
+C0603,Existing credit client,2.0261,0.2724,2.2985,High,High,False,High
+C0604,Existing credit client,0.8086,-0.0648,0.7438,Medium,Medium,False,Medium
+C0605,Existing credit client,-1.8493,-0.1891,-2.0384,Low,Low,False,Low
+C0606,Existing credit client,-0.3745,-0.0577,-0.4322,Low,Low,False,Low
+C0607,Existing non-credit client,0.24,-0.0053,0.2346,Low,,False,Low
+C0608,Prospect,1.7635,-0.3681,1.3954,Medium,,False,High
+C0609,Existing non-credit client,0.6184,-0.6064,0.0121,Low,,False,Low
+C0610,Prospect,2.8576,-0.1743,2.6833,High,,False,High
+C0611,Prospect,0.3418,-0.1481,0.1937,Low,,False,Low
+C0612,Existing non-credit client,1.6504,-0.0423,1.6081,High,,False,High
+C0613,Existing credit client,0.4117,0.0811,0.4928,Low,Low,False,Low
+C0614,Existing credit client,0.5564,0.0434,0.5998,Low,Low,False,Low
+C0615,Existing non-credit client,0.8854,0.0221,0.9074,Medium,,False,Medium
+C0616,Prospect,0.9601,-0.1589,0.8013,Medium,,False,Medium
+C0617,Prospect,1.3526,-0.4402,0.9124,Medium,,False,Medium
+C0618,Existing non-credit client,-0.2873,0.3796,0.0923,Low,,False,Low
+C0619,Prospect,2.0053,0.1273,2.1326,High,,False,High
+C0620,Existing credit client,-0.9514,-0.1164,-1.0678,Low,Low,False,Low
+C0621,Prospect,0.7651,0.0336,0.7987,Medium,,False,Medium
+C0622,Prospect,0.4141,-0.499,-0.0849,Low,,False,Low
+C0623,Existing non-credit client,2.7981,-0.0902,2.7078,High,,False,High
+C0624,Prospect,-0.0488,0.1445,0.0957,Low,,False,Low
+C0625,Prospect,0.4011,-0.0289,0.3722,Low,,False,Low
+C0626,Prospect,-1.0504,0.0087,-1.0417,Low,,False,Low
+C0627,Existing credit client,0.1579,0.3125,0.4704,Low,Low,False,Low
+C0628,Prospect,0.2197,0.2681,0.4878,Low,,False,Low
+C0629,Existing credit client,1.3954,0.2255,1.6209,High,High,False,Medium
+C0630,Prospect,2.9369,0.3856,3.3226,High,,False,High
+C0631,Existing non-credit client,-0.2356,-0.0606,-0.2962,Low,,False,Low
+C0632,Existing credit client,0.3036,-0.0604,0.2432,Low,Low,False,Low
+C0633,Existing credit client,1.3312,-0.0181,1.3132,Medium,Medium,False,Medium
+C0634,Existing credit client,0.6233,-0.3516,0.2716,Low,Low,False,Low
+C0635,Prospect,2.7415,0.2022,2.9437,High,,False,High
+C0636,Existing non-credit client,-2.6636,-0.4437,-3.1072,Low,,False,Low
+C0637,Existing credit client,-1.3248,-0.0288,-1.3536,Low,Low,False,Low
+C0638,Existing non-credit client,0.6243,-0.117,0.5074,Low,,False,Low
+C0639,Existing credit client,-0.9472,0.1607,-0.7865,Low,Low,False,Low
+C0640,Existing credit client,0.9604,-0.3983,0.5621,Low,Low,False,Medium
+C0641,Existing credit client,0.0796,-0.2383,-0.1587,Low,Medium,True,Low
+C0642,Existing credit client,1.7357,-0.0459,1.6897,High,High,False,High
+C0643,Existing credit client,0.8467,-0.1248,0.7219,Low,Low,False,Medium
+C0644,Existing credit client,-0.2531,0.2304,-0.0227,Low,Low,False,Low
+C0645,Existing credit client,0.7764,0.0237,0.8001,Medium,Medium,False,Medium
+C0646,Existing credit client,1.9645,0.4176,2.3821,High,High,False,High
+C0647,Prospect,1.0504,-0.2554,0.795,Medium,,False,Medium
+C0648,Existing non-credit client,3.5983,-0.4503,3.1481,High,,False,High
+C0649,Existing credit client,-0.0134,0.1425,0.1291,Low,Low,False,Low
+C0650,Prospect,0.3206,-0.2968,0.0238,Low,,False,Low
+C0651,Existing credit client,-1.3146,0.3134,-1.0012,Low,Low,False,Low
+C0652,Existing credit client,0.5968,-0.0335,0.5633,Low,Low,False,Low
+C0653,Existing credit client,1.3718,-0.2205,1.1513,Medium,Medium,False,Medium
+C0654,Existing credit client,-1.5652,-0.2388,-1.8041,Low,Medium,True,Low
+C0655,Prospect,-1.1007,-0.0181,-1.1188,Low,,False,Low
+C0656,Existing non-credit client,0.5656,-0.0544,0.5113,Low,,False,Low
+C0657,Prospect,1.6583,-0.105,1.5534,Medium,,False,High
+C0658,Prospect,1.2897,-0.2069,1.0828,Medium,,False,Medium
+C0659,Existing non-credit client,-0.4674,0.3233,-0.144,Low,,False,Low
+C0660,Prospect,2.339,-0.0774,2.2615,High,,False,High
+C0661,Existing non-credit client,-0.9664,-0.0105,-0.9769,Low,,False,Low
+C0662,Prospect,2.3077,-0.2595,2.0481,High,,False,High
+C0663,Prospect,0.8815,-0.1981,0.6834,Low,,False,Medium
+C0664,Prospect,1.6226,-0.0063,1.6163,High,,False,High
+C0665,Prospect,1.532,0.0037,1.5357,Medium,,False,Medium
+C0666,Existing credit client,1.5506,-0.2953,1.2553,Medium,Medium,False,Medium
+C0667,Prospect,1.8441,0.4498,2.2939,High,,False,High
+C0668,Existing credit client,-1.6377,0.1,-1.5377,Low,Low,False,Low
+C0669,Existing non-credit client,2.2957,-0.5529,1.7428,High,,False,High
+C0670,Prospect,-0.6683,-0.4362,-1.1045,Low,,False,Low
+C0671,Prospect,1.8844,0.0488,1.9332,High,,False,High
+C0672,Existing non-credit client,0.5571,0.3833,0.9404,Medium,,False,Low
+C0673,Existing credit client,-0.9323,0.5008,-0.4315,Low,Low,False,Low
+C0674,Existing credit client,-0.7555,-0.1648,-0.9203,Low,Low,False,Low
+C0675,Existing non-credit client,-0.5213,-0.2517,-0.773,Low,,False,Low
+C0676,Existing non-credit client,0.1643,0.3469,0.5112,Low,,False,Low
+C0677,Prospect,-0.0538,-0.3811,-0.4349,Low,,False,Low
+C0678,Existing credit client,2.3411,0.0225,2.3636,High,High,False,High
+C0679,Existing non-credit client,1.8392,0.1094,1.9486,High,,False,High
+C0680,Existing non-credit client,-0.4071,0.136,-0.2711,Low,,False,Low
+C0681,Prospect,2.5143,-0.0332,2.4812,High,,False,High
+C0682,Existing credit client,-0.2611,-0.0712,-0.3324,Low,Low,False,Low
+C0683,Existing credit client,-0.1451,-0.1669,-0.3119,Low,Low,False,Low
+C0684,Existing credit client,1.3209,0.221,1.5419,Medium,Medium,False,Medium
+C0685,Prospect,2.1228,0.1743,2.2971,High,,False,High
+C0686,Existing credit client,0.0443,-0.089,-0.0446,Low,Low,False,Low
+C0687,Existing credit client,-0.2226,0.0645,-0.1582,Low,Low,False,Low
+C0688,Existing credit client,3.1682,0.045,3.2133,High,High,False,High
+C0689,Prospect,1.3398,0.2103,1.5501,Medium,,False,Medium
+C0690,Existing credit client,0.0998,-0.4027,-0.3029,Low,Medium,True,Low
+C0691,Prospect,0.5262,0.3872,0.9134,Medium,,False,Low
+C0692,Existing credit client,3.0605,-0.1286,2.9319,High,High,False,High
+C0693,Existing non-credit client,-1.877,0.0232,-1.8538,Low,,False,Low
+C0694,Prospect,2.2074,0.1021,2.3095,High,,False,High
+C0695,Existing credit client,0.4712,0.1089,0.58,Low,Low,False,Low
+C0696,Prospect,1.5264,-0.1313,1.3951,Medium,,False,Medium
+C0697,Existing credit client,-1.3558,-0.0271,-1.383,Low,Low,False,Low
+C0698,Existing credit client,1.6358,0.1269,1.7627,High,High,False,High
+C0699,Existing credit client,0.0764,-0.2267,-0.1503,Low,Low,False,Low
+C0700,Prospect,1.2971,0.2846,1.5817,Medium,,False,Medium
+C0701,Existing credit client,1.2759,0.0823,1.3582,Medium,Medium,False,Medium
+C0702,Existing non-credit client,2.1913,0.0247,2.216,High,,False,High
+C0703,Existing credit client,1.873,0.5207,2.3937,High,High,False,High
+C0704,Existing credit client,1.9999,-0.104,1.8959,High,High,False,High
+C0705,Existing credit client,1.4399,-0.2131,1.2268,Medium,Medium,False,Medium
+C0706,Existing credit client,-0.6502,0.3231,-0.3271,Low,Low,False,Low
+C0707,Existing credit client,-1.1519,0.3621,-0.7898,Low,Low,False,Low
+C0708,Existing credit client,0.4086,0.2525,0.6611,Low,Low,False,Low
+C0709,Existing credit client,3.0868,0.3412,3.428,High,High,False,High
+C0710,Existing credit client,1.6835,-0.0247,1.6588,High,High,False,High
+C0711,Prospect,2.2585,0.2583,2.5168,High,,False,High
+C0712,Existing non-credit client,1.3839,0.0892,1.4731,Medium,,False,Medium
+C0713,Existing non-credit client,-0.0612,-0.1811,-0.2423,Low,,False,Low
+C0714,Prospect,-0.3817,-0.0306,-0.4122,Low,,False,Low
+C0715,Prospect,1.2063,0.2503,1.4566,Medium,,False,Medium
+C0716,Existing non-credit client,-1.1718,0.3203,-0.8515,Low,,False,Low
+C0717,Existing credit client,-1.5228,-0.0111,-1.5339,Low,Low,False,Low
+C0718,Existing non-credit client,0.4718,-0.1176,0.3542,Low,,False,Low
+C0719,Prospect,0.89,-0.2373,0.6527,Low,,False,Medium
+C0720,Existing credit client,3.017,-0.1828,2.8342,High,High,False,High
+C0721,Existing non-credit client,0.3213,0.4079,0.7292,Medium,,False,Low
+C0722,Existing non-credit client,-1.0269,0.0144,-1.0125,Low,,False,Low
+C0723,Existing non-credit client,1.8517,0.2425,2.0942,High,,False,High
+C0724,Existing non-credit client,2.3089,0.3074,2.6163,High,,False,High
+C0725,Existing non-credit client,0.1045,0.2901,0.3945,Low,,False,Low
+C0726,Existing non-credit client,-0.2268,-0.1995,-0.4263,Low,,False,Low
+C0727,Existing non-credit client,1.1707,0.2948,1.4655,Medium,,False,Medium
+C0728,Existing non-credit client,-0.564,0.1226,-0.4414,Low,,False,Low
+C0729,Prospect,1.5577,0.2101,1.7678,High,,False,Medium
+C0730,Existing credit client,0.6606,0.2164,0.877,Medium,Medium,False,Low
+C0731,Existing non-credit client,0.5225,0.2173,0.7398,Medium,,False,Low
+C0732,Prospect,1.155,-0.0435,1.1115,Medium,,False,Medium
+C0733,Existing credit client,1.055,0.0366,1.0917,Medium,Medium,False,Medium
+C0734,Existing credit client,0.1973,0.0885,0.2858,Low,Low,False,Low
+C0735,Existing credit client,-2.2913,-0.4652,-2.7565,Low,Low,False,Low
+C0736,Existing credit client,1.7991,-0.2295,1.5696,Medium,Medium,False,High
+C0737,Prospect,1.1878,0.2545,1.4422,Medium,,False,Medium
+C0738,Existing non-credit client,-0.7556,-0.0061,-0.7616,Low,,False,Low
+C0739,Existing credit client,2.7944,0.0831,2.8775,High,High,False,High
+C0740,Existing credit client,-0.9338,-0.0052,-0.939,Low,Low,False,Low
+C0741,Existing credit client,0.1669,0.2027,0.3695,Low,Low,False,Low
+C0742,Existing credit client,-0.8046,0.1677,-0.6368,Low,Low,False,Low
+C0743,Prospect,-1.1653,0.0872,-1.0781,Low,,False,Low
+C0744,Prospect,0.1972,-0.0773,0.12,Low,,False,Low
+C0745,Existing non-credit client,0.3377,0.1055,0.4433,Low,,False,Low
+C0746,Existing credit client,1.2756,0.0287,1.3043,Medium,Medium,False,Medium
+C0747,Prospect,2.6517,0.1979,2.8496,High,,False,High
+C0748,Existing non-credit client,0.5712,0.3241,0.8953,Medium,,False,Low
+C0749,Prospect,0.655,-0.1604,0.4946,Low,,False,Low
+C0750,Prospect,-0.3908,-0.1687,-0.5595,Low,,False,Low
+C0751,Prospect,1.2277,0.2515,1.4792,Medium,,False,Medium
+C0752,Existing non-credit client,0.0278,-0.0586,-0.0307,Low,,False,Low
+C0753,Prospect,1.3924,-0.3901,1.0023,Medium,,False,Medium
+C0754,Existing non-credit client,-0.1785,0.2156,0.0371,Low,,False,Low
+C0755,Existing credit client,-0.0454,-0.0006,-0.0461,Low,Low,False,Low
+C0756,Prospect,1.1996,0.4894,1.6891,High,,False,Medium
+C0757,Existing credit client,-0.9191,-0.4115,-1.3306,Low,Low,False,Low
+C0758,Existing credit client,2.5926,-0.2042,2.3884,High,High,False,High
+C0759,Prospect,1.0976,-0.3227,0.7748,Medium,,False,Medium
+C0760,Existing credit client,0.1835,0.021,0.2045,Low,Low,False,Low
+C0761,Existing credit client,0.0832,0.0707,0.1539,Low,Low,False,Low
+C0762,Prospect,-0.5217,-0.0314,-0.5531,Low,,False,Low
+C0763,Existing non-credit client,1.2934,0.516,1.8095,High,,False,Medium
+C0764,Existing non-credit client,-0.3381,-0.0608,-0.399,Low,,False,Low
+C0765,Existing credit client,-0.2683,-0.2569,-0.5252,Low,Low,False,Low
+C0766,Existing credit client,-0.6355,-0.0123,-0.6477,Low,Low,False,Low
+C0767,Prospect,1.9272,-0.3207,1.6065,High,,False,High
+C0768,Existing credit client,1.3618,-0.5777,0.7841,Medium,Medium,False,Medium
+C0769,Existing credit client,1.6962,0.0018,1.6981,High,High,False,High
+C0770,Existing non-credit client,1.3661,-0.0709,1.2952,Medium,,False,Medium
+C0771,Existing credit client,-0.9127,-0.1451,-1.0578,Low,Low,False,Low
+C0772,Existing credit client,0.084,0.157,0.241,Low,Low,False,Low
+C0773,Prospect,2.7244,-0.3668,2.3575,High,,False,High
+C0774,Prospect,1.3906,-0.1104,1.2802,Medium,,False,Medium
+C0775,Prospect,1.2086,0.0322,1.2408,Medium,,False,Medium
+C0776,Existing credit client,1.6451,0.2386,1.8837,High,High,False,High
+C0777,Existing non-credit client,0.1892,0.4694,0.6586,Low,,False,Low
+C0778,Existing credit client,-0.3331,-0.2491,-0.5823,Low,Low,False,Low
+C0779,Prospect,0.655,-0.1027,0.5523,Low,,False,Low
+C0780,Prospect,0.7145,0.1858,0.9003,Medium,,False,Low
+C0781,Existing credit client,-0.2328,0.3647,0.1318,Low,Low,False,Low
+C0782,Existing credit client,-0.8491,0.3552,-0.4939,Low,Low,False,Low
+C0783,Existing non-credit client,0.5503,-0.0875,0.4629,Low,,False,Low
+C0784,Existing credit client,0.1243,-0.4674,-0.3431,Low,Low,False,Low
+C0785,Prospect,0.0383,0.1439,0.1822,Low,,False,Low
+C0786,Existing credit client,1.8353,-0.1939,1.6414,High,High,False,High
+C0787,Existing credit client,-0.9591,0.614,-0.3451,Low,Low,False,Low
+C0788,Prospect,1.5777,0.4572,2.0349,High,,False,Medium
+C0789,Existing credit client,0.0793,-0.172,-0.0926,Low,Low,False,Low
+C0790,Prospect,1.2212,0.1376,1.3588,Medium,,False,Medium
+C0791,Existing credit client,-0.3429,-0.2692,-0.6121,Low,Low,False,Low
+C0792,Existing credit client,0.5669,0.4414,1.0082,Medium,Medium,False,Low
+C0793,Existing non-credit client,1.7953,-0.191,1.6043,Medium,,False,High
+C0794,Existing credit client,-0.6402,-0.1835,-0.8238,Low,Low,False,Low
+C0795,Prospect,1.208,-0.0434,1.1646,Medium,,False,Medium
+C0796,Prospect,0.27,0.1519,0.4219,Low,,False,Low
+C0797,Existing non-credit client,1.4389,-0.2296,1.2094,Medium,,False,Medium
+C0798,Existing non-credit client,-1.1729,0.1747,-0.9982,Low,,False,Low
+C0799,Prospect,0.053,-0.1734,-0.1204,Low,,False,Low
+C0800,Existing credit client,1.477,0.3331,1.81,High,High,False,Medium
+C0801,Existing non-credit client,-1.0087,-0.1335,-1.1422,Low,,False,Low
+C0802,Prospect,0.285,-0.2044,0.0806,Low,,False,Low
+C0803,Existing credit client,-1.2395,-0.0013,-1.2408,Low,Low,False,Low
+C0804,Existing credit client,2.0816,0.1179,2.1995,High,High,False,High
+C0805,Existing non-credit client,1.2798,-0.0522,1.2277,Medium,,False,Medium
+C0806,Existing non-credit client,-0.6636,0.0076,-0.656,Low,,False,Low
+C0807,Existing non-credit client,-0.2977,0.0334,-0.2643,Low,,False,Low
+C0808,Existing credit client,0.006,0.4247,0.4307,Low,Low,False,Low
+C0809,Existing credit client,1.6223,0.058,1.6803,High,High,False,High
+C0810,Existing credit client,0.6698,0.2197,0.8895,Medium,Medium,False,Low
+C0811,Existing credit client,1.3997,-0.2367,1.163,Medium,Medium,False,Medium
+C0812,Existing credit client,-0.7172,-0.1463,-0.8635,Low,Low,False,Low
+C0813,Prospect,3.7469,-0.3753,3.3716,High,,False,High
+C0814,Existing credit client,0.5536,-0.1424,0.4112,Low,Low,False,Low
+C0815,Prospect,1.0791,-0.3848,0.6944,Low,,False,Medium
+C0816,Existing credit client,1.4656,0.0566,1.5222,Medium,Medium,False,Medium
+C0817,Prospect,-0.861,0.0976,-0.7634,Low,,False,Low
+C0818,Prospect,0.0557,0.2731,0.3289,Low,,False,Low
+C0819,Prospect,1.0329,0.1193,1.1522,Medium,,False,Medium
+C0820,Existing credit client,1.8715,0.4957,2.3672,High,High,False,High
+C0821,Existing credit client,-0.3376,-0.0733,-0.4109,Low,Medium,True,Low
+C0822,Prospect,0.0197,-0.1697,-0.15,Low,,False,Low
+C0823,Existing credit client,0.5231,0.0639,0.587,Low,Medium,True,Low
+C0824,Existing credit client,-1.1633,0.4406,-0.7227,Low,Low,False,Low
+C0825,Existing non-credit client,-0.7526,-0.1642,-0.9168,Low,,False,Low
+C0826,Existing credit client,2.7774,0.3272,3.1046,High,High,False,High
+C0827,Existing credit client,0.8445,-0.0242,0.8202,Medium,Medium,False,Medium
+C0828,Existing credit client,-1.0566,0.368,-0.6886,Low,Low,False,Low
+C0829,Prospect,-1.205,0.0256,-1.1794,Low,,False,Low
+C0830,Existing credit client,1.3989,0.0872,1.4861,Medium,High,True,Medium
+C0831,Prospect,3.1961,0.3463,3.5424,High,,False,High
+C0832,Prospect,0.2477,0.181,0.4287,Low,,False,Low
+C0833,Existing credit client,0.4072,-0.3244,0.0828,Low,Low,False,Low
+C0834,Prospect,-0.312,-0.1373,-0.4493,Low,,False,Low
+C0835,Existing credit client,-1.513,-0.0643,-1.5773,Low,Low,False,Low
+C0836,Prospect,1.3768,0.0213,1.3981,Medium,,False,Medium
+C0837,Existing credit client,2.0081,0.0449,2.053,High,High,False,High
+C0838,Prospect,1.9135,-0.1641,1.7494,High,,False,High
+C0839,Prospect,1.1706,-0.456,0.7146,Low,,False,Medium
+C0840,Existing non-credit client,-0.7663,0.3875,-0.3788,Low,,False,Low
+C0841,Existing credit client,1.3559,0.2082,1.5642,Medium,Medium,False,Medium
+C0842,Prospect,-0.033,-0.163,-0.196,Low,,False,Low
+C0843,Prospect,0.2063,0.1533,0.3596,Low,,False,Low
+C0844,Existing credit client,1.155,0.1629,1.3179,Medium,Medium,False,Medium
+C0845,Existing non-credit client,-1.4034,-0.2638,-1.6671,Low,,False,Low
+C0846,Prospect,2.0859,0.0757,2.1616,High,,False,High
+C0847,Prospect,-0.3361,-0.1567,-0.4928,Low,,False,Low
+C0848,Existing credit client,0.0007,0.1616,0.1624,Low,Low,False,Low
+C0849,Prospect,0.4395,0.2106,0.6501,Low,,False,Low
+C0850,Prospect,-0.7634,-0.0077,-0.7712,Low,,False,Low
+C0851,Existing credit client,-2.7194,-0.0998,-2.8192,Low,Low,False,Low
+C0852,Existing credit client,0.2427,-0.5124,-0.2697,Low,Low,False,Low
+C0853,Existing credit client,1.2788,0.2832,1.5619,Medium,Medium,False,Medium
+C0854,Prospect,1.1345,0.2532,1.3877,Medium,,False,Medium
+C0855,Existing credit client,-0.6366,-0.2145,-0.8511,Low,Low,False,Low
+C0856,Existing non-credit client,-0.0201,-0.0199,-0.0401,Low,,False,Low
+C0857,Prospect,1.9818,0.1854,2.1671,High,,False,High
+C0858,Existing credit client,1.5916,0.277,1.8685,High,High,False,Medium
+C0859,Existing non-credit client,2.1057,0.2421,2.3478,High,,False,High
+C0860,Existing non-credit client,2.4584,-0.207,2.2514,High,,False,High
+C0861,Existing credit client,-1.5024,0.6733,-0.829,Low,Low,False,Low
+C0862,Prospect,-2.2195,0.1205,-2.099,Low,,False,Low
+C0863,Existing credit client,-0.6081,-0.1391,-0.7472,Low,Low,False,Low
+C0864,Existing non-credit client,-0.1338,0.4389,0.305,Low,,False,Low
+C0865,Existing credit client,-1.2385,-0.1545,-1.393,Low,Low,False,Low
+C0866,Existing credit client,0.5153,0.0805,0.5958,Low,Low,False,Low
+C0867,Existing non-credit client,1.2177,0.0259,1.2437,Medium,,False,Medium
+C0868,Existing credit client,-0.5383,-0.1364,-0.6747,Low,Low,False,Low
+C0869,Existing credit client,-0.4086,-0.0075,-0.4161,Low,Low,False,Low
+C0870,Prospect,1.6175,-0.051,1.5664,Medium,,False,High
+C0871,Prospect,-1.0186,-0.1968,-1.2154,Low,,False,Low
+C0872,Existing credit client,0.8894,0.098,0.9874,Medium,Medium,False,Medium
+C0873,Existing non-credit client,1.1259,0.0415,1.1674,Medium,,False,Medium
+C0874,Existing credit client,0.9922,-0.1687,0.8235,Medium,Medium,False,Medium
+C0875,Existing credit client,0.6575,0.1028,0.7603,Medium,Medium,False,Low
+C0876,Prospect,1.4187,0.1815,1.6002,Medium,,False,Medium
+C0877,Existing credit client,0.9145,-0.0443,0.8702,Medium,Medium,False,Medium
+C0878,Existing credit client,-0.7159,-0.2994,-1.0152,Low,Low,False,Low
+C0879,Prospect,1.8566,0.2446,2.1012,High,,False,High
+C0880,Prospect,1.647,-0.0998,1.5472,Medium,,False,High
+C0881,Existing non-credit client,-0.3227,-0.2057,-0.5284,Low,,False,Low
+C0882,Existing credit client,-0.2701,0.1253,-0.1448,Low,Low,False,Low
+C0883,Existing credit client,0.7902,-0.1418,0.6484,Low,Low,False,Medium
+C0884,Existing credit client,0.1468,0.3446,0.4914,Low,Low,False,Low
+C0885,Prospect,-2.6897,0.1537,-2.536,Low,,False,Low
+C0886,Prospect,0.0877,-0.204,-0.1163,Low,,False,Low
+C0887,Existing non-credit client,0.0462,-0.0575,-0.0113,Low,,False,Low
+C0888,Existing credit client,0.467,0.4004,0.8674,Medium,Medium,False,Low
+C0889,Existing credit client,-0.0049,-0.0897,-0.0945,Low,Low,False,Low
+C0890,Existing credit client,0.6258,-0.029,0.5969,Low,Low,False,Low
+C0891,Existing credit client,0.9938,-0.0641,0.9297,Medium,Medium,False,Medium
+C0892,Existing credit client,0.5404,0.0961,0.6365,Low,Low,False,Low
+C0893,Existing credit client,1.1824,0.0002,1.1826,Medium,Medium,False,Medium
+C0894,Existing non-credit client,0.508,0.363,0.8709,Medium,,False,Low
+C0895,Existing non-credit client,0.62,-0.0139,0.6062,Low,,False,Low
+C0896,Existing non-credit client,0.1501,0.1512,0.3012,Low,,False,Low
+C0897,Existing credit client,1.8609,0.0264,1.8873,High,High,False,High
+C0898,Existing credit client,1.235,-0.2706,0.9645,Medium,Medium,False,Medium
+C0899,Existing non-credit client,-0.3144,0.0432,-0.2712,Low,,False,Low
+C0900,Existing credit client,-1.0876,-0.126,-1.2135,Low,Low,False,Low
+C0901,Existing non-credit client,-0.7732,-0.1228,-0.896,Low,,False,Low
+C0902,Existing credit client,1.5515,-0.1919,1.3597,Medium,Medium,False,Medium
+C0903,Existing credit client,-0.193,0.0786,-0.1143,Low,Low,False,Low
+C0904,Prospect,-0.8895,-0.2486,-1.1382,Low,,False,Low
+C0905,Existing credit client,0.8175,0.3326,1.1501,Medium,Medium,False,Medium
+C0906,Prospect,-0.2255,-0.035,-0.2605,Low,,False,Low
+C0907,Existing non-credit client,0.2964,0.0018,0.2982,Low,,False,Low
+C0908,Prospect,2.2004,-0.1945,2.0059,High,,False,High
+C0909,Existing credit client,-0.0105,-0.0791,-0.0895,Low,Low,False,Low
+C0910,Existing credit client,0.8469,-0.1466,0.7003,Low,Low,False,Medium
+C0911,Prospect,0.3895,0.1117,0.5012,Low,,False,Low
+C0912,Existing credit client,1.1997,-0.2588,0.9409,Medium,Medium,False,Medium
+C0913,Existing credit client,0.4742,-0.3706,0.1036,Low,Medium,True,Low
+C0914,Prospect,1.0097,-0.1057,0.904,Medium,,False,Medium
+C0915,Existing credit client,0.2545,-0.2202,0.0343,Low,Low,False,Low
+C0916,Prospect,-0.8976,-0.2718,-1.1693,Low,,False,Low
+C0917,Existing credit client,1.5013,0.2341,1.7354,High,High,False,Medium
+C0918,Existing non-credit client,0.4208,0.0747,0.4955,Low,,False,Low
+C0919,Existing credit client,-0.1411,-0.1721,-0.3132,Low,Low,False,Low
+C0920,Existing non-credit client,-0.9097,-0.1284,-1.0381,Low,,False,Low
+C0921,Existing credit client,-0.7436,-0.1709,-0.9146,Low,Low,False,Low
+C0922,Existing credit client,0.3884,-0.2503,0.1381,Low,Low,False,Low
+C0923,Prospect,-0.132,0.0857,-0.0463,Low,,False,Low
+C0924,Prospect,2.771,0.0592,2.8302,High,,False,High
+C0925,Existing credit client,1.9951,0.0276,2.0227,High,High,False,High
+C0926,Existing credit client,-0.7731,-0.064,-0.8372,Low,Low,False,Low
+C0927,Existing credit client,0.4497,0.0623,0.5121,Low,Low,False,Low
+C0928,Existing credit client,0.2951,-0.0182,0.2768,Low,Low,False,Low
+C0929,Prospect,0.2445,0.2298,0.4744,Low,,False,Low
+C0930,Prospect,-0.8129,0.0175,-0.7955,Low,,False,Low
+C0931,Prospect,0.4592,0.0811,0.5403,Low,,False,Low
+C0932,Existing credit client,2.2503,0.0835,2.3338,High,High,False,High
+C0933,Existing credit client,-0.2078,-0.0082,-0.216,Low,Low,False,Low
+C0934,Existing non-credit client,1.3998,-0.2219,1.1779,Medium,,False,Medium
+C0935,Prospect,2.0067,-0.2124,1.7943,High,,False,High
+C0936,Existing credit client,-1.5306,0.1978,-1.3329,Low,Low,False,Low
+C0937,Existing credit client,1.1907,-0.2035,0.9873,Medium,Medium,False,Medium
+C0938,Prospect,1.0541,-0.1121,0.942,Medium,,False,Medium
+C0939,Existing credit client,0.5991,-0.598,0.0011,Low,Low,False,Low
+C0940,Existing non-credit client,0.1779,-0.039,0.1389,Low,,False,Low
+C0941,Existing credit client,-0.3549,0.1508,-0.2041,Low,Low,False,Low
+C0942,Existing non-credit client,1.6318,-0.3777,1.2541,Medium,,False,High
+C0943,Existing non-credit client,-0.1465,-0.1786,-0.325,Low,,False,Low
+C0944,Prospect,0.9626,0.1192,1.0818,Medium,,False,Medium
+C0945,Existing credit client,0.0925,0.541,0.6335,Low,Low,False,Low
+C0946,Prospect,1.0117,0.4079,1.4196,Medium,,False,Medium
+C0947,Prospect,2.5452,-0.2092,2.3359,High,,False,High
+C0948,Existing credit client,-1.4592,0.1051,-1.3542,Low,Low,False,Low
+C0949,Existing credit client,2.1065,0.558,2.6645,High,High,False,High
+C0950,Existing credit client,-1.5566,-0.0905,-1.6471,Low,Low,False,Low
+C0951,Existing credit client,1.4509,-0.1751,1.2758,Medium,Medium,False,Medium
+C0952,Prospect,1.6909,0.0749,1.7658,High,,False,High
+C0953,Prospect,-2.4309,-0.0119,-2.4429,Low,,False,Low
+C0954,Existing credit client,2.1894,0.3015,2.4909,High,High,False,High
+C0955,Existing credit client,-0.1084,-0.0045,-0.1129,Low,Low,False,Low
+C0956,Existing credit client,1.4987,-0.1545,1.3442,Medium,Medium,False,Medium
+C0957,Existing non-credit client,-0.5448,0.0765,-0.4683,Low,,False,Low
+C0958,Existing credit client,1.9408,0.0653,2.0061,High,High,False,High
+C0959,Existing credit client,0.4433,-0.3191,0.1242,Low,Low,False,Low
+C0960,Existing credit client,1.4383,-0.0323,1.4059,Medium,Medium,False,Medium
+C0961,Existing credit client,0.8051,0.0637,0.8687,Medium,Medium,False,Medium
+C0962,Prospect,0.2139,-0.1982,0.0157,Low,,False,Low
+C0963,Prospect,0.7945,-0.2926,0.5019,Low,,False,Medium
+C0964,Prospect,1.4661,-0.0147,1.4515,Medium,,False,Medium
+C0965,Existing credit client,0.484,0.0911,0.5751,Low,Low,False,Low
+C0966,Existing credit client,-0.2106,-0.1716,-0.3822,Low,Low,False,Low
+C0967,Existing credit client,0.6633,-0.3269,0.3364,Low,Low,False,Low
+C0968,Existing credit client,1.4811,0.1319,1.613,High,High,False,Medium
+C0969,Existing credit client,-0.8399,0.0754,-0.7645,Low,Low,False,Low
+C0970,Existing non-credit client,0.4804,-0.5778,-0.0974,Low,,False,Low
+C0971,Existing credit client,1.3569,-0.469,0.8879,Medium,Medium,False,Medium
+C0972,Prospect,-0.1988,-0.0244,-0.2232,Low,,False,Low
+C0973,Prospect,-0.9695,-0.0447,-1.0142,Low,,False,Low
+C0974,Prospect,0.2134,0.2589,0.4722,Low,,False,Low
+C0975,Existing non-credit client,1.2334,0.4443,1.6777,High,,False,Medium
+C0976,Prospect,2.3356,-0.1785,2.1572,High,,False,High
+C0977,Existing non-credit client,0.163,0.3327,0.4958,Low,,False,Low
+C0978,Prospect,0.6304,0.1628,0.7932,Medium,,False,Low
+C0979,Existing credit client,-0.8303,-0.0919,-0.9222,Low,Medium,True,Low
+C0980,Existing credit client,0.4511,-0.2007,0.2505,Low,Low,False,Low
+C0981,Prospect,1.0613,-0.3949,0.6665,Low,,False,Medium
+C0982,Prospect,2.878,-0.0971,2.7809,High,,False,High
+C0983,Prospect,2.9284,-0.2584,2.6699,High,,False,High
+C0984,Existing credit client,-1.0344,0.2028,-0.8316,Low,Low,False,Low
+C0985,Existing credit client,-2.0837,0.209,-1.8747,Low,Low,False,Low
+C0986,Prospect,2.1772,0.1703,2.3475,High,,False,High
+C0987,Existing credit client,0.661,0.2243,0.8853,Medium,Medium,False,Low
+C0988,Existing non-credit client,0.7266,-0.1487,0.5779,Low,,False,Low
+C0989,Existing non-credit client,0.2867,0.203,0.4897,Low,,False,Low
+C0990,Existing non-credit client,1.8947,-0.134,1.7608,High,,False,High
+C0991,Existing credit client,-0.9661,-0.1697,-1.1358,Low,Low,False,Low
+C0992,Prospect,0.2092,0.0654,0.2746,Low,,False,Low
+C0993,Existing credit client,-1.0082,-0.3952,-1.4034,Low,Low,False,Low
+C0994,Existing non-credit client,-1.7364,-0.0938,-1.8301,Low,,False,Low
+C0995,Prospect,-1.2544,0.302,-0.9524,Low,,False,Low
+C0996,Existing credit client,0.7961,-0.3991,0.397,Low,Low,False,Medium
+C0997,Existing credit client,-0.4898,-0.2103,-0.7001,Low,Low,False,Low
+C0998,Existing credit client,-0.9607,-0.2395,-1.2003,Low,Low,False,Low
+C0999,Existing non-credit client,1.4371,-0.0922,1.3449,Medium,,False,Medium
+C1000,Existing non-credit client,0.0792,-0.331,-0.2518,Low,,False,Low
+C1001,Existing non-credit client,-0.2056,-0.2552,-0.4608,Low,,False,Low
+C1002,Prospect,0.7663,-0.0814,0.6849,Low,,False,Medium
+C1003,Prospect,0.996,-0.3031,0.6929,Low,,False,Medium
+C1004,Existing credit client,2.7371,-0.0274,2.7096,High,High,False,High
+C1005,Existing non-credit client,-0.9674,0.2218,-0.7456,Low,,False,Low
+C1006,Prospect,1.77,-0.2167,1.5533,Medium,,False,High
+C1007,Existing credit client,0.659,-0.1881,0.4709,Low,Low,False,Low
+C1008,Existing non-credit client,1.4137,0.0807,1.4944,Medium,,False,Medium
+C1009,Prospect,2.5271,0.4617,2.9888,High,,False,High
+C1010,Existing credit client,0.8796,-0.2045,0.6751,Low,Low,False,Medium
+C1011,Existing non-credit client,-0.9775,-0.0883,-1.0658,Low,,False,Low
+C1012,Existing non-credit client,-0.6222,-0.4286,-1.0508,Low,,False,Low
+C1013,Existing non-credit client,0.1141,0.1927,0.3068,Low,,False,Low
+C1014,Existing non-credit client,-0.0376,0.0765,0.0389,Low,,False,Low
+C1015,Existing credit client,1.2213,0.3284,1.5497,Medium,Medium,False,Medium
+C1016,Prospect,-0.052,0.2091,0.1571,Low,,False,Low
+C1017,Prospect,0.2088,-0.032,0.1768,Low,,False,Low
+C1018,Existing credit client,-1.4296,-0.3076,-1.7373,Low,Low,False,Low
+C1019,Existing non-credit client,4.898,0.1913,5.0893,High,,False,High
+C1020,Prospect,1.3494,-0.1231,1.2264,Medium,,False,Medium
+C1021,Prospect,1.0895,-0.0296,1.0599,Medium,,False,Medium
+C1022,Existing credit client,1.5772,-0.2117,1.3655,Medium,Medium,False,Medium
+C1023,Prospect,0.7447,0.2467,0.9914,Medium,,False,Medium
+C1024,Existing credit client,-0.1666,0.067,-0.0996,Low,Low,False,Low
+C1025,Prospect,-0.0987,-0.4409,-0.5396,Low,,False,Low
+C1026,Existing non-credit client,0.8587,-0.1422,0.7165,Low,,False,Medium
+C1027,Prospect,-0.152,0.037,-0.115,Low,,False,Low
+C1028,Existing credit client,-3.2925,0.2384,-3.0541,Low,Low,False,Low
+C1029,Existing credit client,1.0525,0.2956,1.3481,Medium,Medium,False,Medium
+C1030,Existing credit client,-0.6999,0.205,-0.495,Low,Low,False,Low
+C1031,Prospect,0.4944,0.1727,0.6671,Low,,False,Low
+C1032,Existing credit client,0.8491,-0.2191,0.63,Low,Low,False,Medium
+C1033,Existing non-credit client,0.263,-0.0044,0.2586,Low,,False,Low
+C1034,Existing non-credit client,-1.0584,-0.014,-1.0724,Low,,False,Low
+C1035,Existing credit client,0.7119,-0.1385,0.5734,Low,Low,False,Low
+C1036,Existing non-credit client,-1.082,-0.1131,-1.1952,Low,,False,Low
+C1037,Existing credit client,0.7371,-0.1543,0.5828,Low,Low,False,Medium
+C1038,Prospect,2.0886,0.3326,2.4211,High,,False,High
+C1039,Existing credit client,0.2142,-0.0224,0.1919,Low,Low,False,Low
+C1040,Existing non-credit client,-0.8018,0.3536,-0.4482,Low,,False,Low
+C1041,Existing non-credit client,-1.0482,-0.0711,-1.1193,Low,,False,Low
+C1042,Existing credit client,0.4908,-0.0921,0.3987,Low,Low,False,Low
+C1043,Existing credit client,0.9102,0.2062,1.1164,Medium,Medium,False,Medium
+C1044,Existing credit client,-1.3648,0.0892,-1.2756,Low,Low,False,Low
+C1045,Prospect,2.852,-0.4057,2.4464,High,,False,High
+C1046,Existing non-credit client,1.1258,0.1776,1.3034,Medium,,False,Medium
+C1047,Prospect,0.7068,-0.0214,0.6854,Low,,False,Low
+C1048,Existing non-credit client,-1.3385,0.1746,-1.1639,Low,,False,Low
+C1049,Existing credit client,0.6556,0.0253,0.681,Low,Low,False,Low
+C1050,Prospect,0.499,0.2736,0.7726,Medium,,False,Low
+C1051,Prospect,0.2981,0.0778,0.3759,Low,,False,Low
+C1052,Existing credit client,1.9046,-0.3275,1.5771,Medium,Medium,False,High
+C1053,Prospect,1.0178,-0.1632,0.8546,Medium,,False,Medium
+C1054,Existing credit client,-0.0314,-0.066,-0.0974,Low,Low,False,Low
+C1055,Prospect,2.7158,0.5795,3.2953,High,,False,High
+C1056,Existing non-credit client,0.9327,-0.0004,0.9323,Medium,,False,Medium
+C1057,Prospect,0.6637,0.016,0.6797,Low,,False,Low
+C1058,Existing credit client,2.0676,0.3168,2.3844,High,High,False,High
+C1059,Existing non-credit client,-0.1687,-0.54,-0.7088,Low,,False,Low
+C1060,Existing credit client,1.471,0.094,1.565,Medium,Medium,False,Medium
+C1061,Existing non-credit client,-2.5638,-0.0131,-2.5769,Low,,False,Low
+C1062,Existing credit client,1.4186,0.0862,1.5048,Medium,Medium,False,Medium
+C1063,Existing credit client,-0.1944,0.286,0.0916,Low,Low,False,Low
+C1064,Existing credit client,0.0924,0.426,0.5185,Low,Low,False,Low
+C1065,Prospect,0.943,-0.1201,0.8228,Medium,,False,Medium
+C1066,Prospect,0.0793,-0.0318,0.0476,Low,,False,Low
+C1067,Prospect,3.7562,-0.3873,3.3689,High,,False,High
+C1068,Prospect,0.6544,-0.1481,0.5064,Low,,False,Low
+C1069,Existing credit client,0.5763,-0.5261,0.0502,Low,Low,False,Low
+C1070,Existing credit client,1.986,-0.6043,1.3817,Medium,Medium,False,High
+C1071,Prospect,1.2211,0.0366,1.2577,Medium,,False,Medium
+C1072,Existing non-credit client,1.3915,0.2697,1.6612,High,,False,Medium
+C1073,Prospect,1.2387,-0.1953,1.0434,Medium,,False,Medium
+C1074,Existing non-credit client,1.5052,0.2263,1.7315,High,,False,Medium
+C1075,Existing credit client,2.5887,0.1478,2.7365,High,Medium,True,High
+C1076,Existing credit client,0.6037,0.1408,0.7444,Medium,Medium,False,Low
+C1077,Existing credit client,-1.3623,-0.2359,-1.5982,Low,Low,False,Low
+C1078,Prospect,0.9184,-0.2725,0.6459,Low,,False,Medium
+C1079,Prospect,2.4274,0.0309,2.4583,High,,False,High
+C1080,Existing credit client,-0.1689,0.0311,-0.1378,Low,Low,False,Low
+C1081,Prospect,0.6445,0.1355,0.78,Medium,,False,Low
+C1082,Existing credit client,-0.1819,-0.7257,-0.9077,Low,Low,False,Low
+C1083,Existing credit client,-1.8953,-0.1982,-2.0935,Low,Low,False,Low
+C1084,Prospect,0.9214,-0.3428,0.5786,Low,,False,Medium
+C1085,Existing credit client,0.5287,0.1467,0.6754,Low,Low,False,Low
+C1086,Existing credit client,-0.2109,0.1165,-0.0944,Low,Low,False,Low
+C1087,Existing credit client,-1.0758,0.0168,-1.059,Low,Low,False,Low
+C1088,Existing non-credit client,0.2041,0.0617,0.2658,Low,,False,Low
+C1089,Existing credit client,0.2866,0.0632,0.3498,Low,Low,False,Low
+C1090,Existing credit client,-1.7001,-0.3083,-2.0085,Low,Low,False,Low
+C1091,Existing non-credit client,1.1068,0.0488,1.1556,Medium,,False,Medium
+C1092,Prospect,2.2714,-0.4478,1.8236,High,,False,High
+C1093,Existing non-credit client,-0.4311,-0.1774,-0.6085,Low,,False,Low
+C1094,Existing credit client,-0.9734,0.3797,-0.5937,Low,Low,False,Low
+C1095,Existing credit client,0.6172,-0.1198,0.4974,Low,Low,False,Low
+C1096,Existing credit client,0.3855,0.0381,0.4236,Low,Low,False,Low
+C1097,Existing credit client,1.3961,-0.1808,1.2153,Medium,Medium,False,Medium
+C1098,Prospect,2.5331,-0.032,2.5011,High,,False,High
+C1099,Existing non-credit client,1.4432,-0.0995,1.3437,Medium,,False,Medium
+C1100,Prospect,1.139,0.4089,1.5479,Medium,,False,Medium
+C1101,Existing credit client,-2.2987,-0.0526,-2.3513,Low,Low,False,Low
+C1102,Existing credit client,1.6813,-0.2561,1.4252,Medium,Medium,False,High
+C1103,Existing credit client,0.7173,-0.2356,0.4818,Low,Low,False,Low
+C1104,Existing credit client,0.4498,0.0479,0.4977,Low,Medium,True,Low
+C1105,Existing credit client,-1.034,-0.0373,-1.0713,Low,Medium,True,Low
+C1106,Existing credit client,-0.3886,-0.3005,-0.6891,Low,Low,False,Low
+C1107,Existing non-credit client,0.7697,-0.3809,0.3889,Low,,False,Medium
+C1108,Existing credit client,0.7518,0.6079,1.3597,Medium,Medium,False,Medium
+C1109,Existing credit client,2.4232,-0.2049,2.2183,High,High,False,High
+C1110,Existing credit client,1.544,0.2737,1.8176,High,High,False,Medium
+C1111,Existing non-credit client,-0.2409,0.0785,-0.1624,Low,,False,Low
+C1112,Existing credit client,-0.1543,-0.1424,-0.2967,Low,Low,False,Low
+C1113,Existing credit client,-0.426,0.4318,0.0057,Low,Low,False,Low
+C1114,Existing credit client,0.9874,0.1668,1.1541,Medium,Medium,False,Medium
+C1115,Existing non-credit client,0.4421,-0.0502,0.3919,Low,,False,Low
+C1116,Existing credit client,0.4419,-0.1571,0.2848,Low,Low,False,Low
+C1117,Existing credit client,1.8421,0.2602,2.1023,High,High,False,High
+C1118,Existing non-credit client,1.0951,0.1728,1.268,Medium,,False,Medium
+C1119,Existing credit client,-0.8501,-0.2391,-1.0892,Low,Low,False,Low
+C1120,Existing non-credit client,-2.0701,-0.3198,-2.3899,Low,,False,Low
+C1121,Existing credit client,0.5872,0.0283,0.6155,Low,Low,False,Low
+C1122,Prospect,0.9934,-0.0982,0.8952,Medium,,False,Medium
+C1123,Existing credit client,-2.1873,0.273,-1.9143,Low,Low,False,Low
+C1124,Prospect,3.4826,-0.0795,3.4031,High,,False,High
+C1125,Existing credit client,1.5319,-0.145,1.3869,Medium,Medium,False,Medium
+C1126,Existing credit client,-1.3687,-0.1686,-1.5373,Low,Medium,True,Low
+C1127,Existing credit client,-0.4776,-0.2034,-0.681,Low,Low,False,Low
+C1128,Existing credit client,2.2512,-0.1899,2.0614,High,High,False,High
+C1129,Prospect,-0.6583,-0.2819,-0.9402,Low,,False,Low
+C1130,Prospect,0.403,-0.3616,0.0414,Low,,False,Low
+C1131,Prospect,1.695,-0.1785,1.5164,Medium,,False,High
+C1132,Prospect,1.592,0.0477,1.6397,High,,False,Medium
+C1133,Existing credit client,-0.1485,0.203,0.0545,Low,Low,False,Low
+C1134,Existing credit client,1.1791,0.1673,1.3464,Medium,Medium,False,Medium
+C1135,Prospect,1.8142,-0.3295,1.4847,Medium,,False,High
+C1136,Prospect,2.2632,-0.4936,1.7697,High,,False,High
+C1137,Prospect,0.7415,0.2794,1.0209,Medium,,False,Medium
+C1138,Existing credit client,-0.3224,0.5122,0.1899,Low,Low,False,Low
+C1139,Prospect,1.9979,-0.1014,1.8965,High,,False,High
+C1140,Existing credit client,-1.1645,-0.0008,-1.1653,Low,Low,False,Low
+C1141,Existing credit client,-0.3048,-0.3201,-0.6249,Low,Low,False,Low
+C1142,Prospect,0.5141,0.0027,0.5167,Low,,False,Low
+C1143,Existing credit client,2.3902,-0.0004,2.3897,High,High,False,High
+C1144,Existing non-credit client,-0.5141,0.3815,-0.1326,Low,,False,Low
+C1145,Existing credit client,0.3554,0.0492,0.4046,Low,Low,False,Low
+C1146,Prospect,1.6325,0.0619,1.6944,High,,False,High
+C1147,Existing credit client,0.0267,-0.174,-0.1473,Low,Low,False,Low
+C1148,Prospect,1.889,-0.1488,1.7402,High,,False,High
+C1149,Prospect,1.3423,0.2699,1.6123,High,,False,Medium
+C1150,Existing non-credit client,-2.0232,0.2387,-1.7844,Low,,False,Low
+C1151,Existing credit client,-0.6509,-0.0268,-0.6776,Low,Low,False,Low
+C1152,Existing non-credit client,0.0614,-0.4383,-0.3769,Low,,False,Low
+C1153,Existing non-credit client,0.0059,-0.0507,-0.0448,Low,,False,Low
+C1154,Existing credit client,1.2412,-0.0516,1.1896,Medium,Medium,False,Medium
+C1155,Prospect,0.348,0.179,0.527,Low,,False,Low
+C1156,Existing credit client,-0.0603,0.1194,0.0591,Low,Low,False,Low
+C1157,Prospect,0.1565,-0.0518,0.1047,Low,,False,Low
+C1158,Existing credit client,0.4042,-0.0129,0.3913,Low,Low,False,Low
+C1159,Existing credit client,1.2962,-0.2362,1.06,Medium,Medium,False,Medium
+C1160,Existing non-credit client,0.3663,-0.1057,0.2607,Low,,False,Low
+C1161,Existing non-credit client,0.9022,-0.7337,0.1685,Low,,False,Medium
+C1162,Prospect,3.0186,0.2211,3.2397,High,,False,High
+C1163,Existing non-credit client,0.4027,-0.1187,0.284,Low,,False,Low
+C1164,Existing credit client,0.2271,0.3133,0.5404,Low,Medium,True,Low
+C1165,Existing credit client,-0.8804,0.117,-0.7634,Low,Low,False,Low
+C1166,Existing credit client,1.7476,-0.1284,1.6192,High,High,False,High
+C1167,Existing credit client,0.543,0.5384,1.0814,Medium,Medium,False,Low
+C1168,Prospect,0.3792,0.2547,0.6339,Low,,False,Low
+C1169,Existing credit client,-0.1005,-0.1464,-0.2469,Low,Low,False,Low
+C1170,Prospect,0.8529,-0.0029,0.85,Medium,,False,Medium
+C1171,Existing credit client,-2.1782,0.2038,-1.9744,Low,Low,False,Low
+C1172,Prospect,1.591,-0.2238,1.3672,Medium,,False,Medium
+C1173,Existing non-credit client,-0.7623,-0.5223,-1.2846,Low,,False,Low
+C1174,Existing credit client,0.2098,0.2906,0.5003,Low,Low,False,Low
+C1175,Existing credit client,0.4508,-0.0999,0.3509,Low,Low,False,Low
+C1176,Existing credit client,0.4792,-0.2375,0.2417,Low,Low,False,Low
+C1177,Existing non-credit client,-0.6648,0.2242,-0.4406,Low,,False,Low
+C1178,Prospect,0.9669,0.2179,1.1848,Medium,,False,Medium
+C1179,Existing credit client,2.5963,-0.1122,2.4841,High,High,False,High
+C1180,Existing credit client,-0.8269,-0.1944,-1.0212,Low,Low,False,Low
+C1181,Existing non-credit client,-1.5311,-0.0003,-1.5314,Low,,False,Low
+C1182,Existing credit client,1.3453,-0.0427,1.3026,Medium,Medium,False,Medium
+C1183,Prospect,0.8217,-0.3136,0.5081,Low,,False,Medium
+C1184,Existing credit client,2.7375,-0.2742,2.4633,High,High,False,High
+C1185,Existing credit client,0.0615,0.1099,0.1714,Low,Low,False,Low
+C1186,Existing credit client,1.2498,-0.0553,1.1945,Medium,High,True,Medium
+C1187,Existing credit client,0.727,0.0945,0.8215,Medium,Medium,False,Low
+C1188,Existing credit client,-0.4884,-0.1033,-0.5917,Low,Low,False,Low
+C1189,Prospect,-0.3972,-0.1098,-0.507,Low,,False,Low
+C1190,Existing non-credit client,0.1108,0.2134,0.3242,Low,,False,Low
+C1191,Existing credit client,1.2,-0.1107,1.0893,Medium,Medium,False,Medium
+C1192,Existing non-credit client,2.7513,0.7639,3.5153,High,,False,High
+C1193,Prospect,1.6806,-0.041,1.6396,High,,False,High
+C1194,Existing credit client,0.8853,0.0039,0.8892,Medium,Medium,False,Medium
+C1195,Existing credit client,-0.6789,0.1778,-0.5011,Low,Low,False,Low
+C1196,Prospect,0.4016,-0.0466,0.355,Low,,False,Low
+C1197,Existing credit client,0.3635,-0.3921,-0.0286,Low,Low,False,Low
+C1198,Existing credit client,0.145,-0.1052,0.0398,Low,Low,False,Low
+C1199,Existing credit client,0.1646,0.1158,0.2804,Low,Low,False,Low
+C1200,Prospect,2.5091,-0.0051,2.504,High,,False,High
+C1201,Prospect,1.3178,0.3854,1.7032,High,,False,Medium
+C1202,Existing non-credit client,1.3121,-0.0422,1.2699,Medium,,False,Medium
+C1203,Existing credit client,-0.8511,-0.5121,-1.3631,Low,Low,False,Low
+C1204,Prospect,0.0064,0.1272,0.1336,Low,,False,Low
+C1205,Prospect,1.9813,-0.1796,1.8017,High,,False,High
+C1206,Existing credit client,1.6484,0.1361,1.7845,High,High,False,High
+C1207,Existing non-credit client,1.0687,-0.3137,0.755,Medium,,False,Medium
+C1208,Existing credit client,0.4745,0.0109,0.4854,Low,Low,False,Low
+C1209,Existing non-credit client,0.6777,-0.0742,0.6035,Low,,False,Low
+C1210,Existing non-credit client,-1.2442,-0.1423,-1.3864,Low,,False,Low
+C1211,Existing credit client,1.4523,-0.2404,1.2119,Medium,Medium,False,Medium
+C1212,Existing non-credit client,0.9249,-0.184,0.7409,Medium,,False,Medium
+C1213,Prospect,1.1701,0.1573,1.3274,Medium,,False,Medium
+C1214,Prospect,1.7559,0.3431,2.099,High,,False,High
+C1215,Prospect,2.2687,0.1602,2.4288,High,,False,High
+C1216,Existing non-credit client,0.2316,0.1683,0.3999,Low,,False,Low
+C1217,Prospect,1.9041,-0.3337,1.5703,Medium,,False,High
+C1218,Existing credit client,-0.2728,-0.3104,-0.5833,Low,Low,False,Low
+C1219,Existing non-credit client,-1.3086,-0.1697,-1.4784,Low,,False,Low
+C1220,Existing credit client,-0.4381,0.045,-0.3931,Low,Low,False,Low
+C1221,Existing credit client,0.9773,-0.0052,0.9721,Medium,Medium,False,Medium
+C1222,Existing credit client,-0.9136,0.5486,-0.365,Low,Low,False,Low
+C1223,Prospect,0.6026,-0.3065,0.2961,Low,,False,Low
+C1224,Existing credit client,0.9884,0.0059,0.9943,Medium,Medium,False,Medium
+C1225,Existing credit client,1.9583,0.2583,2.2166,High,High,False,High
+C1226,Prospect,1.4327,0.2498,1.6824,High,,False,Medium
+C1227,Existing credit client,-0.361,-0.2153,-0.5763,Low,Low,False,Low
+C1228,Existing credit client,0.6386,0.3453,0.9839,Medium,Medium,False,Low
+C1229,Existing credit client,0.5035,0.0729,0.5764,Low,Low,False,Low
+C1230,Prospect,1.6623,0.2927,1.955,High,,False,High
+C1231,Existing non-credit client,-0.2851,0.1383,-0.1468,Low,,False,Low
+C1232,Existing credit client,-0.1097,-0.2322,-0.3419,Low,Low,False,Low
+C1233,Existing non-credit client,-0.5745,-0.0495,-0.6239,Low,,False,Low
+C1234,Existing credit client,-0.4076,-0.1839,-0.5915,Low,Low,False,Low
+C1235,Existing credit client,-0.3292,-0.1014,-0.4306,Low,Medium,True,Low
+C1236,Existing credit client,-1.1747,-0.2454,-1.4201,Low,Low,False,Low
+C1237,Existing credit client,1.8058,-0.2108,1.595,Medium,Medium,False,High
+C1238,Prospect,1.9095,0.4977,2.4071,High,,False,High
+C1239,Existing credit client,0.7938,0.2266,1.0204,Medium,Medium,False,Medium
+C1240,Existing credit client,-0.1883,0.0889,-0.0994,Low,Low,False,Low
+C1241,Existing credit client,1.2567,-0.0912,1.1656,Medium,Medium,False,Medium
+C1242,Prospect,0.7294,-0.1205,0.6089,Low,,False,Medium
+C1243,Prospect,1.7029,-0.4757,1.2271,Medium,,False,High
+C1244,Existing credit client,-0.1782,-0.0296,-0.2078,Low,Low,False,Low
+C1245,Prospect,-0.3696,-0.4266,-0.7961,Low,,False,Low
+C1246,Existing credit client,1.2936,0.2501,1.5437,Medium,Medium,False,Medium
+C1247,Prospect,0.2877,-0.1091,0.1786,Low,,False,Low
+C1248,Existing credit client,-1.5365,0.3002,-1.2363,Low,Low,False,Low
+C1249,Existing credit client,0.1901,0.037,0.2271,Low,Low,False,Low
+C1250,Prospect,-1.0439,0.4803,-0.5636,Low,,False,Low
+C1251,Prospect,0.9177,-0.1627,0.755,Medium,,False,Medium
+C1252,Existing credit client,0.4133,-0.3234,0.09,Low,Low,False,Low
+C1253,Existing credit client,0.3654,0.1355,0.501,Low,Low,False,Low
+C1254,Prospect,1.2163,0.4639,1.6801,High,,False,Medium
+C1255,Existing non-credit client,0.121,0.0385,0.1595,Low,,False,Low
+C1256,Existing credit client,-0.6738,0.1708,-0.503,Low,Low,False,Low
+C1257,Existing credit client,-0.7633,-0.2396,-1.0029,Low,Low,False,Low
+C1258,Prospect,0.4352,-0.167,0.2682,Low,,False,Low
+C1259,Existing credit client,0.1361,-0.1565,-0.0204,Low,Low,False,Low
+C1260,Existing credit client,3.0389,0.0805,3.1193,High,High,False,High
+C1261,Existing credit client,1.9077,-0.0189,1.8888,High,High,False,High
+C1262,Existing credit client,0.7166,0.181,0.8976,Medium,Medium,False,Low
+C1263,Existing credit client,0.8823,0.4041,1.2865,Medium,Medium,False,Medium
+C1264,Existing credit client,0.0972,-0.0139,0.0833,Low,Low,False,Low
+C1265,Existing credit client,0.6037,-0.7319,-0.1282,Low,Low,False,Low
+C1266,Existing non-credit client,0.9813,0.0262,1.0075,Medium,,False,Medium
+C1267,Existing credit client,-1.1071,0.2613,-0.8458,Low,Low,False,Low
+C1268,Prospect,2.2722,0.1533,2.4254,High,,False,High
+C1269,Existing non-credit client,0.1846,0.6297,0.8143,Medium,,False,Low
+C1270,Existing credit client,0.8006,0.0996,0.9003,Medium,Medium,False,Medium
+C1271,Prospect,1.9522,0.2039,2.1561,High,,False,High
+C1272,Existing non-credit client,-0.414,0.1686,-0.2454,Low,,False,Low
+C1273,Prospect,-0.231,-0.3669,-0.5979,Low,,False,Low
+C1274,Existing credit client,0.8624,0.3738,1.2362,Medium,Medium,False,Medium
+C1275,Existing credit client,-0.3228,-0.1678,-0.4907,Low,Low,False,Low
+C1276,Existing non-credit client,-0.1607,-0.1739,-0.3346,Low,,False,Low
+C1277,Existing credit client,-1.1504,-0.105,-1.2553,Low,Low,False,Low
+C1278,Prospect,0.219,0.1736,0.3926,Low,,False,Low
+C1279,Prospect,1.441,-0.2436,1.1974,Medium,,False,Medium
+C1280,Existing credit client,2.3873,-0.2596,2.1277,High,High,False,High
+C1281,Existing non-credit client,0.9459,0.1497,1.0956,Medium,,False,Medium
+C1282,Existing credit client,2.5077,0.161,2.6686,High,High,False,High
+C1283,Prospect,1.5644,-0.1554,1.4089,Medium,,False,Medium
+C1284,Existing credit client,1.0621,-0.0101,1.052,Medium,Medium,False,Medium
+C1285,Existing non-credit client,-1.4007,-0.1124,-1.5131,Low,,False,Low
+C1286,Existing credit client,0.1757,0.6221,0.7978,Medium,Medium,False,Low
+C1287,Existing credit client,0.5265,-0.142,0.3845,Low,Low,False,Low
+C1288,Existing credit client,0.7111,0.2392,0.9503,Medium,Medium,False,Low
+C1289,Existing non-credit client,2.3963,0.0544,2.4507,High,,False,High
+C1290,Prospect,-0.9466,-0.1744,-1.121,Low,,False,Low
+C1291,Existing credit client,3.7524,0.2948,4.0473,High,High,False,High
+C1292,Existing credit client,0.7207,-0.3353,0.3854,Low,Low,False,Low
+C1293,Existing credit client,-1.1764,-0.8424,-2.0187,Low,Low,False,Low
+C1294,Prospect,-0.3159,0.219,-0.0969,Low,,False,Low
+C1295,Existing non-credit client,1.3125,-0.2867,1.0257,Medium,,False,Medium
+C1296,Existing credit client,-0.0303,0.3236,0.2932,Low,Low,False,Low
+C1297,Prospect,0.9955,-0.4689,0.5266,Low,,False,Medium
+C1298,Existing non-credit client,-1.5642,-0.2285,-1.7927,Low,,False,Low
+C1299,Existing credit client,2.1395,-0.4112,1.7283,High,High,False,High
+C1300,Existing non-credit client,0.5469,0.0865,0.6334,Low,,False,Low
+C1301,Existing non-credit client,0.174,-0.095,0.079,Low,,False,Low
+C1302,Prospect,3.4714,-0.1154,3.356,High,,False,High
+C1303,Prospect,1.5573,-0.1172,1.4401,Medium,,False,Medium
+C1304,Prospect,0.423,0.0599,0.4828,Low,,False,Low
+C1305,Existing credit client,3.3828,0.1611,3.5439,High,High,False,High
+C1306,Existing non-credit client,0.1993,0.0433,0.2426,Low,,False,Low
+C1307,Existing credit client,2.6654,-0.1621,2.5033,High,High,False,High
+C1308,Existing credit client,0.5468,0.1401,0.6869,Low,Low,False,Low
+C1309,Existing non-credit client,2.8213,-0.2465,2.5749,High,,False,High
+C1310,Existing credit client,2.9504,0.311,3.2614,High,High,False,High
+C1311,Existing credit client,-0.9367,-0.1333,-1.0701,Low,Low,False,Low
+C1312,Existing non-credit client,3.2704,0.7467,4.0171,High,,False,High
+C1313,Existing credit client,1.3389,-0.2549,1.084,Medium,Medium,False,Medium
+C1314,Prospect,0.7041,-0.387,0.3171,Low,,False,Low
+C1315,Prospect,-0.3382,0.1457,-0.1926,Low,,False,Low
+C1316,Existing credit client,0.8185,0.5996,1.4181,Medium,Medium,False,Medium
+C1317,Existing credit client,-0.6912,-0.227,-0.9181,Low,Low,False,Low
+C1318,Prospect,1.9158,-0.2683,1.6475,High,,False,High
+C1319,Existing credit client,-1.4621,-0.1124,-1.5745,Low,Low,False,Low
+C1320,Existing credit client,0.3944,-0.3318,0.0626,Low,Low,False,Low
+C1321,Existing non-credit client,1.1311,-0.2589,0.8722,Medium,,False,Medium
+C1322,Existing non-credit client,0.2828,-0.4173,-0.1345,Low,,False,Low
+C1323,Prospect,1.4853,0.094,1.5793,Medium,,False,Medium
+C1324,Existing credit client,1.0365,0.1936,1.2301,Medium,High,True,Medium
+C1325,Prospect,1.7768,0.1059,1.8827,High,,False,High
+C1326,Existing credit client,1.1333,-0.2214,0.9118,Medium,Medium,False,Medium
+C1327,Existing credit client,0.5027,0.2162,0.719,Low,Low,False,Low
+C1328,Prospect,2.9989,0.119,3.1178,High,,False,High
+C1329,Prospect,3.1211,-0.1334,2.9877,High,,False,High
+C1330,Existing credit client,0.5707,0.0863,0.657,Low,Low,False,Low
+C1331,Existing credit client,-2.1527,0.004,-2.1487,Low,Low,False,Low
+C1332,Existing credit client,0.5936,0.1146,0.7082,Low,Low,False,Low
+C1333,Prospect,1.2648,0.0608,1.3256,Medium,,False,Medium
+C1334,Existing credit client,0.9629,0.0318,0.9948,Medium,Medium,False,Medium
+C1335,Existing credit client,1.2407,-0.0347,1.2059,Medium,Medium,False,Medium
+C1336,Existing credit client,2.2276,-0.4604,1.7672,High,High,False,High
+C1337,Existing credit client,0.3251,-0.3127,0.0124,Low,Low,False,Low
+C1338,Existing credit client,-0.3499,-0.3482,-0.6981,Low,Low,False,Low
+C1339,Prospect,-1.7718,-0.0692,-1.8411,Low,,False,Low
+C1340,Prospect,0.4425,0.1946,0.6371,Low,,False,Low
+C1341,Prospect,-0.8478,-0.2248,-1.0727,Low,,False,Low
+C1342,Existing non-credit client,0.6074,0.0884,0.6958,Low,,False,Low
+C1343,Existing credit client,0.8078,0.3551,1.1629,Medium,High,True,Medium
+C1344,Prospect,-1.0855,-0.0895,-1.175,Low,,False,Low
+C1345,Existing credit client,1.1252,-0.3052,0.82,Medium,Medium,False,Medium
+C1346,Existing credit client,0.6047,-0.461,0.1437,Low,Low,False,Low
+C1347,Existing credit client,-1.3418,0.0649,-1.2769,Low,Low,False,Low
+C1348,Existing non-credit client,0.6019,0.0676,0.6695,Low,,False,Low
+C1349,Existing credit client,-1.3943,0.4019,-0.9924,Low,Low,False,Low
+C1350,Prospect,-0.3613,0.0365,-0.3248,Low,,False,Low
+C1351,Existing credit client,0.2983,0.2494,0.5478,Low,Low,False,Low
+C1352,Existing non-credit client,0.5101,0.3831,0.8932,Medium,,False,Low
+C1353,Existing credit client,2.3198,0.0099,2.3297,High,High,False,High
+C1354,Existing credit client,1.9392,-0.1024,1.8368,High,High,False,High
+C1355,Existing credit client,-1.0592,-0.0336,-1.0928,Low,Low,False,Low
+C1356,Existing credit client,0.3854,0.0914,0.4768,Low,Low,False,Low
+C1357,Existing credit client,0.7263,-0.0939,0.6325,Low,Low,False,Low
+C1358,Existing credit client,1.167,-0.3303,0.8368,Medium,Medium,False,Medium
+C1359,Existing credit client,-0.1904,-0.2825,-0.4729,Low,Low,False,Low
+C1360,Existing non-credit client,0.2407,0.1909,0.4316,Low,,False,Low
+C1361,Prospect,-0.3919,-0.2355,-0.6273,Low,,False,Low
+C1362,Existing non-credit client,0.743,0.4132,1.1562,Medium,,False,Medium
+C1363,Existing credit client,-2.7338,0.3557,-2.3782,Low,Low,False,Low
+C1364,Existing non-credit client,-0.0854,-0.0444,-0.1298,Low,,False,Low
+C1365,Existing credit client,1.2965,-0.1491,1.1475,Medium,Medium,False,Medium
+C1366,Existing non-credit client,1.2579,0.247,1.505,Medium,,False,Medium
+C1367,Existing credit client,-0.4617,0.1685,-0.2931,Low,Low,False,Low
+C1368,Existing credit client,-1.1705,0.1398,-1.0306,Low,Low,False,Low
+C1369,Existing non-credit client,0.4845,0.2754,0.7598,Medium,,False,Low
+C1370,Existing non-credit client,2.0117,-0.3781,1.6336,High,,False,High
+C1371,Existing non-credit client,-0.0802,-0.327,-0.4072,Low,,False,Low
+C1372,Existing credit client,-1.5322,-0.0167,-1.5489,Low,Low,False,Low
+C1373,Existing non-credit client,0.2836,0.0858,0.3694,Low,,False,Low
+C1374,Existing credit client,1.3604,-0.0176,1.3428,Medium,Medium,False,Medium
+C1375,Existing non-credit client,1.3105,-0.1593,1.1512,Medium,,False,Medium
+C1376,Existing credit client,0.6488,-0.1547,0.4941,Low,Low,False,Low
+C1377,Existing credit client,1.3865,0.0172,1.4037,Medium,Medium,False,Medium
+C1378,Prospect,1.3681,-0.1203,1.2478,Medium,,False,Medium
+C1379,Existing credit client,0.8298,0.4096,1.2393,Medium,Medium,False,Medium
+C1380,Existing credit client,1.507,0.3334,1.8404,High,High,False,Medium
+C1381,Prospect,2.5889,-0.044,2.5448,High,,False,High
+C1382,Prospect,0.5193,0.1825,0.7018,Low,,False,Low
+C1383,Prospect,0.6773,-0.1526,0.5247,Low,,False,Low
+C1384,Existing credit client,-1.0401,0.3881,-0.6519,Low,Low,False,Low
+C1385,Existing non-credit client,0.5524,0.0577,0.61,Low,,False,Low
+C1386,Prospect,0.1951,-0.2039,-0.0088,Low,,False,Low
+C1387,Existing credit client,-0.6206,-0.2024,-0.8231,Low,Low,False,Low
+C1388,Prospect,0.4341,0.1729,0.6069,Low,,False,Low
+C1389,Existing credit client,-0.1893,0.1585,-0.0307,Low,Low,False,Low
+C1390,Prospect,1.2028,-0.1931,1.0097,Medium,,False,Medium
+C1391,Prospect,2.2859,0.2894,2.5753,High,,False,High
+C1392,Existing credit client,0.2635,-0.34,-0.0765,Low,Low,False,Low
+C1393,Existing credit client,0.0253,0.0621,0.0874,Low,Medium,True,Low
+C1394,Prospect,2.9108,-0.3227,2.5882,High,,False,High
+C1395,Existing credit client,1.1376,-0.5483,0.5893,Low,Low,False,Medium
+C1396,Existing credit client,-1.0802,-0.1559,-1.2361,Low,Low,False,Low
+C1397,Existing non-credit client,-0.8412,-0.1905,-1.0318,Low,,False,Low
+C1398,Existing credit client,1.0744,0.0919,1.1663,Medium,Medium,False,Medium
+C1399,Existing non-credit client,1.5703,-0.0175,1.5528,Medium,,False,Medium
+C1400,Prospect,-0.4643,-0.2931,-0.7574,Low,,False,Low
+C1401,Existing non-credit client,-2.0919,-0.1347,-2.2265,Low,,False,Low
+C1402,Existing credit client,-0.4587,-0.3318,-0.7904,Low,Low,False,Low
+C1403,Existing non-credit client,-2.241,-0.2685,-2.5094,Low,,False,Low
+C1404,Existing non-credit client,2.2079,-0.0024,2.2055,High,,False,High
+C1405,Existing credit client,3.3177,0.1947,3.5124,High,Medium,True,High
+C1406,Existing credit client,1.6812,-0.0482,1.633,High,High,False,High
+C1407,Existing credit client,-1.1574,0.3503,-0.8071,Low,Low,False,Low
+C1408,Existing credit client,-1.3419,-0.0022,-1.3441,Low,Low,False,Low
+C1409,Existing credit client,0.9668,0.4635,1.4303,Medium,Medium,False,Medium
+C1410,Existing credit client,1.3612,0.0316,1.3928,Medium,High,True,Medium
+C1411,Prospect,-0.3331,-0.0123,-0.3454,Low,,False,Low
+C1412,Prospect,1.1716,-0.0264,1.1452,Medium,,False,Medium
+C1413,Existing credit client,0.4937,0.1331,0.6268,Low,Low,False,Low
+C1414,Existing credit client,-0.3018,-0.1192,-0.421,Low,Low,False,Low
+C1415,Existing non-credit client,0.0068,0.0805,0.0873,Low,,False,Low
+C1416,Prospect,1.6055,0.4862,2.0917,High,,False,High
+C1417,Prospect,-0.1176,-0.0276,-0.1452,Low,,False,Low
+C1418,Existing credit client,0.2319,0.193,0.4249,Low,Low,False,Low
+C1419,Existing credit client,1.0057,-0.1008,0.905,Medium,Medium,False,Medium
+C1420,Existing non-credit client,-0.4245,-0.1137,-0.5382,Low,,False,Low
+C1421,Existing credit client,-0.1167,-0.3103,-0.427,Low,Low,False,Low
+C1422,Existing credit client,-0.364,-0.3563,-0.7203,Low,Low,False,Low
+C1423,Existing non-credit client,1.2717,0.0676,1.3393,Medium,,False,Medium
+C1424,Existing credit client,-0.1592,-0.4156,-0.5748,Low,Low,False,Low
+C1425,Existing credit client,-0.0448,0.0351,-0.0098,Low,Low,False,Low
+C1426,Existing credit client,0.6476,-0.3591,0.2885,Low,Low,False,Low
+C1427,Prospect,-0.6839,0.0091,-0.6748,Low,,False,Low
+C1428,Existing credit client,0.6976,0.1233,0.8209,Medium,Medium,False,Low
+C1429,Prospect,0.7226,0.2656,0.9882,Medium,,False,Low
+C1430,Existing credit client,2.345,0.4454,2.7903,High,High,False,High
+C1431,Prospect,0.7511,0.04,0.7911,Medium,,False,Medium
+C1432,Existing credit client,-0.9004,0.2791,-0.6213,Low,Low,False,Low
+C1433,Existing credit client,-0.6818,-0.1827,-0.8645,Low,Low,False,Low
+C1434,Prospect,0.1619,0.309,0.4709,Low,,False,Low
+C1435,Existing credit client,1.3767,-0.0608,1.3159,Medium,Medium,False,Medium
+C1436,Existing credit client,-1.2863,-0.2862,-1.5725,Low,Low,False,Low
+C1437,Prospect,0.133,-0.051,0.0821,Low,,False,Low
+C1438,Existing credit client,-0.5151,0.5853,0.0702,Low,Low,False,Low
+C1439,Existing credit client,1.5008,0.0119,1.5127,Medium,Medium,False,Medium
+C1440,Existing credit client,-0.0457,-0.0534,-0.0991,Low,Low,False,Low
+C1441,Existing non-credit client,-0.3291,-0.0619,-0.391,Low,,False,Low
+C1442,Prospect,2.4998,-0.4702,2.0296,High,,False,High
+C1443,Existing credit client,0.1143,-0.1265,-0.0121,Low,Low,False,Low
+C1444,Prospect,0.5103,0.3549,0.8652,Medium,,False,Low
+C1445,Prospect,-1.1358,-0.0333,-1.1691,Low,,False,Low
+C1446,Prospect,2.2369,-0.0255,2.2114,High,,False,High
+C1447,Prospect,0.3971,0.4137,0.8109,Medium,,False,Low
+C1448,Existing credit client,-1.1973,0.0561,-1.1411,Low,Low,False,Low
+C1449,Existing credit client,1.5174,-0.1036,1.4138,Medium,Medium,False,Medium
+C1450,Existing credit client,0.7034,-0.1239,0.5795,Low,Low,False,Low
+C1451,Prospect,0.4816,-0.405,0.0765,Low,,False,Low
+C1452,Existing non-credit client,-1.2324,0.0969,-1.1355,Low,,False,Low
+C1453,Prospect,1.1238,0.5256,1.6494,High,,False,Medium
+C1454,Existing credit client,-0.5192,0.0109,-0.5084,Low,Low,False,Low
+C1455,Existing non-credit client,-1.2488,0.3292,-0.9196,Low,,False,Low
+C1456,Existing credit client,-0.3706,-0.1992,-0.5698,Low,Low,False,Low
+C1457,Prospect,1.7307,-0.1329,1.5978,Medium,,False,High
+C1458,Prospect,2.266,-0.1054,2.1607,High,,False,High
+C1459,Existing credit client,0.4377,-0.012,0.4257,Low,Low,False,Low
+C1460,Existing credit client,0.1276,-0.3336,-0.2061,Low,Low,False,Low
+C1461,Existing credit client,-0.0325,-0.1277,-0.1603,Low,Low,False,Low
+C1462,Prospect,3.2833,0.065,3.3483,High,,False,High
+C1463,Prospect,1.86,-0.066,1.794,High,,False,High
+C1464,Existing non-credit client,0.5438,-0.1696,0.3742,Low,,False,Low
+C1465,Existing credit client,-0.4502,-0.3668,-0.817,Low,Low,False,Low
+C1466,Existing credit client,0.9649,0.4087,1.3737,Medium,Medium,False,Medium
+C1467,Existing non-credit client,-0.7841,0.326,-0.458,Low,,False,Low
+C1468,Existing credit client,-1.1496,-0.1046,-1.2542,Low,Low,False,Low
+C1469,Existing credit client,0.3227,-0.052,0.2707,Low,Low,False,Low
+C1470,Existing credit client,-0.6082,-0.0875,-0.6957,Low,Low,False,Low
+C1471,Existing credit client,1.9481,-0.012,1.9361,High,High,False,High
+C1472,Existing non-credit client,-1.229,0.1875,-1.0415,Low,,False,Low
+C1473,Prospect,2.2963,-0.1888,2.1075,High,,False,High
+C1474,Existing non-credit client,0.767,-0.6397,0.1273,Low,,False,Medium
+C1475,Existing credit client,-0.4833,0.0317,-0.4516,Low,Low,False,Low
+C1476,Existing credit client,-1.862,0.0792,-1.7828,Low,Low,False,Low
+C1477,Existing credit client,-1.3554,-0.2087,-1.5641,Low,Low,False,Low
+C1478,Existing credit client,0.4198,-0.2312,0.1886,Low,Low,False,Low
+C1479,Existing non-credit client,-0.7117,0.0491,-0.6626,Low,,False,Low
+C1480,Existing credit client,0.0503,0.0906,0.1409,Low,Low,False,Low
+C1481,Existing non-credit client,-0.5295,-0.0706,-0.6001,Low,,False,Low
+C1482,Existing credit client,0.3373,-0.5322,-0.1949,Low,Low,False,Low
+C1483,Existing credit client,0.3709,-0.4003,-0.0294,Low,Medium,True,Low
+C1484,Existing non-credit client,1.1478,-0.1305,1.0173,Medium,,False,Medium
+C1485,Prospect,1.0677,-0.1184,0.9493,Medium,,False,Medium
+C1486,Existing credit client,3.0781,0.1419,3.22,High,High,False,High
+C1487,Existing credit client,1.5119,-0.2955,1.2163,Medium,Medium,False,Medium
+C1488,Prospect,1.5042,-0.2083,1.2959,Medium,,False,Medium
+C1489,Existing credit client,-0.0488,-0.057,-0.1058,Low,Low,False,Low
+C1490,Existing credit client,-0.3614,-0.4203,-0.7817,Low,Low,False,Low
+C1491,Existing credit client,-1.6952,0.2283,-1.4669,Low,Low,False,Low
+C1492,Existing non-credit client,0.7747,0.2555,1.0302,Medium,,False,Medium
+C1493,Existing credit client,-0.7886,-0.2723,-1.061,Low,Low,False,Low
+C1494,Existing non-credit client,-0.1212,-0.1189,-0.2401,Low,,False,Low
+C1495,Prospect,2.1993,0.4069,2.6062,High,,False,High
+C1496,Existing credit client,-1.3307,-0.037,-1.3677,Low,Low,False,Low
+C1497,Existing credit client,-0.5596,0.3834,-0.1762,Low,Low,False,Low
+C1498,Existing credit client,-0.128,-0.1302,-0.2582,Low,Low,False,Low
+C1499,Prospect,1.3171,-0.0499,1.2672,Medium,,False,Medium
+C1500,Existing credit client,0.4758,0.3126,0.7884,Medium,Medium,False,Low
+C1501,Existing credit client,-0.3039,0.1492,-0.1546,Low,Low,False,Low
+C1502,Existing credit client,1.0073,0.0527,1.0601,Medium,Medium,False,Medium
+C1503,Prospect,1.6477,0.7097,2.3573,High,,False,High
+C1504,Existing credit client,0.8979,-0.1737,0.7242,Low,Low,False,Medium
+C1505,Existing credit client,-0.0629,0.0229,-0.04,Low,Low,False,Low
+C1506,Prospect,-1.2549,-0.0713,-1.3262,Low,,False,Low
+C1507,Existing credit client,-0.4831,-0.3279,-0.8109,Low,Low,False,Low
+C1508,Existing credit client,0.588,0.4486,1.0366,Medium,Medium,False,Low
+C1509,Prospect,2.9282,0.1794,3.1077,High,,False,High
+C1510,Existing credit client,0.4312,0.1696,0.6008,Low,Low,False,Low
+C1511,Existing credit client,1.4167,-0.3595,1.0573,Medium,Medium,False,Medium
+C1512,Existing non-credit client,2.866,-0.0991,2.7669,High,,False,High
+C1513,Existing credit client,0.3312,0.141,0.4722,Low,Low,False,Low
+C1514,Prospect,1.9238,-0.0913,1.8326,High,,False,High
+C1515,Prospect,1.0706,-0.0801,0.9906,Medium,,False,Medium
+C1516,Existing non-credit client,1.3563,0.4773,1.8336,High,,False,Medium
+C1517,Existing non-credit client,1.4082,-0.609,0.7992,Medium,,False,Medium
+C1518,Existing credit client,-0.0573,0.2857,0.2283,Low,Low,False,Low
+C1519,Existing credit client,0.6102,0.4105,1.0207,Medium,Medium,False,Low
+C1520,Existing credit client,0.6573,-0.2305,0.4268,Low,Low,False,Low
+C1521,Existing credit client,-0.2604,0.2481,-0.0123,Low,Low,False,Low
+C1522,Existing credit client,0.3025,-0.4164,-0.1139,Low,Low,False,Low
+C1523,Prospect,1.0247,-0.172,0.8527,Medium,,False,Medium
+C1524,Existing credit client,1.519,0.0742,1.5932,Medium,Medium,False,Medium
+C1525,Existing non-credit client,-2.3302,-0.0507,-2.3809,Low,,False,Low
+C1526,Existing credit client,1.1655,0.1018,1.2673,Medium,Medium,False,Medium
+C1527,Prospect,3.6527,0.1907,3.8434,High,,False,High
+C1528,Existing non-credit client,0.7316,-0.0914,0.6402,Low,,False,Medium
+C1529,Prospect,0.031,0.045,0.076,Low,,False,Low
+C1530,Prospect,2.2017,0.2569,2.4585,High,,False,High
+C1531,Existing credit client,0.4655,0.4115,0.877,Medium,Medium,False,Low
+C1532,Existing non-credit client,1.8182,0.1251,1.9433,High,,False,High
+C1533,Existing credit client,0.5905,0.1622,0.7527,Medium,Medium,False,Low
+C1534,Existing credit client,-0.1955,-0.1144,-0.3099,Low,Low,False,Low
+C1535,Prospect,4.611,-0.1546,4.4564,High,,False,High
+C1536,Prospect,2.939,-0.5381,2.4008,High,,False,High
+C1537,Existing non-credit client,0.0595,-0.3108,-0.2513,Low,,False,Low
+C1538,Existing credit client,-0.5708,0.0277,-0.5431,Low,Low,False,Low
+C1539,Prospect,0.607,-0.1713,0.4357,Low,,False,Low
+C1540,Existing credit client,-2.142,0.6716,-1.4704,Low,Low,False,Low
+C1541,Existing non-credit client,-0.0947,-0.1584,-0.253,Low,,False,Low
+C1542,Existing credit client,-0.4169,0.3819,-0.035,Low,Low,False,Low
+C1543,Prospect,-0.9669,-0.2639,-1.2308,Low,,False,Low
+C1544,Prospect,1.3962,-0.249,1.1473,Medium,,False,Medium
+C1545,Existing credit client,0.1302,0.0855,0.2157,Low,Low,False,Low
+C1546,Existing non-credit client,0.5367,0.0678,0.6045,Low,,False,Low
+C1547,Existing non-credit client,-0.5251,0.1032,-0.422,Low,,False,Low
+C1548,Existing credit client,1.9596,0.05,2.0095,High,High,False,High
+C1549,Prospect,0.4989,-0.3403,0.1585,Low,,False,Low
+C1550,Prospect,0.7652,-0.126,0.6392,Low,,False,Medium
+C1551,Prospect,-0.2361,-0.0549,-0.291,Low,,False,Low
+C1552,Existing credit client,0.1255,-0.0596,0.0659,Low,Low,False,Low
+C1553,Existing credit client,-0.0595,-0.3605,-0.42,Low,Low,False,Low
+C1554,Existing credit client,-2.5049,-0.1779,-2.6828,Low,Low,False,Low
+C1555,Existing non-credit client,-1.7338,0.1652,-1.5686,Low,,False,Low
+C1556,Existing credit client,0.6579,0.3324,0.9903,Medium,Medium,False,Low
+C1557,Prospect,0.7401,-0.2405,0.4996,Low,,False,Medium
+C1558,Existing credit client,0.0996,-0.2707,-0.1711,Low,Low,False,Low
+C1559,Existing non-credit client,-0.5574,0.3117,-0.2457,Low,,False,Low
+C1560,Existing credit client,0.4142,-0.0433,0.371,Low,Low,False,Low
+C1561,Existing credit client,-0.9902,0.1728,-0.8174,Low,Low,False,Low
+C1562,Prospect,0.2841,-0.1994,0.0847,Low,,False,Low
+C1563,Prospect,1.8539,-0.3167,1.5372,Medium,,False,High
+C1564,Existing non-credit client,2.7022,-0.5374,2.1648,High,,False,High
+C1565,Prospect,0.7539,-0.4535,0.3004,Low,,False,Medium
+C1566,Prospect,0.3299,0.5498,0.8796,Medium,,False,Low
+C1567,Existing credit client,1.1783,0.164,1.3422,Medium,Medium,False,Medium
+C1568,Prospect,1.0294,-0.2383,0.7911,Medium,,False,Medium
+C1569,Existing non-credit client,0.9276,-0.0903,0.8374,Medium,,False,Medium
+C1570,Existing non-credit client,-0.4483,0.3495,-0.0988,Low,,False,Low
+C1571,Prospect,-0.9942,-0.2605,-1.2547,Low,,False,Low
+C1572,Existing credit client,0.9247,0.0039,0.9286,Medium,Medium,False,Medium
+C1573,Existing non-credit client,-0.3334,-0.233,-0.5665,Low,,False,Low
+C1574,Existing credit client,2.272,0.1445,2.4166,High,Medium,True,High
+C1575,Prospect,-1.3739,-0.235,-1.6088,Low,,False,Low
+C1576,Prospect,0.3892,-0.0706,0.3186,Low,,False,Low
+C1577,Existing non-credit client,1.7163,0.1925,1.9088,High,,False,High
+C1578,Existing credit client,-1.0724,-0.5033,-1.5757,Low,Low,False,Low
+C1579,Existing credit client,-0.0692,-0.1299,-0.1991,Low,Low,False,Low
+C1580,Existing credit client,0.326,0.011,0.337,Low,Low,False,Low
+C1581,Existing credit client,-0.767,0.0937,-0.6732,Low,Low,False,Low
+C1582,Existing credit client,-1.0913,-0.2104,-1.3017,Low,Low,False,Low
+C1583,Existing credit client,-1.3304,-0.2068,-1.5372,Low,Low,False,Low
+C1584,Existing credit client,0.6306,-0.1187,0.5118,Low,Low,False,Low
+C1585,Prospect,1.8239,-0.356,1.4679,Medium,,False,High
+C1586,Existing credit client,1.1183,-0.3545,0.7639,Medium,Medium,False,Medium
+C1587,Existing credit client,0.5828,-0.2471,0.3358,Low,Low,False,Low
+C1588,Existing credit client,1.5828,-0.0624,1.5204,Medium,Medium,False,Medium
+C1589,Existing credit client,-1.9149,0.1952,-1.7197,Low,Low,False,Low
+C1590,Prospect,1.2751,-0.2245,1.0506,Medium,,False,Medium
+C1591,Prospect,-0.9095,0.2322,-0.6773,Low,,False,Low
+C1592,Existing non-credit client,1.0458,-0.4262,0.6196,Low,,False,Medium
+C1593,Existing non-credit client,1.4811,0.0923,1.5735,Medium,,False,Medium
+C1594,Prospect,0.0333,-0.0926,-0.0593,Low,,False,Low
+C1595,Prospect,0.4333,0.2271,0.6605,Low,,False,Low
+C1596,Existing non-credit client,0.4101,0.3986,0.8087,Medium,,False,Low
+C1597,Existing non-credit client,-1.0838,0.1425,-0.9414,Low,,False,Low
+C1598,Existing credit client,-0.9873,0.1218,-0.8654,Low,Low,False,Low
+C1599,Existing credit client,2.6816,0.2043,2.886,High,High,False,High
+C1600,Existing non-credit client,-1.0957,0.1951,-0.9006,Low,,False,Low
+C1601,Prospect,-2.3627,0.386,-1.9767,Low,,False,Low
+C1602,Existing credit client,0.8476,0.0044,0.852,Medium,Medium,False,Medium
+C1603,Existing credit client,-0.4421,-0.0796,-0.5218,Low,Low,False,Low
+C1604,Existing credit client,0.0285,-0.6139,-0.5853,Low,Low,False,Low
+C1605,Existing credit client,0.6839,-0.198,0.4858,Low,Low,False,Low
+C1606,Existing credit client,-0.6285,0.0488,-0.5797,Low,Low,False,Low
+C1607,Existing credit client,2.5634,0.4513,3.0147,High,Medium,True,High
+C1608,Existing credit client,-0.7049,0.2461,-0.4588,Low,Low,False,Low
+C1609,Existing credit client,0.5284,-0.2341,0.2942,Low,Low,False,Low
+C1610,Prospect,0.6864,-0.5105,0.1758,Low,,False,Low
+C1611,Prospect,1.0026,0.0633,1.0659,Medium,,False,Medium
+C1612,Existing credit client,0.3772,0.4448,0.8221,Medium,Medium,False,Low
+C1613,Prospect,1.9887,0.0248,2.0135,High,,False,High
+C1614,Existing credit client,0.505,-0.2279,0.2771,Low,Low,False,Low
+C1615,Prospect,0.549,0.1584,0.7074,Low,,False,Low
+C1616,Existing non-credit client,1.283,0.0619,1.3449,Medium,,False,Medium
+C1617,Prospect,1.2654,0.0554,1.3208,Medium,,False,Medium
+C1618,Existing credit client,-0.2321,-0.1456,-0.3777,Low,Low,False,Low
+C1619,Prospect,0.7735,-0.1254,0.6481,Low,,False,Medium
+C1620,Existing credit client,1.2146,0.2284,1.4431,Medium,Medium,False,Medium
+C1621,Existing credit client,-0.4315,0.2074,-0.2241,Low,Low,False,Low
+C1622,Existing credit client,1.0643,-0.3151,0.7493,Medium,Medium,False,Medium
+C1623,Prospect,-0.6912,-0.1496,-0.8408,Low,,False,Low
+C1624,Existing non-credit client,-0.694,-0.0352,-0.7292,Low,,False,Low
+C1625,Existing non-credit client,-1.0973,0.1725,-0.9248,Low,,False,Low
+C1626,Prospect,1.1521,0.0881,1.2402,Medium,,False,Medium
+C1627,Existing non-credit client,-0.8196,-0.2475,-1.0671,Low,,False,Low
+C1628,Prospect,0.5132,-0.2634,0.2497,Low,,False,Low
+C1629,Existing credit client,0.2051,0.0235,0.2286,Low,Low,False,Low
+C1630,Existing credit client,0.8759,-0.0573,0.8186,Medium,Medium,False,Medium
+C1631,Existing non-credit client,0.8357,0.2227,1.0583,Medium,,False,Medium
+C1632,Existing credit client,1.2383,-0.3673,0.871,Medium,Medium,False,Medium
+C1633,Existing credit client,-0.6442,0.2914,-0.3528,Low,Low,False,Low
+C1634,Existing credit client,-1.0018,-0.0679,-1.0697,Low,Low,False,Low
+C1635,Prospect,-0.7516,0.0104,-0.7412,Low,,False,Low
+C1636,Prospect,0.7216,-0.1611,0.5605,Low,,False,Low
+C1637,Existing credit client,-0.5419,0.1856,-0.3564,Low,Low,False,Low
+C1638,Existing credit client,-1.9206,-0.0889,-2.0096,Low,Low,False,Low
+C1639,Existing credit client,1.6238,0.037,1.6608,High,High,False,High
+C1640,Existing credit client,-3.2724,-0.1989,-3.4713,Low,Low,False,Low
+C1641,Existing credit client,0.2896,0.0403,0.3299,Low,Low,False,Low
+C1642,Existing credit client,0.4215,-0.3792,0.0424,Low,Medium,True,Low
+C1643,Existing credit client,0.3498,-0.2733,0.0765,Low,Low,False,Low
+C1644,Existing non-credit client,-1.6984,0.3442,-1.3542,Low,,False,Low
+C1645,Existing credit client,1.709,-0.1031,1.6059,High,High,False,High
+C1646,Existing credit client,-0.0023,-0.1042,-0.1065,Low,Low,False,Low
+C1647,Existing credit client,0.9241,0.278,1.2021,Medium,Medium,False,Medium
+C1648,Prospect,1.0694,0.0535,1.1229,Medium,,False,Medium
+C1649,Existing credit client,-1.5162,-0.0278,-1.544,Low,Low,False,Low
+C1650,Existing credit client,-2.7809,0.4065,-2.3744,Low,Low,False,Low
+C1651,Prospect,1.369,-0.1682,1.2007,Medium,,False,Medium
+C1652,Existing credit client,0.2862,-0.0731,0.2132,Low,Low,False,Low
+C1653,Prospect,2.0567,0.1765,2.2332,High,,False,High
+C1654,Prospect,1.2915,0.0825,1.374,Medium,,False,Medium
+C1655,Existing credit client,1.6583,0.4482,2.1064,High,High,False,High
+C1656,Existing credit client,1.6649,-0.1356,1.5292,Medium,Medium,False,High
+C1657,Existing credit client,1.353,-0.1534,1.1996,Medium,Medium,False,Medium
+C1658,Existing credit client,3.407,-0.0029,3.4042,High,High,False,High
+C1659,Existing credit client,-0.6177,0.0397,-0.5779,Low,Low,False,Low
+C1660,Prospect,-0.2085,0.1941,-0.0143,Low,,False,Low
+C1661,Existing non-credit client,0.9143,0.0767,0.991,Medium,,False,Medium
+C1662,Prospect,-0.2359,0.2865,0.0506,Low,,False,Low
+C1663,Existing credit client,1.441,0.2467,1.6877,High,High,False,Medium
+C1664,Prospect,-0.58,-0.035,-0.615,Low,,False,Low
+C1665,Existing non-credit client,1.2205,-0.0277,1.1928,Medium,,False,Medium
+C1666,Existing non-credit client,0.1488,-0.1205,0.0283,Low,,False,Low
+C1667,Prospect,-1.8539,-0.0853,-1.9392,Low,,False,Low
+C1668,Existing credit client,3.0537,-0.0819,2.9719,High,High,False,High
+C1669,Existing non-credit client,1.9827,-0.1873,1.7955,High,,False,High
+C1670,Existing non-credit client,1.5539,-0.0182,1.5357,Medium,,False,Medium
+C1671,Prospect,1.8647,0.1345,1.9992,High,,False,High
+C1672,Prospect,1.3638,0.0383,1.4021,Medium,,False,Medium
+C1673,Existing credit client,-0.1174,0.0568,-0.0606,Low,Low,False,Low
+C1674,Existing credit client,-0.4756,-0.0631,-0.5386,Low,Medium,True,Low
+C1675,Existing non-credit client,1.4156,-0.1792,1.2364,Medium,,False,Medium
+C1676,Existing credit client,0.8798,-0.1564,0.7234,Low,Low,False,Medium
+C1677,Existing non-credit client,-0.4494,-0.1194,-0.5689,Low,,False,Low
+C1678,Existing credit client,2.7007,-0.1655,2.5351,High,High,False,High
+C1679,Prospect,0.8969,0.0986,0.9956,Medium,,False,Medium
+C1680,Prospect,0.929,0.1477,1.0767,Medium,,False,Medium
+C1681,Existing credit client,1.2171,0.159,1.3761,Medium,Medium,False,Medium
+C1682,Existing credit client,-0.8461,0.0517,-0.7944,Low,Low,False,Low
+C1683,Existing non-credit client,0.5085,0.0213,0.5298,Low,,False,Low
+C1684,Existing credit client,-0.6406,-0.2623,-0.9029,Low,Low,False,Low
+C1685,Existing credit client,0.8288,-0.1021,0.7266,Low,Low,False,Medium
+C1686,Prospect,-0.166,-0.0133,-0.1794,Low,,False,Low
+C1687,Prospect,-1.234,0.1304,-1.1035,Low,,False,Low
+C1688,Prospect,1.0303,0.3368,1.3671,Medium,,False,Medium
+C1689,Existing credit client,-2.3257,0.2476,-2.0781,Low,Low,False,Low
+C1690,Prospect,-2.3256,0.1271,-2.1985,Low,,False,Low
+C1691,Existing non-credit client,0.6663,0.3753,1.0416,Medium,,False,Low
+C1692,Prospect,1.141,-0.2162,0.9248,Medium,,False,Medium
+C1693,Prospect,0.7596,0.232,0.9916,Medium,,False,Medium
+C1694,Existing credit client,-0.2809,-0.1378,-0.4186,Low,Low,False,Low
+C1695,Existing credit client,-0.8505,-0.2294,-1.0799,Low,Low,False,Low
+C1696,Prospect,-2.3944,0.2685,-2.1259,Low,,False,Low
+C1697,Existing credit client,-0.4616,-0.2199,-0.6816,Low,Low,False,Low
+C1698,Existing credit client,0.3646,-0.3014,0.0632,Low,Low,False,Low
+C1699,Existing credit client,1.6097,0.2571,1.8668,High,High,False,High
+C1700,Prospect,1.2411,-0.2528,0.9884,Medium,,False,Medium
+C1701,Existing credit client,-0.48,-0.1311,-0.6111,Low,Low,False,Low
+C1702,Prospect,2.4415,-0.0775,2.364,High,,False,High
+C1703,Existing credit client,2.4756,-0.1335,2.3421,High,High,False,High
+C1704,Existing credit client,-1.299,0.2616,-1.0375,Low,Medium,True,Low
+C1705,Prospect,0.7888,-0.2649,0.5239,Low,,False,Medium
+C1706,Existing credit client,-1.3011,0.4653,-0.8358,Low,Low,False,Low
+C1707,Prospect,2.6513,0.0992,2.7505,High,,False,High
+C1708,Existing non-credit client,1.2317,0.5202,1.7519,High,,False,Medium
+C1709,Existing credit client,0.0734,-0.4235,-0.3501,Low,Low,False,Low
+C1710,Existing non-credit client,-0.1593,0.1602,0.0009,Low,,False,Low
+C1711,Existing credit client,-0.4002,0.0253,-0.3749,Low,Low,False,Low
+C1712,Existing credit client,1.1221,-0.0692,1.053,Medium,Medium,False,Medium
+C1713,Existing credit client,0.3316,-0.079,0.2526,Low,Low,False,Low
+C1714,Prospect,1.0694,0.5621,1.6315,High,,False,Medium
+C1715,Existing credit client,-0.898,0.2851,-0.6129,Low,Low,False,Low
+C1716,Existing credit client,0.3069,-0.0631,0.2438,Low,Low,False,Low
+C1717,Existing non-credit client,-0.195,0.096,-0.099,Low,,False,Low
+C1718,Existing credit client,0.8768,0.4723,1.3491,Medium,Medium,False,Medium
+C1719,Prospect,0.9681,0.0753,1.0434,Medium,,False,Medium
+C1720,Existing credit client,0.4631,0.1141,0.5773,Low,Low,False,Low
+C1721,Existing credit client,0.9485,0.4607,1.4092,Medium,Medium,False,Medium
+C1722,Existing non-credit client,-1.6783,-0.1621,-1.8405,Low,,False,Low
+C1723,Existing credit client,0.1479,0.2683,0.4162,Low,Low,False,Low
+C1724,Prospect,-0.1817,-0.2606,-0.4422,Low,,False,Low
+C1725,Existing credit client,0.8309,0.4818,1.3127,Medium,Medium,False,Medium
+C1726,Existing credit client,-0.0681,-0.0154,-0.0835,Low,Low,False,Low
+C1727,Prospect,1.6246,0.036,1.6606,High,,False,High
+C1728,Existing credit client,0.0973,-0.1798,-0.0824,Low,Low,False,Low
+C1729,Existing non-credit client,2.2224,-0.1514,2.071,High,,False,High
+C1730,Prospect,1.2885,0.4484,1.7369,High,,False,Medium
+C1731,Existing credit client,0.0084,0.11,0.1184,Low,Low,False,Low
+C1732,Existing credit client,0.969,0.0613,1.0303,Medium,Medium,False,Medium
+C1733,Existing credit client,-1.3212,-0.0021,-1.3233,Low,Low,False,Low
+C1734,Existing non-credit client,0.6569,-0.0207,0.6362,Low,,False,Low
+C1735,Prospect,1.801,0.2445,2.0454,High,,False,High
+C1736,Prospect,1.0819,-0.1403,0.9415,Medium,,False,Medium
+C1737,Prospect,-0.0915,-0.0166,-0.1081,Low,,False,Low
+C1738,Existing credit client,1.9249,0.2782,2.2031,High,High,False,High
+C1739,Prospect,2.0902,-0.2881,1.8021,High,,False,High
+C1740,Existing non-credit client,0.1875,-0.1371,0.0503,Low,,False,Low
+C1741,Prospect,-0.2275,0.0112,-0.2164,Low,,False,Low
+C1742,Existing credit client,0.5844,0.0649,0.6493,Low,Low,False,Low
+C1743,Existing credit client,-0.4398,-0.0708,-0.5106,Low,Low,False,Low
+C1744,Prospect,1.074,-0.1967,0.8772,Medium,,False,Medium
+C1745,Prospect,2.1099,-0.2893,1.8206,High,,False,High
+C1746,Existing credit client,0.3591,0.2869,0.646,Low,Low,False,Low
+C1747,Existing credit client,-0.5562,0.131,-0.4252,Low,Low,False,Low
+C1748,Existing credit client,2.3732,0.2652,2.6384,High,High,False,High
+C1749,Existing credit client,1.4932,-0.2256,1.2676,Medium,Medium,False,Medium
+C1750,Existing credit client,3.1167,-0.0081,3.1086,High,High,False,High
+C1751,Existing credit client,-0.7063,-0.4393,-1.1455,Low,Low,False,Low
+C1752,Existing non-credit client,0.4145,-0.0239,0.3906,Low,,False,Low
+C1753,Existing non-credit client,1.5458,0.0247,1.5705,Medium,,False,Medium
+C1754,Existing credit client,1.3299,0.1851,1.515,Medium,Medium,False,Medium
+C1755,Existing credit client,-0.1425,-0.1797,-0.3223,Low,Low,False,Low
+C1756,Existing non-credit client,-0.4328,0.2074,-0.2254,Low,,False,Low
+C1757,Existing credit client,1.1575,0.1108,1.2683,Medium,Medium,False,Medium
+C1758,Existing credit client,-0.4238,-0.0435,-0.4673,Low,Low,False,Low
+C1759,Prospect,1.5261,0.0502,1.5763,Medium,,False,Medium
+C1760,Existing credit client,-0.1291,-0.2827,-0.4118,Low,Low,False,Low
+C1761,Existing credit client,0.9443,-0.2446,0.6997,Low,Low,False,Medium
+C1762,Existing non-credit client,0.6552,0.401,1.0562,Medium,,False,Low
+C1763,Existing credit client,1.2656,-0.3396,0.926,Medium,Medium,False,Medium
+C1764,Prospect,1.6671,0.2083,1.8754,High,,False,High
+C1765,Existing credit client,0.7263,-0.3069,0.4194,Low,Low,False,Low
+C1766,Prospect,0.0114,-0.0081,0.0033,Low,,False,Low
+C1767,Prospect,1.217,0.1238,1.3409,Medium,,False,Medium
+C1768,Existing non-credit client,0.4514,0.219,0.6705,Low,,False,Low
+C1769,Existing non-credit client,-0.7219,-0.0901,-0.8119,Low,,False,Low
+C1770,Existing credit client,-0.3123,-0.1825,-0.4949,Low,Low,False,Low
+C1771,Existing credit client,0.1685,-0.4402,-0.2717,Low,Low,False,Low
+C1772,Existing non-credit client,-0.7772,0.1738,-0.6034,Low,,False,Low
+C1773,Existing credit client,-2.1462,-0.0942,-2.2405,Low,Low,False,Low
+C1774,Existing credit client,0.7387,-0.6288,0.1099,Low,Low,False,Medium
+C1775,Existing non-credit client,1.3538,-0.3548,0.999,Medium,,False,Medium
+C1776,Existing credit client,0.7346,-0.3142,0.4204,Low,Low,False,Medium
+C1777,Existing credit client,0.5856,0.6548,1.2404,Medium,Medium,False,Low
+C1778,Existing credit client,1.1862,0.0753,1.2615,Medium,Low,True,Medium
+C1779,Prospect,-0.9546,0.2463,-0.7083,Low,,False,Low
+C1780,Prospect,-0.7748,-0.3003,-1.0751,Low,,False,Low
+C1781,Existing credit client,-0.3949,0.2713,-0.1236,Low,Low,False,Low
+C1782,Prospect,0.145,-0.1989,-0.0539,Low,,False,Low
+C1783,Existing credit client,-1.1607,0.0025,-1.1582,Low,Low,False,Low
+C1784,Prospect,0.69,-0.1911,0.4989,Low,,False,Low
+C1785,Existing credit client,-1.6307,0.0768,-1.5538,Low,Low,False,Low
+C1786,Existing non-credit client,0.4694,0.1147,0.5841,Low,,False,Low
+C1787,Existing credit client,0.8231,0.1176,0.9407,Medium,Medium,False,Medium
+C1788,Existing credit client,-0.7476,-0.1764,-0.924,Low,Low,False,Low
+C1789,Existing credit client,0.6754,-0.0273,0.6481,Low,Low,False,Low
+C1790,Existing credit client,1.6586,0.0185,1.677,High,High,False,High
+C1791,Existing credit client,-0.3721,-0.2977,-0.6698,Low,Low,False,Low
+C1792,Existing non-credit client,1.3721,0.1598,1.5319,Medium,,False,Medium
+C1793,Prospect,-0.5992,0.3417,-0.2575,Low,,False,Low
+C1794,Existing non-credit client,0.8379,0.1756,1.0135,Medium,,False,Medium
+C1795,Prospect,2.3672,0.1478,2.515,High,,False,High
+C1796,Existing credit client,-1.1915,-0.168,-1.3595,Low,Low,False,Low
+C1797,Prospect,2.868,-0.2317,2.6363,High,,False,High
+C1798,Existing non-credit client,2.4289,-0.058,2.3708,High,,False,High
+C1799,Prospect,0.2401,0.2587,0.4988,Low,,False,Low
+C1800,Prospect,1.0688,0.0476,1.1163,Medium,,False,Medium
+C1801,Existing credit client,-0.3555,-0.2143,-0.5697,Low,Low,False,Low
+C1802,Prospect,0.7621,-0.4722,0.2899,Low,,False,Medium
+C1803,Existing non-credit client,2.071,0.0254,2.0964,High,,False,High
+C1804,Existing credit client,2.3705,-0.0551,2.3154,High,High,False,High
+C1805,Existing credit client,2.4462,-0.2371,2.2091,High,High,False,High
+C1806,Prospect,1.0373,0.3602,1.3976,Medium,,False,Medium
+C1807,Existing credit client,-0.8686,-0.1828,-1.0514,Low,Low,False,Low
+C1808,Prospect,-0.5811,0.1923,-0.3888,Low,,False,Low
+C1809,Prospect,-0.7906,-0.1927,-0.9833,Low,,False,Low
+C1810,Existing credit client,-0.4591,-0.1321,-0.5912,Low,Low,False,Low
+C1811,Prospect,0.586,-0.2974,0.2886,Low,,False,Low
+C1812,Existing credit client,-0.9009,-0.0863,-0.9872,Low,Low,False,Low
+C1813,Prospect,2.071,-0.3023,1.7687,High,,False,High
+C1814,Existing credit client,-0.3828,-0.1273,-0.5101,Low,Low,False,Low
+C1815,Existing credit client,-1.3021,0.5494,-0.7527,Low,Low,False,Low
+C1816,Existing non-credit client,-1.0059,-0.1527,-1.1586,Low,,False,Low
+C1817,Prospect,0.792,-0.2744,0.5176,Low,,False,Medium
+C1818,Existing credit client,1.5227,0.3589,1.8815,High,High,False,Medium
+C1819,Prospect,1.7679,-0.2282,1.5397,Medium,,False,High
+C1820,Existing credit client,0.8857,-0.225,0.6607,Low,Low,False,Medium
+C1821,Prospect,0.1581,-0.3387,-0.1806,Low,,False,Low
+C1822,Prospect,2.627,0.202,2.829,High,,False,High
+C1823,Existing credit client,-0.207,0.0611,-0.1459,Low,Low,False,Low
+C1824,Prospect,2.0137,-0.3564,1.6573,High,,False,High
+C1825,Existing non-credit client,-2.4962,-0.1326,-2.6288,Low,,False,Low
+C1826,Existing credit client,0.2545,-0.5037,-0.2493,Low,Low,False,Low
+C1827,Existing credit client,-0.2342,-0.1949,-0.4291,Low,Low,False,Low
+C1828,Existing credit client,-1.2808,0.336,-0.9448,Low,Low,False,Low
+C1829,Prospect,2.033,0.2402,2.2732,High,,False,High
+C1830,Existing credit client,0.8604,0.0037,0.8641,Medium,Medium,False,Medium
+C1831,Existing credit client,0.403,0.3078,0.7107,Low,Low,False,Low
+C1832,Existing credit client,1.0801,0.2399,1.32,Medium,Medium,False,Medium
+C1833,Prospect,-0.3675,0.2439,-0.1236,Low,,False,Low
+C1834,Existing credit client,1.0718,0.4094,1.4812,Medium,Medium,False,Medium
+C1835,Existing non-credit client,1.0536,0.0192,1.0727,Medium,,False,Medium
+C1836,Prospect,0.9485,-0.0096,0.9389,Medium,,False,Medium
+C1837,Prospect,-0.627,-0.4803,-1.1073,Low,,False,Low
+C1838,Prospect,-1.1184,-0.1615,-1.2799,Low,,False,Low
+C1839,Existing credit client,0.1201,-0.1258,-0.0057,Low,Low,False,Low
+C1840,Prospect,2.1302,-0.0015,2.1286,High,,False,High
+C1841,Existing non-credit client,-0.2942,0.0938,-0.2005,Low,,False,Low
+C1842,Prospect,2.9867,-0.0003,2.9864,High,,False,High
+C1843,Existing credit client,3.1339,0.0332,3.1671,High,High,False,High
+C1844,Existing credit client,0.8584,0.1017,0.96,Medium,Medium,False,Medium
+C1845,Existing credit client,1.7308,0.1643,1.8951,High,High,False,High
+C1846,Prospect,-0.4485,0.1766,-0.2719,Low,,False,Low
+C1847,Existing credit client,1.0611,-0.1562,0.9049,Medium,Medium,False,Medium
+C1848,Existing credit client,-0.3619,0.2955,-0.0664,Low,Low,False,Low
+C1849,Existing non-credit client,2.5206,0.2291,2.7497,High,,False,High
+C1850,Prospect,0.7739,0.4616,1.2354,Medium,,False,Medium
+C1851,Existing non-credit client,-0.9558,0.2388,-0.717,Low,,False,Low
+C1852,Prospect,0.6847,0.4217,1.1064,Medium,,False,Low
+C1853,Existing credit client,-0.388,0.0335,-0.3544,Low,Low,False,Low
+C1854,Existing credit client,1.3628,0.1872,1.55,Medium,Medium,False,Medium
+C1855,Prospect,0.8668,-0.1462,0.7206,Low,,False,Medium
+C1856,Existing credit client,-1.7359,0.4324,-1.3035,Low,Low,False,Low
+C1857,Existing non-credit client,-0.3245,0.0783,-0.2462,Low,,False,Low
+C1858,Existing non-credit client,-0.8172,-0.2254,-1.0426,Low,,False,Low
+C1859,Existing credit client,0.1681,-0.0065,0.1617,Low,Low,False,Low
+C1860,Existing credit client,0.4551,-0.0883,0.3667,Low,Low,False,Low
+C1861,Existing non-credit client,-0.3233,0.3818,0.0585,Low,,False,Low
+C1862,Existing credit client,0.8678,0.2937,1.1615,Medium,Medium,False,Medium
+C1863,Existing credit client,2.2979,0.1529,2.4507,High,High,False,High
+C1864,Existing credit client,1.2155,0.1569,1.3724,Medium,Medium,False,Medium
+C1865,Existing credit client,0.4191,0.6508,1.0699,Medium,Medium,False,Low
+C1866,Existing credit client,0.5168,-0.1589,0.358,Low,Low,False,Low
+C1867,Existing credit client,0.0228,-0.0711,-0.0484,Low,Low,False,Low
+C1868,Prospect,-0.5557,0.1086,-0.4471,Low,,False,Low
+C1869,Existing credit client,-0.2535,-0.2961,-0.5496,Low,Low,False,Low
+C1870,Existing credit client,1.2828,-0.37,0.9127,Medium,Medium,False,Medium
+C1871,Existing credit client,-0.0195,0.0063,-0.0132,Low,Low,False,Low
+C1872,Existing non-credit client,1.7601,-0.1701,1.59,Medium,,False,High
+C1873,Prospect,2.3689,0.0454,2.4143,High,,False,High
+C1874,Existing non-credit client,1.2534,-0.2103,1.0432,Medium,,False,Medium
+C1875,Prospect,-0.0858,0.4202,0.3344,Low,,False,Low
+C1876,Existing credit client,0.5599,0.1168,0.6767,Low,Low,False,Low
+C1877,Prospect,-0.0506,-0.2191,-0.2697,Low,,False,Low
+C1878,Prospect,1.3955,0.0857,1.4812,Medium,,False,Medium
+C1879,Existing credit client,-0.2715,-0.255,-0.5265,Low,Low,False,Low
+C1880,Existing non-credit client,-1.4799,0.016,-1.4639,Low,,False,Low
+C1881,Existing credit client,0.6976,0.2066,0.9043,Medium,Medium,False,Low
+C1882,Existing credit client,1.1038,-0.5505,0.5533,Low,Low,False,Medium
+C1883,Prospect,2.3963,-0.1499,2.2464,High,,False,High
+C1884,Existing credit client,0.2731,0.0143,0.2874,Low,Low,False,Low
+C1885,Existing non-credit client,0.0447,0.1404,0.1851,Low,,False,Low
+C1886,Existing credit client,0.4939,-0.0581,0.4359,Low,Low,False,Low
+C1887,Prospect,3.3471,0.2162,3.5634,High,,False,High
+C1888,Existing credit client,0.3147,0.1986,0.5132,Low,Low,False,Low
+C1889,Existing credit client,-0.8958,0.1463,-0.7494,Low,Low,False,Low
+C1890,Existing credit client,-0.7002,-0.2034,-0.9036,Low,Low,False,Low
+C1891,Prospect,-0.7913,0.3498,-0.4416,Low,,False,Low
+C1892,Existing non-credit client,0.3469,-0.5008,-0.1539,Low,,False,Low
+C1893,Existing credit client,-1.4987,0.2593,-1.2393,Low,Medium,True,Low
+C1894,Existing credit client,1.9862,-0.0164,1.9698,High,High,False,High
+C1895,Prospect,0.9996,-0.1804,0.8192,Medium,,False,Medium
+C1896,Existing non-credit client,-0.6491,-0.145,-0.7941,Low,,False,Low
+C1897,Existing credit client,-1.174,-0.3325,-1.5065,Low,Low,False,Low
+C1898,Existing credit client,-0.5429,0.2074,-0.3355,Low,Low,False,Low
+C1899,Prospect,-0.6584,-0.2376,-0.8961,Low,,False,Low
+C1900,Existing credit client,-0.6533,-0.0462,-0.6995,Low,Low,False,Low
+C1901,Existing non-credit client,0.6862,-0.2133,0.4729,Low,,False,Low
+C1902,Existing non-credit client,-1.3712,0.019,-1.3522,Low,,False,Low
+C1903,Existing credit client,1.2009,-0.2409,0.96,Medium,Medium,False,Medium
+C1904,Existing credit client,1.538,0.031,1.569,Medium,Medium,False,Medium
+C1905,Prospect,2.4138,0.0735,2.4873,High,,False,High
+C1906,Prospect,1.4817,0.0928,1.5745,Medium,,False,Medium
+C1907,Existing credit client,1.0331,0.0085,1.0416,Medium,Medium,False,Medium
+C1908,Existing credit client,1.9611,0.4661,2.4272,High,High,False,High
+C1909,Existing credit client,-0.151,0.2,0.049,Low,Low,False,Low
+C1910,Existing non-credit client,2.4366,-0.1094,2.3272,High,,False,High
+C1911,Existing credit client,1.3961,0.3114,1.7075,High,High,False,Medium
+C1912,Existing credit client,1.0559,0.3349,1.3909,Medium,Medium,False,Medium
+C1913,Prospect,1.5537,-0.2895,1.2642,Medium,,False,Medium
+C1914,Prospect,1.7804,0.0926,1.873,High,,False,High
+C1915,Existing non-credit client,1.0406,-0.0354,1.0052,Medium,,False,Medium
+C1916,Existing credit client,1.2109,-0.2374,0.9735,Medium,Medium,False,Medium
+C1917,Existing credit client,-0.658,-0.1262,-0.7842,Low,Low,False,Low
+C1918,Existing non-credit client,-0.4825,0.0207,-0.4617,Low,,False,Low
+C1919,Existing credit client,0.949,-0.4039,0.5451,Low,Low,False,Medium
+C1920,Existing credit client,-0.1576,-0.226,-0.3836,Low,Low,False,Low
+C1921,Prospect,0.8548,-0.0519,0.8029,Medium,,False,Medium
+C1922,Prospect,0.3482,0.1092,0.4573,Low,,False,Low
+C1923,Existing credit client,-0.5876,-0.1253,-0.7129,Low,Low,False,Low
+C1924,Prospect,-0.0877,-0.108,-0.1957,Low,,False,Low
+C1925,Existing credit client,-1.5593,0.0282,-1.5311,Low,Low,False,Low
+C1926,Existing credit client,-0.0499,-0.0625,-0.1123,Low,Low,False,Low
+C1927,Prospect,2.7739,0.1226,2.8965,High,,False,High
+C1928,Existing non-credit client,0.2183,0.5182,0.7365,Medium,,False,Low
+C1929,Prospect,1.1398,0.4181,1.5579,Medium,,False,Medium
+C1930,Existing credit client,0.4607,-0.2131,0.2477,Low,Low,False,Low
+C1931,Existing credit client,0.4037,-0.1595,0.2442,Low,Low,False,Low
+C1932,Existing credit client,-1.8189,-0.2693,-2.0882,Low,Low,False,Low
+C1933,Existing credit client,-2.5467,-0.0998,-2.6465,Low,Low,False,Low
+C1934,Prospect,0.6901,0.5202,1.2103,Medium,,False,Low
+C1935,Existing credit client,0.6485,-0.1321,0.5163,Low,Low,False,Low
+C1936,Existing credit client,1.7083,-0.1532,1.5551,Medium,Medium,False,High
+C1937,Existing credit client,2.2173,-0.3228,1.8944,High,High,False,High
+C1938,Existing credit client,0.9636,0.6032,1.5668,Medium,Medium,False,Medium
+C1939,Existing non-credit client,-0.6266,-0.5065,-1.1331,Low,,False,Low
+C1940,Prospect,1.0305,0.0062,1.0367,Medium,,False,Medium
+C1941,Existing non-credit client,-0.7548,0.0035,-0.7512,Low,,False,Low
+C1942,Existing non-credit client,-0.3253,-0.3222,-0.6475,Low,,False,Low
+C1943,Existing credit client,-1.0163,-0.2002,-1.2164,Low,Low,False,Low
+C1944,Existing non-credit client,1.1409,0.0128,1.1537,Medium,,False,Medium
+C1945,Prospect,0.8392,0.1087,0.9479,Medium,,False,Medium
+C1946,Existing credit client,1.407,0.5324,1.9394,High,High,False,Medium
+C1947,Existing credit client,-0.3924,-0.3227,-0.7151,Low,Low,False,Low
+C1948,Existing credit client,0.7336,-0.4879,0.2457,Low,Low,False,Medium
+C1949,Existing non-credit client,3.2941,0.2316,3.5257,High,,False,High
+C1950,Existing credit client,0.8611,0.089,0.9501,Medium,Medium,False,Medium
+C1951,Existing credit client,0.3309,-0.1436,0.1873,Low,Low,False,Low
+C1952,Existing credit client,0.3633,-0.0479,0.3154,Low,Low,False,Low
+C1953,Existing credit client,1.3793,0.0001,1.3793,Medium,Medium,False,Medium
+C1954,Existing credit client,-0.1945,-0.1364,-0.331,Low,Low,False,Low
+C1955,Existing credit client,0.9111,0.0835,0.9945,Medium,Medium,False,Medium
+C1956,Prospect,0.4521,-0.3756,0.0765,Low,,False,Low
+C1957,Existing credit client,1.1877,-0.0851,1.1026,Medium,Medium,False,Medium
+C1958,Prospect,0.3936,0.0346,0.4282,Low,,False,Low
+C1959,Existing credit client,-0.0113,0.0047,-0.0066,Low,Low,False,Low
+C1960,Existing credit client,-0.2524,-0.1556,-0.408,Low,Low,False,Low
+C1961,Existing non-credit client,0.5617,0.0691,0.6309,Low,,False,Low
+C1962,Existing credit client,-0.6814,-0.1797,-0.8611,Low,Low,False,Low
+C1963,Existing non-credit client,-0.2885,-0.021,-0.3095,Low,,False,Low
+C1964,Existing credit client,1.1499,0.0795,1.2294,Medium,Medium,False,Medium
+C1965,Prospect,-0.3563,-0.4276,-0.7839,Low,,False,Low
+C1966,Existing credit client,1.7565,-0.2419,1.5146,Medium,Medium,False,High
+C1967,Existing credit client,-0.5103,0.6313,0.121,Low,Low,False,Low
+C1968,Existing credit client,1.0436,-0.044,0.9996,Medium,Medium,False,Medium
+C1969,Existing credit client,2.5654,0.1119,2.6772,High,High,False,High
+C1970,Existing credit client,0.2672,0.2039,0.4711,Low,Low,False,Low
+C1971,Prospect,0.6004,0.0923,0.6927,Low,,False,Low
+C1972,Existing credit client,0.3081,-0.1872,0.1209,Low,Low,False,Low
+C1973,Existing non-credit client,-0.8257,-0.1112,-0.9368,Low,,False,Low
+C1974,Existing credit client,1.2121,0.0052,1.2173,Medium,Medium,False,Medium
+C1975,Prospect,1.0191,0.3926,1.4117,Medium,,False,Medium
+C1976,Existing credit client,1.4201,0.033,1.4531,Medium,Medium,False,Medium
+C1977,Existing credit client,-0.4954,-0.0636,-0.559,Low,Low,False,Low
+C1978,Prospect,1.1889,-0.1049,1.084,Medium,,False,Medium
+C1979,Existing non-credit client,0.3415,-0.0306,0.3109,Low,,False,Low
+C1980,Existing credit client,0.988,-0.0772,0.9108,Medium,Medium,False,Medium
+C1981,Existing credit client,-0.71,0.2979,-0.412,Low,Low,False,Low
+C1982,Existing credit client,0.6564,0.0097,0.6661,Low,Low,False,Low
+C1983,Existing non-credit client,-0.8608,0.1926,-0.6682,Low,,False,Low
+C1984,Existing non-credit client,-0.0408,0.0145,-0.0263,Low,,False,Low
+C1985,Existing credit client,1.0613,0.2724,1.3337,Medium,Medium,False,Medium
+C1986,Existing credit client,0.4005,0.018,0.4185,Low,Low,False,Low
+C1987,Prospect,1.4898,0.1984,1.6882,High,,False,Medium
+C1988,Existing credit client,1.0115,0.0853,1.0968,Medium,Medium,False,Medium
+C1989,Prospect,1.4926,-0.4999,0.9927,Medium,,False,Medium
+C1990,Existing credit client,0.7476,0.1725,0.9201,Medium,Medium,False,Medium
+C1991,Existing credit client,1.2653,-0.103,1.1623,Medium,Medium,False,Medium
+C1992,Existing credit client,-1.1349,-0.3007,-1.4356,Low,Low,False,Low
+C1993,Existing non-credit client,-0.717,0.2497,-0.4672,Low,,False,Low
+C1994,Prospect,0.2403,-0.0861,0.1542,Low,,False,Low
+C1995,Prospect,0.8246,-0.198,0.6266,Low,,False,Medium
+C1996,Prospect,-0.0119,0.0669,0.055,Low,,False,Low
+C1997,Prospect,-0.2764,0.6386,0.3622,Low,,False,Low
+C1998,Existing non-credit client,0.986,-0.1215,0.8645,Medium,,False,Medium
+C1999,Prospect,1.0919,-0.0085,1.0834,Medium,,False,Medium
+C2000,Existing non-credit client,2.0846,0.5634,2.648,High,,False,High

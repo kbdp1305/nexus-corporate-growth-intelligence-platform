@@ -1,0 +1,4 @@
+versi,% High,rata2_P_High
+"v0 NB04 (tanpa kalibrasi, tanpa bobot)",60.5,0.43773283333333335
+v1 set_prospect (terkalibrasi),56.49999999999999,0.37627538937653343
+v1 set_prospect_IW (terkalibrasi),55.666666666666664,0.36671995250791073

@@ -1,0 +1,214 @@
+tabel,kolom,tipe,peran,terisi,unik,contoh
+companies,company_id,str,id,1.0,2000,C0001
+companies,company_name,str,id,1.0,2000,PT Agung Perkasa Industri (dummy)
+companies,industry,str,fitur,1.0,10,Perdagangan besar
+companies,kbli_2digit,int64,fitur,1.0,10,46
+companies,size_class_reference,str,fitur,1.0,3,Menengah
+companies,customer_type,str,fitur,1.0,3,Existing credit client
+companies,establishment_year,int64,fitur,1.0,39,1985
+companies,employees,int64,fitur,1.0,458,117
+companies,city,str,fitur,1.0,7,Jakarta Selatan
+companies,district,str,fitur,1.0,40,Tebet
+companies,location_id,str,id,1.0,40,L009
+companies,latitude,float64,fitur,1.0,1887,-6.28706
+companies,longitude,float64,fitur,1.0,1932,106.83277
+companies,is_listed,bool,fitur,1.0,2,False
+companies,has_import_activity,bool,fitur,1.0,2,False
+companies,onboarding_date,str,fitur,0.7,1263,2009-05-16
+companies,rm_id,str,id,0.7,40,RM-029
+companies,payroll_bank,str,fitur,1.0,2,Bank lain
+companies,is_anchor_candidate,bool,fitur,1.0,2,False
+companies,business_group,str,fitur,0.079,46,GRP-041
+financials,company_id,str,id,1.0,1836,C0001
+financials,fiscal_year,int64,fitur,1.0,2,2024
+financials,revenue_idr_bn,float64,fitur,1.0,2911,36.42
+financials,total_assets_idr_bn,float64,fitur,1.0,2896,36.96
+financials,total_equity_idr_bn,float64,fitur,1.0,2312,12.96
+financials,total_debt_idr_bn,float64,fitur,1.0,2476,24.0
+financials,current_assets_idr_bn,float64,fitur,1.0,2481,8.9
+financials,current_liabilities_idr_bn,float64,fitur,1.0,2238,6.66
+financials,ebit_idr_bn,float64,fitur,0.9858,1381,1.16
+financials,interest_expense_idr_bn,float64,fitur,0.9907,2554,2.979
+financials,net_profit_idr_bn,float64,fitur,1.0,1256,-1.82
+financials,is_audited,bool,fitur,1.0,2,True
+transactions,transaction_id,str,id,1.0,1075137,T0000012
+transactions,company_id,str,id,1.0,2000,C0001
+transactions,transaction_date,str,fitur,1.0,912,2024-01-01
+transactions,direction,str,fitur,1.0,2,IN
+transactions,amount_idr_mn,float64,fitur,1.0,132370,7.92
+transactions,channel,str,fitur,0.995,7,Virtual account
+transactions,transaction_type,str,fitur,1.0,6,Collection
+transactions,counterparty_id,str,id,0.9898,90549,EXT-79685
+transactions,counterparty_bank,str,fitur,1.0,2,Bank lain
+transactions,data_visibility,str,fitur,1.0,2,Full - rekening BNI
+product_master,product_id,str,id,1.0,8,P01
+product_master,product_name,str,referensi,1.0,8,Giro
+product_master,product_category,str,referensi,1.0,4,Funding
+product_master,target_segment,str,referensi,1.0,8,semua korporasi
+product_master,key_benefit,str,referensi,1.0,8,"rekening operasional, cek/bilyet giro, t"
+product_master,eligibility,str,referensi,1.0,6,badan usaha berizin
+product_master,pricing_note,str,referensi,1.0,7,biaya administrasi bulanan
+product_master,owner_department,str,referensi,1.0,7,Funding
+product_holdings,company_id,str,id,1.0,1400,C0001
+product_holdings,product_id,str,id,1.0,8,P01
+product_holdings,snapshot_month,str,fitur,1.0,1,2026-06
+product_holdings,active,int64,fitur,1.0,1,1
+product_holdings,open_month,str,fitur,1.0,255,2009-05
+product_holdings,balance_or_outstanding_idr_mn,float64,fitur,1.0,3779,1353.1
+product_holdings,utilization,float64,fitur,0.291,519,0.736
+product_holdings,transaction_value_6m_idr_mn,float64,fitur,1.0,4403,6997.7
+geography,location_id,str,id,1.0,40,L001
+geography,province,str,fitur,1.0,3,DKI Jakarta
+geography,city,str,fitur,1.0,7,Jakarta Pusat
+geography,district,str,fitur,1.0,40,Gambir
+geography,centroid_lat,float64,fitur,1.0,40,-6.19983
+geography,centroid_lon,float64,fitur,1.0,40,106.83722
+geography,area_km2,float64,fitur,1.0,40,21.9
+geography,total_business_count,int64,fitur,1.0,40,2265
+geography,regional_gdp_idr_bn,float64,fitur,1.0,40,37308.0
+geography,poi_industrial_count,int64,fitur,1.0,11,2
+geography,corporate_count,int64,fitur,1.0,40,498
+branches,branch_id,str,id,1.0,40,B001
+branches,branch_name,str,fitur,1.0,40,Kantor Cabang Tanah Abang (dummy)
+branches,branch_type,str,fitur,1.0,3,KCP
+branches,latitude,float64,fitur,1.0,40,-6.18349
+branches,longitude,float64,fitur,1.0,40,106.82148
+branches,location_id,str,id,1.0,24,L002
+risk_labels,company_id,str,id,1.0,1000,C0001
+risk_labels,risk_class,str,label,1.0,3,Low
+risk_labels,label_date,str,id,1.0,1,2026-06-30
+credit_facilities,company_id,str,id,1.0,1000,C0001
+credit_facilities,facility_type,str,fitur,1.0,3,KMK + KI
+credit_facilities,limit_idr_bn,float64,fitur,1.0,810,11.92
+credit_facilities,outstanding_idr_bn,float64,fitur,1.0,725,8.77
+credit_facilities,utilization,float64,fitur,1.0,517,0.736
+credit_facilities,collectibility,int64,proxy-label,1.0,5,1
+credit_facilities,max_dpd_12m,int64,proxy-label,1.0,128,9
+credit_facilities,restructuring_flag,bool,proxy-label,1.0,2,False
+credit_facilities,watchlist_flag,bool,proxy-label,1.0,2,False
+credit_facilities,policy_restriction,str,fitur,0.048,2,Legal issue
+network_entities,entity_id,str,id,1.0,4800,E00001
+network_entities,entity_name,str,id,1.0,4800,PT Indo Raya Niaga (dummy)
+network_entities,industry,str,fitur,1.0,10,Teknologi informasi
+network_entities,size_class_reference,str,fitur,1.0,3,Kecil
+network_entities,city,str,fitur,1.0,7,Jakarta Utara
+network_entities,location_id,str,id,1.0,40,L018
+network_entities,layer,int64,fitur,1.0,2,1
+network_entities,is_bni_customer,bool,fitur,1.0,2,False
+relationships,source_id,str,id,1.0,3819,C0001
+relationships,target_id,str,id,1.0,4342,E00633
+relationships,relationship_type,str,fitur,1.0,4,Customer
+relationships,annual_transaction_value_idr_mn,float64,fitur,1.0,14515,1452.0
+relationships,dependency_share,float64,fitur,1.0,780,0.036
+relationships,layer_from_core,int64,fitur,1.0,2,1
+relationships,relationship_start,str,fitur,1.0,5523,2017-09-25
+relationships,relationship_end,object,fitur,0.0049,15,2026-04
+bni_customer_master,customer_id,str,id,1.0,2768,C0001
+bni_customer_master,legal_name,str,fitur,1.0,2768,PT Agung Perkasa Industri
+bni_customer_master,city,str,fitur,1.0,7,Jakarta Selatan
+bni_customer_master,segment,str,fitur,1.0,2,Core corporate/commercial
+bni_customer_master,account_no,int64,id,1.0,2768,1266941128
+external_company_registry,registry_id,str,id,1.0,5400,C0003
+external_company_registry,legal_name,str,fitur,1.0,5400,PT Bintang Abadi Indah
+external_company_registry,industry,str,fitur,1.0,10,Perdagangan eceran
+external_company_registry,size_class,str,fitur,1.0,3,Kecil
+external_company_registry,city,str,fitur,1.0,7,Jakarta Timur
+external_company_registry,location_id,str,id,1.0,40,L027
+external_company_registry,establishment_year,int64,fitur,1.0,39,2006
+counterparty_transactions,record_id,str,id,1.0,5500,R000001
+counterparty_transactions,bni_party_id,str,id,1.0,1391,C1008
+counterparty_transactions,direction,str,fitur,1.0,2,IN
+counterparty_transactions,counterparty_name_raw,str,fitur,1.0,3538,CV Sentos Kencana Industri Perkasa
+counterparty_transactions,counterparty_city_raw,str,fitur,0.9127,7,Jakarta Utara
+counterparty_transactions,counterparty_bank,str,fitur,1.0,5,BNI
+counterparty_transactions,counterparty_account_no,float64,id,0.4856,848,5997724523.0
+counterparty_transactions,txn_count_12m,int64,fitur,1.0,185,33
+counterparty_transactions,txn_value_12m_idr_mn,float64,fitur,1.0,5072,2127.5
+counterparty_transactions,first_txn_month,str,fitur,1.0,12,2025-07
+counterparty_transactions,last_txn_month,str,fitur,1.0,12,2026-06
+rm_action_log,action_id,str,id,1.0,2000,A01606
+rm_action_log,track,str,fitur,1.0,2,Acquisition
+rm_action_log,party_id,str,id,1.0,1383,C1027
+rm_action_log,product_id,str,id,1.0,8,P01
+rm_action_log,rm_id,str,id,1.0,40,RM-036
+rm_action_log,contact_date,str,fitur,1.0,125,2026-01-05
+rm_action_log,channel,str,fitur,1.0,3,Kunjungan
+rm_action_log,tier_at_contact,str,fitur,1.0,3,C
+rm_action_log,response,str,fitur,1.0,4,Interested
+rm_action_log,converted,int64,fitur,1.0,2,0
+rm_action_log,deal_value_idr_mn,float64,fitur,1.0,293,0.0
+rm_action_log,rm_rating,int64,fitur,1.0,4,3
+rm_action_log,feedback_note,str,teks,1.0,12,"Nasabah setuju, dokumen sedang diproses"
+outcome_product_adoption,company_id,str,id,1.0,1400,C0001
+outcome_product_adoption,product_id,str,id,1.0,7,P02
+outcome_product_adoption,observation_end,str,outcome,1.0,1,2026-06
+outcome_product_adoption,adopted_jul_sep_2026,int64,outcome,1.0,2,0
+outcome_product_adoption,deal_value_idr_mn,float64,outcome,1.0,692,0.0
+rm_visit_notes,visit_id,str,id,1.0,450,V0001
+rm_visit_notes,company_id,str,id,1.0,450,C0615
+rm_visit_notes,action_id,str,id,1.0,450,A00646
+rm_visit_notes,rm_id,str,id,1.0,40,RM-035
+rm_visit_notes,visit_date,str,fitur,1.0,119,2026-05-01
+rm_visit_notes,met_with,str,fitur,1.0,5,Direktur Utama
+rm_visit_notes,note_text,str,teks,1.0,413,Perusahaan menunjukkan minat untuk kerja
+issue_product_map,issue_id,str,id,1.0,12,modal_kerja
+issue_product_map,issue_name,str,referensi,1.0,12,Kebutuhan modal kerja
+issue_product_map,keywords,str,referensi,1.0,12,modal kerja|dana operasional|putaran usa
+issue_product_map,solution_products,str,referensi,1.0,8,P06;P04
+issue_product_map,department,str,referensi,1.0,12,Kredit Komersial (Analis Kredit)
+issue_product_map,credit_relevant,bool,referensi,1.0,2,True
+issue_product_map,hold_credit,bool,referensi,1.0,2,False
+gt_prospect_risk,company_id,str,ground-truth,1.0,600,C0003
+gt_prospect_risk,true_risk_class,str,ground-truth,1.0,3,Low
+gt_anomaly_events,company_id,str,ground-truth,1.0,873,C0002
+gt_anomaly_events,anomaly_type,str,ground-truth,1.0,7,Ecosystem contagion
+gt_anomaly_events,surge_magnitude,str,ground-truth,1.0,48,-28%
+gt_anomaly_events,start_month,str,ground-truth,1.0,27,2025-09
+gt_anomaly_events,end_month,str,ground-truth,1.0,27,2026-06
+gt_anomaly_events,event_type,str,ground-truth,1.0,7,contagion
+gt_anomaly_events,direction,str,ground-truth,1.0,3,down
+gt_anomaly_events,mechanism,str,ground-truth,1.0,5,counterparty
+gt_anomaly_events,cause,str,ground-truth,1.0,92,"anchor C0299, C0409 bermasalah (lag 2 bu"
+gt_anomaly_events,affects_risk,bool,ground-truth,1.0,2,True
+gt_counterparty_match,record_id,str,ground-truth,1.0,5500,R000001
+gt_counterparty_match,true_party_id,str,ground-truth,1.0,1747,C1861
+gt_counterparty_match,true_is_bni_customer,bool,ground-truth,1.0,2,True
+gt_client_risk,company_id,str,ground-truth,1.0,1000,C0001
+gt_client_risk,true_risk_class,str,ground-truth,1.0,3,Low
+gt_client_risk,label_flipped,int64,ground-truth,1.0,2,0
+gt_risk,company_id,str,ground-truth,1.0,2000,C0001
+gt_risk,customer_type,str,ground-truth,1.0,3,Existing credit client
+gt_risk,risk_score_latent,float64,ground-truth,1.0,1948,0.1227
+gt_risk,unobserved_factor,float64,ground-truth,1.0,1773,-0.1005
+gt_risk,risk_score_realized,float64,ground-truth,1.0,1942,0.0222
+gt_risk,true_risk_class,str,ground-truth,1.0,3,Low
+gt_risk,observed_label,str,ground-truth,0.5,3,Low
+gt_risk,label_flipped,bool,ground-truth,1.0,2,False
+gt_risk,oracle_class,str,ground-truth,1.0,3,Low
+gt_company_latent,company_id,str,ground-truth,1.0,2000,C0001
+gt_company_latent,health,float64,ground-truth,1.0,1946,-0.0927
+gt_company_latent,growth,float64,ground-truth,1.0,1574,0.104
+gt_company_latent,wallet_share_bni,float64,ground-truth,1.0,651,0.438
+gt_company_latent,regime,str,ground-truth,1.0,3,normal
+gt_company_latent,regime_magnitude,float64,ground-truth,1.0,8,0.0
+gt_company_latent,regime_start,str,ground-truth,0.2275,20,2026-02
+gt_company_latent,buyer_exit,bool,ground-truth,1.0,2,False
+gt_company_latent,spike,bool,ground-truth,1.0,2,False
+gt_company_latent,legal_issue,bool,ground-truth,1.0,2,False
+gt_company_latent,has_financial_report,bool,ground-truth,1.0,2,True
+gt_company_latent,p_report_missing,float64,ground-truth,1.0,959,0.0029
+gt_company_latent,wallet_erosion,bool,ground-truth,1.0,2,False
+gt_company_latent,erosion_start,str,ground-truth,0.0575,14,2025-04
+gt_company_latent,top_buyer_share,float64,ground-truth,1.0,574,0.265
+gt_company_latent,contagion_exposure,float64,ground-truth,1.0,159,0.0
+gt_company_latent,is_distressed_anchor,bool,ground-truth,1.0,2,False
+gt_company_latent,group_effect,float64,ground-truth,1.0,47,0.0
+gt_product_need,company_id,str,ground-truth,1.0,2000,C0001
+gt_product_need,product_id,str,ground-truth,1.0,8,P01
+gt_product_need,true_need,int64,ground-truth,1.0,2,1
+gt_product_need,served_by_other_bank,int64,ground-truth,1.0,2,1
+gt_visit_issues,visit_id,str,ground-truth,1.0,401,V0001
+gt_visit_issues,issue_id,str,ground-truth,1.0,12,modal_kerja
+gt_visit_issues,present,int64,ground-truth,1.0,2,1
+gt_transaction_flags,transaction_id,str,ground-truth,1.0,271,T0008079
+gt_transaction_flags,flag,str,ground-truth,1.0,1,one_off_spike

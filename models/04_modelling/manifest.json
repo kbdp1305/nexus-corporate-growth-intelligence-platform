@@ -1,0 +1,207 @@
+{
+ "champion": "M1",
+ "model_version": "M1-v0-NB04",
+ "dilatih_pada": "train + valid (800 nasabah kredit); test tidak ikut",
+ "risk_order": [
+  "Low",
+  "Medium",
+  "High"
+ ],
+ "LR_C": 0.3,
+ "target_recall_High": 0.9,
+ "alpha_conformal": 0.1,
+ "populasi_ke_set": {
+  "Existing credit client": "set_core",
+  "Existing non-credit client": "set_noncredit",
+  "Prospect": "set_prospect"
+ },
+ "feature_sets": {
+  "set_core": [
+   "ind_aktivitas_kesehatan",
+   "ind_angkutan_logistik",
+   "ind_industri_kimia",
+   "ind_industri_makanan_minuman",
+   "ind_industri_tekstil_pakaian",
+   "ind_konstruksi_gedung",
+   "ind_perdagangan_besar",
+   "ind_perdagangan_eceran",
+   "ind_real_estat",
+   "ind_teknologi_informasi",
+   "size_ord",
+   "fin_log_der",
+   "fin_log_cr",
+   "fin_npm",
+   "fin_sicr",
+   "der_pz",
+   "cr_pz",
+   "npm_pz",
+   "icr_pz",
+   "has_report",
+   "is_audited",
+   "pay_late_6m",
+   "pay_late_12m",
+   "pay_late_30m",
+   "tax_late_6m",
+   "tax_late_12m",
+   "tax_late_30m",
+   "pay_split_12m",
+   "timing_delta",
+   "out_in_6m",
+   "out_in_12m",
+   "inflow_cv_sa",
+   "inflow_growth_sa",
+   "max_inflow_z_12m",
+   "capture_ratio",
+   "divergence",
+   "utilization",
+   "log_limit",
+   "top_buyer_share",
+   "exp_shocked_anchor"
+  ],
+  "set_noncredit": [
+   "ind_aktivitas_kesehatan",
+   "ind_angkutan_logistik",
+   "ind_industri_kimia",
+   "ind_industri_makanan_minuman",
+   "ind_industri_tekstil_pakaian",
+   "ind_konstruksi_gedung",
+   "ind_perdagangan_besar",
+   "ind_perdagangan_eceran",
+   "ind_real_estat",
+   "ind_teknologi_informasi",
+   "size_ord",
+   "fin_log_der",
+   "fin_log_cr",
+   "fin_npm",
+   "fin_sicr",
+   "der_pz",
+   "cr_pz",
+   "npm_pz",
+   "icr_pz",
+   "has_report",
+   "is_audited",
+   "pay_late_6m",
+   "pay_late_12m",
+   "pay_late_30m",
+   "tax_late_6m",
+   "tax_late_12m",
+   "tax_late_30m",
+   "pay_split_12m",
+   "timing_delta",
+   "out_in_6m",
+   "out_in_12m",
+   "inflow_cv_sa",
+   "inflow_growth_sa",
+   "max_inflow_z_12m",
+   "capture_ratio",
+   "divergence",
+   "top_buyer_share",
+   "exp_shocked_anchor"
+  ],
+  "set_prospect": [
+   "ind_aktivitas_kesehatan",
+   "ind_angkutan_logistik",
+   "ind_industri_kimia",
+   "ind_industri_makanan_minuman",
+   "ind_industri_tekstil_pakaian",
+   "ind_konstruksi_gedung",
+   "ind_perdagangan_besar",
+   "ind_perdagangan_eceran",
+   "ind_real_estat",
+   "ind_teknologi_informasi",
+   "size_ord",
+   "fin_log_der",
+   "fin_log_cr",
+   "fin_npm",
+   "fin_sicr",
+   "der_pz",
+   "cr_pz",
+   "npm_pz",
+   "icr_pz",
+   "has_report",
+   "is_audited",
+   "top_buyer_share",
+   "exp_shocked_anchor"
+  ]
+ },
+ "aturan_keputusan": {
+  "M1": {
+   "set_core": {
+    "q_hat": 0.7898600828575573,
+    "ambang_P_High": 0.15857532181035128
+   },
+   "set_noncredit": {
+    "q_hat": 0.7788603964566401,
+    "ambang_P_High": 0.14374802926656244
+   },
+   "set_prospect": {
+    "q_hat": 0.7951845967466633,
+    "ambang_P_High": 0.14218990258647332
+   }
+  },
+  "M2": {
+   "set_core": {
+    "q_hat": 0.7025608305591944,
+    "ambang_P_High": 0.3246858393366564
+   },
+   "set_noncredit": {
+    "q_hat": 0.7152040863616882,
+    "ambang_P_High": 0.3369899058653431
+   },
+   "set_prospect": {
+    "q_hat": 0.7412427676358128,
+    "ambang_P_High": 0.3195641593567211
+   }
+  },
+  "M3": {
+   "set_core": {
+    "q_hat": 0.8397376537322998,
+    "ambang_P_High": 0.12765835225582123
+   },
+   "set_noncredit": {
+    "q_hat": 0.8527340739965439,
+    "ambang_P_High": 0.13292986154556274
+   },
+   "set_prospect": {
+    "q_hat": 0.8602265268564224,
+    "ambang_P_High": 0.09967093169689178
+   }
+  },
+  "M4": {
+   "set_core": {
+    "q_hat": 0.8609043959180619,
+    "ambang_P_High": 0.08365445889607281
+   },
+   "set_noncredit": {
+    "q_hat": 0.8571549376281713,
+    "ambang_P_High": 0.09147158909736566
+   },
+   "set_prospect": {
+    "q_hat": 0.9031379068748121,
+    "ambang_P_High": 0.059445789086308515
+   }
+  },
+  "M3x": {
+   "set_core": {
+    "q_hat": 0.848291002819699,
+    "ambang_P_High": 0.08355197470351525
+   },
+   "set_noncredit": {
+    "q_hat": 0.8635795233739001,
+    "ambang_P_High": 0.0980978620173666
+   },
+   "set_prospect": {
+    "q_hat": 0.842755721622198,
+    "ambang_P_High": 0.04361185750266384
+   }
+  }
+ },
+ "versi_pustaka": {
+  "python": "3.13.15",
+  "scikit-learn": "1.9.1",
+  "pandas": "3.0.6",
+  "numpy": "2.5.3",
+  "xgboost": "3.4.1",
+  "lightgbm": "4.7.0"
+ }
+}

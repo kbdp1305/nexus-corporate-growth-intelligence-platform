@@ -1,0 +1,95 @@
+fitur,kelompok,sumber_EDA,tingkat_bukti,definisi,set_portabel,pct_kosong,AUC_High_train,di_set_inti,tabel
+der_pz,keuangan relatif-peer,"F1, D3",A,"z robust per industri×ukuran (back-off ke industri/global bila < 10), fit train+unlabeled, clip ±6",True,8.2,0.9,True,features_risk
+npm_pz,keuangan relatif-peer,"F1, D3",A,"z robust per industri×ukuran (back-off ke industri/global bila < 10), fit train+unlabeled, clip ±6",True,8.2,0.877,True,features_risk
+icr_pz,keuangan relatif-peer,"F1, D3",A,"z robust per industri×ukuran (back-off ke industri/global bila < 10), fit train+unlabeled, clip ±6",True,10.3,0.872,True,features_risk
+cr_pz,keuangan relatif-peer,F1,B,idem untuk log CR (F1: tidak lebih baik dari mentah → bandingkan),True,8.2,0.87,True,features_risk
+fin_log_der,keuangan mentah,"F1, D3",A,"log DER, log CR, NPM, sign·log1p(ICR) FY2025",True,8.2,0.856,True,features_risk
+fin_log_cr,keuangan mentah,"F1, D3",A,"log DER, log CR, NPM, sign·log1p(ICR) FY2025",True,8.2,0.866,True,features_risk
+fin_npm,keuangan mentah,"F1, D3",A,"log DER, log CR, NPM, sign·log1p(ICR) FY2025",True,8.2,0.848,True,features_risk
+fin_sicr,keuangan mentah,"F1, D3",A,"log DER, log CR, NPM, sign·log1p(ICR) FY2025",True,10.3,0.852,True,features_risk
+fin_log_revenue,keuangan mentah,G2,C,ukuran usaha dari laporan,True,8.2,0.647,False,features_risk
+fin_log_assets,keuangan mentah,G2,C,ukuran usaha dari laporan,True,8.2,0.635,False,features_risk
+d_log_der,tren keuangan,—,C,perubahan FY2025 − FY2024,True,8.2,0.577,False,features_risk
+d_npm,tren keuangan,—,C,perubahan FY2025 − FY2024,True,8.2,0.538,False,features_risk
+rev_growth,tren keuangan,—,C,perubahan FY2025 − FY2024,True,8.2,0.681,False,features_risk
+has_report,missing-sebagai-sinyal,D2,A,laporan FY2025 tersedia / diaudit (MNAR: High 49% vs 18%),True,0.0,0.506,True,features_risk
+is_audited,missing-sebagai-sinyal,D2,A,laporan FY2025 tersedia / diaudit (MNAR: High 49% vs 18%),True,0.0,0.515,True,features_risk
+ebit_missing,missing-sebagai-sinyal,D2,C,item laporan kosong (MCAR → kemungkinan lemah),True,0.0,0.515,False,features_risk
+interest_missing,missing-sebagai-sinyal,D2,C,item laporan kosong (MCAR → kemungkinan lemah),True,0.0,0.506,False,features_risk
+pay_late_6m,timing bayar,F2,A,"% gaji dibayar ≥ tgl 28 / pajak disetor > tgl 15, jendela 6 & 12 bln",False,30.0,0.744,True,features_risk
+pay_late_12m,timing bayar,F2,A,"% gaji dibayar ≥ tgl 28 / pajak disetor > tgl 15, jendela 6 & 12 bln",False,30.0,0.799,True,features_risk
+tax_late_6m,timing bayar,F2,A,"% gaji dibayar ≥ tgl 28 / pajak disetor > tgl 15, jendela 6 & 12 bln",False,30.0,0.729,True,features_risk
+tax_late_12m,timing bayar,F2,A,"% gaji dibayar ≥ tgl 28 / pajak disetor > tgl 15, jendela 6 & 12 bln",False,30.0,0.801,True,features_risk
+pay_late_30m,timing bayar,F2,A,"idem, seluruh riwayat 30 bln (kebiasaan kronis; AUC EDA 0,85–0,86)",False,30.0,0.851,True,features_risk
+tax_late_30m,timing bayar,F2,A,"idem, seluruh riwayat 30 bln (kebiasaan kronis; AUC EDA 0,85–0,86)",False,30.0,0.863,True,features_risk
+pay_split_12m,timing bayar,F2,A,"% bulan gaji dicicil (> 1 batch), 12 bln",False,30.0,0.569,True,features_risk
+timing_delta,timing bayar,"F2, F10h",B,% telat (gaji+pajak) 6 bln terakhir − 12 bln sebelumnya,False,30.0,0.512,True,features_risk
+out_in_6m,arus kas,"F2, G1",A,outflow ÷ inflow 6 & 12 bln,False,30.0,0.687,True,features_risk
+out_in_12m,arus kas,"F2, G1",A,outflow ÷ inflow 6 & 12 bln,False,30.0,0.731,True,features_risk
+inflow_cv_sa,arus kas,F5,B,CV & pertumbuhan inflow SETELAH koreksi musim industri×bulan (fit train+unlabeled),False,30.0,0.726,True,features_risk
+inflow_growth_sa,arus kas,F5,B,CV & pertumbuhan inflow SETELAH koreksi musim industri×bulan (fit train+unlabeled),False,30.0,0.609,True,features_risk
+max_inflow_z_12m,arus kas,D3,B,z robust lonjakan inflow bulanan maksimum 12 bln (setelah koreksi musim),False,30.0,0.575,True,features_risk
+capture_ratio,arus kas,F6,A,inflow BNI ÷ omzet 2025; Δlog inflow H1 − Δlog omzet,False,31.6,0.531,True,features_risk
+divergence,arus kas,F6,A,inflow BNI ÷ omzet 2025; Δlog inflow H1 − Δlog omzet,False,31.6,0.516,True,features_risk
+utilization,fasilitas,G1,A,outstanding ÷ limit; log limit (BUKAN 4 kolom proxy-label),False,50.0,0.756,True,features_risk
+log_limit,fasilitas,G1,A,outstanding ÷ limit; log limit (BUKAN 4 kolom proxy-label),False,50.0,0.639,True,features_risk
+fac_kmk_ki,fasilitas,D4,C,"jenis fasilitas (one-hot), ada pembatasan kebijakan",False,50.0,0.524,False,features_risk
+fac_kredit_modal_kerja,fasilitas,D4,C,"jenis fasilitas (one-hot), ada pembatasan kebijakan",False,50.0,0.513,False,features_risk
+fac_kredit_investasi,fasilitas,D4,C,"jenis fasilitas (one-hot), ada pembatasan kebijakan",False,50.0,0.51,False,features_risk
+policy_restricted,fasilitas,D4,C,"jenis fasilitas (one-hot), ada pembatasan kebijakan",False,50.0,0.532,False,features_risk
+top_buyer_share,konsentrasi,F3,A,"porsi pembeli terbesar dari relasi aktif (kontinu, TANPA ambang)",True,0.0,0.617,True,features_risk
+buyer_hhi,konsentrasi,F3,C,"HHI pembeli, jumlah pembeli/pemasok, porsi pemasok terbesar",True,0.0,0.636,False,features_risk
+n_buyers,konsentrasi,F3,C,"HHI pembeli, jumlah pembeli/pemasok, porsi pemasok terbesar",True,0.0,0.535,False,features_risk
+n_suppliers,konsentrasi,F3,C,"HHI pembeli, jumlah pembeli/pemasok, porsi pemasok terbesar",True,0.0,0.564,False,features_risk
+top_supplier_share,konsentrasi,F3,C,"HHI pembeli, jumlah pembeli/pemasok, porsi pemasok terbesar",True,0.0,0.534,False,features_risk
+exp_shocked_anchor,jaringan,F4,A,"Σ dependency_share ke anchor yang patah tren (detektor online, z < −2,5) sejak Jul 2025",True,0.6,0.528,True,features_risk
+ind_aktivitas_kesehatan,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.532,True,features_risk
+ind_angkutan_logistik,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.512,True,features_risk
+ind_industri_kimia,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.513,True,features_risk
+ind_industri_makanan_minuman,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.503,True,features_risk
+ind_industri_tekstil_pakaian,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.527,True,features_risk
+ind_konstruksi_gedung,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.507,True,features_risk
+ind_perdagangan_besar,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.525,True,features_risk
+ind_perdagangan_eceran,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.517,True,features_risk
+ind_real_estat,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.54,True,features_risk
+ind_teknologi_informasi,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.52,True,features_risk
+size_ord,profil,"E2, D4",A,industri one-hot; ukuran ordinal Kecil<Menengah<Besar,True,0.0,0.554,True,features_risk
+city_jakarta_barat,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.513,False,features_risk
+city_jakarta_pusat,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.508,False,features_risk
+city_jakarta_selatan,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.533,False,features_risk
+city_jakarta_timur,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.527,False,features_risk
+city_jakarta_utara,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.527,False,features_risk
+city_kota_bekasi,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.503,False,features_risk
+city_kota_tangerang,profil,"F8, D4",C,kota one-hot (komunitas jaringan mengikuti kota),True,0.0,0.503,False,features_risk
+age,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.589,False,features_risk
+log_emp,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.668,False,features_risk
+is_listed,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.534,False,features_risk
+has_import,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.548,False,features_risk
+payroll_bni,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.516,False,features_risk
+group_size,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.512,False,features_risk
+in_group,profil,"G1, D4",C,"umur, log karyawan, tercatat bursa, impor, payroll di BNI, grup usaha",True,0.0,0.513,False,features_risk
+district_penetration,geografi,"F7, D4",C,atribut kecamatan pengganti one-hot 40 level (penetrasi leave-one-out),True,0.0,0.582,False,features_risk
+district_poi,geografi,"F7, D4",C,atribut kecamatan pengganti one-hot 40 level (penetrasi leave-one-out),True,0.0,0.552,False,features_risk
+district_has_branch,geografi,"F7, D4",C,atribut kecamatan pengganti one-hot 40 level (penetrasi leave-one-out),True,0.0,0.504,False,features_risk
+dist_branch_km,geografi,"F7, D4",C,atribut kecamatan pengganti one-hot 40 level (penetrasi leave-one-out),True,0.0,0.529,False,features_risk
+degree,jaringan,F8,C,sentralitas graf relasi aktif; jumlah mitra non-BNI,True,0.0,0.568,False,features_risk
+pagerank,jaringan,F8,C,sentralitas graf relasi aktif; jumlah mitra non-BNI,True,0.0,0.559,False,features_risk
+core_number,jaringan,F8,C,sentralitas graf relasi aktif; jumlah mitra non-BNI,True,0.0,0.556,False,features_risk
+n_nonbni_partners,jaringan,F8,C,sentralitas graf relasi aktif; jumlah mitra non-BNI,True,0.0,0.547,False,features_risk
+inflow_resid_z,anomali (panel),F10a,B,lihat tabel bagian D,False,20.0,,False,features_anomaly_panel
+spike_candidate,anomali (panel),F10c,B,lihat tabel bagian D,False,0.0,,False,features_anomaly_panel
+spike_reverted,anomali (panel),F10c,B,lihat tabel bagian D,False,0.0,,False,features_anomaly_panel
+chg_3v6,anomali (panel),F10g,A,lihat tabel bagian D,False,26.7,,False,features_anomaly_panel
+cusum_down,anomali (panel),F10c,B,lihat tabel bagian D,False,0.0,,False,features_anomaly_panel
+cusum_up,anomali (panel),F10c,B,lihat tabel bagian D,False,0.0,,False,features_anomaly_panel
+buyer_exit_share,anomali (panel),F10e,A,lihat tabel bagian D,False,13.3,,False,features_anomaly_panel
+n_active_cp_3m,anomali (panel),F10e,C,lihat tabel bagian D,False,0.0,,False,features_anomaly_panel
+cp_change,anomali (panel),F10e,C,lihat tabel bagian D,False,20.0,,False,features_anomaly_panel
+exp_shocked_anchor_t,anomali (panel),F4,A,lihat tabel bagian D,False,0.0,,False,features_anomaly_panel
+late_share_3m,anomali (panel),F2,A,lihat tabel bagian D,False,3.3,,False,features_anomaly_panel
+timing_delta_t,anomali (panel),F10h,A,lihat tabel bagian D,False,43.3,,False,features_anomaly_panel
+timing_jump_3v9,anomali (panel),F10h,B,lihat tabel bagian D,False,26.7,,False,features_anomaly_panel
+out_in_3m,anomali (panel),F2,B,lihat tabel bagian D,False,6.7,,False,features_anomaly_panel
+out_in_delta,anomali (panel),F10g,B,lihat tabel bagian D,False,46.7,,False,features_anomaly_panel
+capture_t,anomali (panel),F6,B,lihat tabel bagian D,False,51.1,,False,features_anomaly_panel
+capture_chg_6m,anomali (panel),F6,B,lihat tabel bagian D,False,70.7,,False,features_anomaly_panel

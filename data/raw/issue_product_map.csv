@@ -1,0 +1,13 @@
+issue_id,issue_name,keywords,solution_products,department,credit_relevant,hold_credit
+modal_kerja,Kebutuhan modal kerja,modal kerja|dana operasional|putaran usaha|stok|bahan baku|kas operasional,P06;P04,Kredit Komersial (Analis Kredit),True,False
+ekspansi_investasi,Rencana ekspansi / investasi,ekspansi|gudang|mesin|armada|cabang baru|investasi,P07,Kredit Komersial + Corporate Banking,True,False
+impor_ekspor_valas,Transaksi impor/ekspor & valas,impor|ekspor|luar negeri|dolar|kurs|l/c,P08,Trade Finance & Treasury,False,False
+piutang_lambat,Penagihan piutang lambat,piutang|penagihan|tagihan|invoice|telat|mundur,P03;P04,Transaction Banking,False,False
+buyer_utama_keluar,Pembeli utama berhenti,pembeli terbesar|pelanggan utama|berhenti order|tidak diperpanjang,P04,Risiko Kredit (monitoring) + RM,False,False
+payroll_bank_lain,Payroll masih di bank lain,gaji|penggajian|payroll,P05,Transaction Banking (Payroll),False,False
+legal_perizinan,Masalah legal / perizinan,sengketa|gugatan|izin|perizinan|legal,,Legal & Compliance,False,True
+tekanan_likuiditas,Tekanan likuiditas / tunggakan,jatuh tempo|tunggakan|kesulitan membayar|cicilan|tertekan,,Risiko Kredit / Remedial,False,True
+dana_mengendap,Dana mengendap,kelebihan kas|mengendap|belum ditempatkan,P02;P01,Treasury / Funding,False,False
+kebutuhan_pribadi_pemilik,Kebutuhan pribadi pemilik,pemilik|owner|pribadi|keluarga,,Wealth Management,False,False
+biaya_tidak_kompetitif,Keberatan biaya,biaya|mahal|administrasi,,RM + Pricing,False,False
+sudah_pakai_bank_lain,Sudah memakai bank lain,bank lain|sudah aktif|sudah memakai,,RM (strategi akuisisi),False,False

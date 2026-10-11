@@ -1,0 +1,17 @@
+challenger,populasi,n,kelas_berbeda,jadi_High_baru,High_hilang,keputusan_berbeda
+M2,semua,2000,563,76,308,643
+M2,dev (OOF),800,162,40,40,227
+M2,test,200,48,13,12,64
+M2,tanpa label,1000,353,23,256,352
+M3,semua,2000,343,44,156,447
+M3,dev (OOF),800,154,24,56,215
+M3,test,200,39,4,15,50
+M3,tanpa label,1000,150,16,85,182
+M4,semua,2000,330,43,155,506
+M4,dev (OOF),800,157,23,57,225
+M4,test,200,36,6,13,57
+M4,tanpa label,1000,137,14,85,224
+M3x,semua,2000,361,91,125,509
+M3x,dev (OOF),800,152,34,48,240
+M3x,test,200,43,8,12,60
+M3x,tanpa label,1000,166,49,65,209

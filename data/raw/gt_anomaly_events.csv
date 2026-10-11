@@ -1,0 +1,1131 @@
+company_id,anomaly_type,surge_magnitude,start_month,end_month,event_type,direction,mechanism,cause,affects_risk
+C0002,Ecosystem contagion,-28%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0004,Business activity decline,-22%,2026-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0004,Early warning: payment behaviour,payroll & pajak makin telat,2025-11,2026-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0005,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0010,One-off spike,x7.0,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0011,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0012,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0012,Major buyer exit,-17%,2026-04,2026-06,buyer_exit,down,counterparty,buyer utama C0408 berhenti,True
+C0013,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0018,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0021,Business activity surge,+15%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0025,One-off spike,x7.0,2025-12,2025-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0027,Major buyer exit,-16%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C1531 berhenti,True
+C0027,One-off spike,x4.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0030,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0041,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0045,Share-of-wallet erosion,-55%,2025-04,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0045,One-off spike,x2.5,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0048,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0051,Ecosystem contagion,-15%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0052,Business activity decline,-35%,2026-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0052,Early warning: payment behaviour,payroll & pajak makin telat,2025-10,2026-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0056,One-off spike,x2.5,2024-09,2024-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0057,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0059,Business activity surge,+15%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0061,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0061,One-off spike,x7.0,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0066,One-off spike,x4.0,2024-05,2024-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0067,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0068,Ecosystem contagion,-12%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0074,Business activity decline,-12%,2026-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0074,Early warning: payment behaviour,payroll & pajak makin telat,2025-10,2026-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0076,Ecosystem contagion,-21%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0077,Major buyer exit,-14%,2025-09,2026-06,buyer_exit,down,counterparty,buyer utama C0211 berhenti,True
+C0078,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0078,Ecosystem contagion,-15%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0079,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0079,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0080,One-off spike,x2.5,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0081,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0084,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0086,Business activity surge,+15%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0086,Major buyer exit,-25%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C1771 berhenti,True
+C0086,One-off spike,x2.5,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0088,Business activity decline,-35%,2025-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0088,Early warning: payment behaviour,payroll & pajak makin telat,2025-02,2025-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0097,Business activity decline,-35%,2024-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0097,Early warning: payment behaviour,payroll & pajak makin telat,2024-09,2024-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0097,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0098,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0103,Ecosystem contagion,-7%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0104,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0107,Ecosystem contagion,-21%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0108,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0108,One-off spike,x2.5,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0113,Business activity surge,+15%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0115,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0117,Ecosystem contagion,-7%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0119,Business activity decline,-22%,2024-12,2025-05,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0119,Early warning: payment behaviour,payroll & pajak makin telat,2024-09,2024-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0121,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0121,One-off spike,x2.5,2024-04,2024-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0123,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0125,Business activity surge,+60%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0128,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0131,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0133,Business activity decline,-35%,2024-10,2025-03,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0133,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0133,One-off spike,x4.0,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0137,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0139,Business activity surge,+30%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0142,Business activity surge,+30%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0146,Business activity surge,+60%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0150,Ecosystem contagion,-3%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0151,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0153,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0153,One-off spike,x4.0,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0155,Business activity surge,+60%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0155,One-off spike,x7.0,2025-08,2025-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0158,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0159,One-off spike,x7.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0160,One-off spike,x4.0,2025-03,2025-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0161,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0163,Major buyer exit,-17%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama E02071 berhenti,True
+C0164,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0165,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0165,One-off spike,x2.5,2026-05,2026-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0166,Major buyer exit,-22%,2025-11,2026-06,buyer_exit,down,counterparty,buyer utama E00692 berhenti,True
+C0167,Ecosystem contagion,-40%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0168,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0171,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0174,Share-of-wallet erosion,-55%,2025-03,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0175,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0179,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0179,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0180,Business activity surge,+30%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0181,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0181,One-off spike,x7.0,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0184,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0188,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0189,Business activity surge,+15%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0189,Ecosystem contagion,-19%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0191,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0192,Business activity surge,+30%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0193,One-off spike,x2.5,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0195,Major buyer exit,-17%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama E02252 berhenti,True
+C0196,Business activity surge,+60%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0197,Major buyer exit,-15%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C0264 berhenti,True
+C0200,Ecosystem contagion,-3%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0202,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0203,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0203,One-off spike,x4.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0205,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0207,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0210,Business activity surge,+30%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0211,Ecosystem contagion,-13%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0212,Major buyer exit,-38%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama C0536 berhenti,True
+C0212,One-off spike,x2.5,2025-10,2025-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0214,Business activity decline,-22%,2025-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0214,Early warning: payment behaviour,payroll & pajak makin telat,2024-11,2025-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0217,Ecosystem contagion,-12%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0220,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0221,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0223,One-off spike,x2.5,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0225,Business activity decline,-35%,2026-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0225,Early warning: payment behaviour,payroll & pajak makin telat,2025-11,2026-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0227,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0228,Business activity surge,+15%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0232,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0233,One-off spike,x4.0,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0234,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0239,Major buyer exit,-20%,2025-09,2026-06,buyer_exit,down,counterparty,buyer utama C1901 berhenti,True
+C0241,One-off spike,x4.0,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0242,Major buyer exit,-12%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C0299 berhenti,True
+C0242,Ecosystem contagion,-16%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0243,Business activity surge,+60%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0245,Business activity surge,+15%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0247,Business activity decline,-12%,2025-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0247,Early warning: payment behaviour,payroll & pajak makin telat,2024-10,2025-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0251,Business activity decline,-22%,2026-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0251,Early warning: payment behaviour,payroll & pajak makin telat,2025-10,2026-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0253,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0255,Business activity surge,+15%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0255,Major buyer exit,-12%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama E01266 berhenti,True
+C0256,Business activity decline,-22%,2025-06,2025-11,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0256,Early warning: payment behaviour,payroll & pajak makin telat,2025-03,2025-06,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0257,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0258,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0259,One-off spike,x2.5,2024-05,2024-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0262,Business activity surge,+60%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0267,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0272,One-off spike,x4.0,2026-05,2026-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0275,One-off spike,x2.5,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0276,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0279,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0280,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0282,Business activity surge,+60%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0282,Major buyer exit,-18%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C1343 berhenti,True
+C0283,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0285,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0285,Major buyer exit,-24%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C1069 berhenti,True
+C0286,Business activity decline,-35%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0286,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0291,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0297,Business activity surge,+60%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0298,Major buyer exit,-17%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C1060 berhenti,True
+C0299,Business activity decline,-45%,2025-07,2026-06,distress,down,inflow+outflow,anchor ekosistem bermasalah,True
+C0299,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0299,One-off spike,x4.0,2026-05,2026-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0301,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0305,Business activity surge,+15%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0306,One-off spike,x2.5,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0308,One-off spike,x7.0,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0310,Business activity surge,+60%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0317,One-off spike,x4.0,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0322,Business activity surge,+30%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0325,One-off spike,x2.5,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0331,Business activity decline,-22%,2025-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0331,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0334,Business activity decline,-12%,2025-03,2025-08,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0334,Early warning: payment behaviour,payroll & pajak makin telat,2024-12,2025-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0335,Business activity surge,+60%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0338,One-off spike,x2.5,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0339,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0341,One-off spike,x7.0,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0343,One-off spike,x4.0,2025-04,2025-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0345,Business activity surge,+60%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0349,Major buyer exit,-28%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C0766 berhenti,True
+C0353,Ecosystem contagion,-7%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0355,Business activity surge,+15%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0355,Ecosystem contagion,-25%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0356,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0358,Share-of-wallet erosion,-55%,2025-11,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0360,Business activity decline,-35%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0360,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0360,One-off spike,x2.5,2025-04,2025-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0362,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0362,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0363,One-off spike,x2.5,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0364,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0367,Business activity surge,+30%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0369,One-off spike,x4.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0371,Business activity decline,-12%,2025-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0371,Early warning: payment behaviour,payroll & pajak makin telat,2024-12,2025-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0372,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0373,One-off spike,x2.5,2025-04,2025-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0374,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0377,One-off spike,x2.5,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0380,Business activity decline,-22%,2024-11,2025-04,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0380,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0380,One-off spike,x4.0,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0383,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0384,Business activity decline,-22%,2024-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0384,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0385,Business activity decline,-22%,2026-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0385,Early warning: payment behaviour,payroll & pajak makin telat,2025-12,2026-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0386,Business activity surge,+15%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0388,Business activity surge,+60%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0389,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0390,Business activity decline,-12%,2025-09,2026-02,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0390,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0390,One-off spike,x4.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0394,One-off spike,x4.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0396,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0397,Business activity surge,+30%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0399,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0401,Major buyer exit,-33%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C1785 berhenti,True
+C0402,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0403,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0404,One-off spike,x2.5,2025-12,2025-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0408,One-off spike,x2.5,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0409,Business activity decline,-45%,2025-07,2026-06,distress,down,inflow+outflow,anchor ekosistem bermasalah,True
+C0409,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0411,Major buyer exit,-23%,2026-05,2026-06,buyer_exit,down,counterparty,buyer utama C0381 berhenti,True
+C0412,Business activity surge,+15%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0413,Business activity surge,+15%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0414,Business activity decline,-22%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0414,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0416,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0418,One-off spike,x7.0,2025-10,2025-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0423,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0429,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0431,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0432,Business activity surge,+15%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0440,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0441,One-off spike,x7.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0442,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0444,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0445,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0449,Ecosystem contagion,-35%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0453,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0455,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0456,Ecosystem contagion,-27%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0458,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0458,One-off spike,x4.0,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0461,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0462,Business activity surge,+30%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0466,Business activity surge,+15%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0467,Business activity surge,+60%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0471,Business activity decline,-35%,2024-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0471,Early warning: payment behaviour,payroll & pajak makin telat,2024-09,2024-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0473,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0474,Business activity decline,-35%,2024-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0474,Early warning: payment behaviour,payroll & pajak makin telat,2024-09,2024-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0475,One-off spike,x2.5,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0476,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0478,Share-of-wallet erosion,-55%,2025-11,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0480,Business activity surge,+60%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0482,Business activity surge,+60%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0486,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0487,Business activity decline,-22%,2024-11,2025-04,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0487,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0487,One-off spike,x2.5,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0489,Business activity surge,+60%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0492,Business activity surge,+30%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0493,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0494,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0498,One-off spike,x4.0,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0499,One-off spike,x7.0,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0501,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0502,Business activity decline,-35%,2025-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0502,Early warning: payment behaviour,payroll & pajak makin telat,2024-11,2025-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0504,Business activity surge,+15%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0504,Major buyer exit,-13%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama E00936 berhenti,True
+C0505,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0506,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0507,Business activity surge,+60%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0507,One-off spike,x4.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0512,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0515,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0518,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0520,Ecosystem contagion,-15%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0521,Business activity surge,+15%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0523,Major buyer exit,-24%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama E01398 berhenti,True
+C0523,One-off spike,x7.0,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0524,Business activity surge,+30%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0524,Major buyer exit,-16%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C1032 berhenti,True
+C0529,One-off spike,x7.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0530,Ecosystem contagion,-20%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0532,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0538,Business activity surge,+15%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0538,One-off spike,x4.0,2025-12,2025-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0540,Ecosystem contagion,-22%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0545,Major buyer exit,-15%,2025-09,2026-06,buyer_exit,down,counterparty,buyer utama E00451 berhenti,True
+C0546,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0547,Business activity surge,+15%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0547,One-off spike,x4.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0549,One-off spike,x4.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0550,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0553,Business activity surge,+15%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0555,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0556,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0558,Business activity decline,-12%,2026-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0558,Early warning: payment behaviour,payroll & pajak makin telat,2026-02,2026-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0560,One-off spike,x7.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0561,Business activity surge,+15%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0562,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0564,Business activity decline,-22%,2026-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0564,Early warning: payment behaviour,payroll & pajak makin telat,2026-02,2026-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0566,Business activity surge,+30%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0567,One-off spike,x2.5,2026-05,2026-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0570,One-off spike,x4.0,2024-05,2024-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0573,One-off spike,x4.0,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0575,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0577,Share-of-wallet erosion,-55%,2025-03,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0579,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0579,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0581,Ecosystem contagion,-40%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0582,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0586,One-off spike,x2.5,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0587,One-off spike,x4.0,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0588,Business activity decline,-35%,2025-07,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0588,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0589,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0590,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0592,Business activity decline,-35%,2025-06,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0592,Early warning: payment behaviour,payroll & pajak makin telat,2025-03,2025-06,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0594,One-off spike,x4.0,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0595,Business activity decline,-22%,2025-07,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0595,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0600,Ecosystem contagion,-16%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0600,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0601,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0603,Business activity decline,-12%,2026-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0603,Early warning: payment behaviour,payroll & pajak makin telat,2025-10,2026-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0603,One-off spike,x4.0,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0604,One-off spike,x4.0,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0608,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0610,Business activity decline,-22%,2024-10,2025-03,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0610,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0612,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0613,Business activity surge,+15%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0616,Major buyer exit,-17%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama E00873 berhenti,True
+C0618,Major buyer exit,-12%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama E00585 berhenti,True
+C0618,One-off spike,x2.5,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0620,Business activity surge,+30%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0621,Business activity surge,+60%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0623,Business activity decline,-12%,2025-07,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0623,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0628,One-off spike,x7.0,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0629,Business activity surge,+15%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0629,One-off spike,x4.0,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0630,Business activity decline,-22%,2025-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0630,Early warning: payment behaviour,payroll & pajak makin telat,2024-10,2025-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0635,Ecosystem contagion,-36%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0636,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0638,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0639,Major buyer exit,-24%,2025-09,2026-06,buyer_exit,down,counterparty,buyer utama C0366 berhenti,True
+C0640,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0651,Business activity surge,+30%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0652,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0657,Business activity surge,+30%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0658,Major buyer exit,-12%,2025-05,2026-06,buyer_exit,down,counterparty,buyer utama C1075 berhenti,True
+C0662,Major buyer exit,-22%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C0386 berhenti,True
+C0663,Business activity surge,+30%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0663,Major buyer exit,-17%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama C1190 berhenti,True
+C0664,Business activity decline,-22%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0664,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0666,One-off spike,x2.5,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0667,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0669,Major buyer exit,-12%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama C1160 berhenti,True
+C0672,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0678,Business activity decline,-22%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0678,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0679,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0681,Business activity decline,-22%,2025-10,2026-03,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0681,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0686,Business activity surge,+15%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0688,Business activity decline,-12%,2025-08,2026-01,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0688,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0689,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0689,Major buyer exit,-17%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama E02754 berhenti,True
+C0689,One-off spike,x2.5,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0695,One-off spike,x4.0,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0698,Business activity decline,-35%,2025-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0698,Early warning: payment behaviour,payroll & pajak makin telat,2025-02,2025-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0700,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0700,One-off spike,x4.0,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0701,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0705,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0708,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0710,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0710,One-off spike,x4.0,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0711,Business activity surge,+15%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0713,One-off spike,x2.5,2024-09,2024-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0715,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0717,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0718,Business activity surge,+15%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0719,Business activity decline,-12%,2025-08,2026-01,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0719,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0719,One-off spike,x4.0,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0721,One-off spike,x2.5,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0722,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0726,One-off spike,x4.0,2025-09,2025-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0727,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0729,One-off spike,x7.0,2025-01,2025-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0730,Business activity surge,+60%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0732,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0733,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0734,Major buyer exit,-13%,2025-05,2026-06,buyer_exit,down,counterparty,buyer utama E00796 berhenti,True
+C0735,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0736,Business activity decline,-12%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0736,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0738,Share-of-wallet erosion,-55%,2025-11,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0742,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0745,Major buyer exit,-23%,2026-05,2026-06,buyer_exit,down,counterparty,buyer utama C1674 berhenti,True
+C0750,Business activity surge,+60%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0751,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0752,One-off spike,x4.0,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0756,Business activity surge,+60%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0758,Business activity surge,+30%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0762,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0767,Business activity decline,-12%,2026-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0767,Early warning: payment behaviour,payroll & pajak makin telat,2026-01,2026-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0769,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0770,One-off spike,x2.5,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0777,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0780,Business activity surge,+60%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0780,One-off spike,x4.0,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0782,Ecosystem contagion,-32%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0782,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0784,One-off spike,x2.5,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0785,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0786,Business activity surge,+15%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0786,Ecosystem contagion,-29%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0787,One-off spike,x2.5,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0789,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0792,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0794,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0796,One-off spike,x2.5,2025-12,2025-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0797,Business activity surge,+30%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0798,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0803,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0807,Business activity surge,+30%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0807,One-off spike,x7.0,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0811,Business activity surge,+60%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0813,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0814,Major buyer exit,-26%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C0299 berhenti,True
+C0814,Ecosystem contagion,-33%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0815,Business activity surge,+60%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0815,Major buyer exit,-16%,2026-05,2026-06,buyer_exit,down,counterparty,buyer utama C1239 berhenti,True
+C0820,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0821,Business activity surge,+60%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0822,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0823,Business activity decline,-12%,2026-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0823,Early warning: payment behaviour,payroll & pajak makin telat,2026-02,2026-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0825,Ecosystem contagion,-24%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0825,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0826,Business activity decline,-35%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0826,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0827,One-off spike,x4.0,2024-04,2024-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0829,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0830,Business activity decline,-12%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0830,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0833,Major buyer exit,-14%,2026-01,2026-06,buyer_exit,down,counterparty,buyer utama C0858 berhenti,True
+C0834,Business activity surge,+60%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0835,Business activity surge,+60%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0836,Business activity decline,-12%,2025-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0836,Early warning: payment behaviour,payroll & pajak makin telat,2024-12,2025-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0837,Business activity decline,-22%,2025-09,2026-02,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0837,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0839,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0841,Share-of-wallet erosion,-55%,2025-04,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0849,One-off spike,x4.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0852,Major buyer exit,-27%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C1781 berhenti,True
+C0853,Share-of-wallet erosion,-55%,2025-10,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0855,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0857,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0857,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0858,Business activity decline,-12%,2026-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0858,Early warning: payment behaviour,payroll & pajak makin telat,2025-12,2026-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0860,Business activity surge,+15%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0860,One-off spike,x4.0,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0861,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0864,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0864,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0866,Major buyer exit,-24%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C0299 berhenti,True
+C0866,Ecosystem contagion,-30%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0868,Business activity surge,+15%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0872,Major buyer exit,-25%,2025-05,2026-06,buyer_exit,down,counterparty,buyer utama C1033 berhenti,True
+C0874,Business activity decline,-22%,2025-07,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0874,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0876,Business activity surge,+15%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0877,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0879,Business activity decline,-12%,2025-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0879,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0882,Business activity surge,+60%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0883,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0885,Business activity decline,-22%,2025-11,2026-04,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0885,Early warning: payment behaviour,payroll & pajak makin telat,2025-08,2025-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0886,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0894,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0897,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0899,Business activity surge,+60%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0906,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0908,Business activity decline,-12%,2025-01,2025-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0908,Early warning: payment behaviour,payroll & pajak makin telat,2024-10,2025-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0909,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0910,Major buyer exit,-15%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C1126 berhenti,True
+C0912,Major buyer exit,-45%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C1768 berhenti,True
+C0915,Business activity surge,+15%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0917,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0920,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0924,Business activity decline,-22%,2025-08,2026-01,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0924,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0925,Business activity decline,-12%,2025-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0925,Early warning: payment behaviour,payroll & pajak makin telat,2025-08,2025-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0927,One-off spike,x2.5,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0929,Major buyer exit,-18%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama E01045 berhenti,True
+C0929,One-off spike,x4.0,2025-03,2025-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0931,Business activity surge,+15%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0932,Ecosystem contagion,-26%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0934,One-off spike,x2.5,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0936,Major buyer exit,-17%,2025-10,2026-06,buyer_exit,down,counterparty,buyer utama C1853 berhenti,True
+C0937,Business activity decline,-12%,2026-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0937,Early warning: payment behaviour,payroll & pajak makin telat,2026-01,2026-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0939,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0941,Ecosystem contagion,-22%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0942,Business activity surge,+30%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0942,Major buyer exit,-20%,2025-10,2026-06,buyer_exit,down,counterparty,buyer utama C0408 berhenti,True
+C0944,Business activity decline,-22%,2026-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0944,Early warning: payment behaviour,payroll & pajak makin telat,2025-12,2026-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0944,Ecosystem contagion,-21%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0950,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0952,Business activity decline,-12%,2025-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0952,Early warning: payment behaviour,payroll & pajak makin telat,2025-02,2025-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0953,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0954,Business activity decline,-12%,2024-12,2025-05,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0954,Early warning: payment behaviour,payroll & pajak makin telat,2024-09,2024-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0955,Business activity decline,-12%,2026-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0955,Early warning: payment behaviour,payroll & pajak makin telat,2025-12,2026-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0956,Share-of-wallet erosion,-55%,2025-03,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0957,One-off spike,x2.5,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0959,One-off spike,x4.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0960,Ecosystem contagion,-27%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0961,Business activity decline,-22%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0961,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0965,Business activity surge,+30%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0966,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0967,Major buyer exit,-18%,2026-01,2026-06,buyer_exit,down,counterparty,buyer utama C0402 berhenti,True
+C0967,One-off spike,x2.5,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0973,Major buyer exit,-21%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama E01286 berhenti,True
+C0976,One-off spike,x2.5,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C0979,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C0980,Business activity surge,+15%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0980,Major buyer exit,-12%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama C1636 berhenti,True
+C0983,Business activity decline,-22%,2025-07,2025-12,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0983,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0985,Business activity surge,+60%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0986,Business activity decline,-35%,2025-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0986,Early warning: payment behaviour,payroll & pajak makin telat,2025-01,2025-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C0987,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C0988,Ecosystem contagion,-7%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C0991,Business activity decline,-22%,2025-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C0991,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1004,One-off spike,x4.0,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1006,Major buyer exit,-38%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama E01438 berhenti,True
+C1006,One-off spike,x2.5,2025-03,2025-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1009,Business activity surge,+15%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1009,Ecosystem contagion,-24%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1010,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1015,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1018,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1019,Ecosystem contagion,-50%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1020,Business activity decline,-22%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1020,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1022,Business activity decline,-35%,2024-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1022,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1024,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1025,One-off spike,x4.0,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1027,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1027,One-off spike,x7.0,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1029,Business activity surge,+15%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1033,Share-of-wallet erosion,-55%,2025-03,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1034,Share-of-wallet erosion,-55%,2025-10,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1035,Business activity decline,-35%,2026-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1035,Early warning: payment behaviour,payroll & pajak makin telat,2026-02,2026-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1036,Major buyer exit,-14%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C0126 berhenti,True
+C1039,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1040,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1042,Business activity surge,+60%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1042,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1043,Major buyer exit,-19%,2025-05,2026-06,buyer_exit,down,counterparty,buyer utama E00285 berhenti,True
+C1046,Business activity surge,+30%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1048,One-off spike,x2.5,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1049,Business activity surge,+30%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1051,Business activity decline,-12%,2025-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1051,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1052,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1052,One-off spike,x7.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1053,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1060,Business activity decline,-12%,2026-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1060,Early warning: payment behaviour,payroll & pajak makin telat,2026-01,2026-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1061,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1062,One-off spike,x2.5,2025-09,2025-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1067,Business activity decline,-22%,2025-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1067,Early warning: payment behaviour,payroll & pajak makin telat,2024-10,2025-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1071,Major buyer exit,-25%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama C1387 berhenti,True
+C1074,Share-of-wallet erosion,-55%,2025-10,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1076,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1077,Business activity surge,+60%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1078,Major buyer exit,-24%,2025-11,2026-06,buyer_exit,down,counterparty,buyer utama E00068 berhenti,True
+C1079,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1080,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1087,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1088,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1089,Share-of-wallet erosion,-55%,2025-03,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1093,Major buyer exit,-21%,2025-04,2026-06,buyer_exit,down,counterparty,buyer utama C0570 berhenti,True
+C1093,One-off spike,x4.0,2025-09,2025-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1094,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1096,One-off spike,x4.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1098,Business activity decline,-35%,2025-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1098,Early warning: payment behaviour,payroll & pajak makin telat,2025-02,2025-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1100,Major buyer exit,-28%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama E02493 berhenti,True
+C1102,One-off spike,x7.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1103,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1106,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1106,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1108,One-off spike,x4.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1110,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1116,Major buyer exit,-15%,2026-05,2026-06,buyer_exit,down,counterparty,buyer utama E01611 berhenti,True
+C1119,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1121,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1122,Business activity surge,+15%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1122,One-off spike,x4.0,2025-08,2025-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1123,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1123,One-off spike,x2.5,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1125,Business activity surge,+30%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1129,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1134,One-off spike,x2.5,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1136,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1142,Major buyer exit,-14%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C1349 berhenti,True
+C1144,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1147,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1148,Business activity surge,+15%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1149,Business activity surge,+60%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1151,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1158,Ecosystem contagion,-27%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1159,Ecosystem contagion,-13%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1162,Business activity decline,-22%,2025-08,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1162,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1164,Major buyer exit,-17%,2025-11,2026-06,buyer_exit,down,counterparty,buyer utama C0244 berhenti,True
+C1169,One-off spike,x2.5,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1170,Business activity surge,+60%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1171,Major buyer exit,-17%,2025-09,2026-06,buyer_exit,down,counterparty,buyer utama E02534 berhenti,True
+C1172,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1172,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1180,Ecosystem contagion,-18%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1181,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1187,One-off spike,x2.5,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1189,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1191,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1192,Business activity surge,+60%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1194,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1194,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1195,One-off spike,x2.5,2025-01,2025-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1198,Business activity surge,+60%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1198,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1200,Business activity surge,+60%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1203,Ecosystem contagion,-15%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1205,Business activity surge,+60%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1210,Ecosystem contagion,-12%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1211,Business activity surge,+60%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1211,One-off spike,x2.5,2025-04,2025-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1215,Major buyer exit,-20%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama C1052 berhenti,True
+C1216,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1217,One-off spike,x7.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1218,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1224,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1225,One-off spike,x2.5,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1226,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1226,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1229,Business activity surge,+15%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1231,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1232,Business activity surge,+30%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1234,One-off spike,x4.0,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1236,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1239,Business activity surge,+15%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1243,Business activity decline,-22%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1243,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1244,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1245,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1250,One-off spike,x2.5,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1252,Major buyer exit,-24%,2026-02,2026-06,buyer_exit,down,counterparty,buyer utama C0654 berhenti,True
+C1256,Business activity surge,+15%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1256,Ecosystem contagion,-21%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1260,Business activity decline,-22%,2024-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1260,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1261,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1264,One-off spike,x2.5,2024-09,2024-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1265,One-off spike,x7.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1267,Major buyer exit,-35%,2026-03,2026-06,buyer_exit,down,counterparty,buyer utama C0917 berhenti,True
+C1270,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1271,Major buyer exit,-16%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C1032 berhenti,True
+C1271,One-off spike,x4.0,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1272,Business activity decline,-22%,2025-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1272,Early warning: payment behaviour,payroll & pajak makin telat,2024-12,2025-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1274,Business activity decline,-12%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1274,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1276,Share-of-wallet erosion,-55%,2025-04,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1279,Ecosystem contagion,-24%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1279,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1282,Business activity decline,-35%,2025-08,2026-01,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1282,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1283,Business activity decline,-12%,2026-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1283,Early warning: payment behaviour,payroll & pajak makin telat,2025-11,2026-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1287,Major buyer exit,-22%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama E01069 berhenti,True
+C1289,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1292,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1294,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1294,One-off spike,x2.5,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1298,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1302,Business activity surge,+15%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1302,Ecosystem contagion,-34%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1303,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1303,One-off spike,x2.5,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1305,Ecosystem contagion,-32%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1309,Major buyer exit,-38%,2025-10,2026-06,buyer_exit,down,counterparty,buyer utama C0192 berhenti,True
+C1314,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1314,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1315,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1317,Major buyer exit,-22%,2025-11,2026-06,buyer_exit,down,counterparty,buyer utama E01968 berhenti,True
+C1317,One-off spike,x4.0,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1319,Business activity surge,+15%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1321,Major buyer exit,-13%,2025-09,2026-06,buyer_exit,down,counterparty,buyer utama C1187 berhenti,True
+C1323,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1324,Business activity surge,+30%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1326,Major buyer exit,-19%,2026-01,2026-06,buyer_exit,down,counterparty,buyer utama C0299 berhenti,True
+C1326,Ecosystem contagion,-24%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1329,Business activity decline,-12%,2025-08,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1329,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1330,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1332,Business activity surge,+60%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1333,Business activity decline,-12%,2025-07,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1333,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1336,Business activity decline,-12%,2026-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1336,Early warning: payment behaviour,payroll & pajak makin telat,2026-02,2026-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1336,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1337,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1337,One-off spike,x4.0,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1347,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1351,Business activity decline,-22%,2025-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1351,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1353,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1355,Ecosystem contagion,-3%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1356,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1357,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1358,Business activity surge,+60%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1358,Major buyer exit,-25%,2025-10,2026-06,buyer_exit,down,counterparty,buyer utama C1395 berhenti,True
+C1358,One-off spike,x4.0,2024-05,2024-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1365,Ecosystem contagion,-32%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1366,Ecosystem contagion,-21%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1367,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1373,Ecosystem contagion,-3%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1374,Business activity surge,+30%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1379,Business activity surge,+60%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1380,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1381,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1383,One-off spike,x2.5,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1384,Share-of-wallet erosion,-55%,2025-10,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1387,Business activity surge,+15%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1388,Business activity decline,-12%,2025-05,2025-10,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1388,Early warning: payment behaviour,payroll & pajak makin telat,2025-02,2025-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1389,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1389,One-off spike,x4.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1390,Business activity decline,-35%,2026-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1390,Early warning: payment behaviour,payroll & pajak makin telat,2026-01,2026-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1391,One-off spike,x4.0,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1394,Business activity decline,-35%,2024-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1394,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1396,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1398,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1399,One-off spike,x4.0,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1401,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1409,Business activity decline,-12%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1409,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1410,Share-of-wallet erosion,-55%,2025-04,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1411,Share-of-wallet erosion,-55%,2025-04,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1412,Business activity decline,-12%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1412,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1414,Business activity surge,+60%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1418,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1421,Business activity decline,-12%,2025-01,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1421,Early warning: payment behaviour,payroll & pajak makin telat,2024-10,2025-01,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1422,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1423,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1429,Business activity decline,-22%,2026-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1429,Early warning: payment behaviour,payroll & pajak makin telat,2025-12,2026-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1430,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1433,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1434,One-off spike,x4.0,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1435,Business activity decline,-22%,2025-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1435,Early warning: payment behaviour,payroll & pajak makin telat,2024-12,2025-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1436,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1437,Business activity surge,+60%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1437,One-off spike,x2.5,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1440,One-off spike,x4.0,2025-03,2025-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1442,Ecosystem contagion,-13%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1450,Business activity surge,+15%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1450,One-off spike,x2.5,2025-03,2025-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1451,One-off spike,x2.5,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1455,Share-of-wallet erosion,-55%,2025-10,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1457,One-off spike,x2.5,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1458,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1460,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1463,Ecosystem contagion,-23%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1464,Business activity surge,+15%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1464,Major buyer exit,-14%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama E00572 berhenti,True
+C1466,Business activity surge,+60%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1480,Business activity surge,+30%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1481,One-off spike,x7.0,2024-06,2024-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1483,Business activity surge,+15%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1488,Major buyer exit,-22%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama C0808 berhenti,True
+C1489,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1496,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1497,Major buyer exit,-12%,2026-04,2026-06,buyer_exit,down,counterparty,buyer utama C0672 berhenti,True
+C1499,One-off spike,x7.0,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1500,Business activity decline,-22%,2025-10,2026-03,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1500,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1501,Share-of-wallet erosion,-55%,2025-11,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1503,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1504,Major buyer exit,-40%,2026-01,2026-06,buyer_exit,down,counterparty,buyer utama C1555 berhenti,True
+C1508,Business activity surge,+15%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1509,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1510,Business activity surge,+30%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1511,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1512,Business activity decline,-22%,2025-04,2025-09,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1512,Early warning: payment behaviour,payroll & pajak makin telat,2025-01,2025-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1513,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1514,Business activity decline,-12%,2026-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1514,Early warning: payment behaviour,payroll & pajak makin telat,2025-11,2026-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1518,Business activity surge,+15%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1519,Business activity decline,-12%,2025-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1519,Early warning: payment behaviour,payroll & pajak makin telat,2024-11,2025-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1522,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1524,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1524,One-off spike,x2.5,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1527,Business activity surge,+60%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1533,Business activity surge,+60%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1534,Business activity surge,+60%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1535,Business activity decline,-12%,2024-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1535,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1535,Ecosystem contagion,-35%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1537,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1537,Share-of-wallet erosion,-55%,2026-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1538,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1545,One-off spike,x4.0,2024-04,2024-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1549,Business activity decline,-12%,2025-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1549,Early warning: payment behaviour,payroll & pajak makin telat,2025-01,2025-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1550,One-off spike,x7.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1551,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1558,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1559,One-off spike,x4.0,2024-09,2024-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1560,Major buyer exit,-21%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama E01785 berhenti,True
+C1562,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1563,Business activity surge,+60%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1564,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1567,Ecosystem contagion,-7%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1568,Business activity decline,-12%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1568,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1569,Business activity surge,+30%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1569,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1569,One-off spike,x4.0,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1570,Major buyer exit,-14%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama C1700 berhenti,True
+C1570,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1573,Major buyer exit,-24%,2026-04,2026-06,buyer_exit,down,counterparty,buyer utama C0278 berhenti,True
+C1574,Business activity decline,-22%,2026-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1574,Early warning: payment behaviour,payroll & pajak makin telat,2025-11,2026-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1577,One-off spike,x7.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1578,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1579,Major buyer exit,-27%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama C0813 berhenti,True
+C1580,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1581,One-off spike,x4.0,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1582,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1582,One-off spike,x2.5,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1586,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1589,Business activity decline,-22%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1589,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1593,Ecosystem contagion,-15%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1594,Business activity surge,+60%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1599,One-off spike,x4.0,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1602,Major buyer exit,-32%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama C0971 berhenti,True
+C1605,Share-of-wallet erosion,-55%,2026-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1607,One-off spike,x4.0,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1608,One-off spike,x2.5,2025-08,2025-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1610,Share-of-wallet erosion,-55%,2025-08,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1612,One-off spike,x2.5,2024-08,2024-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1613,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1617,Business activity surge,+30%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1619,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1619,One-off spike,x2.5,2025-09,2025-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1620,One-off spike,x2.5,2025-11,2025-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1625,Business activity surge,+30%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1629,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1631,Major buyer exit,-30%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama E00453 berhenti,True
+C1631,Ecosystem contagion,-3%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1632,One-off spike,x4.0,2024-11,2024-11,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1634,Business activity decline,-12%,2025-06,2025-11,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1634,Early warning: payment behaviour,payroll & pajak makin telat,2025-03,2025-06,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1641,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1642,Major buyer exit,-20%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama C0878 berhenti,True
+C1643,Major buyer exit,-27%,2025-05,2026-06,buyer_exit,down,counterparty,buyer utama C0409 berhenti,True
+C1643,Ecosystem contagion,-34%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1645,One-off spike,x4.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1646,Business activity surge,+15%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1646,One-off spike,x2.5,2024-09,2024-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1647,Major buyer exit,-28%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama E00496 berhenti,True
+C1651,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1651,Ecosystem contagion,-4%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1652,One-off spike,x4.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1654,Major buyer exit,-20%,2026-04,2026-06,buyer_exit,down,counterparty,buyer utama E02670 berhenti,True
+C1655,Major buyer exit,-17%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama E00384 berhenti,True
+C1656,One-off spike,x4.0,2024-10,2024-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1657,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1658,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1658,One-off spike,x4.0,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1660,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1664,One-off spike,x7.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1665,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1666,Major buyer exit,-14%,2025-12,2026-06,buyer_exit,down,counterparty,buyer utama C1531 berhenti,True
+C1668,Business activity decline,-12%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1668,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1674,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1681,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1681,Major buyer exit,-36%,2025-03,2026-06,buyer_exit,down,counterparty,buyer utama C0878 berhenti,True
+C1683,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1688,Major buyer exit,-36%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama C0905 berhenti,True
+C1689,Major buyer exit,-19%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama C1119 berhenti,True
+C1689,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1694,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1700,Major buyer exit,-18%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama C0264 berhenti,True
+C1702,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1703,Business activity decline,-35%,2025-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1703,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1706,One-off spike,x2.5,2025-10,2025-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1712,Share-of-wallet erosion,-55%,2025-11,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1713,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1714,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1715,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1715,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1717,Major buyer exit,-24%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama E00633 berhenti,True
+C1722,Business activity surge,+30%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1726,Ecosystem contagion,-14%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1726,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1726,One-off spike,x4.0,2024-04,2024-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1727,Business activity decline,-22%,2026-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1727,Early warning: payment behaviour,payroll & pajak makin telat,2026-02,2026-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1729,Business activity surge,+60%,2025-06,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1733,Business activity surge,+15%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1736,Business activity surge,+30%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1739,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1739,One-off spike,x2.5,2025-10,2025-10,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1740,One-off spike,x2.5,2024-05,2024-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1746,One-off spike,x7.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1747,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1748,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1749,Major buyer exit,-37%,2026-03,2026-06,buyer_exit,down,counterparty,buyer utama E01798 berhenti,True
+C1749,One-off spike,x2.5,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1750,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1750,Ecosystem contagion,-10%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1750,One-off spike,x4.0,2026-03,2026-03,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1751,Business activity surge,+15%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1752,Business activity decline,-22%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1752,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1754,Business activity decline,-12%,2025-07,2025-12,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1754,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1757,Business activity surge,+15%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1761,Business activity surge,+15%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1763,Ecosystem contagion,-33%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1764,One-off spike,x4.0,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1766,Major buyer exit,-21%,2026-05,2026-06,buyer_exit,down,counterparty,buyer utama C1425 berhenti,True
+C1767,Business activity decline,-12%,2024-10,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1767,Early warning: payment behaviour,payroll & pajak makin telat,2024-07,2024-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1768,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1769,One-off spike,x2.5,2026-02,2026-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1770,One-off spike,x2.5,2024-12,2024-12,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1771,Business activity decline,-12%,2025-06,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1771,Early warning: payment behaviour,payroll & pajak makin telat,2025-03,2025-06,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1775,Ecosystem contagion,-21%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1777,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1782,Major buyer exit,-23%,2025-08,2026-06,buyer_exit,down,counterparty,buyer utama C1069 berhenti,True
+C1783,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1784,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1784,One-off spike,x7.0,2025-08,2025-08,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1786,Business activity decline,-22%,2025-04,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1786,Early warning: payment behaviour,payroll & pajak makin telat,2025-01,2025-04,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1787,Business activity surge,+30%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1789,Business activity surge,+30%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1789,Ecosystem contagion,-12%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1790,Business activity decline,-35%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1790,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1791,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1793,Business activity decline,-12%,2025-10,2026-03,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1793,Early warning: payment behaviour,payroll & pajak makin telat,2025-07,2025-10,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1794,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1795,Share-of-wallet erosion,-55%,2025-07,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1799,Business activity surge,+15%,2025-09,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1805,Business activity decline,-22%,2025-08,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1805,Early warning: payment behaviour,payroll & pajak makin telat,2025-05,2025-08,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1807,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1813,Business activity decline,-12%,2025-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1813,Early warning: payment behaviour,payroll & pajak makin telat,2025-08,2025-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1813,One-off spike,x7.0,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1814,Ecosystem contagion,-20%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1817,Business activity surge,+15%,2026-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1818,Major buyer exit,-42%,2025-07,2026-06,buyer_exit,down,counterparty,buyer utama C0588 berhenti,True
+C1818,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1819,Ecosystem contagion,-43%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1820,One-off spike,x4.0,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1823,Business activity decline,-35%,2025-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1823,Early warning: payment behaviour,payroll & pajak makin telat,2025-08,2025-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1827,Business activity surge,+30%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1827,One-off spike,x4.0,2025-02,2025-02,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1828,Business activity surge,+15%,2026-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1828,Major buyer exit,-19%,2025-06,2026-06,buyer_exit,down,counterparty,buyer utama E01824 berhenti,True
+C1829,Business activity surge,+60%,2024-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1830,Business activity surge,+30%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1832,One-off spike,x2.5,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1833,Business activity surge,+30%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1835,Business activity decline,-12%,2025-09,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1835,Early warning: payment behaviour,payroll & pajak makin telat,2025-06,2025-09,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1837,Share-of-wallet erosion,-55%,2025-09,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1838,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1840,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1843,Business activity decline,-35%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1843,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1844,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1845,One-off spike,x2.5,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1846,Business activity surge,+15%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1847,One-off spike,x4.0,2025-06,2025-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1848,Business activity surge,+15%,2025-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1850,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1852,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1853,Business activity surge,+15%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1858,Ecosystem contagion,-29%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1860,Business activity surge,+15%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1862,One-off spike,x4.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1863,Business activity surge,+60%,2025-12,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1864,Business activity surge,+15%,2026-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1869,Business activity surge,+30%,2025-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1869,One-off spike,x2.5,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1871,Share-of-wallet erosion,-55%,2025-12,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1873,One-off spike,x2.5,2026-05,2026-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1882,Ecosystem contagion,-34%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1883,Business activity decline,-35%,2025-12,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1883,Early warning: payment behaviour,payroll & pajak makin telat,2025-09,2025-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1884,Ecosystem contagion,-5%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1886,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1886,One-off spike,x7.0,2024-07,2024-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1887,Business activity decline,-35%,2025-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1887,Early warning: payment behaviour,payroll & pajak makin telat,2024-11,2025-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1888,Ecosystem contagion,-8%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1889,One-off spike,x2.5,2026-01,2026-01,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1890,Business activity surge,+30%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1891,Business activity surge,+30%,2026-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1899,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1903,One-off spike,x2.5,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1907,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1913,Share-of-wallet erosion,-55%,2025-06,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1914,Business activity decline,-12%,2024-11,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1914,Early warning: payment behaviour,payroll & pajak makin telat,2024-08,2024-11,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1916,One-off spike,x4.0,2025-09,2025-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1918,Major buyer exit,-24%,2025-11,2026-06,buyer_exit,down,counterparty,buyer utama C1685 berhenti,True
+C1921,Business activity decline,-12%,2026-03,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1921,Early warning: payment behaviour,payroll & pajak makin telat,2025-12,2026-03,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1923,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1924,Business activity surge,+30%,2025-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1925,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1931,Business activity surge,+60%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1931,Ecosystem contagion,-11%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1936,Share-of-wallet erosion,-55%,2025-10,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1941,One-off spike,x7.0,2025-05,2025-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1943,Business activity surge,+30%,2024-11,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1944,Business activity decline,-12%,2025-07,2025-12,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1944,Early warning: payment behaviour,payroll & pajak makin telat,2025-04,2025-07,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1948,Share-of-wallet erosion,-55%,2025-02,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1950,Ecosystem contagion,-6%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1952,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1952,One-off spike,x4.0,2025-09,2025-09,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1954,One-off spike,x4.0,2026-04,2026-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1955,Business activity decline,-22%,2025-05,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1955,Early warning: payment behaviour,payroll & pajak makin telat,2025-02,2025-05,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1956,Business activity surge,+30%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1957,One-off spike,x2.5,2024-05,2024-05,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1959,Business activity surge,+15%,2025-08,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1967,Ecosystem contagion,-3%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1968,Business activity surge,+15%,2026-03,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1969,Ecosystem contagion,-34%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1970,Business activity surge,+30%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1971,Share-of-wallet erosion,-55%,2025-01,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1972,Business activity surge,+15%,2024-10,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1974,Business activity surge,+15%,2025-02,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1977,Business activity surge,+15%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1978,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1980,Business activity surge,+15%,2025-04,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1981,Business activity surge,+15%,2025-01,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1981,Ecosystem contagion,-23%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1982,Ecosystem contagion,-16%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1982,Share-of-wallet erosion,-55%,2025-05,2026-06,wallet_erosion,down,share-of-wallet,aliran dana pindah ke bank pesaing; omzet tetap,False
+C1987,Major buyer exit,-23%,2025-10,2026-06,buyer_exit,down,counterparty,buyer utama C0878 berhenti,True
+C1989,Ecosystem contagion,-9%,2025-09,2026-06,contagion,down,counterparty,"anchor C0299, C0409 bermasalah (lag 2 bulan)",True
+C1989,One-off spike,x7.0,2025-07,2025-07,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1991,Business activity decline,-12%,2025-02,2026-06,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1991,Early warning: payment behaviour,payroll & pajak makin telat,2024-11,2025-02,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
+C1991,One-off spike,x4.0,2026-06,2026-06,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1995,Business activity surge,+15%,2025-07,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1996,Business activity surge,+30%,2025-05,2026-06,expansion,up,inflow,menang tender / pesanan baru,False
+C1997,One-off spike,x2.5,2024-04,2024-04,spike,neutral,inflow,termin proyek / penjualan aset,False
+C1999,Business activity decline,-22%,2024-12,2025-05,distress,down,inflow+outflow,permintaan turun / pembayaran pelanggan melambat,True
+C1999,Early warning: payment behaviour,payroll & pajak makin telat,2024-09,2024-12,early_warning,down,payroll/tax timing,tekanan kas sebelum omzet turun,True
