@@ -59,7 +59,7 @@ def _purpose(store, cid, row):
 def _item(store, cid, row, jam, siapkan):
     tujuan, peluang = _purpose(store, cid, row)
     c = store.cox.loc[cid]
-    return {'jam': jam, 'id': cid, 'nama': c['name'], 'info': f"{c.segment} · {c.district} · risiko {c.pred_class}", 'tujuan': tujuan, 'peluang': peluang, 'siapkan': siapkan}
+    return {'jam': jam, 'id': cid, 'nama': c['name'], 'kecamatan': c.district, 'info': f"{c.segment} · {c.district} · risiko {c.pred_class}", 'tujuan': tujuan, 'peluang': peluang, 'siapkan': siapkan}
 
 
 # ---------------------------------------------------------------- alur 1: rencana minggu
