@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import pandas as pd
 import streamlit as st
@@ -42,6 +42,9 @@ if task == 'plan':
                                              'kanal': st.column_config.SelectboxColumn('Kanal', options=['Kunjungan', 'Telepon']),
                                              'slot': st.column_config.NumberColumn('Slot', min_value=1, max_value=4, step=1)})
         week = st.text_input('Label minggu', 'minggu depan')
+        nxt = date.today() + timedelta(days=7 - date.today().weekday())
+        week_start = st.date_input('Senin minggu rencana (untuk kalender)', nxt, format='DD/MM/YYYY')
+        week_start = week_start - timedelta(days=week_start.weekday())
     with b:
         st.markdown(f"**Keranjang rencana** · {len(ss.plan)} perusahaan (didahulukan)")
         for p in ss.plan:
@@ -77,16 +80,23 @@ if task == 'plan':
                 c1, c2 = st.columns([0.3, 5])
                 m['ok'] = c1.checkbox('ok', key=f"msg_ok_{i}_{m['ke']}", label_visibility='collapsed')
                 m['isi'] = c2.text_area(f"Ke {m['ke']} · {m['kanal']}", m['isi'], key=f"msg_{i}_{m['ke']}", height=90)
-        c1, c2 = st.columns(2)
+        c1, c2, c3 = st.columns(3)
         if c1.button('Setujui rencana', type='primary', use_container_width=True):
             out = data.APP_OUT / 'plans'; out.mkdir(parents=True, exist_ok=True)
             f = out / f"rencana_{ss.rm}_{datetime.now():%Y%m%d_%H%M%S}.json"
             plan['status'] = f"disetujui {ss.rm} {date.today():%d %b %Y}"
             f.write_text(json.dumps(plan, ensure_ascii=False, indent=1, default=str), encoding='utf-8')
-            data.audit('setujui_rencana', rm=ss.rm, berkas=f.name, pesan_disetujui=sum(bool(m.get('ok')) for m in plan['pesan']))
-            st.success(f'Rencana disimpan: outputs/app/plans/{f.name}. Pesan tidak dikirim otomatis.')
+            f.with_suffix('.ics').write_bytes(R.weekly_plan_ics(plan, week_start))
+            data.audit('setujui_rencana', rm=ss.rm, berkas=f.name, minggu_mulai=str(week_start), pesan_disetujui=sum(bool(m.get('ok')) for m in plan['pesan']))
+            st.success(f'Rencana disimpan: outputs/app/plans/{f.name} (+ kalender .ics). Pesan tidak dikirim otomatis.')
         buf = R.weekly_plan_pdf({**plan, 'pesan': [m for m in plan['pesan'] if m.get('ok')] or plan['pesan']})
         c2.download_button('Unduh PDF rencana', buf.getvalue(), file_name=f"rencana_minggu_{ss.rm}.pdf", mime='application/pdf', use_container_width=True)
+        n_ev = sum(len(d['item']) for d in plan['hari'])
+        if c3.download_button(f'Tambah ke kalender (.ics · {n_ev} jadwal)', R.weekly_plan_ics(plan, week_start),
+                              file_name=f"kunjungan_{ss.rm}_{week_start:%Y%m%d}.ics", mime='text/calendar', use_container_width=True):
+            data.audit('unduh_kalender', rm=ss.rm, minggu_mulai=str(week_start), jadwal=n_ev)
+        st.caption(f"Kalender: minggu {week_start:%d %b} – {week_start + timedelta(days=4):%d %b %Y} (WIB) · kunjungan 90 menit, telepon 30 menit, pengingat 30 menit sebelumnya. "
+                   'Buka berkas .ics untuk impor ke Google Calendar / Outlook; mengimpor ulang memperbarui jadwal yang sama, tidak menggandakan.')
 
 # ================================================================== investigasi alarm
 elif task == 'alarm':

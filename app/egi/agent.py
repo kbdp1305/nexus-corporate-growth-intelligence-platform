@@ -55,7 +55,7 @@ def _purpose(store, cid, row):
 def _item(store, cid, row, jam, siapkan):
     tujuan, peluang = _purpose(store, cid, row)
     c = store.cox.loc[cid]
-    return {'jam': jam, 'id': cid, 'nama': c['name'], 'info': f"{c.segment} · {c.district} · risiko {c.pred_class}", 'tujuan': tujuan, 'peluang': peluang, 'siapkan': siapkan}
+    return {'jam': jam, 'id': cid, 'nama': c['name'], 'kecamatan': c.district, 'info': f"{c.segment} · {c.district} · risiko {c.pred_class}", 'tujuan': tujuan, 'peluang': peluang, 'siapkan': siapkan}
 
 
 # ---------------------------------------------------------------- alur 1: rencana minggu
@@ -110,15 +110,15 @@ def plan_week(store, rm, basket=(), days=None, week_label='minggu ini'):
                     if it['id'] == via[0]:
                         it['tujuan'] += f" Minta perkenalan ke {store.co.name[pid]}."
                         it['siapkan'] = 'Draf permintaan perkenalan'
-                out_days.append({'hari': hari, 'tema': tema, 'item': items, 'intro': (pid, via[0])})
+                out_days.append({'hari': hari, 'kanal': kanal, 'tema': tema, 'item': items, 'intro': (pid, via[0])})
                 continue
-        out_days.append({'hari': hari, 'tema': tema, 'item': items})
+        out_days.append({'hari': hari, 'kanal': kanal, 'tema': tema, 'item': items})
     for hari, kanal, n in call_days:
         ids = [c for c in pf[pf.segment == 'S1 Kecil'].index if c not in used][:n]
         items = []
         for j, cid in enumerate(ids):
             used.add(cid); items.append(_item(store, cid, pf.loc[cid].to_dict(), JAM[j % 4], 'Skrip telepon'))
-        out_days.append({'hari': hari, 'tema': 'telepon S1 (kanal murah)', 'item': items})
+        out_days.append({'hari': hari, 'kanal': kanal, 'tema': 'telepon S1 (kanal murah)', 'item': items})
     order = {d[0]: i for i, d in enumerate(days)}
     out_days.sort(key=lambda d: order[d['hari']])
     last = store.log_all[(store.log_all.rm_id == rm) & store.log_all.party_id.isin(used)].sort_values('contact_date').groupby('party_id').tail(1)

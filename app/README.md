@@ -40,7 +40,7 @@ Aturan untuk LLM:
 | Profil 360° | Ringkasan AI, Keuangan vs peer, Anomali & arus kas, Jaringan (graf ego), Produk & EV, Riwayat & catat kunjungan, PDF ringkasan eksekutif | Copilot, Prospect |
 | Potensi wilayah | Bobot skor bisa diatur, peta, ranking, drill-down kecamatan, saran kanal | Prioritas, Profil, Rencana |
 | Prospect lewat jaringan | Prospect yang bertransaksi dengan nasabah RM, jalur kenalan, draf pesan perkenalan | Profil, Rencana |
-| RM Copilot | Rencana minggu (agen), investigasi alarm, siapkan kunjungan, tanya bebas (tool use), PDF rencana | semua |
+| RM Copilot | Rencana minggu (agen), investigasi alarm, siapkan kunjungan, tanya bebas (tool use), PDF rencana, jadwal kunjungan ke kalender (.ics) | semua |
 | Kinerja saya | Aksi & konversi vs median RM, kanal, segmen, pipeline, prioritas yang belum disentuh | Profil, Rencana |
 | Data & metodologi | Metrik model, conformal, alarm v1 vs v2, pemilihan k, validasi, asumsi EV, kendali | — |
 
