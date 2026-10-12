@@ -34,7 +34,8 @@ k = st.columns(4)
 ui.kpi(k[0], 'Nasabah di portofolio', ui.fmt(len(pf), 0), ' · '.join(f"{s.split()[0]} {int((pf.segment == s).sum())}" for s in data.SEGS))
 ui.kpi(k[1], 'Skor peluang ≥ 0,75', ui.fmt(int((pf.opportunity_score >= .75).sum()), 0), f"{int(((pf.opportunity_score >= .75) & ~pf.contacted).sum())} belum pernah dihubungi", color=ui.ORANGE)
 ui.kpi(k[2], 'Why Now (3 bulan)', ui.fmt(int(pf.why_up.sum()), 0), 'ekspansi / erosi wallet')
-ui.kpi(k[3], 'Nilai harapan Top-10', f"Rp {ui.fmt(pf.nlargest(10, 'opportunity_score').ev_idr_mn.sum() / 1000, 1)} M", 'EV = P × deal × (margin − PD×LGD) − biaya')
+top10 = pf.nlargest(10, 'opportunity_score').ev_idr_mn   # Rp juta, 1 tahun, produk teratas per nasabah (asumsi ilustratif NB08)
+ui.kpi(k[3], 'Nilai harapan Top-10', f"Rp {ui.fmt(top10.sum(), 1)} jt", f"{int((top10 > 0).sum())} dari {len(top10)} ber-EV positif · 1 tahun, asumsi ilustratif")
 st.write('')
 
 tabs = st.tabs([f"{s} · {int((v.segment == s).sum())}" for s in data.SEGS])
@@ -51,7 +52,8 @@ for tab, sname in zip(tabs, data.SEGS):
                                          'opportunity_score': st.column_config.ProgressColumn('Skor peluang', min_value=0, max_value=1, format='%.2f'),
                                          'rank_in_segment': st.column_config.NumberColumn('Peringkat', format='%d'), 'risk_class': 'Risiko', 'status': 'Status',
                                          'recommended_products': 'Produk disarankan', 'p_convert': st.column_config.NumberColumn('P(konversi)', format='%.2f'),
-                                         'ev_idr_mn': st.column_config.NumberColumn('EV (Rp juta)', format='%.0f')})
+                                         'ev_idr_mn': st.column_config.NumberColumn('EV (Rp juta)', format='%.1f',
+                                                                                     help='Nilai harapan 1 tahun untuk produk teratas: P(konversi) × deal × margin − biaya aksi. Asumsi ilustratif NB08.')})
         rows = ev.selection.rows if ev and hasattr(ev, 'selection') else []
         cid = t.company_id.iloc[rows[0]] if rows else t.company_id.iloc[0]
         r = g.loc[cid]

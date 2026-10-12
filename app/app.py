@@ -24,15 +24,15 @@ rms = state.init(store)
 
 pages = {
     'Ruang kerja RM': [
-        st.Page('pages/1_overview.py', title='Overview', default=True),
-        st.Page('pages/2_prioritas.py', title='Daftar prioritas'),
-        st.Page('pages/3_profil.py', title='Profil 360°'),
-        st.Page('pages/4_wilayah.py', title='Potensi wilayah'),
-        st.Page('pages/5_prospect.py', title='Prospect lewat jaringan'),
-        st.Page('pages/6_copilot.py', title='RM Copilot'),
-        st.Page('pages/7_kinerja.py', title='Kinerja saya'),
+        st.Page('views/1_overview.py', title='Overview', default=True),
+        st.Page('views/2_prioritas.py', title='Daftar prioritas'),
+        st.Page('views/3_profil.py', title='Profil 360°'),
+        st.Page('views/4_wilayah.py', title='Potensi wilayah'),
+        st.Page('views/5_prospect.py', title='Prospect lewat jaringan'),
+        st.Page('views/6_copilot.py', title='RM Copilot'),
+        st.Page('views/7_kinerja.py', title='Kinerja saya'),
     ],
-    'Tentang': [st.Page('pages/8_metodologi.py', title='Data & metodologi')],
+    'Tentang': [st.Page('views/8_metodologi.py', title='Data & metodologi')],
 }
 nav = st.navigation(pages)
 state.sidebar(store, rms)

@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
-from egi import agent, data, llm, state, ui, viz
+from egi import agent, data, llm, sim, state, ui, viz
 import reports as R  # noqa: E402  (src/ ditambahkan ke sys.path oleh egi.data)
 
 store = data.get_store(); ss = st.session_state
@@ -180,6 +180,68 @@ with tabs[4]:
         st.caption('EV = P(konversi) × ukuran deal × (margin − PD × LGD) × 1 tahun − biaya kontak. Rentang P10–P90 dari simulasi asumsi (NB08 bagian I).')
     else:
         st.caption('Belum ada rekomendasi produk (prospect atau tanpa celah).')
+
+    # -------------------------------------------------------------- simulasi produk
+    st.divider()
+    st.markdown('#### Simulasi produk')
+    A, cat = sim.assumptions(), sim.catalog()
+    rec = [x['produk'] for x in fp.get('produk') or []]
+    opts = rec + [x for x in cat.index if x not in rec and x not in fp['produk_dimiliki']]
+    if not opts:
+        st.caption('Semua produk sudah dimiliki.')
+    else:
+        pid = st.selectbox('Produk', opts, format_func=lambda x: f"{x} · {cat.product_name[x]}" + (' · disarankan' if x in rec else ''), key=f'sim_p_{cid}')
+        dfl = sim.defaults(store, cid, pid, A)
+        held = fp['risiko']['kelas'] == 'High' and dfl['credit']
+        info, ctl = st.columns([1, 1.25])
+        with info:
+            c = cat.loc[pid]
+            ui.ai_box(f"{c.product_name} · {c.product_category}", f"{c.key_benefit}. Untuk: {c.target_segment}. Syarat: {c.eligibility}. Biaya: {c.pricing_note}.",
+                      f"product_master.csv · {c.owner_department}")
+            if held:
+                st.markdown("<div class='egi-warn'>Risiko High: produk kredit ditahan. Simulasi hanya untuk gambaran, jangan ditawarkan.</div>", unsafe_allow_html=True)
+            st.caption(('Peluang awal dari model NB08 untuk perusahaan ini.' if dfl['dari_model'] else 'Produk ini tidak direkomendasikan model; peluang awal = median segmen.')
+                       + f" Ukuran deal awal = median {dfl['seg']}.")
+        with ctl:
+            k = f'{cid}_{pid}'
+            x1, x2 = st.columns(2)
+            p_ = x1.slider('Peluang konversi (%)', 0.0, 100.0, round(dfl['p'] * 100, 1), 0.5, key=f'sp_{k}') / 100
+            deal = x2.number_input('Ukuran deal (Rp juta)', 0.0, 1e6, round(dfl['deal'], 1), 10.0, key=f'sd_{k}')
+            x3, x4 = st.columns(2)
+            margin = x3.slider('Margin tahunan (%)', 0.0, 10.0, dfl['margin'] * 100, 0.1, key=f'sm_{k}') / 100
+            cost = x4.number_input('Biaya aksi (Rp juta)', 0.0, 100.0, float(dfl['cost']), 0.5, key=f'sc_{k}')
+            x5, x6 = st.columns(2)
+            horizon = x5.slider('Horizon (tahun)', 1.0, 5.0, float(dfl['horizon']), 1.0, key=f'sh_{k}')
+            pd_ = x6.slider('PD harapan (%)', 0.0, 30.0, round(dfl['pd'] * 100, 2), 0.1, key=f'spd_{k}', disabled=not dfl['credit'],
+                            help='Dari probabilitas kelas risiko NB06 × PD per kelas. Hanya untuk produk kredit.') / 100
+        r = sim.ev(p_, deal, margin, pd_, dfl['lgd'], horizon, cost)
+        imp = r['impas_p']; reach = imp == imp and imp <= 1      # impas > 100% = mustahil tercapai
+        base = sim.ev(dfl['p'], dfl['deal'], dfl['margin'], dfl['pd'], dfl['lgd'], dfl['horizon'], dfl['cost'])
+        m = st.columns(4)
+        ui.kpi(m[0], 'EV', f"Rp {ui.fmt(r['ev'], 1)} jt", f"asumsi awal Rp {ui.fmt(base['ev'], 1)} jt", color='#17613F' if r['ev'] >= 0 else '#9A2416')
+        ui.kpi(m[1], 'Nilai bila deal terjadi', f"Rp {ui.fmt(r['nilai_bila_deal'], 1)} jt", f"pendapatan − kerugian kredit, {horizon:.0f} thn")
+        ui.kpi(m[2], 'Titik impas', ui.fmt(imp * 100, 0, pct=True) if reach else 'tidak tercapai',
+               'peluang konversi minimum agar EV ≥ 0' if reach else 'EV negatif meski pasti konversi')
+        ui.kpi(m[3], 'ROI aksi', f"{ui.fmt(r['roi'] * 100, 0)}%" if r['roi'] == r['roi'] else '—', 'EV ÷ biaya aksi')
+        g1, g2 = st.columns(2)
+        g1.plotly_chart(viz.ev_waterfall(r), use_container_width=True)
+        ps = np.linspace(0, 100, 101)
+        evs = [sim.ev(q / 100, deal, margin, pd_, dfl['lgd'], horizon, cost)['ev'] for q in ps]
+        g2.plotly_chart(viz.ev_curve(ps, evs, p_ * 100, r['ev'], imp * 100 if reach else None), use_container_width=True)
+        verdict = ('Layak ditawarkan: EV positif pada asumsi ini.' if r['ev'] >= 0 and not held else
+                   'Ditahan karena risiko High.' if held else
+                   f"Belum impas: perlu peluang konversi ≥ {ui.fmt(imp * 100, 0)}% atau biaya aksi lebih murah (mis. telepon/digital)." if reach else
+                   'Tidak impas pada asumsi ini meski nasabah pasti setuju: perbesar ukuran deal/margin atau pakai kanal yang lebih murah.')
+        ui.ai_box('Kesimpulan simulasi', verdict, 'rumus EV NB08 · asumsi ilustratif, belum disepakati tim')
+        b1, b2 = st.columns(2)
+        if b1.button('Siapkan penawaran di Copilot', use_container_width=True, key=f'sim_cp_{k}'):
+            ss.copilot_task = 'chat'
+            ss.pending_q = (f"Siapkan penawaran {c.product_name} ({pid}) untuk {fp['nama']} ({cid}). Simulasi saya: peluang konversi {ui.fmt(p_ * 100, 1)}%, "
+                            f"deal Rp {ui.fmt(deal, 1)} juta, EV Rp {ui.fmt(r['ev'], 1)} juta, titik impas {ui.fmt(imp * 100, 0) + '%' if reach else 'tidak tercapai'}. "
+                            'Susun poin pembicaraan sesuai kebutuhan nasabah dan draf pesan janji temu.')
+            state.go('copilot')
+        if b2.button('+ Rencana dengan tujuan ini', use_container_width=True, key=f'sim_pl_{k}'):
+            state.add_to_plan(store, cid, f"tawarkan {pid} {c.product_name} (EV Rp {ui.fmt(r['ev'], 1)} jt)")
 
 # ------------------------------------------------------------------ 6 riwayat & catatan
 with tabs[5]:

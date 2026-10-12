@@ -1,12 +1,64 @@
 import pandas as pd
 import streamlit as st
 
-from egi import data, state, ui, viz
+from egi import agent, data, state, ui, viz
 
 store = data.get_store(); ss = st.session_state
 co = store.cox
 
 ui.page_header('Data per 30 Jun 2026 · 7 kota · 40 kecamatan', 'Peluang pertumbuhan Jabodetabek')
+
+# ------------------------------------------------------------------ hari ini (per RM)
+if ss.rm != 'Semua RM':
+    pf = agent.candidates(store, ss.rm)
+    wn_rm = store.why_now(pf.index, months=1).sort_values('score', ascending=False).drop_duplicates('company_id')
+    wn_rm = wn_rm.assign(urut=~wn_rm.event_type.isin(agent.CAUTION)).sort_values(['urut', 'score'], ascending=[True, False])
+    fresh = pf[(pf.opportunity_score >= 0.75) & ~pf.contacted & ~pf.index.isin([p['id'] for p in ss.plan])]
+    fu = store.followups(ss.rm)
+    late = fu[fu.telat_hari > 0]
+    with st.container(border=True):
+        st.markdown(f"#### Hari ini · {ss.rm}")
+        st.caption(f"{len(wn_rm)} alarm bulan ini · {len(fresh)} prioritas belum dihubungi · {len(late)} tindak lanjut terlambat · "
+                   f"{len(ss.plan)} di rencana minggu · per {data.SNAPSHOT:%d %b %Y}")
+        h1, h2, h3 = st.columns(3)
+        with h1:
+            st.markdown('**Alarm baru** · risiko dulu')
+            for r in wn_rm.head(3).itertuples():
+                a, b = st.columns([4, 1.3])
+                a.markdown(f"{ui.event_badge(r.event_type)} {ui.esc(store.co.name.get(r.company_id, r.company_id))}<br>"
+                           f"<span class='egi-muted'>{r.company_id} · {ui.EVENT_STYLE.get(r.event_type, ('', '', '', ''))[3]}</span>", unsafe_allow_html=True)
+                if b.button('Profil', key=f'hi_al_{r.company_id}'):
+                    state.focus_company(r.company_id)
+            if wn_rm.empty:
+                st.caption('Tidak ada alarm bulan ini.')
+        with h2:
+            st.markdown('**Prioritas belum dihubungi**')
+            for cid, r in fresh.head(3).iterrows():
+                a, b = st.columns([4, 1.3])
+                a.markdown(f"{ui.esc(r['name'])}<br><span class='egi-muted'>{cid} · {r.segment} · skor {ui.fmt(r.opportunity_score * 100, 0)} · {r.recommended_products}</span>",
+                           unsafe_allow_html=True)
+                if b.button('+ Rencana', key=f'hi_pr_{cid}'):
+                    state.add_to_plan(store, cid, 'prioritas belum dihubungi'); st.rerun()
+            if fresh.empty:
+                st.caption('Semua prioritas sudah dihubungi atau ada di rencana.')
+        with h3:
+            st.markdown(f'**Tindak lanjut** · {data.FOLLOWUP_DAYS} hari setelah "tertarik"')
+            for r in fu.head(3).itertuples():
+                a, b = st.columns([4, 1.3])
+                when = f"terlambat {r.telat_hari} hari" if r.telat_hari > 0 else f"jatuh tempo {r.jatuh_tempo:%d %b}"
+                a.markdown(f"{ui.esc(r.name)}<br><span class='egi-muted'>{r.party_id} · {r.product_id} · kontak {r.contact_date} · "
+                           f"<b style='color:{'#9A2416' if r.telat_hari > 0 else ui.INK2}'>{when}</b></span>", unsafe_allow_html=True)
+                if b.button('Profil', key=f'hi_fu_{r.party_id}'):
+                    state.focus_company(r.party_id)
+            if fu.empty:
+                st.caption('Tidak ada tindak lanjut tertunda.')
+        b1, b2, _ = st.columns([1.2, 1.2, 3])
+        if b1.button('Susun rencana minggu di Copilot', use_container_width=True):
+            ss.copilot_task = 'plan'; state.go('copilot')
+        if b2.button('Tanya Copilot soal hari ini', use_container_width=True):
+            ss.copilot_task = 'chat'
+            ss.pending_q = 'Apa yang paling penting saya kerjakan hari ini? Pertimbangkan alarm baru, prioritas yang belum dihubungi, dan tindak lanjut yang terlambat.'
+            state.go('copilot')
 
 f1, f2, f3, f4, f5 = st.columns([1.2, 1, 1, 1, 1.3])
 scope = f1.segmented_control('Cakupan', ['Seluruh bank', 'Portofolio saya'], default='Seluruh bank', disabled=ss.rm == 'Semua RM') or 'Seluruh bank'
@@ -42,11 +94,11 @@ with m1:
     pts['rgb'] = [viz.CLIENT_RGB if x else viz.PROSPECT_RGB for x in pts.is_client]
     pts['label'] = pts.name + '<br>' + pts.segment.astype(str) + ' · ' + pts.district + ' · ' + pts.is_client.map({True: 'nasabah', False: 'prospect'})
     d = dist.copy(); d['radius'] = 250 + 1800 * (d.gap_T / d.gap_T.max()) ** 0.5
-    d['fill'] = [[210, 87, 15, 45] if w else [30, 58, 110, 25] for w in d.white_space]
-    d['line'] = [[210, 87, 15, 220] if w else [30, 58, 110, 120] for w in d.white_space]
     d['label'] = [f"<b>{i}</b> · skor {s:.0f}<br>{p:.0f} prospect · Rp {g:,.1f} T · penetrasi {pen:.0%}" for i, s, p, g, pen in zip(d.index, d.skor, d.prospect, d.gap_T, d.pen)]
-    st.pydeck_chart(viz.deck(pts, d))
-    st.caption('Titik biru = nasabah · oranye = prospect · lingkaran = omzet belum lewat BNI per kecamatan; oranye = white-space tanpa cabang.')
+    poly = viz.district_polygons(d, store.shapes, 'gap_T')
+    st.pydeck_chart(viz.deck(pts, d, polygons=poly, branches=viz.branch_points(store.branches)))
+    st.markdown(viz.scale_legend('Omzet belum lewat BNI', f"Rp {d.gap_T.min():,.1f} T", f"Rp {d.gap_T.max():,.1f} T"), unsafe_allow_html=True)
+    st.caption('White-space = penetrasi rendah dan tanpa cabang. Kota Bekasi tanpa poligon OSM, ditampilkan sebagai lingkaran.')
 with m2:
     st.subheader('Kecamatan paling potensial')
     t = dist.head(8)[['kota', 'skor', 'prospect', 'gap_T', 'pen']].reset_index(); t['pen'] *= 100

@@ -6,8 +6,8 @@ import streamlit as st
 from . import llm
 from .ui import esc
 
-PAGE = {'overview': 'pages/1_overview.py', 'prioritas': 'pages/2_prioritas.py', 'profil': 'pages/3_profil.py', 'wilayah': 'pages/4_wilayah.py',
-        'prospect': 'pages/5_prospect.py', 'copilot': 'pages/6_copilot.py', 'kinerja': 'pages/7_kinerja.py', 'metodologi': 'pages/8_metodologi.py'}
+PAGE = {'overview': 'views/1_overview.py', 'prioritas': 'views/2_prioritas.py', 'profil': 'views/3_profil.py', 'wilayah': 'views/4_wilayah.py',
+        'prospect': 'views/5_prospect.py', 'copilot': 'views/6_copilot.py', 'kinerja': 'views/7_kinerja.py', 'metodologi': 'views/8_metodologi.py'}
 
 
 def init(store):

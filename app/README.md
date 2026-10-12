@@ -61,7 +61,7 @@ app/
   egi/viz.py          Plotly + pydeck
   egi/llm.py          penyedia LLM, narasi tervalidasi, ekstraksi catatan, draf pesan, loop tool use
   egi/agent.py        alat Copilot, alur rencana minggu & investigasi alarm
-  pages/1_…8_*.py     halaman
+  views/1_…8_*.py     halaman (bukan pages/: nama itu memicu multipage lama Streamlit)
 src/reports.py        paket fakta, validasi angka, PDF (reportlab)
 .streamlit/config.toml, .env.example, requirements-dashboard.txt
 ```

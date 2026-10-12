@@ -31,6 +31,8 @@ import reports as R  # noqa: E402
 APP_OUT = ROOT / 'outputs' / 'app'
 WS_PEN = 0.45                       # penetrasi < 45% & tanpa cabang = white-space
 REF_MONTH = '2026-06'
+SNAPSHOT = pd.Timestamp('2026-06-30')     # "hari ini" dashboard = tanggal potong data
+FOLLOWUP_DAYS = 14
 SEGS = ['S1 Kecil', 'S2 Menengah', 'S3 Besar']
 CLIENT_TYPES = ('Existing credit client', 'Existing non-credit client')
 DEFAULT_W = {'gap': 3, 'prospect': 2, 'low_pen': 2, 'poi': 1, 'eksp': 1}
@@ -43,6 +45,27 @@ REQUIRED = ['data/raw/companies.csv', 'data/raw/financials.csv', 'data/raw/relat
 
 def missing_files():
     return [p for p in REQUIRED if not (ROOT / p).exists()]
+
+
+def _simplify(ring, tol=0.00015):
+    """Ramer–Douglas–Peucker dalam derajat (0,00015° ≈ 17 m): cukup untuk peta, payload ±10× lebih kecil. Cincin tetap tertutup."""
+    pts = np.asarray(ring, dtype=float)
+    if len(pts) < 8:
+        return ring
+    keep = np.zeros(len(pts), bool); keep[[0, -1]] = True
+    stack = [(0, len(pts) - 1)]
+    while stack:
+        a, b = stack.pop()
+        if b <= a + 1:
+            continue
+        seg, d = pts[b] - pts[a], pts[a + 1:b] - pts[a]
+        n = np.hypot(*seg)
+        dist = np.abs(seg[0] * d[:, 1] - seg[1] * d[:, 0]) / n if n else np.hypot(d[:, 0], d[:, 1])
+        i = int(dist.argmax())
+        if dist[i] > tol:
+            keep[a + 1 + i] = True; stack += [(a, a + 1 + i), (a + 1 + i, b)]
+    out = pts[keep].round(5).tolist()
+    return out if len(out) >= 4 else ring
 
 
 class Store(R.Data):
@@ -67,6 +90,11 @@ class Store(R.Data):
         co['eksp_recent'] = co.index.isin(recent[recent.event_type == 'expansion'].company_id)
         self.cox = co
         self.n_prod = self.hold.groupby('company_id').size()
+        self.branches = pd.read_csv(root / 'data/raw/branches.csv')
+        self.branches['name'] = self.branches.branch_name.str.replace(' (dummy)', '', regex=False)
+        f = root / 'data/raw/kecamatan_boundaries.geojson'      # poligon OSM (src/fix_geo_coords.py); Bekasi tidak ada
+        self.shapes = {ft['properties']['district']: [_simplify(poly[0]) for poly in ft['geometry']['coordinates']]
+                       for ft in json.loads(f.read_text())['features']} if f.exists() else {}
         self.load_app_log()
 
     # ---------------------------------------------------------- log aksi (data asli + catatan dari dashboard)
@@ -143,6 +171,16 @@ class Store(R.Data):
         dis = set(self.why_now(df.id).query("event_type == 'distress'").company_id)
         df['distress'] = df.id.isin(dis)
         return df.sort_values('nilai', ascending=False).head(limit)
+
+    def followups(self, rm, days=FOLLOWUP_DAYS):
+        """Perusahaan yang kontak terakhirnya 'Interested' → tindak lanjut jatuh tempo kontak + days hari."""
+        lg = self.log_all if rm == 'Semua RM' else self.log_all[self.log_all.rm_id == rm]
+        last = lg.sort_values('contact_date').groupby('party_id').tail(1)
+        f = last[last.response == 'Interested'].copy()
+        f['jatuh_tempo'] = pd.to_datetime(f.contact_date) + pd.Timedelta(days=days)
+        f['telat_hari'] = (SNAPSHOT - f.jatuh_tempo).dt.days
+        f['name'] = f.party_id.map(self.co.name)
+        return f.sort_values('jatuh_tempo')
 
     # ---------------------------------------------------------- tulis (dashboard)
     def append_visit(self, row: dict):

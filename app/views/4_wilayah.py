@@ -15,6 +15,9 @@ with st.expander('Bobot skor wilayah', expanded=False):
     st.caption(f'White-space = penetrasi < {data.WS_PEN:.0%} dan tidak ada cabang di kecamatan itu. Skor = rata-rata tertimbang persentil (0–100).')
 f1, f2 = st.columns([1, 3])
 seg = f1.selectbox('Segmen', ['Semua'] + data.SEGS)
+METRIC = {'Skor potensi': ('skor', False, lambda v: f'{v:.0f}'), 'Omzet belum lewat BNI': ('gap_T', False, lambda v: f'Rp {v:,.1f} T'),
+          'Jumlah prospect': ('prospect', False, lambda v: f'{v:.0f}'), 'Penetrasi rendah': ('pen', True, lambda v: f'{v:.0%}')}
+metric = f2.segmented_control('Warna kecamatan', list(METRIC), default='Skor potensi') or 'Skor potensi'
 dist = store.districts(w, seg)
 focus = ss.focus_district if ss.focus_district in dist.index else dist.index[0]
 
@@ -25,12 +28,14 @@ with m1:
     pts['rgb'] = [viz.MINE_RGB if (cl and r == ss.rm) else viz.CLIENT_RGB if cl else viz.PROSPECT_RGB for cl, r in zip(pts.is_client, pts.rm_id)]
     pts['label'] = pts.name + '<br>' + pts.segment.astype(str) + ' · ' + pts.district + ' · ' + pts.is_client.map({True: 'nasabah', False: 'prospect'})
     d = dist.copy(); d['radius'] = 250 + 1800 * (d.skor / 100) ** 1.5
-    d['fill'] = [[210, 87, 15, 60] if i == focus else [210, 87, 15, 35] if ws else [30, 58, 110, 25] for i, ws in zip(d.index, d.white_space)]
-    d['line'] = [[15, 30, 58, 255] if i == focus else [210, 87, 15, 220] if ws else [30, 58, 110, 120] for i, ws in zip(d.index, d.white_space)]
     d['label'] = [f"<b>{i}</b> · skor {s:.0f}<br>{p:.0f} prospect · Rp {g:,.1f} T · penetrasi {pen:.0%}" + (' · white-space' if ws else '')
                   for i, s, p, g, pen, ws in zip(d.index, d.skor, d.prospect, d.gap_T, d.pen, d.white_space)]
-    st.pydeck_chart(viz.deck(pts, d, focus=focus if ss.focus_district else None))
-    st.caption('Navy tua = nasabah Anda · biru muda = nasabah RM lain · oranye = prospect. Lingkaran = skor kecamatan; oranye = white-space.')
+    col, inv, fmt = METRIC[metric]
+    poly = viz.district_polygons(d, store.shapes, col, focus=focus if ss.focus_district else None, invert=inv)
+    st.pydeck_chart(viz.deck(pts, d, focus=focus if ss.focus_district else None, polygons=poly, branches=viz.branch_points(store.branches)))
+    lo, hi = (d[col].max(), d[col].min()) if inv else (d[col].min(), d[col].max())
+    st.markdown(viz.scale_legend(metric, fmt(lo), fmt(hi), mine=True, focus=bool(ss.focus_district)), unsafe_allow_html=True)
+    st.caption('White-space = penetrasi rendah dan tanpa cabang. Kota Bekasi tanpa poligon OSM, ditampilkan sebagai lingkaran.')
 with m2:
     t = dist[['kota', 'skor', 'prospect', 'pen', 'gap_T', 'white_space']].reset_index(); t['pen'] *= 100
     ev = st.dataframe(t, hide_index=True, use_container_width=True, height=470, on_select='rerun', selection_mode='single-row', key='dist_tbl',

@@ -24,4 +24,5 @@ dependencies = [
     "reportlab>=5.0.1",
     "python-dotenv>=1.2.4",
     "openai>=3.29.0",
+    "streamlit-calendar>=1.4",
 ]
