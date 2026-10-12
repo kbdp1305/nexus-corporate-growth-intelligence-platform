@@ -35,8 +35,37 @@ SYSTEM = ("Anda adalah RM Copilot untuk Relationship Manager korporasi sebuah ba
 def config():
     prov = os.getenv('LLM_PROVIDER', 'none').lower().strip()
     key = os.getenv('ANTHROPIC_API_KEY') if prov == 'anthropic' else os.getenv('OPENAI_API_KEY', 'ollama' if os.getenv('OPENAI_BASE_URL') else None)
-    default_model = {'anthropic': 'claude-sonnet-5-5', 'openai': 'gpt-4o-mini'}.get(prov, '')
+    default_model = {'anthropic': 'claude-sonnet-5-5', 'openai': 'gpt-5.4-mini'}.get(prov, '')
     return {'provider': prov, 'model': os.getenv('LLM_MODEL', default_model), 'enabled': prov in ('anthropic', 'openai') and bool(key), 'key': key}
+
+
+def _is_reasoning(model):
+    """Model OpenAI bernalar (gpt-5.x, o3/o4): pakai max_completion_tokens & reasoning_effort, token nalar ikut terhitung."""
+    return bool(re.match(r'^(gpt-5|o\d)', model or '')) and 'chat' not in model
+
+
+_NO_EFFORT = set()   # (model, pakai_alat) yang menolak reasoning_effort (mis. gpt-5.4 + tools di chat completions)
+
+
+def _oa_kwargs(cfg, max_tokens, tools=False):
+    if _is_reasoning(cfg['model']):
+        kw = {'max_completion_tokens': max_tokens * 4}
+        if (cfg['model'], tools) not in _NO_EFFORT:
+            kw['reasoning_effort'] = os.getenv('LLM_REASONING', 'low')
+        return kw
+    return {'max_completion_tokens': max_tokens}
+
+
+def _oa_create(cl, cfg, messages, max_tokens, tools=None):
+    """chat.completions.create; bila model menolak reasoning_effort, ulangi tanpa parameter itu dan ingat."""
+    extra = {'tools': tools} if tools else {}
+    try:
+        return cl.chat.completions.create(model=cfg['model'], messages=messages, **extra, **_oa_kwargs(cfg, max_tokens, bool(tools)))
+    except Exception as e:
+        if 'reasoning_effort' not in str(e):
+            raise
+        _NO_EFFORT.add((cfg['model'], bool(tools)))
+        return cl.chat.completions.create(model=cfg['model'], messages=messages, **extra, **_oa_kwargs(cfg, max_tokens, bool(tools)))
 
 
 def _client():
@@ -59,7 +88,7 @@ def complete(prompt, system=SYSTEM, max_tokens=1200):
         if cfg['provider'] == 'anthropic':
             r = cl.messages.create(model=cfg['model'], max_tokens=max_tokens, system=system, messages=[{'role': 'user', 'content': prompt}])
             return ''.join(b.text for b in r.content if getattr(b, 'type', '') == 'text')
-        r = cl.chat.completions.create(model=cfg['model'], max_tokens=max_tokens, messages=[{'role': 'system', 'content': system}, {'role': 'user', 'content': prompt}])
+        r = _oa_create(cl, cfg, [{'role': 'system', 'content': system}, {'role': 'user', 'content': prompt}], max_tokens)
         return r.choices[0].message.content
     except Exception as e:  # jaringan, kuota, model salah → template
         complete.last_error = str(e)
@@ -195,42 +224,53 @@ def draft_message(kind, ctx: dict):
 
 
 # ---------------------------------------------------------------- tool use (agen)
-def run_tools(system, user_msg, tools, executor, max_steps=10):
+def run_tools(system, user_msg, tools, executor, max_steps=12, history=None, on_step=None, max_chars=12000):
     """Loop agen dengan tool use. tools = [{'name','description','parameters'(JSON schema)}].
-    executor(name, args) → hasil (dict/str). Mengembalikan (jawaban, jejak) atau (None, []) bila LLM tidak tersedia."""
+    executor(name, args) → hasil (dict/str). history = [{'role': 'user'|'assistant', 'content': str}] giliran sebelumnya
+    (memori percakapan). on_step(name, args, out) dipanggil tiap alat selesai (progres langsung di UI).
+    Mengembalikan (jawaban, jejak) atau (None, jejak) bila LLM tidak tersedia/gagal."""
     cl, cfg = _client()
     if cl is None:
         return None, []
-    trace = []
+    trace, history = [], [h for h in (history or []) if h.get('content')]
+
+    def call(name, args):
+        try:
+            out = executor(name, args)
+        except Exception as e:   # alat gagal → laporkan ke model, jangan hentikan loop
+            out = {'error': f'{type(e).__name__}: {e}'}
+        trace.append((name, args, out))
+        if on_step:
+            on_step(name, args, out)
+        return json.dumps(out, ensure_ascii=False, default=str)[:max_chars]
+
     try:
         if cfg['provider'] == 'anthropic':
-            msgs = [{'role': 'user', 'content': user_msg}]
+            msgs = history + [{'role': 'user', 'content': user_msg}]
             tl = [{'name': t['name'], 'description': t['description'], 'input_schema': t['parameters']} for t in tools]
             for _ in range(max_steps):
-                r = cl.messages.create(model=cfg['model'], max_tokens=1500, system=system, tools=tl, messages=msgs)
+                r = cl.messages.create(model=cfg['model'], max_tokens=3000, system=system, tools=tl, messages=msgs)
                 calls = [b for b in r.content if b.type == 'tool_use']
                 if not calls:
                     return ''.join(b.text for b in r.content if b.type == 'text'), trace
                 msgs.append({'role': 'assistant', 'content': r.content})
-                res = []
-                for c in calls:
-                    out = executor(c.name, c.input); trace.append((c.name, c.input, out))
-                    res.append({'type': 'tool_result', 'tool_use_id': c.id, 'content': json.dumps(out, ensure_ascii=False, default=str)[:6000]})
-                msgs.append({'role': 'user', 'content': res})
+                msgs.append({'role': 'user', 'content': [{'type': 'tool_result', 'tool_use_id': c.id, 'content': call(c.name, c.input)} for c in calls]})
         else:
-            msgs = [{'role': 'system', 'content': system}, {'role': 'user', 'content': user_msg}]
+            msgs = [{'role': 'system', 'content': system}] + history + [{'role': 'user', 'content': user_msg}]
             tl = [{'type': 'function', 'function': {'name': t['name'], 'description': t['description'], 'parameters': t['parameters']}} for t in tools]
             for _ in range(max_steps):
-                r = cl.chat.completions.create(model=cfg['model'], messages=msgs, tools=tl, max_tokens=1500)
+                r = _oa_create(cl, cfg, msgs, 3000, tools=tl)
                 m = r.choices[0].message
                 if not m.tool_calls:
                     return m.content, trace
                 msgs.append({'role': 'assistant', 'content': m.content or '', 'tool_calls': [tc.model_dump() for tc in m.tool_calls]})
                 for tc in m.tool_calls:
-                    args = json.loads(tc.function.arguments or '{}')
-                    out = executor(tc.function.name, args); trace.append((tc.function.name, args, out))
-                    msgs.append({'role': 'tool', 'tool_call_id': tc.id, 'content': json.dumps(out, ensure_ascii=False, default=str)[:6000]})
-        return 'Batas langkah agen tercapai; ringkasan di atas dibuat dari langkah yang sudah selesai.', trace
+                    try:
+                        args = json.loads(tc.function.arguments or '{}')
+                    except json.JSONDecodeError:
+                        args = {}
+                    msgs.append({'role': 'tool', 'tool_call_id': tc.id, 'content': call(tc.function.name, args)})
+        return 'Batas langkah agen tercapai sebelum jawaban selesai. Persempit pertanyaannya atau lanjutkan dengan pertanyaan berikutnya.', trace
     except Exception as e:
         complete.last_error = str(e)
         return None, trace

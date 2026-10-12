@@ -193,7 +193,7 @@ def fact_pack(D: Data, cid: str) -> dict:
 
 
 # ------------------------------------------------------------------ validasi angka narasi
-_NUM = re.compile(r'(?<![\w])[−-]?\d[\d.]*(?:,\d+)?')
+_NUM = re.compile(r'(?<![\w−-])[−-]?\d[\d.]*(?:,\d+)?')   # angka setelah huruf/tanda hubung (RM-029, C0844) bukan nilai
 
 
 def _variants(x):
@@ -215,7 +215,8 @@ def _collect(o, acc):
     elif isinstance(o, (list, tuple)):
         for v in o: _collect(v, acc)
     elif isinstance(o, str):
-        acc |= set(m.group().lstrip('−-') for m in _NUM.finditer(o)) | set(m.group() for m in _NUM.finditer(o))
+        found = [m.group() for m in _NUM.finditer(o)]
+        acc |= set(found) | {f.lstrip('−-') for f in found} | {f.lstrip('−-').replace('.', ',') for f in found if re.fullmatch(r'\d+\.\d+', f.lstrip('−-'))}
     else:
         acc |= _variants(o)
     return acc

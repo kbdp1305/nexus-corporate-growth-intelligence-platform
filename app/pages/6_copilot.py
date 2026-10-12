@@ -8,16 +8,16 @@ from egi import agent, data, llm, state, ui
 import reports as R  # noqa: E402  (src/ ditambahkan ke sys.path oleh egi.data)
 
 store = data.get_store(); ss = st.session_state
-TASKS = {'plan': 'Rencana minggu', 'alarm': 'Investigasi alarm', 'brief': 'Siapkan kunjungan', 'chat': 'Tanya Copilot'}
+TASKS = {'chat': 'Tanya Copilot', 'plan': 'Rencana minggu', 'alarm': 'Investigasi alarm', 'brief': 'Siapkan kunjungan'}
 cfg = llm.config()
 
 ui.page_header(f"{ss.rm} · {'LLM ' + cfg['provider'] + ' · ' + cfg['model'] if cfg['enabled'] else 'mode template (tanpa LLM)'} · setiap tindakan menunggu persetujuan Anda", 'RM Copilot')
 inv = {v: k for k, v in TASKS.items()}
-want = ss.get('copilot_task') or 'plan'
+want = ss.get('copilot_task') or 'chat'
 if ss.get('_task_seen') != want or 'task_sel' not in ss:     # lompatan dari halaman lain memilih tugasnya
     ss['task_sel'] = TASKS[want]
 pick = st.segmented_control('Tugas', list(TASKS.values()), key='task_sel')
-task = inv.get(pick or TASKS['plan'])
+task = inv.get(pick or TASKS['chat'])
 ss.copilot_task = ss._task_seen = task
 
 
@@ -153,29 +153,110 @@ elif task == 'brief':
         buf, _ = R.company_summary_pdf(fp, narr, generated_by='Copilot (LLM)' if mode == 'LLM' else 'Copilot (template)')
         st.download_button('Unduh ringkasan eksekutif (PDF)', buf.getvalue(), file_name=f'ringkasan_{cid}.pdf', mime='application/pdf', use_container_width=True)
 
-# ================================================================== chat
+# ================================================================== chat (agen LLM)
 else:
+    def step_line(name, args, out):
+        a = ', '.join(f"{k}={v}" for k, v in args.items() if k not in ('isi', 'catatan', 'alasan'))
+        if isinstance(out, dict) and 'error' in out:
+            res = f"⚠ {out['error']}"
+        elif isinstance(out, dict) and 'jumlah' in out:
+            res = f"{out['jumlah']} hasil"
+        elif isinstance(out, dict) and 'status' in out:
+            res = 'usulan dibuat'
+        elif isinstance(out, list):
+            res = f'{len(out)} baris'
+        else:
+            res = 'selesai'
+        return f"**{agent.TOOL_LABEL.get(name, name)}** <span class='egi-muted'>{ui.esc(a)} → {ui.esc(res)}</span>"
+
+    def run_action(a, msg_i):
+        cid = a['company_id']
+        if a['tipe'] == 'rencana':
+            state.add_to_plan(store, cid, a.get('catatan', ''))
+        elif a['tipe'] == 'kunjungan':
+            c = store.cox.loc[cid]
+            store.append_visit({'action_id': f"APP-{pd.Timestamp.now():%Y%m%d%H%M%S}", 'track': 'Deepening' if c.is_client else 'Acquisition', 'party_id': cid,
+                                'product_id': a.get('produk', ''), 'rm_id': ss.rm, 'contact_date': date.today().isoformat(), 'channel': a.get('kanal', 'Visit'),
+                                'tier_at_contact': '', 'response': a['respons'], 'converted': int(a['respons'] == 'Converted'), 'deal_value_idr_mn': 0.0, 'rm_rating': '',
+                                'feedback_note': f"{a.get('catatan', '')} | sumber: Copilot"})
+        elif a['tipe'] == 'pesan':
+            a['isi'] = ss.get(f"act_txt_{msg_i}_{a['id']}", a['isi'])
+        data.audit(f"copilot_{a['tipe']}", rm=ss.rm, company=cid, **{k: v for k, v in a.items() if k not in ('id', 'tipe', 'company_id', 'status')})
+        a['status'] = 'disetujui'
+
+    def show_actions(m, msg_i):
+        if not m.get('usulan'):
+            return
+        st.markdown(f"**Usulan tindakan** · {sum(a['status'] == 'menunggu' for a in m['usulan'])} menunggu persetujuan")
+        judul = {'rencana': 'Tambah ke rencana minggu', 'kunjungan': 'Catat hasil kontak', 'eskalasi': 'Teruskan ke analis risiko', 'pesan': 'Draf pesan'}
+        for a in m['usulan']:
+            with st.container(border=True):
+                c1, c2, c3 = st.columns([5, 1, 1])
+                detail = {'rencana': a.get('catatan'), 'kunjungan': f"{a.get('respons')} · {a.get('kanal')} · {a.get('produk') or '—'} · {a.get('catatan')}",
+                          'eskalasi': a.get('alasan'), 'pesan': a.get('jenis')}[a['tipe']]
+                c1.markdown(f"**{judul[a['tipe']]}** · {ui.esc(a['nama'])} <span class='egi-muted'>{a['company_id']}</span><br>"
+                            f"<span class='egi-muted'>{ui.esc(detail or '')}</span>", unsafe_allow_html=True)
+                if a['tipe'] == 'pesan':
+                    c1.text_area('Isi pesan', a['isi'], key=f"act_txt_{msg_i}_{a['id']}", height=100, label_visibility='collapsed', disabled=a['status'] != 'menunggu')
+                if a['status'] == 'menunggu':
+                    if c2.button('Setujui', key=f"ok_{msg_i}_{a['id']}", type='primary', use_container_width=True):
+                        run_action(a, msg_i); st.rerun()
+                    if c3.button('Tolak', key=f"no_{msg_i}_{a['id']}", use_container_width=True):
+                        a['status'] = 'ditolak'; data.audit('copilot_tolak', rm=ss.rm, company=a['company_id'], tipe=a['tipe']); st.rerun()
+                else:
+                    c2.markdown(f"{'✅' if a['status'] == 'disetujui' else '✖'} {a['status']}")
+                    if a['tipe'] == 'pesan' and a['status'] == 'disetujui':
+                        c1.caption('Pesan tidak dikirim otomatis; salin dan kirim lewat kanal resmi.')
+
+    def show_check(m):
+        if not m.get('cek'):
+            return
+        n, bad = m['cek']
+        if bad:
+            st.markdown(f"<div class='egi-warn'>{len(bad)} dari {n} angka tidak ditemukan di data yang dibaca agen: {ui.esc(', '.join(dict.fromkeys(bad)))}. "
+                        'Cek ulang sebelum dipakai.</div>', unsafe_allow_html=True)
+        elif n:
+            st.caption(f"✓ {n} angka di jawaban cocok dengan data yang dibaca agen")
+
     if not cfg['enabled']:
         st.markdown("<div class='egi-warn'>LLM belum aktif: Copilot menjawab dengan template ringkasan portofolio. Isi <code>.env</code> untuk pertanyaan bebas.</div>", unsafe_allow_html=True)
-    ex = ['Siapa 5 nasabah S2 saya yang paling layak dikunjungi minggu ini dan kenapa?', 'Prospect mana yang bisa saya dekati lewat nasabah sendiri?',
-          'Kecamatan mana yang paling potensial dan belum ada cabang?']
-    cols = st.columns(3)
-    q = None
-    for col, e in zip(cols, ex):
-        if col.button(e, use_container_width=True):
-            q = e
-    for m in ss.chat:
+    fokus = f" · fokus {store.co.name.get(ss.focus_company, '')} ({ss.focus_company})" if ss.focus_company else ''
+    st.caption(f"Konteks agen: {ss.rm}{fokus} · {len(agent.TOOLS)} alat · mengingat {min(len(ss.chat), 12)} pesan terakhir · tindakan selalu menunggu persetujuan Anda")
+    q = ss.pop('pending_q', None)
+    if not ss.chat:
+        ex = ['Siapa 5 nasabah S2 saya yang paling layak dikunjungi minggu ini dan kenapa?', 'Ada nasabah saya yang menunjukkan tanda distress? Apa yang harus saya lakukan?',
+              'Prospect mana yang bisa saya dekati lewat nasabah sendiri, dan siapa perantaranya?', 'Bandingkan 3 nasabah S3 saya dengan skor peluang tertinggi']
+        cols = st.columns(2)
+        for i, e in enumerate(ex):
+            if cols[i % 2].button(e, use_container_width=True, key=f'ex_{i}'):
+                q = e
+    for i, m in enumerate(ss.chat):
         with st.chat_message(m['role']):
             st.markdown(m['text'])
-            if m.get('trace'):
-                show_trace(m['trace'])
-    q = st.chat_input('Tanya tentang portofolio, nasabah, wilayah, atau prospect…') or q
+            if m['role'] == 'assistant':
+                show_check(m)
+                show_actions(m, i)
+                if m.get('trace'):
+                    show_trace(m['trace'])
+                if m.get('lanjut') and i == len(ss.chat) - 1:
+                    fc = st.columns(len(m['lanjut']))
+                    for j, f in enumerate(m['lanjut']):
+                        if fc[j].button(f, key=f'fu_{i}_{j}', use_container_width=True):
+                            ss.pending_q = f; st.rerun()
+    q = st.chat_input('Tanya, minta analisis, atau minta Copilot menyiapkan tindakan…') or q
     if q:
+        history = [{'role': m['role'], 'content': m['text']} for m in ss.chat[-12:]]
         ss.chat.append({'role': 'user', 'text': q})
-        with st.spinner('Copilot memanggil alat…'):
-            ans, trace = agent.chat(store, ss.rm, q)
-        ss.chat.append({'role': 'assistant', 'text': ans or 'Tidak ada jawaban.', 'trace': trace})
-        data.audit('chat', rm=ss.rm, pertanyaan=q, alat=[t[0] for t in trace])
+        with st.chat_message('user'):
+            st.markdown(q)
+        with st.chat_message('assistant'):
+            with st.status('Copilot menganalisis…', expanded=True) as box:
+                res = agent.chat(store, ss.rm, q, history=history, focus=ss.focus_company,
+                                 on_step=lambda n, a, o: st.markdown(step_line(n, a, o), unsafe_allow_html=True))
+                box.update(label=f"Selesai · {len(res['jejak'])} langkah · {res['mode']}", state='complete', expanded=False)
+        ss.chat.append({'role': 'assistant', 'text': res['jawaban'] or 'Tidak ada jawaban.', 'trace': res['jejak'], 'usulan': res['usulan'],
+                        'lanjut': res['lanjut'], 'cek': res['cek']})
+        data.audit('chat', rm=ss.rm, pertanyaan=q, alat=[t[0] for t in res['jejak']], usulan=len(res['usulan']), mode=res['mode'])
         st.rerun()
-    if ss.chat and st.button('Bersihkan percakapan'):
+    if ss.chat and st.button('Mulai percakapan baru'):
         ss.chat = []; st.rerun()
