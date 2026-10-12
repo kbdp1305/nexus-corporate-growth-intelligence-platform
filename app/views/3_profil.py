@@ -42,9 +42,11 @@ ui.kpi(k[3], 'Mitra aktif', ui.fmt(j['mitra'], 0), f"median peer {ui.fmt(j['medi
 ui.kpi(k[4], 'Produk dimiliki', f"{len(fp['produk_dimiliki'])} / 8", ', '.join(fp['produk_dimiliki']) or '—')
 st.write('')
 
-b1, b2, b3, b4 = st.columns(4)
+b1, b2, b3, b4, b5 = st.columns(5)
 if b1.button('+ Rencana minggu', use_container_width=True):
     state.add_to_plan(store, cid)
+if b5.button('Ajukan kunjungan', use_container_width=True, help='Ajukan ke supervisor dan ajak divisi lain mendampingi'):
+    ss.pj_company = cid; ss.tl_tab = 'Pengajuan kunjungan'; state.go('tindak')
 if b2.button('Siapkan kunjungan di Copilot', use_container_width=True):
     ss.copilot_task = 'brief'; state.go('copilot')
 cfg = llm.config()

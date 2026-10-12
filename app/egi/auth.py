@@ -50,6 +50,8 @@ def _load(rms):
         users = json.loads(USERS.read_text(encoding='utf-8')) if USERS.exists() else {}
         want = {r.lower(): ('rm', r, r) for r in rms}
         want[ADMIN] = ('supervisor', 'Semua RM', 'Supervisor')
+        from .tindak import DIVISI       # akun divisi: menerima tiket koordinasi
+        want.update({f'div-{k}': ('divisi', k, v) for k, v in DIVISI.items()})
         new = {u: v for u, v in want.items() if u not in users}
         if new:
             demo, created = _demo_password(), []
@@ -89,7 +91,7 @@ def login_page(rms):
                     '<div><strong>Growth Intelligence</strong><br><span style="font-size:12px;color:#4B5563">Ruang kerja RM</span></div></div>',
                     unsafe_allow_html=True)
         with st.form('login'):
-            u = st.text_input('Username', placeholder='mis. rm-017 atau supervisor').strip().lower()
+            u = st.text_input('Username', placeholder='mis. rm-017, supervisor, atau div-kredit').strip().lower()
             p = st.text_input('Password', type='password')
             ok = st.form_submit_button('Masuk', type='primary', use_container_width=True)
         if ok:
@@ -98,7 +100,7 @@ def login_page(rms):
             elif u in users and hmac.compare_digest(_hash(p, users[u]['salt']), users[u]['hash']):
                 rec = users[u]
                 ss.user = {'username': u, 'nama': rec['nama'], 'role': rec['role'], 'rm_id': rec['rm_id']}
-                ss.rm = rec['rm_id']
+                ss.rm = rec['rm_id'] if rec['role'] == 'rm' else 'Semua RM'
                 ss.login_fail = 0
                 data.audit('login', user=u)
                 st.rerun()
@@ -107,7 +109,8 @@ def login_page(rms):
                 ss.login_fail = ss.get('login_fail', 0) + 1; ss.login_fail_t = time.time()
                 data.audit('login_gagal', user=u)
                 st.error('Username atau password salah.')
-        st.caption('Username = ID RM huruf kecil (rm-001 … rm-040), atau "supervisor" untuk melihat semua RM. '
+        st.caption('Username = ID RM huruf kecil (rm-001 … rm-040), "supervisor" untuk melihat semua RM, '
+                   'atau akun divisi (div-kredit, div-risiko, div-transaksi, div-trade, …). '
                    + ('Password awal: lihat `outputs/app/akun_awal.csv`.' if FIRST.exists() else 'Password awal: nilai APP_DEMO_PASSWORD.'))
 
 

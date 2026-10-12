@@ -3,12 +3,12 @@ from __future__ import annotations
 
 import streamlit as st
 
-from . import auth, llm
+from . import auth, llm, tindak
 from .ui import esc
 
 PAGE = {'overview': 'views/1_overview.py', 'prioritas': 'views/2_prioritas.py', 'profil': 'views/3_profil.py', 'wilayah': 'views/4_wilayah.py',
         'prospect': 'views/5_prospect.py', 'copilot': 'views/6_copilot.py', 'kinerja': 'views/7_kinerja.py', 'metodologi': 'views/8_metodologi.py',
-        'kalender': 'views/9_kalender.py'}
+        'kalender': 'views/9_kalender.py', 'tindak': 'views/10_tindak_lanjut.py', 'koordinasi': 'views/11_koordinasi.py'}
 
 
 def init(store):
@@ -80,6 +80,9 @@ def sidebar(store, rms):
         if user['role'] == 'supervisor':
             opts = rms + ['Semua RM']
             ss.rm = st.selectbox('Lihat sebagai', opts, index=opts.index(ss.rm) if ss.rm in opts else len(rms), format_func=lambda r: f'{r} · {n(r)} nasabah' if r != 'Semua RM' else r)
+        elif user['role'] == 'divisi':
+            ss.rm = 'Semua RM'
+            st.markdown(f"**{esc(user['nama'])}**")
         else:
             ss.rm = user['rm_id']
             st.markdown(f"**{esc(ss.rm)}** · {n(ss.rm)} nasabah")
@@ -89,7 +92,16 @@ def sidebar(store, rms):
             auth.change_password_form()
         if c2.button('Keluar', use_container_width=True):
             auth.logout()
+        cnt = {k: v for k, v in tindak.badge_counts(user).items() if v}
+        if cnt:                                  # pemberitahuan: feedback tertunda, pengajuan menunggu, tiket baru
+            st.markdown(' · '.join(f"<span style='color:#F6B48A;font-weight:600'>{v}</span> {k}" for k, v in cnt.items()), unsafe_allow_html=True)
+            if user['role'] != 'divisi' and st.button('Buka tindak lanjut', use_container_width=True):
+                ss.tl_tab = 'Pengajuan kunjungan' if cnt.get('pengajuan menunggu') and not cnt.get('feedback tertunda') else 'Feedback kunjungan'
+                go('tindak')
         st.divider()
+        if user['role'] == 'divisi':
+            st.caption('Data per 30 Jun 2026 · data sintetis v8')
+            return
         st.markdown('**Fokus**')
         if ss.focus_company:
             c1, c2 = st.columns([5, 1])

@@ -26,19 +26,26 @@ if not auth.current():          # belum masuk: hanya halaman login yang terdafta
     st.navigation([st.Page(lambda: auth.login_page(rms), title='Masuk', url_path='masuk')], position='hidden').run()
     st.stop()
 
-pages = {
-    'Ruang kerja RM': [
-        st.Page('views/1_overview.py', title='Overview', default=True),
-        st.Page('views/2_prioritas.py', title='Daftar prioritas'),
-        st.Page('views/3_profil.py', title='Profil 360°'),
-        st.Page('views/4_wilayah.py', title='Potensi wilayah'),
-        st.Page('views/5_prospect.py', title='Prospect lewat jaringan'),
-        st.Page('views/6_copilot.py', title='RM Copilot'),
-        st.Page('views/9_kalender.py', title='Kalender kunjungan'),
-        st.Page('views/7_kinerja.py', title='Kinerja saya'),
-    ],
-    'Tentang': [st.Page('views/8_metodologi.py', title='Data & metodologi')],
-}
+if auth.current()['role'] == 'divisi':     # akun divisi: hanya kotak masuk koordinasi
+    pages = {'Divisi': [st.Page('views/11_koordinasi.py', title='Koordinasi divisi', default=True)]}
+else:
+    pages = {
+        'Ruang kerja RM': [
+            st.Page('views/1_overview.py', title='Overview', default=True),
+            st.Page('views/2_prioritas.py', title='Daftar prioritas'),
+            st.Page('views/3_profil.py', title='Profil 360°'),
+            st.Page('views/4_wilayah.py', title='Potensi wilayah'),
+            st.Page('views/5_prospect.py', title='Prospect lewat jaringan'),
+            st.Page('views/6_copilot.py', title='RM Copilot'),
+            st.Page('views/9_kalender.py', title='Kalender kunjungan'),
+            st.Page('views/7_kinerja.py', title='Kinerja saya'),
+        ],
+        'Kunjungan & koordinasi': [
+            st.Page('views/10_tindak_lanjut.py', title='Tindak lanjut kunjungan'),
+            st.Page('views/11_koordinasi.py', title='Koordinasi divisi'),
+        ],
+        'Tentang': [st.Page('views/8_metodologi.py', title='Data & metodologi')],
+    }
 nav = st.navigation(pages)
 state.sidebar(store, rms)
 nav.run()

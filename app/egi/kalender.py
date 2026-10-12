@@ -5,60 +5,30 @@ sehingga menyetujui ulang rencana memperbarui jadwal yang sama, tidak menggandak
 """
 from __future__ import annotations
 
-import threading
-import uuid
 from datetime import datetime, timedelta
 
 import pandas as pd
 
 import reports as R
 
-from . import data
+from .tables import CsvTable, now
 
-FILE = data.APP_OUT / 'calendar.csv'
 COLS = ['id', 'rm_id', 'company_id', 'judul', 'kanal', 'mulai', 'selesai', 'lokasi', 'catatan', 'status', 'sumber', 'dibuat_oleh', 'diubah_pada']
 KANAL = ['Kunjungan', 'Telepon', 'Email', 'Rapat internal']
 STATUS = ['Terjadwal', 'Selesai', 'Dibatalkan']
 WARNA = {'Kunjungan': '#C2500A', 'Telepon': '#1E3A6E', 'Email': '#4D6FAE', 'Rapat internal': '#6B7280'}
-_lock = threading.Lock()
-
-
-def load() -> pd.DataFrame:
-    if not FILE.exists():
-        return pd.DataFrame(columns=COLS)
-    df = pd.read_csv(FILE, dtype=str, keep_default_na=False)
-    return df.reindex(columns=COLS, fill_value='')
-
-
-def _write(df):
-    data.APP_OUT.mkdir(parents=True, exist_ok=True)
-    tmp = FILE.with_suffix('.tmp')
-    df[COLS].to_csv(tmp, index=False)
-    tmp.replace(FILE)
+T = CsvTable('calendar.csv', COLS)
+load, delete = T.load, T.delete
 
 
 def upsert(rows: list[dict], user: str):
     """Tambah/perbarui jadwal berdasarkan id. Mengembalikan jumlah (baru, diperbarui)."""
-    now = datetime.now().isoformat(timespec='seconds')
-    with _lock:
-        df = load()
-        new = upd = 0
-        for r in rows:
-            r = {**r, 'id': r.get('id') or uuid.uuid4().hex[:12], 'dibuat_oleh': user, 'diubah_pada': now}
-            r = {k: '' if r.get(k) is None else str(r.get(k)) for k in COLS}
-            hit = df.index[df.id == r['id']]
-            if len(hit):
-                df.loc[hit[0], COLS] = [r[k] for k in COLS]; upd += 1
-            else:
-                df = pd.concat([df, pd.DataFrame([r])], ignore_index=True); new += 1
-        _write(df)
+    new, upd, _ = T.upsert(rows, {'dibuat_oleh': user, 'diubah_pada': now()})
     return new, upd
 
 
-def delete(event_id: str):
-    with _lock:
-        df = load()
-        _write(df[df.id != event_id])
+def set_status(event_id, status, user):
+    T.update(event_id, status=status, diubah_pada=now())
 
 
 def for_rm(rm) -> pd.DataFrame:

@@ -3,7 +3,7 @@ from datetime import date, datetime, time, timedelta
 import pandas as pd
 import streamlit as st
 
-from egi import auth, data, kalender as K, state, ui
+from egi import auth, data, kalender as K, state, tindak as T, ui
 
 try:
     from streamlit_calendar import calendar as fc
@@ -113,10 +113,17 @@ with side:
             K.delete(sel); data.audit('kalender_hapus', user=user['username'], id=sel); ss.cal_sel = None; st.rerun()
         if b3.button('Tutup', use_container_width=True):
             ss.cal_sel = None; st.rerun()
+        fb = T.FEEDBACK.load(); fb = fb[fb.event_id == sel]
+        if len(fb):
+            f0 = fb.iloc[0]
+            st.markdown(f"<div class='egi-card'><b>Feedback:</b> {ui.esc(T.HASIL_ID.get(f0.hasil, f0.hasil))}<br>{ui.esc(f0.catatan)}"
+                        + (f"<br><span class='egi-muted'>Lanjut: {ui.esc(f0.langkah_lanjut)}</span>" if f0.langkah_lanjut else '')
+                        + f"<br><span class='egi-muted'>{len([x for x in f0.tiket.split(';') if x])} tiket koordinasi</span></div>", unsafe_allow_html=True)
+        elif editable and r['kanal'] in ('Kunjungan', 'Telepon') and r['status'] != 'Dibatalkan':
+            if st.button('Isi feedback & tindak lanjut', type='primary', use_container_width=True):
+                ss.fb_event = sel; ss.tl_tab = 'Feedback kunjungan'; state.go('tindak')
         if not editable:
             st.caption('Jadwal RM lain: hanya bisa dilihat.')
-        elif status == 'Selesai' and r['company_id'] in store.co.index:
-            st.caption('Sudah dikunjungi? Catat hasilnya di Profil → Riwayat & catat kunjungan agar masuk ke log aksi RM.')
     else:
         st.markdown('**Tambah jadwal**')
         start, end = ss.get('cal_new') or (datetime.combine(today + timedelta(days=1), time(9, 0)), None)
