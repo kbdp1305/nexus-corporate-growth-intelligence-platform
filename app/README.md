@@ -37,6 +37,17 @@ Halaman **Kalender kunjungan** menampilkan jadwal per bulan/minggu/hari (kompone
 - Jadwal tersimpan di `outputs/app/calendar.csv` dan dipakai bersama oleh semua pengguna. Semua bisa diunduh sebagai `.ics` untuk Google Calendar / Outlook.
 - Di Streamlit Cloud, isi `outputs/app/` hilang setiap kali aplikasi restart; untuk penyimpanan permanen ganti `egi/kalender.py` dan `egi/auth.py` ke database (mis. Google Sheets / Supabase).
 
+## Tindak lanjut & koordinasi divisi
+
+Halaman **Tindak lanjut kunjungan** dan **Koordinasi divisi** (menu "Kunjungan & koordinasi").
+
+- **Feedback kunjungan.** Jadwal kunjungan/telepon yang sudah lewat muncul sebagai "menunggu feedback" (juga tombol *Isi feedback & tindak lanjut* di Kalender). RM mengisi hasil, produk yang dibahas, catatan, dan keberatan. Saat disimpan: jadwal ditandai Selesai, hasil masuk ke riwayat nasabah (`visit_log.csv`), dan bila dipilih, jadwal tindak lanjut otomatis masuk kalender.
+- **Koordinasi dengan divisi.** Dari catatan RM, isu dideteksi lewat `data/raw/issue_product_map.csv` (kata kunci → isu → divisi) dan pemilik produk di `product_master.csv`; divisi yang disarankan bisa diubah. Setiap divisi menerima tiket berisi ringkasan kunjungan, prioritas, dan tenggat. Isu legal / tekanan likuiditas memunculkan peringatan bahwa produk kredit ditahan.
+- **Pengajuan kunjungan.** RM mengajukan kunjungan (dari halaman ini atau tombol *Ajukan kunjungan* di Profil 360°) beserta tujuan, produk, dan divisi pendamping. Supervisor menyetujui atau menolak (ada peringatan bila bentrok dengan jadwal RM). Bila disetujui, jadwal masuk Kalender dan divisi pendamping menerima tiket "Pendampingan kunjungan".
+- **Akun divisi** (`div-kredit`, `div-corporate`, `div-risiko`, `div-transaksi`, `div-trade`, `div-funding`, `div-legal`, `div-wealth`, `div-pricing`) hanya melihat kotak masuk tiketnya, membalas, dan mengubah status (Baru → Diproses → Selesai / Ditolak). RM melihat balasan di halaman yang sama.
+- Pemberitahuan di sidebar: feedback tertunda (RM), pengajuan menunggu (supervisor), tiket baru (divisi).
+- Data: `outputs/app/feedback.csv` dan `outputs/app/requests.csv`.
+
 ## LLM (opsional)
 
 Salin `.env.example` menjadi `.env`, lalu isi penyedianya. Ada tiga pilihan:
@@ -61,6 +72,8 @@ Aturan untuk LLM:
 | Prospect lewat jaringan | Prospect yang bertransaksi dengan nasabah RM, jalur kenalan, draf pesan perkenalan | Profil, Rencana |
 | RM Copilot | Rencana minggu (agen), investigasi alarm, siapkan kunjungan, tanya bebas (tool use), PDF rencana, rencana yang disetujui masuk ke Kalender kunjungan | semua |
 | Kalender kunjungan | Kalender bersama (bulan/minggu/hari), tambah/ubah/hapus/geser jadwal, jadwal dari rencana Copilot, unduh .ics | Profil, Copilot |
+| Tindak lanjut kunjungan | Feedback setelah kunjungan, rencana lanjutan ke kalender, tiket ke divisi; pengajuan kunjungan + persetujuan supervisor | Kalender, Koordinasi, Profil |
+| Koordinasi divisi | Tiket hasil kunjungan & pendampingan per divisi, balasan, status, tenggat | Profil, Tindak lanjut |
 | Kinerja saya | Aksi & konversi vs median RM, kanal, segmen, pipeline, prioritas yang belum disentuh | Profil, Rencana |
 | Data & metodologi | Metrik model, conformal, alarm v1 vs v2, pemilihan k, validasi, asumsi EV, kendali | — |
 
