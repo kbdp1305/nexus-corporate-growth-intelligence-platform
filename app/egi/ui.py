@@ -57,6 +57,42 @@ div[data-testid="stMetricValue"] {{ font-family: 'IBM Plex Mono', monospace; }}
              padding: 9px 12px; margin-top: 14px; font-size: 13.5px; }}
 .egi-when b {{ font-size: 14px; }}
 .egi-when .tj {{ color: #2F5D46; font-size: 13px; }}
+.egi-sh {{ display: flex; align-items: center; gap: 10px; margin: 2px 0 12px; }}
+.egi-sh .n {{ flex: 0 0 26px; height: 26px; border-radius: 8px; background: {NAVY}; color: #FFFFFF; font-weight: 700; font-size: 13px;
+              display: flex; align-items: center; justify-content: center; }}
+.egi-sh .t {{ font-size: 16px; font-weight: 700; color: {INK}; flex: 1; }}
+.egi-sh .s {{ font-size: 12.5px; color: {INK2}; font-weight: 400; display: block; margin-top: 1px; }}
+.egi-sum {{ font-size: 13.5px; line-height: 1.55; color: #1F2937; background: #F5F7FB; border-radius: 8px; padding: 10px 12px; margin-bottom: 4px; }}
+.egi-sum .l {{ font-size: 11.5px; font-weight: 700; color: {NAVY2}; text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 3px; }}
+.egi-sec {{ font-size: 11.5px; font-weight: 700; color: {INK2}; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 2px; }}
+.egi-empty {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 12px; }}
+.egi-empty .s {{ flex: 1 1 140px; background: #F5F7FB; border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: {INK2}; line-height: 1.45; }}
+.egi-empty .s b {{ display: block; color: {INK}; font-size: 13px; margin: 6px 0 2px; }}
+.egi-empty .s .i {{ display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: #DDE5F3; color: {NAVY2}; font-size: 11.5px;
+                    font-weight: 700; align-items: center; justify-content: center; }}
+.egi-rec {{ display: flex; gap: 10px; padding: 0 0 12px; margin-bottom: 4px; border-bottom: 1px solid #EEF0F3; }}
+.egi-rec .no {{ flex: 0 0 24px; height: 24px; border-radius: 50%; background: #DDE5F3; color: {NAVY2}; font-size: 12px; font-weight: 700;
+                display: flex; align-items: center; justify-content: center; }}
+.egi-rec.on .no {{ background: #17613F; color: #FFFFFF; }}
+.egi-rec b {{ display: block; font-size: 14.5px; color: {INK}; line-height: 1.35; margin: 2px 0 2px; }}
+.egi-rec .d {{ font-size: 13.5px; color: #374151; line-height: 1.5; }}
+.egi-rec .mt {{ margin-top: 6px; }}
+.egi-rec .al {{ font-size: 12px; color: {INK2}; line-height: 1.45; margin-top: 1px; }}
+.egi-act {{ display: flex; gap: 10px; align-items: flex-start; background: #F5F7FB; border-radius: 10px; padding: 10px 12px; margin: 0 0 8px; }}
+.egi-act .no {{ flex: 0 0 22px; height: 22px; border-radius: 50%; background: {NAVY2}; color: #FFFFFF; font-size: 11.5px; font-weight: 700;
+                display: flex; align-items: center; justify-content: center; margin-top: 1px; }}
+.egi-act b {{ display: block; font-size: 13.5px; font-weight: 600; color: {INK}; line-height: 1.45; }}
+.egi-act .mt {{ margin-top: 5px; }}
+.egi-tiles {{ display: flex; flex-wrap: wrap; gap: 10px; margin: 6px 0 4px; }}
+.egi-tile {{ flex: 1 1 230px; background: #F5F7FB; border-radius: 10px; padding: 12px 14px; }}
+.egi-tile .i {{ display: inline-flex; width: 24px; height: 24px; border-radius: 50%; background: #DDE5F3; color: {NAVY2}; font-size: 12px;
+                font-weight: 700; align-items: center; justify-content: center; }}
+.egi-tile .j {{ display: block; font-size: 14.5px; font-weight: 700; color: {INK}; margin: 8px 0 3px; line-height: 1.35; }}
+.egi-tile .d {{ font-size: 13.5px; color: #374151; line-height: 1.5; }}
+.egi-tile .mt {{ margin-top: 8px; }}
+.egi-tile .al {{ font-size: 12px; color: {INK2}; line-height: 1.45; margin-top: 2px; }}
+.egi-why {{ font-size: 13px; line-height: 1.5; padding: 4px 0; color: {INK}; }}
+.egi-why .no {{ display: inline-block; min-width: 18px; font-weight: 700; color: {NAVY2}; }}
 </style>
 """
 
@@ -99,6 +135,21 @@ def ai_box(title, text, source='', mode=''):
     tag = f' · {esc(mode)}' if mode else ''
     st.markdown(f'<div class="egi-ai"><div class="h">{esc(title)}{tag}</div>{esc(text)}'
                 + (f'<div class="src">Sumber: {esc(source)}</div>' if source else '') + '</div>', unsafe_allow_html=True)
+
+
+HARI = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']
+BULAN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+
+
+def tanggal(d):
+    """datetime/date → 'Senin, 19 Oktober 2026'."""
+    return f'{HARI[d.weekday()]}, {d.day} {BULAN[d.month - 1]} {d.year}'
+
+
+def section(n, title, sub='', right=''):
+    """Judul bagian form bernomor: kotak nomor + judul (+ subjudul) + elemen kanan (mis. badge)."""
+    st.markdown(f"<div class='egi-sh'><span class='n'>{esc(n)}</span><span class='t'>{esc(title)}"
+                + (f"<span class='s'>{esc(sub)}</span>" if sub else '') + f"</span>{right}</div>", unsafe_allow_html=True)
 
 
 def page_header(eyebrow, title):

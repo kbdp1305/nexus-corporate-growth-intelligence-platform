@@ -78,7 +78,8 @@ TOOLS = [
      'parameters': {'type': 'object', 'properties': {
          'pemahaman': {'type': 'string', 'description': '2–3 kalimat: situasi nasabah menurut catatan (PIC, tahap minat, permintaan, kebutuhan, keberatan).'},
          'langkah': {'type': 'array', 'description': '2–5 langkah urut prioritas', 'items': {'type': 'object', 'properties': {
-             'aksi': {'type': 'string'}, 'alasan': {'type': 'string'}, 'pemilik': {'type': 'string', 'description': 'RM atau nama divisi'},
+             'judul': {'type': 'string', 'description': 'judul singkat 2–5 kata, mis. \"Kirim simulasi Payroll\"'},
+             'aksi': {'type': 'string', 'description': '1 kalimat perintah lengkap'}, 'alasan': {'type': 'string'}, 'pemilik': {'type': 'string', 'description': 'RM atau nama divisi'},
              'tenggat_hari': {'type': 'integer'}}, 'required': ['aksi', 'alasan', 'pemilik', 'tenggat_hari']}},
          'keberatan': {'type': 'array', 'items': {'type': 'object', 'properties': {'keberatan': {'type': 'string'}, 'respon': {'type': 'string'}},
                                                    'required': ['keberatan', 'respon']}},
@@ -184,7 +185,7 @@ def _clean(plan: dict, facts) -> tuple[dict, list]:
     for l in plan.get('langkah') or []:
         if isinstance(l, dict) and l.get('aksi'):
             if ok(f"{l.get('aksi')} {l.get('alasan', '')}"):
-                langkah.append({'aksi': str(l['aksi']).strip(), 'alasan': str(l.get('alasan', '')).strip(),
+                langkah.append({'judul': judul_singkat(l.get('judul') or l['aksi']), 'aksi': str(l['aksi']).strip(), 'alasan': str(l.get('alasan', '')).strip(),
                                 'pemilik': T.DIVISI.get(str(l.get('pemilik') or 'RM'), str(l.get('pemilik') or 'RM')),
                                 'tenggat_hari': min(max(int(l.get('tenggat_hari') or 3), 0), 120)})
             else:
@@ -202,6 +203,16 @@ def _clean(plan: dict, facts) -> tuple[dict, list]:
            'pesan_divisi': str(plan.get('pesan_divisi', '')).strip() if ok(plan.get('pesan_divisi', '')) else '',
            'pertanyaan_kunci': [str(q) for q in plan.get('pertanyaan_kunci') or [] if ok(q)][:3]}
     return out, dropped
+
+
+def judul_singkat(teks, n=5) -> str:
+    """Judul kartu langkah: potong di tanda baca pertama, maksimal n kata."""
+    t = str(teks).strip()
+    for sep in (' — ', ' (', ';', ':', ',', ' dan ', ' lalu ', ' untuk ', ' ke '):
+        if sep in t[3:]:
+            t = t[:t.index(sep, 3)]
+    w = t.split()
+    return (' '.join(w[:n]) + ('…' if len(w) > n else '')).rstrip('.') or 'Langkah'
 
 
 def langkah_teks(plan) -> str:
@@ -299,3 +310,32 @@ def run(store, *, company_id, rm_id, hasil, catatan, keberatan, produk, isu, hol
     plan, _ = _clean(plan, json.loads(json.dumps([catatan, keberatan, [o for _, _, o in trace]], default=lambda o: o.item() if hasattr(o, 'item') else str(o))))
     return {'rencana': plan, 'jejak': trace, 'mode': mode, 'info': info}
 
+
+
+# ------------------------------------------------------------------ permintaan ke divisi (dipanggil tombol "Susun permintaan dengan AI")
+def susun_permintaan(store, *, company_id, hasil, catatan, keberatan, produk, divisi, kegiatan, cadangan=''):
+    """Draf permintaan RM ke divisi dari hasil kunjungan + kegiatan yang perlu koordinasi. → (teks, mode).
+    Angka harus berasal dari catatan / kegiatan / profil; bila tidak, atau LLM tidak aktif, dipakai cadangan."""
+    nama = store.co.name.get(company_id, company_id)
+    seg = store.cox.segment.get(company_id, '') if company_id in store.cox.index else ''
+    risk = store.cox.pred_class.get(company_id, '') if company_id in store.cox.index else ''
+    pn = [T.products().product_name.get(p, p) for p in produk]
+    divs = [T.DIVISI.get(d, d) for d in divisi]
+    if not cadangan:
+        cadangan = (f"Hasil kunjungan ke {nama}" + (f" ({seg}, risiko {risk})" if seg else '') + f": {T.HASIL_ID.get(hasil, hasil).lower()}."
+                    + (f" Produk: {', '.join(pn)}." if pn else '') + (f" Keberatan: {keberatan}." if keberatan else '')
+                    + (f" Mohon dukungan untuk: {'; '.join(kegiatan)}." if kegiatan else ' Mohon dukungan materi dan simulasi untuk tindak lanjut.'))
+    if not llm.config()['enabled']:
+        return cadangan, 'tanpa LLM'
+    ctx = {'nasabah': nama, 'segmen': seg, 'risiko': risk, 'hasil_kunjungan': T.HASIL_ID.get(hasil, hasil), 'produk_dibahas': pn,
+           'catatan': catatan, 'keberatan': keberatan, 'divisi_tujuan': divs, 'kegiatan_yang_perlu_dukungan': kegiatan}
+    txt = llm.complete('Tulis permintaan singkat dari RM kepada divisi tujuan (3–4 kalimat, bahasa Indonesia profesional). Sebut nasabah, apa yang '
+                       'diminta dari divisi dengan jelas, konteks dari catatan kunjungan, dan keberatan nasabah bila ada. Jangan menjanjikan harga atau '
+                       'persetujuan kredit; hanya pakai angka yang ada di KONTEKS. Balas hanya dengan teks permintaannya.\n\nKONTEKS: '
+                       + json.dumps(ctx, ensure_ascii=False), max_tokens=500)
+    if not txt or not txt.strip():
+        return cadangan, 'tanpa LLM'
+    txt = txt.strip().strip('"')
+    if R.check_numbers({'x': txt}, ctx)[1]:
+        return cadangan, 'tanpa LLM'
+    return txt, 'LLM'
