@@ -3,11 +3,12 @@ from __future__ import annotations
 
 import streamlit as st
 
-from . import llm
+from . import auth, llm
 from .ui import esc
 
 PAGE = {'overview': 'pages/1_overview.py', 'prioritas': 'pages/2_prioritas.py', 'profil': 'pages/3_profil.py', 'wilayah': 'pages/4_wilayah.py',
-        'prospect': 'pages/5_prospect.py', 'copilot': 'pages/6_copilot.py', 'kinerja': 'pages/7_kinerja.py', 'metodologi': 'pages/8_metodologi.py'}
+        'prospect': 'pages/5_prospect.py', 'copilot': 'pages/6_copilot.py', 'kinerja': 'pages/7_kinerja.py', 'metodologi': 'pages/8_metodologi.py',
+        'kalender': 'pages/9_kalender.py'}
 
 
 def init(store):
@@ -75,8 +76,19 @@ def sidebar(store, rms):
                     'background:#C2500A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">EG</div>'
                     '<div><strong>Growth Intelligence</strong><br><span style="font-size:12px">Ruang kerja RM</span></div></div>', unsafe_allow_html=True)
         n = lambda r: int((store.co.rm_id == r).sum())
-        opts = rms + ['Semua RM']
-        ss.rm = st.selectbox('Masuk sebagai', opts, index=opts.index(ss.rm), format_func=lambda r: f'{r} · {n(r)} nasabah' if r != 'Semua RM' else r)
+        user = auth.current()
+        if user['role'] == 'supervisor':
+            opts = rms + ['Semua RM']
+            ss.rm = st.selectbox('Lihat sebagai', opts, index=opts.index(ss.rm) if ss.rm in opts else len(rms), format_func=lambda r: f'{r} · {n(r)} nasabah' if r != 'Semua RM' else r)
+        else:
+            ss.rm = user['rm_id']
+            st.markdown(f"**{esc(ss.rm)}** · {n(ss.rm)} nasabah")
+        c1, c2 = st.columns(2)
+        with c1.popover('Akun', use_container_width=True):
+            st.caption(f"Masuk sebagai **{user['username']}** ({user['role']})")
+            auth.change_password_form()
+        if c2.button('Keluar', use_container_width=True):
+            auth.logout()
         st.divider()
         st.markdown('**Fokus**')
         if ss.focus_company:

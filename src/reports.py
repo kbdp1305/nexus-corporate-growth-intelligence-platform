@@ -463,7 +463,3 @@ def plan_events(plan: dict, week_start: date):
                                     f"Tema hari: {d['tema']} · Rencana {plan['rm']} ({plan['status']})",
                        'lokasi': f"Kec. {it['kecamatan']}" if kanal == 'Kunjungan' and it.get('kecamatan') else ''})
     return ev
-
-
-def weekly_plan_ics(plan: dict, week_start: date):
-    return calendar_ics(plan_events(plan, week_start), f"Rencana kunjungan {plan['rm']} · {week_start:%d %b %Y}")
