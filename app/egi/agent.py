@@ -63,12 +63,14 @@ def _item(store, cid, row, jam, siapkan):
 
 
 # ---------------------------------------------------------------- alur 1: rencana minggu
-def plan_week(store, rm, basket=(), days=None, week_label='minggu ini'):
-    """days = [(hari, 'Kunjungan'|'Telepon', jumlah_slot), ...]"""
+def plan_week(store, rm, basket=(), days=None, week_label='minggu ini', exclude=()):
+    """days = [(hari, 'Kunjungan'|'Telepon', jumlah_slot), ...] · exclude = perusahaan yang sudah terjadwal di kalender."""
     days = days or [('Selasa', 'Kunjungan', 3), ('Rabu', 'Telepon', 2), ('Kamis', 'Kunjungan', 2)]
     basket_ids = [b['id'] for b in basket]
     trace = []
     pf = candidates(store, rm, basket_ids)
+    if len(exclude):
+        pf = pf[~pf.index.isin(set(exclude))]
     trace.append((f'get_portfolio("{rm}")', f"{len(pf)} nasabah: " + ' · '.join(f"{s.split()[0]} {int((pf.segment == s).sum())}" for s in ['S1 Kecil', 'S2 Menengah', 'S3 Besar'])))
     trace.append(('get_alerts(rm, 3 bulan)', f"{int(pf.why_up.sum())} Why Now · {int(pf.caution.sum())} nasabah dengan alarm risiko"))
     hi = pf[pf.opportunity_score >= 0.75]
@@ -220,8 +222,11 @@ TOOLS = [
     {'name': 'network_prospects', 'description': 'Prospect yang bertransaksi dengan nasabah RM, urut nilai relasi (jalan masuk akuisisi).', 'parameters': _obj({'n': _N, 'kecamatan': {'type': 'string'}})},
     {'name': 'intro_path', 'description': 'Jalur kenalan ke satu prospect lewat nasabah BNI (utamakan nasabah RM sendiri).', 'parameters': _obj({'prospect_id': _CID}, ['prospect_id'])},
     # --- usulan aksi (baru berlaku setelah RM menyetujui di layar)
-    {'name': 'propose_add_to_plan', 'description': 'USULKAN menambah perusahaan ke rencana minggu RM. Menunggu persetujuan RM.',
-     'parameters': _obj({'company_id': _CID, 'catatan': {'type': 'string', 'description': 'tujuan kunjungan singkat'}}, ['company_id', 'catatan'])},
+    {'name': 'propose_add_to_plan', 'description': 'USULKAN menjadwalkan perusahaan di Kalender kunjungan RM. Tanpa hari/jam → slot kosong terdekat '
+     '(hari dengan kunjungan di kecamatan sama didahulukan); S1 dijadwalkan telepon. Menunggu persetujuan RM.',
+     'parameters': _obj({'company_id': _CID, 'catatan': {'type': 'string', 'description': 'tujuan kunjungan singkat'},
+                         'hari': {'type': 'string', 'enum': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'], 'description': 'opsional, bila RM meminta hari tertentu'},
+                         'jam': {'type': 'string', 'description': 'opsional, format HH.MM, mis. 10.00'}}, ['company_id', 'catatan'])},
     {'name': 'propose_log_visit', 'description': 'USULKAN pencatatan hasil kontak/kunjungan (mis. dari cerita RM). Menunggu persetujuan RM.',
      'parameters': _obj({'company_id': _CID, 'respons': {'type': 'string', 'enum': RESPONSES}, 'produk': {'type': 'string'}, 'kanal': {'type': 'string', 'enum': ['Visit', 'Call', 'WhatsApp', 'Email']},
                          'catatan': {'type': 'string'}}, ['company_id', 'respons', 'catatan'])},
@@ -234,7 +239,7 @@ TOOL_LABEL = {'search_company': 'Mencari perusahaan', 'portfolio_summary': 'Memb
               'compare_companies': 'Membandingkan perusahaan', 'product_opportunities': 'Menghitung peluang produk', 'product_catalog': 'Membaca katalog produk',
               'cashflow_trend': 'Membaca tren arus kas', 'visit_history': 'Membaca riwayat kunjungan', 'investigate_alarm': 'Investigasi alarm', 'alerts_feed': 'Membaca alarm terbaru',
               'district_ranking': 'Memeringkat kecamatan', 'district_detail': 'Membaca detail kecamatan', 'network_prospects': 'Menelusuri jaringan prospect', 'intro_path': 'Mencari jalur kenalan',
-              'propose_add_to_plan': 'Mengusulkan tambah ke rencana', 'propose_log_visit': 'Mengusulkan catatan kunjungan', 'propose_escalation': 'Mengusulkan eskalasi ke analis',
+              'propose_add_to_plan': 'Mengusulkan jadwal di kalender', 'propose_log_visit': 'Mengusulkan catatan kunjungan', 'propose_escalation': 'Mengusulkan eskalasi ke analis',
               'propose_message': 'Menyiapkan draf pesan'}
 
 
@@ -398,7 +403,12 @@ def make_executor(store, rm, proposals=None):
         if tool == 'intro_path':
             return {'prospect': name(cid), 'jalur': _records(store.intro_paths(cid, rm).set_index('id'), ['name', 'rm_id', 'nilai_M', 'jenis', 'arah', 'milik_saya'], 5)}
         if tool == 'propose_add_to_plan':
-            return propose('rencana', cid, catatan=args.get('catatan', ''))
+            from . import kalender as K
+            who, why = K.holder(K.load(), cid)
+            if who and rm != 'Semua RM' and who != rm:
+                return {'error': f'{name(cid)} dipegang {who} ({why}); satu perusahaan hanya ditangani satu RM.'}
+            jam = str(args.get('jam') or '').replace(':', '.') or None
+            return propose('rencana', cid, catatan=args.get('catatan', ''), hari=args.get('hari'), jam=jam)
         if tool == 'propose_log_visit':
             prod = str(args.get('produk') or '').strip()
             code = {v.lower(): k for k, v in products().product_name.items()}.get(prod.lower(), prod.upper())   # 'Virtual Account' → P03
@@ -419,7 +429,7 @@ Cara kerja:
 - Bila pengguna menyebut nama perusahaan, cari ID-nya dengan search_company. Pahami rujukan seperti "yang kedua", "dia", "perusahaan tadi" dari percakapan sebelumnya.
 - Analisis satu perusahaan: minimal company_facts; tambah cashflow_trend, product_opportunities, visit_history sesuai pertanyaan. Daftar/rekomendasi: periksa alarm & risiko kandidat teratas sebelum merekomendasikan.
 - Untuk "kenapa"/"bagaimana", gali sampai akar lalu hubungkan temuan menjadi cerita yang bisa ditindaklanjuti (apa yang terjadi → artinya → yang perlu dilakukan RM).
-- Tindakan (tambah rencana, catat kunjungan, eskalasi analis, draf pesan) hanya lewat alat propose_*. Usulkan tindakan bila jelas membantu atau diminta, lalu sampaikan bahwa usulan menunggu persetujuan RM di layar.
+- Tindakan (jadwalkan di Kalender kunjungan, catat kunjungan, eskalasi analis, draf pesan) hanya lewat alat propose_*. Usulkan tindakan bila jelas membantu atau diminta, lalu sampaikan bahwa usulan menunggu persetujuan RM di layar.
 - Draf pesan: sapa perusahaan dengan namanya, perkenalkan diri sebagai {rm} dari BNI, sebut tujuan spesifik (produk/topik dari data) dan waktu yang diminta; sopan, maks 4 kalimat.
 - Jangan memutuskan kelayakan kredit. Nasabah risiko High hanya ditawari produk non-kredit. Bila data tidak ada, katakan terus terang.
 Kamus data (baca dengan benar):

@@ -70,7 +70,7 @@ with a:
         y1, y2, y3 = st.columns([3, 1, 1])
         y1.markdown(f"{ui.esc(x['name'])}<br><span class='egi-muted'>{pid} · {x.segment} · risiko {x.risk_class} · skor {x.acquisition_score:.2f}</span>", unsafe_allow_html=True)
         if y2.button('Profil', key=f'wp_{pid}'): state.focus_company(pid)
-        if y3.button('+ Rencana', key=f'wr_{pid}'): state.add_to_plan(store, pid)
+        if y3.button('📅', key=f'wr_{pid}', help='Jadwalkan di Kalender kunjungan'): state.schedule_visit(store, pid, sumber=f'Potensi wilayah · {focus}')
 with b:
     st.markdown('**Nasabah dengan peluang tertinggi**')
     o = store.opp[store.opp.index.isin(cc.index)].join(cc[['name', 'rm_id']]).sort_values('opportunity_score', ascending=False).head(8)
@@ -78,7 +78,7 @@ with b:
         y1, y2, y3 = st.columns([3, 1, 1])
         y1.markdown(f"{ui.esc(x['name'])}{' ★' if x.rm_id == ss.rm else ''}<br><span class='egi-muted'>{cid} · {x.segment} · {x.rm_id} · skor {x.opportunity_score:.2f}</span>", unsafe_allow_html=True)
         if y2.button('Profil', key=f'wo_{cid}'): state.focus_company(cid)
-        if y3.button('+ Rencana', key=f'wq_{cid}'): state.add_to_plan(store, cid)
+        if y3.button('📅', key=f'wq_{cid}', help='Jadwalkan di Kalender kunjungan'): state.schedule_visit(store, cid, sumber=f'Potensi wilayah · {focus}')
     rms = cc[cc.is_client].rm_id.value_counts().head(5)
     st.caption('RM aktif di sini: ' + ', '.join(f'{i} ({n})' for i, n in rms.items()) + ' · ★ = nasabah Anda')
 

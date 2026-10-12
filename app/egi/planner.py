@@ -1,7 +1,7 @@
-"""Rute perjalanan & keranjang untuk rencana minggu (RM Copilot).
+"""Rute perjalanan untuk rencana minggu (RM Copilot).
 
 Jadwal (hari, jam, durasi, status) dikelola Kalender kunjungan (egi/kalender.py). Modul ini hanya:
-jarak & urutan kunjungan per hari, dan memasukkan prospect dari keranjang ke rencana.
+jarak & urutan kunjungan per hari, dan KPI rencana.
 """
 from __future__ import annotations
 
@@ -50,44 +50,8 @@ def all_ids(plan):
     return {it['id'] for d in plan['hari'] for it in d['item']}
 
 
-def make_item(store, rm, cid, siapkan='Profil 360°', jam='09.00'):
-    pf = agent.candidates(store, rm)
-    row = pf.loc[cid].to_dict() if cid in pf.index else {}
-    it = agent._item(store, cid, row, jam, siapkan)
-    if not row:     # prospect / di luar portofolio: tujuan perkenalan
-        it['tujuan'] = 'Prospect: perkenalan dan pemetaan kebutuhan.'
-        it['peluang'] = '—'
-    return it
-
-
-def _next_slot(day):
-    """Slot jam rencana (agent.JAM) yang belum dipakai di hari itu; kalau penuh, 90 menit setelah slot terakhir."""
-    used = {it['jam'] for it in day['item']}
-    free = [j for j in agent.JAM if j not in used]
-    if free:
-        return free[0]
-    h, m = map(int, max(used).split('.'))
-    t = h * 60 + m + 90
-    return f'{t // 60:02d}.{t % 60:02d}'
-
-
-def add_basket_prospects(store, rm, plan, basket):
-    """plan_week hanya memilih dari portofolio; prospect di keranjang dimasukkan ke hari kunjungan yang lokasinya paling dekat."""
-    visit_days = [d for d in plan['hari'] if d.get('kanal', 'Kunjungan') == 'Kunjungan'] or plan['hari']
-    for b in basket:
-        if b['id'] in all_ids(plan) or b['id'] not in store.co.index or not visit_days:
-            continue
-        here = coords(store, b['id'])
-        best = min(visit_days, key=lambda d: min((km(here, coords(store, it['id'])) for it in d['item']), default=99))
-        it = make_item(store, rm, b['id'], 'Draf permintaan perkenalan' if b.get('jenis') == 'prospect' else 'Profil 360°', _next_slot(best))
-        if b.get('catatan'):
-            it['tujuan'] = f"{b['catatan'].capitalize()}. " + it['tujuan']
-        best['item'].append(it)
-        best['item'].sort(key=lambda x: x['jam'])
-
-
 def refresh_kpi(plan, store):
-    """Hitung ulang KPI rencana setelah keranjang dimasukkan (dipakai layar, PDF, JSON)."""
+    """Hitung ulang KPI rencana (dipakai layar, PDF, JSON)."""
     ids = list(all_ids(plan))
     n_prio = int(store.opp.opportunity_score.reindex(ids).ge(0.75).sum())
     visit = {i for i in ids if not store.cox.is_client.get(i, False)}                     # prospect yang dijadwalkan langsung

@@ -47,19 +47,20 @@ if task == 'plan':
         week_start = st.date_input('Senin minggu rencana', nxt, format='DD/MM/YYYY')
         week_start = week_start - timedelta(days=week_start.weekday())
     with b:
-        st.markdown(f"**Keranjang rencana** · {len(ss.plan)} perusahaan (didahulukan, prospect ikut dijadwalkan)")
-        for p in ss.plan:
-            st.markdown(f"- {ui.esc(p['nama'])} <span class='egi-muted'>{p['id']} · {p['jenis']}</span>", unsafe_allow_html=True)
-        if not ss.plan:
-            st.caption('Kosong. Tambahkan dari Daftar prioritas, Profil, Wilayah, atau Prospect; Copilot tetap memilih dari portofolio.')
+        wk = K.active(ss.rm) if ss.rm != 'Semua RM' else K.active('Semua RM').iloc[0:0]
+        wk = wk[(wk._m.dt.date >= week_start) & (wk._m.dt.date < week_start + timedelta(days=5))].sort_values('_m')
+        st.markdown(f"**Sudah di Kalender kunjungan** · {week_start:%d %b} – {week_start + timedelta(days=4):%d %b} · {len(wk)} jadwal")
+        for r in wk.head(8).itertuples():
+            st.markdown(f"- {state.when(r.mulai)} · {ui.esc(r.judul)} <span class='egi-muted'>{r.kanal} · {r.sumber}</span>", unsafe_allow_html=True)
+        st.caption('Copilot hanya mengisi slot yang masih kosong dan tidak menggandakan perusahaan yang sudah terjadwal. '
+                   'Tambah jadwal satu per satu lewat tombol 📅 Jadwalkan di Daftar prioritas, Profil, Wilayah, atau Prospect.')
     if st.button('Susun rencana', type='primary'):
         dd = [(r.hari, r.kanal, int(r.slot)) for r in days.dropna().itertuples()]
         with st.spinner('Copilot memeriksa portofolio, alarm, wilayah, dan jaringan…'):
-            plan = agent.plan_week(store, ss.rm, ss.plan, dd or None, week)
-            planner.add_basket_prospects(store, ss.rm, plan, ss.plan)
+            plan = agent.plan_week(store, ss.rm, (), dd or None, week, exclude=K.scheduled_ids(ss.rm))
             planner.refresh_kpi(plan, store)
             ss.agent_result = ('plan', plan)
-        data.audit('susun_rencana', rm=ss.rm, keranjang=[p['id'] for p in ss.plan])
+        data.audit('susun_rencana', rm=ss.rm, minggu_mulai=str(week_start))
     res = ss.agent_result
     if res and res[0] == 'plan':
         plan = res[1]
@@ -117,8 +118,9 @@ if task == 'plan':
             f.write_text(json.dumps(plan, ensure_ascii=False, indent=1, default=str), encoding='utf-8')
             data.audit('setujui_rencana', rm=ss.rm, berkas=f.name, minggu_mulai=str(week_start), pesan_disetujui=sum(bool(m.get('ok')) for m in plan['pesan']))
             if ss.rm != 'Semua RM':
-                n_new, n_upd = K.upsert(K.from_plan(plan, week_start), auth.current()['username'])
-                ss.plan_to_cal = f'{n_new} jadwal baru, {n_upd} diperbarui di Kalender kunjungan'
+                n_new, n_upd, rej = K.upsert(K.fit_free(K.from_plan(plan, week_start), ss.rm), auth.current()['username'])
+                ss.plan_to_cal = f'{n_new} jadwal baru, {n_upd} diperbarui di Kalender kunjungan' + (
+                    f". {len(rej)} dilewati: " + '; '.join(f'{j} — {w}' for j, w in rej) if rej else '')
             st.success(f'Rencana disimpan: outputs/app/plans/{f.name}. Pesan tidak dikirim otomatis.')
         buf = R.weekly_plan_pdf({**plan, 'pesan': [m for m in plan['pesan'] if m.get('ok')] or plan['pesan']})
         c2.download_button('Unduh PDF rencana', buf.getvalue(), file_name=f"rencana_minggu_{ss.rm}.pdf", mime='application/pdf', use_container_width=True)
@@ -152,8 +154,8 @@ elif task == 'alarm':
         c1, c2, c3 = st.columns(3)
         if c1.button('Teruskan ke analis risiko', use_container_width=True):
             data.audit('teruskan_analis', rm=ss.rm, company=cid, bukti=r['evidence']); st.success('Paket bukti dicatat di log audit untuk analis.')
-        if c2.button('Jadwalkan kunjungan retensi', use_container_width=True):
-            state.add_to_plan(store, cid, 'retensi')
+        if c2.button('📅 Jadwalkan kunjungan retensi', use_container_width=True):
+            state.schedule_visit(store, cid, f"Retensi: {r['verdict']}. {r['route']}", 'Copilot · investigasi alarm')
         if c3.button('Buka profil', use_container_width=True):
             state.focus_company(cid)
         st.caption('Aturan: ≥ 2 poin distress (telat bayar, outflow > inflow, pembeli hilang, alarm distress) → analis; ≥ 2 poin retensi → kunjungan RM. Copilot tidak memutuskan kredit.')
@@ -212,7 +214,7 @@ else:
     def run_action(a, msg_i):
         cid = a['company_id']
         if a['tipe'] == 'rencana':
-            state.add_to_plan(store, cid, a.get('catatan', ''))
+            state.schedule_now(store, cid, a.get('catatan', ''), 'Copilot · chat', (a.get('hari'), a.get('jam')) if a.get('hari') else None, rerun=False)
         elif a['tipe'] == 'kunjungan':
             c = store.cox.loc[cid]
             store.append_visit({'action_id': f"APP-{pd.Timestamp.now():%Y%m%d%H%M%S}", 'track': 'Deepening' if c.is_client else 'Acquisition', 'party_id': cid,
@@ -228,11 +230,11 @@ else:
         if not m.get('usulan'):
             return
         st.markdown(f"**Usulan tindakan** · {sum(a['status'] == 'menunggu' for a in m['usulan'])} menunggu persetujuan")
-        judul = {'rencana': 'Tambah ke rencana minggu', 'kunjungan': 'Catat hasil kontak', 'eskalasi': 'Teruskan ke analis risiko', 'pesan': 'Draf pesan'}
+        judul = {'rencana': 'Jadwalkan di Kalender kunjungan', 'kunjungan': 'Catat hasil kontak', 'eskalasi': 'Teruskan ke analis risiko', 'pesan': 'Draf pesan'}
         for a in m['usulan']:
             with st.container(border=True):
                 c1, c2, c3 = st.columns([5, 1, 1])
-                detail = {'rencana': a.get('catatan'), 'kunjungan': f"{a.get('respons')} · {a.get('kanal')} · {a.get('produk') or '—'} · {a.get('catatan')}",
+                detail = {'rencana': ' · '.join(x for x in [(f"{a['hari']} {a.get('jam') or ''}".strip() if a.get('hari') else 'slot kosong terdekat'), a.get('catatan')] if x), 'kunjungan': f"{a.get('respons')} · {a.get('kanal')} · {a.get('produk') or '—'} · {a.get('catatan')}",
                           'eskalasi': a.get('alasan'), 'pesan': a.get('jenis')}[a['tipe']]
                 c1.markdown(f"**{judul[a['tipe']]}** · {ui.esc(a['nama'])} <span class='egi-muted'>{a['company_id']}</span><br>"
                             f"<span class='egi-muted'>{ui.esc(detail or '')}</span>", unsafe_allow_html=True)

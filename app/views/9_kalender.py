@@ -53,7 +53,9 @@ with cal_col:
                 'slotMinTime': '07:00:00', 'slotMaxTime': '19:00:00', 'allDaySlot': False, 'selectable': True, 'editable': True,
                 'headerToolbar': {'left': 'prev,next today', 'center': 'title', 'right': 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'},
                 'buttonText': {'today': 'Hari ini', 'month': 'Bulan', 'week': 'Minggu', 'day': 'Hari', 'list': 'Daftar'}}
-        res = fc(events=K.to_fullcalendar(df, show_rm=ss.rm == 'Semua RM'), options=opts, key=f'cal_{ss.rm}',
+        if ss.get('cal_date'):                         # dibuka dari tombol 'Buka' (jadwal baru di sidebar): lompat ke minggunya
+            opts['initialDate'] = ss.cal_date
+        res = fc(events=K.to_fullcalendar(df, show_rm=ss.rm == 'Semua RM'), options=opts, key=f"cal_{ss.rm}_{ss.get('cal_date', '')}_{ss.get('cal_ver', 0)}",
                  custom_css='.fc-event-title{font-weight:600}.fc .fc-toolbar-title{font-size:1.15rem}',
                  callbacks=['dateClick', 'eventClick', 'eventChange', 'select'])
         cb = (res or {}).get('callback')
@@ -74,10 +76,13 @@ with cal_col:
                     r['mulai'] = _parse(ev['start']).isoformat(timespec='minutes')
                     if ev.get('end'):
                         r['selesai'] = _parse(ev['end']).isoformat(timespec='minutes')
-                    K.upsert([r], user['username']); data.audit('kalender_geser', user=user['username'], id=r['id'], mulai=r['mulai'])
-                    st.toast('Jadwal dipindah')
+                    _, _, rej = K.upsert([r], user['username'])
+                    if rej:                               # ditolak: kalender dirender ulang ke posisi semula
+                        ss.cal_ver = ss.get('cal_ver', 0) + 1; ss._toast = f'Tidak dipindah: {rej[0][1]}'
+                    else:
+                        data.audit('kalender_geser', user=user['username'], id=r['id'], mulai=r['mulai']); ss._toast = 'Jadwal dipindah'
                 else:
-                    st.toast('Anda hanya bisa mengubah jadwal milik sendiri')
+                    ss.cal_ver = ss.get('cal_ver', 0) + 1; ss._toast = 'Anda hanya bisa mengubah jadwal milik sendiri'
                 st.rerun()
         st.caption('Klik tanggal/jam untuk menambah · klik jadwal untuk detail · seret jadwal untuk memindah. '
                    'Warna: oranye kunjungan, biru tua telepon, hijau selesai, abu-abu dibatalkan.')
@@ -104,8 +109,12 @@ with side:
         if save:
             r.update(mulai=datetime.combine(tgl, jm).isoformat(timespec='minutes'), selesai=datetime.combine(tgl, js).isoformat(timespec='minutes'),
                      status=status, lokasi=lok, catatan=cat)
-            K.upsert([r], user['username']); data.audit('kalender_ubah', user=user['username'], id=sel, status=status)
-            st.toast('Tersimpan'); st.rerun()
+            _, _, rej = K.upsert([r], user['username'])
+            if rej:
+                st.error(f'Tidak disimpan: {rej[0][1]}')
+            else:
+                data.audit('kalender_ubah', user=user['username'], id=sel, status=status)
+                ss._toast = 'Tersimpan'; ss.cal_ver = ss.get('cal_ver', 0) + 1; st.rerun()
         b1, b2, b3 = st.columns(3)
         if r['company_id'] in store.co.index and b1.button('Profil', use_container_width=True):
             state.focus_company(r['company_id'])
@@ -122,6 +131,17 @@ with side:
         elif editable and r['kanal'] in ('Kunjungan', 'Telepon') and r['status'] != 'Dibatalkan':
             if st.button('Isi feedback & tindak lanjut', type='primary', use_container_width=True):
                 ss.fb_event = sel; ss.tl_tab = 'Feedback kunjungan'; state.go('tindak')
+        if user['role'] == 'supervisor' and r['company_id'] and not store.cox.is_client.get(r['company_id'], False) and r['status'] == 'Terjadwal':
+            with st.expander('Pindahkan klaim prospect ke RM lain'):
+                rms_ = [x for x in sorted(store.co.rm_id.dropna().unique()) if x != r['rm_id']]
+                to = st.selectbox('RM tujuan', rms_, key=f'tr_{sel}')
+                if st.button('Pindahkan semua jadwal aktif perusahaan ini', key=f'trb_{sel}', use_container_width=True):
+                    n, bad = K.transfer(r['company_id'], to, user['username'])
+                    if bad:
+                        st.error('Tidak dipindah: ' + '; '.join(f'{j}: {w}' for j, w in bad))
+                    else:
+                        data.audit('kalender_pindah_klaim', user=user['username'], company=r['company_id'], ke=to, jadwal=n)
+                        ss._toast = f'{n} jadwal dipindah ke {to}'; ss.cal_ver = ss.get('cal_ver', 0) + 1; st.rerun()
         if not editable:
             st.caption('Jadwal RM lain: hanya bisa dilihat.')
     else:
@@ -154,8 +174,12 @@ with side:
                 nama = judul.strip() or f"{store.co.name.get(cid, cid)} ({cid})"
                 row = {'rm_id': owner, 'company_id': cid, 'judul': nama, 'kanal': kanal, 'mulai': datetime.combine(tgl, jm).isoformat(timespec='minutes'),
                        'selesai': datetime.combine(tgl, js).isoformat(timespec='minutes'), 'lokasi': lok, 'catatan': cat, 'status': 'Terjadwal', 'sumber': 'Manual'}
-                K.upsert([row], user['username']); data.audit('kalender_tambah', user=user['username'], rm=owner, company=cid, mulai=row['mulai'])
-                ss.cal_new = None; st.toast(f'Ditambahkan: {nama}'); st.rerun()
+                _, _, rej = K.upsert([row], user['username'])
+                if rej:
+                    st.error(f'Tidak ditambahkan: {rej[0][1]}')
+                else:
+                    data.audit('kalender_tambah', user=user['username'], rm=owner, company=cid, mulai=row['mulai'])
+                    ss.cal_new = None; ss._toast = f'Ditambahkan: {nama}'; ss.cal_ver = ss.get('cal_ver', 0) + 1; st.rerun()
         if ss.get('cal_new') and st.button('Reset tanggal', use_container_width=True):
             ss.cal_new = None; st.rerun()
 

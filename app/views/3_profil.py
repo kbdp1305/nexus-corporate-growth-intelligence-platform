@@ -43,8 +43,8 @@ ui.kpi(k[4], 'Produk dimiliki', f"{len(fp['produk_dimiliki'])} / 8", ', '.join(f
 st.write('')
 
 b1, b2, b3, b4, b5 = st.columns(5)
-if b1.button('+ Rencana minggu', use_container_width=True):
-    state.add_to_plan(store, cid)
+if b1.button('📅 Jadwalkan kunjungan', use_container_width=True, help='Masukkan ke Kalender kunjungan (slot kosong terdekat)'):
+    state.schedule_visit(store, cid, sumber='Profil')
 if b5.button('Ajukan kunjungan', use_container_width=True, help='Ajukan ke supervisor dan ajak divisi lain mendampingi'):
     ss.pj_company = cid; ss.tl_tab = 'Pengajuan kunjungan'; state.go('tindak')
 if b2.button('Siapkan kunjungan di Copilot', use_container_width=True):
@@ -242,8 +242,8 @@ with tabs[4]:
                             f"deal Rp {ui.fmt(deal, 1)} juta, EV Rp {ui.fmt(r['ev'], 1)} juta, titik impas {ui.fmt(imp * 100, 0) + '%' if reach else 'tidak tercapai'}. "
                             'Susun poin pembicaraan sesuai kebutuhan nasabah dan draf pesan janji temu.')
             state.go('copilot')
-        if b2.button('+ Rencana dengan tujuan ini', use_container_width=True, key=f'sim_pl_{k}'):
-            state.add_to_plan(store, cid, f"tawarkan {pid} {c.product_name} (EV Rp {ui.fmt(r['ev'], 1)} jt)")
+        if b2.button('📅 Jadwalkan dengan tujuan ini', use_container_width=True, key=f'sim_pl_{k}'):
+            state.schedule_visit(store, cid, f"Tawarkan {pid} {c.product_name} (EV Rp {ui.fmt(r['ev'], 1)} jt, peluang {ui.fmt(p_ * 100, 0)}%)", 'Profil · simulasi')
 
 # ------------------------------------------------------------------ 6 riwayat & catatan
 with tabs[5]:

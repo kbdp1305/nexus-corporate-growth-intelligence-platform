@@ -67,4 +67,4 @@ with b:
         if st.button('Setujui draf', type='primary'):
             data.audit('setujui_pesan_intro', prospect=pid, perantara=best['name'] if best is not None else None, rm=ss.rm, isi=txt)
             st.success('Draf disetujui dan dicatat di log audit. Kirim lewat WhatsApp Anda sendiri.')
-    state.company_actions(store, pid, 'pros')
+    state.company_actions(store, pid, 'pros', sumber='Prospect lewat jaringan')

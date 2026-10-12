@@ -67,8 +67,8 @@ with c2:
     for cid, r in un.iterrows():
         y1, y2 = st.columns([4, 1])
         y1.markdown(f"**{ui.esc(r['name'])}** <span class='egi-muted'>{cid} · {r.segment} · skor {r.opportunity_score:.2f}</span>", unsafe_allow_html=True)
-        if y2.button('+ Rencana', key=f'ku_{cid}'):
-            state.add_to_plan(store, cid)
+        if y2.button('📅 Jadwalkan', key=f'ku_{cid}'):
+            state.schedule_visit(store, cid, 'Prioritas yang belum disentuh', 'Kinerja saya')
     if len(un) == 0:
         st.caption('Semua nasabah prioritas sudah dihubungi.')
 st.caption('Konversi = aksi dengan respons Converted / semua aksi. Catatan dari dashboard ikut dihitung sejak disimpan.')

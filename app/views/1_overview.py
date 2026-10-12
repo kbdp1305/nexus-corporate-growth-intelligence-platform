@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 
 from egi import agent, data, state, ui, viz
+from egi import kalender as K
 
 store = data.get_store(); ss = st.session_state
 co = store.cox
@@ -13,13 +14,13 @@ if ss.rm != 'Semua RM':
     pf = agent.candidates(store, ss.rm)
     wn_rm = store.why_now(pf.index, months=1).sort_values('score', ascending=False).drop_duplicates('company_id')
     wn_rm = wn_rm.assign(urut=~wn_rm.event_type.isin(agent.CAUTION)).sort_values(['urut', 'score'], ascending=[True, False])
-    fresh = pf[(pf.opportunity_score >= 0.75) & ~pf.contacted & ~pf.index.isin([p['id'] for p in ss.plan])]
+    fresh = pf[(pf.opportunity_score >= 0.75) & ~pf.contacted & ~pf.index.isin(K.scheduled_ids(ss.rm))]
     fu = store.followups(ss.rm)
     late = fu[fu.telat_hari > 0]
     with st.container(border=True):
         st.markdown(f"#### Hari ini · {ss.rm}")
         st.caption(f"{len(wn_rm)} alarm bulan ini · {len(fresh)} prioritas belum dihubungi · {len(late)} tindak lanjut terlambat · "
-                   f"{len(ss.plan)} di rencana minggu · per {data.SNAPSHOT:%d %b %Y}")
+                   f"{len(K.upcoming(ss.rm, 7))} jadwal 7 hari ke depan · data per {data.SNAPSHOT:%d %b %Y}")
         h1, h2, h3 = st.columns(3)
         with h1:
             st.markdown('**Alarm baru** · risiko dulu')
@@ -37,8 +38,8 @@ if ss.rm != 'Semua RM':
                 a, b = st.columns([4, 1.3])
                 a.markdown(f"{ui.esc(r['name'])}<br><span class='egi-muted'>{cid} · {r.segment} · skor {ui.fmt(r.opportunity_score * 100, 0)} · {r.recommended_products}</span>",
                            unsafe_allow_html=True)
-                if b.button('+ Rencana', key=f'hi_pr_{cid}'):
-                    state.add_to_plan(store, cid, 'prioritas belum dihubungi'); st.rerun()
+                if b.button('📅 Jadwalkan', key=f'hi_pr_{cid}'):
+                    state.schedule_visit(store, cid, f"Prioritas belum dihubungi. {r.recommended_products}", 'Overview · Hari ini')
             if fresh.empty:
                 st.caption('Semua prioritas sudah dihubungi atau ada di rencana.')
         with h3:
