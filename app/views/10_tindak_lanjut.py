@@ -262,22 +262,25 @@ if tab == 'Feedback kunjungan':
             if not catatan.strip():
                 st.error('Isi catatan hasil kunjungan dulu.')
             else:
-                fb, fu, tk = T.save_feedback(store, ev, hasil=hasil, produk=produk, catatan=catatan.strip(), keberatan=keberatan.strip(), isu=hit,
-                                             langkah=langkah.strip(), lanjut=lanjut, divs=divs, prioritas=prio, tenggat=tenggat, pesan_divisi=pesan.strip(),
-                                             user=user['username'], ulang=ulang)
-                nama = store.co.name.get(cid, cid)
-                for k in manual_tiket:                             # tiket per kegiatan manual, dengan prioritas/tenggat/permintaannya sendiri
-                    tk += T.create_tickets(k['divisi'], jenis='Koordinasi kegiatan', rm_id=ev['rm_id'], company_id=cid,
-                                           judul=f"{A.judul_singkat(k['aksi'], 6)} · {nama}",
-                                           isi=f"Kegiatan: {k['aksi']}\n" + (f"Permintaan: {k['pesan']}\n" if k.get('pesan') else '')
-                                               + f"Hasil kunjungan {ev['mulai'][:10]}: {T.HASIL_ID.get(hasil, hasil)}.",
-                                           prioritas=k.get('prioritas', 'Normal'), tenggat=k.get('tenggat', ''), ref=fb, event_id=ev['id'], user=user['username'])
-                ss.pop(mk, None)
-                tujuan = [fmt_div(d) for d in divs] + [fmt_div(d) for k in manual_tiket for d in k['divisi']]
-                ss.fb_done = f"Feedback tersimpan · jadwal ditandai selesai · dicatat ke riwayat nasabah" \
-                             + ((' · jadwal ulang masuk kalender' if ulang else ' · tindak lanjut masuk kalender') if fu else '') \
-                             + (f" · {len(tk)} tiket ke {', '.join(dict.fromkeys(tujuan))}" if tk else '')
-                st.rerun()
+                try:
+                    fb, fu, tk = T.save_feedback(store, ev, hasil=hasil, produk=produk, catatan=catatan.strip(), keberatan=keberatan.strip(), isu=hit,
+                                                 langkah=langkah.strip(), lanjut=lanjut, divs=divs, prioritas=prio, tenggat=tenggat, pesan_divisi=pesan.strip(),
+                                                 user=user['username'], ulang=ulang)
+                    nama = store.co.name.get(cid, cid)
+                    for k in manual_tiket:                             # tiket per kegiatan manual, dengan prioritas/tenggat/permintaannya sendiri
+                        tk += T.create_tickets(k['divisi'], jenis='Koordinasi kegiatan', rm_id=ev['rm_id'], company_id=cid,
+                                               judul=f"{A.judul_singkat(k['aksi'], 6)} · {nama}",
+                                               isi=f"Kegiatan: {k['aksi']}\n" + (f"Permintaan: {k['pesan']}\n" if k.get('pesan') else '')
+                                                   + f"Hasil kunjungan {ev['mulai'][:10]}: {T.HASIL_ID.get(hasil, hasil)}.",
+                                               prioritas=k.get('prioritas', 'Normal'), tenggat=k.get('tenggat', ''), ref=fb, event_id=ev['id'], user=user['username'])
+                    ss.pop(mk, None)
+                    tujuan = [fmt_div(d) for d in divs] + [fmt_div(d) for k in manual_tiket for d in k['divisi']]
+                    ss.fb_done = f"Feedback tersimpan · jadwal ditandai selesai · dicatat ke riwayat nasabah" \
+                                 + ((' · jadwal ulang masuk kalender' if ulang else ' · tindak lanjut masuk kalender') if fu else '') \
+                                 + (f" · {len(tk)} tiket ke {', '.join(dict.fromkeys(tujuan))}" if tk else '')
+                    st.rerun()
+                except ValueError as e:                              # jadwal lanjutan ditolak kalender: belum ada yang tersimpan
+                    st.error(str(e))
     if ss.get('fb_done'):
         st.success(ss.pop('fb_done'))
         c1, c2, _ = st.columns([1, 1, 3])
@@ -323,7 +326,10 @@ else:
                 kom = st.text_input('Komentar', key=f"kom_{r['id']}", placeholder='opsional')
                 c1, c2, _ = st.columns([1, 1, 3])
                 if c1.button('Setujui', key=f"ok_{r['id']}", type='primary', use_container_width=True):
-                    T.decide_visit(store, r, True, kom, user['username']); st.toast('Disetujui · masuk kalender RM'); st.rerun()
+                    try:
+                        T.decide_visit(store, r, True, kom, user['username']); st.toast('Disetujui · masuk kalender RM'); st.rerun()
+                    except ValueError as e:
+                        st.error(str(e))
                 if c2.button('Tolak', key=f"no_{r['id']}", use_container_width=True):
                     T.decide_visit(store, r, False, kom, user['username']); st.toast('Ditolak'); st.rerun()
         st.divider()
@@ -366,10 +372,13 @@ else:
         elif js <= jm:
             st.error('Jam selesai harus setelah jam mulai.')
         else:
-            T.submit_visit(rm_id=owner, company_id=cid, nama=store.co.name.get(cid, cid), mulai=datetime.combine(tgl, jm), selesai=datetime.combine(tgl, js),
-                           kanal=kanal, tujuan=tujuan.strip(), produk=produk, divs=divs, catatan=catatan.strip(), user=user['username'])
-            ss.pop('pj_company', None)
-            st.success('Pengajuan terkirim. Setelah disetujui supervisor, jadwal masuk ke Kalender kunjungan dan divisi pendamping menerima tiket.')
+            try:
+                T.submit_visit(rm_id=owner, company_id=cid, nama=store.co.name.get(cid, cid), mulai=datetime.combine(tgl, jm), selesai=datetime.combine(tgl, js),
+                               kanal=kanal, tujuan=tujuan.strip(), produk=produk, divs=divs, catatan=catatan.strip(), user=user['username'])
+                ss.pop('pj_company', None)
+                st.success('Pengajuan terkirim. Setelah disetujui supervisor, jadwal masuk ke Kalender kunjungan dan divisi pendamping menerima tiket.')
+            except ValueError as e:
+                st.error(str(e))
 
     st.markdown('#### Pengajuan saya' if user['role'] == 'rm' else '#### Semua pengajuan')
     lst = pj if user['role'] == 'supervisor' else pj[pj.rm_id == user['rm_id']]

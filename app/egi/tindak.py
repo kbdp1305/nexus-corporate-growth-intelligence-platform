@@ -8,6 +8,7 @@ Divisi tujuan disarankan dari catatan RM lewat data/raw/issue_product_map.csv (k
 from __future__ import annotations
 
 import json
+import uuid
 from datetime import datetime, timedelta
 from functools import lru_cache
 
@@ -167,11 +168,13 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
     follow_id = ''
     if lanjut:                                   # (mulai, selesai, kanal)
         m, s, kanal = lanjut
-        _, _, ids = K.T.upsert([{'rm_id': rm, 'company_id': cid, 'judul': f'{nama} ({cid}) · ' + ('jadwal ulang (pertimbangan ulang)' if ulang else 'tindak lanjut'), 'kanal': kanal,
-                                 'mulai': m.isoformat(timespec='minutes'), 'selesai': s.isoformat(timespec='minutes'),
-                                 'lokasi': ev.get('lokasi', ''), 'catatan': f'Tindak lanjut kunjungan {ev["mulai"][:10]}: {langkah}',
-                                 'status': 'Terjadwal', 'sumber': 'Tindak lanjut'}], {'dibuat_oleh': user, 'diubah_pada': now()})
-        follow_id = ids[0]
+        follow_id = uuid.uuid4().hex[:12]
+        _, _, rej = K.upsert([{'id': follow_id, 'rm_id': rm, 'company_id': cid, 'judul': f'{nama} ({cid}) · ' + ('jadwal ulang (pertimbangan ulang)' if ulang else 'tindak lanjut'), 'kanal': kanal,
+                               'mulai': m.isoformat(timespec='minutes'), 'selesai': s.isoformat(timespec='minutes'),
+                               'lokasi': ev.get('lokasi', ''), 'catatan': f'Tindak lanjut kunjungan {ev["mulai"][:10]}: {langkah}',
+                               'status': 'Terjadwal', 'sumber': 'Tindak lanjut'}], user)
+        if rej:                                  # bentrok / dipegang RM lain → batalkan seluruh simpan
+            raise ValueError(f'Jadwal lanjutan tidak bisa dibuat: {rej[0][1]} Pilih waktu lain atau matikan jadwal lanjutan.')
     fb_id = f"FB-{ev['id']}"
     pnames = ', '.join(f"{p} {products().product_name.get(p, '')}".strip() for p in produk) or '—'
     isi = (f"Hasil kunjungan {ev['mulai'][:10]} ({ev['kanal']}) oleh {rm}: {HASIL_ID.get(hasil, hasil)}.\n"
@@ -195,6 +198,10 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
 
 # ------------------------------------------------------------------ pengajuan kunjungan
 def submit_visit(*, rm_id, company_id, nama, mulai, selesai, kanal, tujuan, produk, divs, catatan, user):
+    why = K.check(K.load(), {'id': '', 'rm_id': rm_id, 'company_id': company_id, 'status': 'Terjadwal',
+                             'mulai': mulai.isoformat(timespec='minutes'), 'selesai': selesai.isoformat(timespec='minutes')})
+    if why:
+        raise ValueError(why)
     isi = f"Tujuan: {tujuan}\nProduk dibawa: {', '.join(produk) or '—'}\n" + (f"Catatan: {catatan}" if catatan else '')
     _, _, ids = REQ.upsert([{'jenis': 'Pengajuan kunjungan', 'rm_id': rm_id, 'company_id': company_id, 'divisi': '', 'judul': f'Kunjungan ke {nama}',
                              'isi': isi, 'prioritas': 'Normal', 'status': 'Diajukan', 'usulan_mulai': mulai.isoformat(timespec='minutes'),
@@ -213,10 +220,12 @@ def decide_visit(store, req: dict, approve: bool, komentar, user):
     cid = req['company_id']; nama = store.co.name.get(cid, cid)
     divs = [d for d in req['divisi_terlibat'].split(';') if d]
     ev_id = f"PJ-{req['id']}"
-    K.T.upsert([{'id': ev_id, 'rm_id': req['rm_id'], 'company_id': cid, 'judul': f'{nama} ({cid})', 'kanal': req['kanal'], 'mulai': req['usulan_mulai'],
-                 'selesai': req['usulan_selesai'], 'lokasi': f"Kec. {store.cox.district.get(cid, '')}" if cid in store.cox.index else '',
-                 'catatan': req['isi'] + (f"\nDidampingi: {', '.join(DIVISI.get(d, d) for d in divs)}" if divs else ''),
-                 'status': 'Terjadwal', 'sumber': 'Pengajuan'}], {'dibuat_oleh': user, 'diubah_pada': now()})
+    _, _, rej = K.upsert([{'id': ev_id, 'rm_id': req['rm_id'], 'company_id': cid, 'judul': f'{nama} ({cid})', 'kanal': req['kanal'], 'mulai': req['usulan_mulai'],
+                           'selesai': req['usulan_selesai'], 'lokasi': f"Kec. {store.cox.district.get(cid, '')}" if cid in store.cox.index else '',
+                           'catatan': req['isi'] + (f"\nDidampingi: {', '.join(DIVISI.get(d, d) for d in divs)}" if divs else ''),
+                           'status': 'Terjadwal', 'sumber': 'Pengajuan'}], user)
+    if rej:                                      # pengajuan tetap Diajukan; supervisor bisa menolak atau RM mengajukan ulang
+        raise ValueError(f'Belum bisa disetujui: {rej[0][1]}')
     m = datetime.fromisoformat(req['usulan_mulai'])
     tickets = create_tickets(divs, jenis='Pendampingan kunjungan', rm_id=req['rm_id'], company_id=cid, judul=f'Pendampingan kunjungan ke {nama}',
                              isi=f"{req['rm_id']} mengajak divisi Anda mendampingi {req['kanal'].lower()} ke {nama} pada {m:%A %d %b %Y, %H.%M} WIB.\n{req['isi']}",
