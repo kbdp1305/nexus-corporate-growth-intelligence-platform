@@ -148,6 +148,25 @@ def create_tickets(divs, *, jenis, rm_id, company_id, judul, isi, prioritas='Nor
     return ids
 
 
+# ------------------------------------------------------------------ eskalasi alarm (Copilot → divisi Risiko)
+ESKALASI = 'Eskalasi alarm'
+
+
+def open_escalations() -> set:
+    """Perusahaan yang sudah punya tiket eskalasi alarm yang masih terbuka (supaya triase tidak menggandakan)."""
+    df = REQ.load()
+    return set(df[(df.jenis == ESKALASI) & df.status.isin(['Baru', 'Diproses'])].company_id)
+
+
+def escalate(*, rm_id, company_id, nama, alasan, bukti=(), user=''):
+    """Tiket ke divisi Risiko Kredit / Remedial berisi alasan + paket bukti; tenggat 3 hari kerja."""
+    if company_id in open_escalations():
+        return []
+    isi = alasan + ('\n\nBukti:\n' + '\n'.join(f'- {b}' for b in bukti) if bukti else '')
+    return create_tickets(['risiko'], jenis=ESKALASI, rm_id=rm_id, company_id=company_id, judul=f'Eskalasi alarm: {nama} ({company_id})',
+                          isi=isi, prioritas='Tinggi', tenggat=(datetime.now() + timedelta(days=3)).date(), user=user)
+
+
 # ------------------------------------------------------------------ feedback kunjungan
 def pending_feedback(rm) -> pd.DataFrame:
     """Kunjungan/telepon yang sudah lewat (atau ditandai selesai) dan belum diberi feedback."""

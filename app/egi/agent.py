@@ -63,14 +63,26 @@ def _item(store, cid, row, jam, siapkan):
 
 
 # ---------------------------------------------------------------- alur 1: rencana minggu
-def plan_week(store, rm, basket=(), days=None, week_label='minggu ini', exclude=()):
-    """days = [(hari, 'Kunjungan'|'Telepon', jumlah_slot), ...] · exclude = perusahaan yang sudah terjadwal di kalender."""
+FOKUS = ['seimbang', 'retensi', 'pertumbuhan', 'alarm']
+
+
+def plan_week(store, rm, basket=(), days=None, week_label='minggu ini', exclude=(), must=(), focus='seimbang'):
+    """days = [(hari, 'Kunjungan'|'Telepon', jumlah_slot), ...] · exclude = perusahaan yang sudah terjadwal di kalender.
+    must = perusahaan yang wajib masuk (permintaan RM) · focus = bobot tambahan: retensi (porsi wallet turun), pertumbuhan (Why Now naik), alarm."""
     days = days or [('Selasa', 'Kunjungan', 3), ('Rabu', 'Telepon', 2), ('Kamis', 'Kunjungan', 2)]
-    basket_ids = [b['id'] for b in basket]
+    must = [c for c in dict.fromkeys(must) if c in store.co.index]
+    basket_ids = [b['id'] for b in basket] + must
     trace = []
     pf = candidates(store, rm, basket_ids)
+    if focus != 'seimbang' and len(pf):
+        chg = store.panel[store.panel.ym == R.REF_MONTH].set_index('company_id').capture_chg_6m.reindex(pf.index).fillna(0)
+        boost = {'retensi': (chg <= -0.10) | pf.alarm.str.contains('wallet_erosion'), 'pertumbuhan': pf.why_up, 'alarm': pf.alarm != ''}.get(focus)
+        if boost is not None:
+            pf['prio'] += 0.3 * boost.astype(float)
+            pf = pf.sort_values('prio', ascending=False)
+            trace.append((f'fokus("{focus}")', f"{int(boost.sum())} nasabah dinaikkan prioritasnya"))
     if len(exclude):
-        pf = pf[~pf.index.isin(set(exclude))]
+        pf = pf[~pf.index.isin(set(exclude) - set(must))]
     trace.append((f'get_portfolio("{rm}")', f"{len(pf)} nasabah: " + ' · '.join(f"{s.split()[0]} {int((pf.segment == s).sum())}" for s in ['S1 Kecil', 'S2 Menengah', 'S3 Besar'])))
     trace.append(('get_alerts(rm, 3 bulan)', f"{int(pf.why_up.sum())} Why Now · {int(pf.caution.sum())} nasabah dengan alarm risiko"))
     hi = pf[pf.opportunity_score >= 0.75]
@@ -127,6 +139,23 @@ def plan_week(store, rm, basket=(), days=None, week_label='minggu ini', exclude=
         out_days.append({'hari': hari, 'kanal': kanal, 'tema': 'telepon S1 (kanal murah)', 'item': items})
     order = {d[0]: i for i, d in enumerate(days)}
     out_days.sort(key=lambda d: order[d['hari']])
+    cap = {h: n for h, _, n in days}
+    for cid in must:                                     # nasabah wajib yang belum terpilih → hari dengan kanal cocok (kecamatan sama didahulukan)
+        if cid in used or not out_days:
+            continue
+        kan = 'Telepon' if store.cox.segment.get(cid) == 'S1 Kecil' else 'Kunjungan'
+        pool_d = [d for d in out_days if d['kanal'] == kan] or out_days
+        dist = store.co.district.get(cid)
+        d = min(pool_d, key=lambda d: (not any(it['kecamatan'] == dist for it in d['item']), len(d['item'])))
+        if len(d['item']) >= cap.get(d['hari'], 4):
+            drop = next((it for it in reversed(d['item']) if it['id'] not in must), None)
+            if drop:
+                d['item'].remove(drop); used.discard(drop['id'])
+        jam = next((j for j in JAM if j not in {it['jam'] for it in d['item']}), JAM[-1])
+        it = _item(store, cid, pf.loc[cid].to_dict() if cid in pf.index else {}, jam, 'Profil 360°')
+        it['tujuan'] = 'Diminta RM. ' + it['tujuan']
+        d['item'].append(it); d['item'].sort(key=lambda x: x['jam']); used.add(cid)
+        trace.append((f'wajib("{cid}")', f"{store.co.name[cid]} → {d['hari']} {jam}"))
     last = store.log_all[(store.log_all.rm_id == rm) & store.log_all.party_id.isin(used)].sort_values('contact_date').groupby('party_id').tail(1)
     for x in last.itertuples():
         trace.append((f'get_visit_history("{x.party_id}")', f"{x.contact_date}: {x.response}, {x.feedback_note}"))
@@ -157,28 +186,274 @@ def plan_week(store, rm, basket=(), days=None, week_label='minggu ini', exclude=
 
 
 # ---------------------------------------------------------------- alur 2: investigasi alarm
+_CP = _CF = None
+
+
+def counterparties():
+    """Transaksi mitra 12 bulan (data/raw/counterparty_transactions.csv), dimuat sekali."""
+    global _CP
+    if _CP is None:
+        _CP = pd.read_csv(ROOT / 'data/raw/counterparty_transactions.csv')
+    return _CP
+
+
+def facilities():
+    """Fasilitas kredit BNI per nasabah (data/raw/credit_facilities.csv), dimuat sekali."""
+    global _CF
+    if _CF is None:
+        _CF = pd.read_csv(ROOT / 'data/raw/credit_facilities.csv').set_index('company_id')
+    return _CF
+
+
+def bank_shift(store, cid):
+    """Bukti perpindahan transaksi dari data mitra 12 bulan: mitra yang dulu lewat BNI lalu berhenti (≥ 3 bulan tanpa transaksi),
+    mitra baru yang memakai bank lain, dan porsi nilai mitra lewat bank lain. IN = mitra membayar nasabah (pembeli), OUT = nasabah membayar mitra (pemasok)."""
+    cp = counterparties()
+    cp = cp[cp.bni_party_id == cid]
+    p = store.panel[(store.panel.company_id == cid) & (store.panel.ym == R.REF_MONTH)]
+    wallet = {'porsi_wallet_pct': round(float(p.capture_t.iloc[0]) * 100, 1) if len(p) else None,
+              'porsi_wallet_chg_6m_poin': round(float(p.capture_chg_6m.iloc[0]) * 100, 1) if len(p) and np.isfinite(p.capture_chg_6m.iloc[0]) else None}
+    if cp.empty:
+        return {**wallet, 'info': 'tidak ada data transaksi mitra'}
+    ref = pd.Period(R.REF_MONTH, 'M')
+    stop_by, new_after = str(ref - 3), str(ref - 6)
+    other = cp.counterparty_bank != 'BNI'
+    tot = cp.txn_value_12m_idr_mn.sum()
+    stop = cp[~other & (cp.last_txn_month <= stop_by)].sort_values('txn_value_12m_idr_mn', ascending=False)
+    new = cp[other & (cp.first_txn_month > new_after)].sort_values('txn_value_12m_idr_mn', ascending=False)
+    rows = lambda d: [{'mitra': r.counterparty_name_raw, 'peran': 'pembeli' if r.direction == 'IN' else 'pemasok', 'bank': r.counterparty_bank,
+                       'nilai_12m_Rp_juta': round(r.txn_value_12m_idr_mn, 1), 'bulan_pertama': r.first_txn_month, 'bulan_terakhir': r.last_txn_month}
+                      for r in d.head(5).itertuples()]
+    stop_pct = stop.txn_value_12m_idr_mn.sum() / tot * 100 if tot else 0
+    tanda = []
+    if len(stop):
+        tanda.append(f"{len(stop)} mitra yang bertransaksi lewat BNI berhenti sejak {stop.last_txn_month.max()} atau lebih awal "
+                     f"(Rp {R.fmt(stop.txn_value_12m_idr_mn.sum(), 1)} juta, {R.fmt(stop_pct, 1)}% nilai mitra)")
+    if len(new):
+        tanda.append(f"{len(new)} mitra baru sejak {new.first_txn_month.min()} memakai bank lain (Rp {R.fmt(new.txn_value_12m_idr_mn.sum(), 1)} juta)")
+    return {**wallet, 'mitra': len(cp), 'porsi_nilai_bank_lain_pct': round(float(cp.txn_value_12m_idr_mn[other].sum() / tot * 100), 1) if tot else None,
+            'per_bank_Rp_juta': cp.groupby('counterparty_bank').txn_value_12m_idr_mn.sum().round(1).to_dict(),
+            'mitra_bni_berhenti': len(stop), 'nilai_mitra_berhenti_pct': round(stop_pct, 1), 'mitra_berhenti': rows(stop),
+            'mitra_baru_bank_lain': len(new), 'mitra_baru': rows(new), 'tanda': tanda,
+            'catatan': 'Data mitra hanya mencakup 12 bulan; mitra berhenti = tidak bertransaksi ≥ 3 bulan terakhir.'}
+
+
+def credit_facility(store, cid):
+    """Fasilitas kredit nasabah di BNI + tanda bahaya + peluang tambah limit (bahan diskusi dengan analis; bukan keputusan kredit)."""
+    cf = facilities()
+    if cid not in cf.index:
+        return {'info': 'tidak punya fasilitas kredit di BNI'}
+    f, risk = cf.loc[cid], store.cox.pred_class.get(cid)
+    bahaya = []
+    if f.collectibility >= 2: bahaya.append(f'Kolektibilitas {int(f.collectibility)}')
+    if f.max_dpd_12m > 30: bahaya.append(f'Tunggakan terlama {int(f.max_dpd_12m)} hari dalam 12 bulan')
+    if f.watchlist_flag: bahaya.append('Masuk watchlist')
+    if f.restructuring_flag: bahaya.append('Pernah direstrukturisasi')
+    if isinstance(f.policy_restriction, str): bahaya.append(f'Pembatasan kebijakan: {f.policy_restriction}')
+    tambah = bool(f.utilization >= 0.85 and not bahaya and risk != 'High')
+    return {'jenis_fasilitas': f.facility_type, 'limit_Rp_M': round(float(f.limit_idr_bn), 2), 'outstanding_Rp_M': round(float(f.outstanding_idr_bn), 2),
+            'utilisasi_pct': round(float(f.utilization) * 100, 1), 'kolektibilitas': int(f.collectibility), 'dpd_maks_12m_hari': int(f.max_dpd_12m),
+            'watchlist': bool(f.watchlist_flag), 'restrukturisasi': bool(f.restructuring_flag), 'kelas_risiko_model': risk,
+            'tanda_bahaya': bahaya, 'peluang_tambah_limit': tambah,
+            'catatan': 'Copilot tidak memutuskan kredit; peluang tambah limit hanya bahan diskusi dengan analis kredit.'}
+
+
 def investigate(store, cid):
     fp = R.fact_pack(store, cid)
     ak, an, j = fp['arus_kas'], fp['anomali'], fp['jaringan']
+    cf, bs = credit_facility(store, cid), bank_shift(store, cid)
     ev, distress_pts, retention_pts = [], 0, 0
     if ak['telat_3m'] >= 30: distress_pts += 2; ev.append(f"Gaji/pajak telat {R.fmt(ak['telat_3m'], 0)}% dalam 3 bulan")
     if ak['out_in_3m'] > 1.05: distress_pts += 1; ev.append(f"Outflow {R.fmt(ak['out_in_3m'], 2)}× inflow")
     if ak['buyer_exit'] >= 20: distress_pts += 1; ev.append(f"{R.fmt(ak['buyer_exit'], 0)}% inflow dari pembeli yang menghilang")
     if 'distress' in an['jenis_3bln']: distress_pts += 2; ev.append('Alarm distress aktif')
+    if cf.get('kolektibilitas', 1) >= 3 or cf.get('dpd_maks_12m_hari', 0) > 90: distress_pts += 2
+    elif cf.get('kolektibilitas', 1) == 2 or cf.get('dpd_maks_12m_hari', 0) > 30 or cf.get('watchlist'): distress_pts += 1
+    ev += [f"Kredit: {b}" for b in cf.get('tanda_bahaya', [])]
     if ak['chg_3v6'] is not None and ak['chg_3v6'] > 0: retention_pts += 1; ev.append(f"Inflow masih tumbuh (3v6 {R.fmt(ak['chg_3v6'], 2)})")
     if ak['capture_chg_6m'] <= -10: retention_pts += 2; ev.append(f"Porsi wallet {R.fmt(ak['capture_chg_6m'], 0)} poin dalam 6 bulan")
     if ak['telat_3m'] < 10: retention_pts += 1; ev.append(f"Ketepatan bayar baik (telat {R.fmt(ak['telat_3m'], 0)}%)")
+    partner_shift = bs.get('mitra_bni_berhenti', 0) >= 2 or bs.get('nilai_mitra_berhenti_pct', 0) >= 15
+    if partner_shift: retention_pts += 1
+    ev += bs.get('tanda', [])
+    # tanpa bukti perpindahan (wallet turun / mitra BNI berhenti / alarm wallet_erosion), "inflow tumbuh + bayar tepat waktu" bukan alasan retensi
+    shift = ak['capture_chg_6m'] <= -10 or partner_shift or 'wallet_erosion' in an['jenis_3bln']
     if j['mitra_distress']: ev.append(f"{j['mitra_distress']} mitra sedang alarm distress (Rp {R.fmt(j['nilai_distress_M'], 0)} M)")
     if distress_pts >= 2:
         verdict, route = 'Tanda kesulitan keuangan', 'Teruskan ke analis risiko dengan paket bukti; tunda tawaran kredit.'
-    elif retention_pts >= 2:
+    elif retention_pts >= 2 and shift:
         verdict, route = 'Kemungkinan perpindahan transaksi ke bank lain', 'Kunjungan retensi oleh RM; tanyakan alasan dan tawarkan solusi.'
     else:
         verdict, route = 'Sinyal lemah', 'Pantau bulan depan; tidak perlu tindakan khusus.'
     trace = [('get_cashflow', f"telat {R.fmt(ak['telat_3m'], 0)}% · out/in {R.fmt(ak['out_in_3m'], 2)} · 3v6 {R.fmt(ak['chg_3v6'], 2)}"),
              ('get_alerts', ', '.join(an['jenis_3bln']) or 'tidak ada alarm 3 bulan'), ('get_network', f"{j['mitra']} mitra · {j['mitra_distress']} distress"),
+             ('credit_facility', ', '.join(cf.get('tanda_bahaya', [])) or cf.get('info') or f"kolektibilitas {cf['kolektibilitas']}, utilisasi {R.fmt(cf['utilisasi_pct'], 0)}%"),
+             ('bank_shift', f"{bs.get('mitra_bni_berhenti', 0)} mitra BNI berhenti · {bs.get('mitra_baru_bank_lain', 0)} mitra baru di bank lain"),
              ('get_visit_history', fp['kunjungan'][-1]['catatan'] if fp['kunjungan'] else 'belum ada')]
-    return {'fp': fp, 'verdict': verdict, 'route': route, 'evidence': ev, 'trace': trace}
+    return {'fp': fp, 'verdict': verdict, 'route': route, 'evidence': ev, 'trace': trace, 'kredit': cf, 'bank': bs,
+            'poin': {'distress': distress_pts, 'retensi': retention_pts}}
+
+
+# ---------------------------------------------------------------- alur 3: triase semua alarm
+TRIASE = {'distress': ('Distress', 'Teruskan ke analis risiko'), 'retensi': ('Retensi', 'Kunjungan retensi'),
+          'ekspansi': ('Ekspansi', 'Kunjungan peluang'), 'pantau': ('Pantau', 'Pantau bulan depan')}
+_SEG_W = {'S3 Besar': 3, 'S2 Menengah': 2, 'S1 Kecil': 1}
+
+
+def triage(store, rm, months=3):
+    """Investigasi semua nasabah beralarm milik RM, kelompokkan (distress / retensi / ekspansi / pantau), lalu usulkan satu aksi per nasabah.
+    Nasabah yang sudah terjadwal atau sudah punya tiket eskalasi terbuka dilewati (tidak digandakan)."""
+    from . import kalender as K, tindak as T
+    pf = candidates(store, rm)
+    wn = store.why_now(pf.index, months)
+    ids = list(dict.fromkeys(wn.sort_values('score', ascending=False).company_id))
+    sched, esc = K.scheduled_ids(rm), T.open_escalations()
+    rows, trace = [], [(f'alerts_feed("{rm}", {months} bulan)', f"{len(wn)} alarm di {len(ids)} nasabah: " + ', '.join(f'{k} {v}' for k, v in wn.event_type.value_counts().items()))]
+    for cid in ids:
+        r, row = investigate(store, cid), pf.loc[cid]
+        alarm = sorted(set(wn[wn.company_id == cid].event_type))
+        cf = r['kredit']
+        if r['verdict'].startswith('Tanda'):
+            grp = 'distress'
+        elif r['verdict'].startswith('Kemungkinan'):
+            grp = 'retensi'
+        elif 'expansion' in alarm and r['poin']['distress'] == 0:
+            grp = 'ekspansi'
+        else:
+            grp = 'pantau'
+        if grp == 'distress':
+            aksi, detail = 'eskalasi', f"Alarm {', '.join(alarm)}: {r['verdict'].lower()}. Tunda tawaran kredit."
+            status = 'sudah dieskalasi' if cid in esc else 'usul'
+        elif grp in ('retensi', 'ekspansi'):
+            if grp == 'retensi':
+                detail = f"Retensi: {r['verdict'].lower()}. Tanyakan alasan dan tawarkan solusi."
+            else:
+                detail = 'Ekspansi: cek kebutuhan modal kerja.'
+                if cf.get('peluang_tambah_limit'):
+                    detail += f" Utilisasi kredit {R.fmt(cf['utilisasi_pct'], 0)}%: bahas tambah limit dengan analis kredit."
+                if row.risk_class == 'High':
+                    detail += ' Risiko High: hanya produk non-kredit.'
+            aksi, status = 'rencana', 'sudah terjadwal' if cid in sched else 'usul'
+        else:
+            aksi, detail, status = None, 'Sinyal lemah; tidak perlu tindakan khusus bulan ini.', 'pantau'
+        prio = _SEG_W.get(row.segment, 1) * 10 + r['poin']['distress'] * (grp == 'distress') * 3 + r['poin']['retensi'] + float(row.opportunity_score)
+        rows.append({'id': cid, 'nama': store.co.name[cid], 'segmen': row.segment, 'risiko': row.risk_class, 'alarm': ', '.join(alarm), 'kelompok': grp,
+                     'kesimpulan': r['verdict'], 'bukti': r['evidence'][:4], 'aksi': aksi, 'detail': detail, 'status': status, 'prio': round(prio, 2),
+                     'kontak_terakhir': r['fp']['kunjungan'][-1]['tgl'] if r['fp']['kunjungan'] else None})
+        trace.append((f'investigate_alarm("{cid}")', f"{r['verdict']} · {len(r['evidence'])} bukti"))
+    order = list(TRIASE)
+    rows.sort(key=lambda x: (order.index(x['kelompok']), -x['prio']))
+    n = {g: sum(x['kelompok'] == g for x in rows) for g in order}
+    skip = sum(x['status'].startswith('sudah') for x in rows)
+    act = sum(x['status'] == 'usul' for x in rows)
+    trace.append(('cek_kalender_dan_tiket()', f"{skip} nasabah sudah terjadwal / sudah dieskalasi, dilewati"))
+    top = next((x for x in rows if x['status'] == 'usul'), None)
+    ringkasan = ' '.join(filter(None, [
+        f"{len(rows)} nasabah beralarm dalam {months} bulan terakhir: {n['distress']} distress, {n['retensi']} retensi, {n['ekspansi']} ekspansi, {n['pantau']} cukup dipantau.",
+        f"{act} tindakan diusulkan" + (f", {skip} dilewati karena sudah ditangani." if skip else '.'),
+        f"Paling mendesak: {top['nama']} ({top['id']}), {top['kesimpulan'].lower()}." if top else '']))
+    return {'rm': rm, 'bulan': months, 'baris': rows, 'jumlah': n, 'ringkasan': ringkasan, 'jejak': trace}
+
+
+# ---------------------------------------------------------------- rencana minggu: kalender, rute, revisi
+def week_start_for(minggu='minggu depan', today=None):
+    from datetime import date, timedelta
+    today = today or date.today()
+    monday = today - timedelta(days=today.weekday())
+    return monday if minggu == 'minggu ini' else monday + timedelta(days=7)
+
+
+def finalize_plan(store, plan, week_start, rm):
+    """Urutkan rute hari kunjungan, geser jam yang bentrok dengan Kalender kunjungan, hitung ulang KPI & jarak.
+    Hari dengan jam yang diminta RM (item 'tetap') tidak diurutkan ulang."""
+    from datetime import timedelta
+    from . import kalender as K, planner
+    for d in plan['hari']:
+        if d.get('kanal', 'Kunjungan') == 'Kunjungan' and not any(it.get('tetap') for it in d['item']):
+            planner.optimize(store, d)
+    if rm != 'Semua RM':
+        when = {r['id']: r['mulai'] for r in K.fit_free(K.from_plan(plan, week_start), rm)}
+        for d in plan['hari']:
+            tgl = week_start + timedelta(days=planner.HARI.index(d['hari']))
+            for it in d['item']:
+                m = when.get(f"{rm}-{it['id']}-{tgl:%Y%m%d}")
+                if m:
+                    it['jam'] = m[11:16].replace(':', '.')
+            d['item'].sort(key=lambda it: it['jam'])
+    planner.refresh_kpi(plan, store)
+    plan['jarak_km'] = {d['hari']: round(planner.route_km(store, d['item']), 1) for d in plan['hari'] if d.get('kanal') == 'Kunjungan' and len(d['item']) > 1}
+    plan['minggu_mulai'] = week_start.isoformat()
+    return plan
+
+
+def plan_brief(plan):
+    """Ringkasan rencana untuk LLM (tanpa draf pesan & jejak)."""
+    return {'minggu': plan['minggu'], 'minggu_mulai': plan.get('minggu_mulai'), 'ringkasan': plan['ringkasan'],
+            'kpi': {k: v for k, v, _ in plan['kpi']}, 'jarak_km_per_hari': plan.get('jarak_km', {}),
+            'hari': [{'hari': d['hari'], 'kanal': d['kanal'], 'tema': d['tema'],
+                      'jadwal': [{'jam': it['jam'], 'id': it['id'], 'nama': it['nama'], 'kecamatan': it['kecamatan'], 'tujuan': it['tujuan']} for it in d['item']]}
+                     for d in plan['hari']]}
+
+
+def revise_plan(store, plan, ops, rm):
+    """Terapkan revisi RM ke rencana (salinan). ops: [{aksi: hapus|tambah|pindah|ubah_kanal|hapus_hari, company_id, hari, jam, kanal}].
+    Mengembalikan (rencana_baru, catatan[])."""
+    import copy
+    from . import planner
+    plan, notes = copy.deepcopy(plan), []
+    pf = candidates(store, rm)
+
+    def day(h, create_kanal=None):
+        d = next((x for x in plan['hari'] if x['hari'] == h), None)
+        if d is None and create_kanal:
+            d = {'hari': h, 'kanal': create_kanal, 'tema': 'tambahan dari RM', 'item': []}
+            plan['hari'].append(d); plan['hari'].sort(key=lambda x: planner.HARI.index(x['hari']))
+        return d
+
+    def remove(cid):
+        for d in plan['hari']:
+            hit = [it for it in d['item'] if it['id'] == cid]
+            d['item'] = [it for it in d['item'] if it['id'] != cid]
+            if hit:
+                return hit[0]
+        return None
+
+    for op in ops:
+        a, cid, h = op.get('aksi'), str(op.get('company_id') or '').strip().upper(), op.get('hari')
+        jam = str(op.get('jam') or '').replace(':', '.') or None
+        if a == 'hapus_hari':
+            plan['hari'] = [d for d in plan['hari'] if d['hari'] != h]; notes.append(f'{h} dihapus dari rencana'); continue
+        if a == 'ubah_kanal':
+            d = day(h)
+            if d is None: notes.append(f'{h} tidak ada di rencana'); continue
+            d['kanal'] = op.get('kanal') or 'Telepon'; d['tema'] = f"{d['kanal'].lower()} (diubah RM)"; notes.append(f"{h} diubah menjadi {d['kanal']}"); continue
+        if cid not in store.co.index:
+            notes.append(f'{cid or "?"} tidak ditemukan'); continue
+        if rm != 'Semua RM' and store.cox.is_client.get(cid) and store.co.rm_id.get(cid) != rm:
+            notes.append(f'{cid} nasabah RM lain; dilewati'); continue
+        if a == 'hapus':
+            notes.append(f"{store.co.name[cid]} dihapus" if remove(cid) else f'{cid} tidak ada di rencana'); continue
+        if a in ('tambah', 'pindah'):
+            old = remove(cid)
+            if a == 'pindah' and old is None:
+                notes.append(f'{cid} tidak ada di rencana; ditambahkan'); a = 'tambah'
+            kan = 'Telepon' if store.cox.segment.get(cid) == 'S1 Kecil' else 'Kunjungan'
+            d = day(h, kan) if h in planner.HARI else min(plan['hari'] or [day('Selasa', kan)], key=lambda x: (x['kanal'] != kan, len(x['item'])))
+            used = {it['jam'] for it in d['item']}
+            jam = jam or next((j for j in JAM if j not in used), JAM[-1])
+            it = old or _item(store, cid, pf.loc[cid].to_dict() if cid in pf.index else {}, jam, 'Profil 360°')
+            it['jam'] = jam
+            if op.get('jam'):
+                it['tetap'] = True
+            if a == 'tambah' and old is None:
+                it['tujuan'] = 'Diminta RM. ' + it['tujuan']
+            d['item'].append(it); d['item'].sort(key=lambda x: x['jam'])
+            notes.append(f"{store.co.name[cid]} → {d['hari']} {jam}")
+            continue
+        notes.append(f'aksi {a} tidak dikenal')
+    plan['hari'] = [d for d in plan['hari'] if d['item']]
+    plan['status'] = 'draf (direvisi), menunggu persetujuan RM'
+    return plan, notes
 
 
 # ---------------------------------------------------------------- agen LLM: alat baca + usulan aksi
@@ -221,6 +496,31 @@ TOOLS = [
     {'name': 'district_detail', 'description': 'Detail satu kecamatan: statistik, nasabah prioritas RM di sana, prospect teratas.', 'parameters': _obj({'kecamatan': {'type': 'string'}}, ['kecamatan'])},
     {'name': 'network_prospects', 'description': 'Prospect yang bertransaksi dengan nasabah RM, urut nilai relasi (jalan masuk akuisisi).', 'parameters': _obj({'n': _N, 'kecamatan': {'type': 'string'}})},
     {'name': 'intro_path', 'description': 'Jalur kenalan ke satu prospect lewat nasabah BNI (utamakan nasabah RM sendiri).', 'parameters': _obj({'prospect_id': _CID}, ['prospect_id'])},
+    {'name': 'bank_shift', 'description': 'Bukti perpindahan transaksi satu nasabah dari data mitra 12 bulan: mitra yang dulu lewat BNI lalu berhenti, mitra baru di bank lain, '
+     'porsi nilai mitra lewat bank lain, porsi wallet. Pakai untuk "kenapa porsi wallet turun" / alarm wallet_erosion.', 'parameters': _obj({'company_id': _CID}, ['company_id'])},
+    {'name': 'credit_facility', 'description': 'Fasilitas kredit nasabah di BNI: limit, outstanding, utilisasi, kolektibilitas, tunggakan (DPD), watchlist, restrukturisasi, '
+     'tanda bahaya, dan peluang tambah limit (bahan diskusi dengan analis, bukan keputusan kredit).', 'parameters': _obj({'company_id': _CID}, ['company_id'])},
+    {'name': 'triage_alerts', 'description': 'TRIASE SEMUA ALARM portofolio RM sekaligus: investigasi tiap nasabah beralarm (arus kas, kredit, transaksi mitra), kelompokkan '
+     'distress / retensi / ekspansi / pantau, dan OTOMATIS membuat usulan aksi per nasabah (eskalasi ke divisi Risiko atau jadwal kunjungan). '
+     'Nasabah yang sudah terjadwal / sudah dieskalasi dilewati. Jangan panggil propose_* lagi untuk nasabah yang sudah diusulkan alat ini.',
+     'parameters': _obj({'bulan': {'type': 'integer', 'description': 'jendela alarm dalam bulan (default 3)'}})},
+    {'name': 'propose_week_plan', 'description': 'USULKAN rencana minggu lengkap untuk disetujui sekali: memilih nasabah (skor peluang, alarm, wilayah, jaringan), '
+     'menghormati hari yang tidak bisa & nasabah wajib, menghindari jadwal yang sudah ada di Kalender, mengurutkan rute, dan menyiapkan draf pesan. '
+     'Ubah permintaan RM menjadi parameter. Untuk mengubah rencana yang sudah ada pakai revise_week_plan.',
+     'parameters': _obj({'minggu': {'type': 'string', 'enum': ['minggu ini', 'minggu depan']},
+                         'hari': {'type': 'array', 'description': 'opsional; hari kerja & kanal. Default: Selasa kunjungan 3, Rabu telepon 2, Kamis kunjungan 2.',
+                                  'items': _obj({'hari': {'type': 'string', 'enum': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']},
+                                                 'kanal': {'type': 'string', 'enum': ['Kunjungan', 'Telepon']}, 'slot': {'type': 'integer', 'description': '1–4'}}, ['hari', 'kanal'])},
+                         'hari_tidak_bisa': {'type': 'array', 'items': {'type': 'string', 'enum': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']}},
+                         'wajib': {'type': 'array', 'items': {'type': 'string'}, 'description': 'ID perusahaan yang wajib masuk'},
+                         'kecualikan': {'type': 'array', 'items': {'type': 'string'}, 'description': 'ID perusahaan yang jangan dimasukkan'},
+                         'fokus': {'type': 'string', 'enum': FOKUS, 'description': 'retensi = porsi wallet turun; pertumbuhan = alarm ekspansi; alarm = nasabah beralarm'}})},
+    {'name': 'revise_week_plan', 'description': 'USULKAN revisi rencana minggu terakhir (yang sedang dibahas) tanpa menyusun ulang dari nol. '
+     'Contoh: hapus nasabah, tambah/pindah nasabah ke hari & jam tertentu, ubah kanal satu hari, hapus satu hari.',
+     'parameters': _obj({'operasi': {'type': 'array', 'items': _obj({'aksi': {'type': 'string', 'enum': ['hapus', 'tambah', 'pindah', 'ubah_kanal', 'hapus_hari']},
+                                                                    'company_id': {'type': 'string'}, 'hari': {'type': 'string', 'enum': ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']},
+                                                                    'jam': {'type': 'string', 'description': 'HH.MM'}, 'kanal': {'type': 'string', 'enum': ['Kunjungan', 'Telepon']}}, ['aksi'])}},
+                        ['operasi'])},
     # --- usulan aksi (baru berlaku setelah RM menyetujui di layar)
     {'name': 'propose_add_to_plan', 'description': 'USULKAN menjadwalkan perusahaan di Kalender kunjungan RM. Tanpa hari/jam → slot kosong terdekat '
      '(hari dengan kunjungan di kecamatan sama didahulukan); S1 dijadwalkan telepon. Menunggu persetujuan RM.',
@@ -240,7 +540,8 @@ TOOL_LABEL = {'search_company': 'Mencari perusahaan', 'portfolio_summary': 'Memb
               'cashflow_trend': 'Membaca tren arus kas', 'visit_history': 'Membaca riwayat kunjungan', 'investigate_alarm': 'Investigasi alarm', 'alerts_feed': 'Membaca alarm terbaru',
               'district_ranking': 'Memeringkat kecamatan', 'district_detail': 'Membaca detail kecamatan', 'network_prospects': 'Menelusuri jaringan prospect', 'intro_path': 'Mencari jalur kenalan',
               'propose_add_to_plan': 'Mengusulkan jadwal di kalender', 'propose_log_visit': 'Mengusulkan catatan kunjungan', 'propose_escalation': 'Mengusulkan eskalasi ke analis',
-              'propose_message': 'Menyiapkan draf pesan'}
+              'propose_message': 'Menyiapkan draf pesan', 'bank_shift': 'Menelusuri perpindahan transaksi', 'credit_facility': 'Membaca fasilitas kredit',
+              'triage_alerts': 'Triase semua alarm', 'propose_week_plan': 'Menyusun rencana minggu', 'revise_week_plan': 'Merevisi rencana minggu'}
 
 
 _PRODUCTS = None
@@ -285,8 +586,9 @@ def _slim(fp):
     return fp
 
 
-def make_executor(store, rm, proposals=None):
-    """proposals: list yang diisi alat propose_* (dieksekusi UI setelah RM menyetujui)."""
+def make_executor(store, rm, proposals=None, plan_ctx=None):
+    """proposals: list yang diisi alat propose_* (dieksekusi UI setelah RM menyetujui).
+    plan_ctx: rencana minggu terakhir dari percakapan sebelumnya (untuk revise_week_plan)."""
     proposals = proposals if proposals is not None else []
     mine = set(store.portfolio(rm).index)
 
@@ -304,6 +606,9 @@ def make_executor(store, rm, proposals=None):
         err = guard(cid)
         if err:
             return err
+        dup = next((a for a in proposals if a['tipe'] == tipe and a['company_id'] == cid and tipe != 'pesan'), None)
+        if dup:
+            return {'status': 'sudah diusulkan sebelumnya; menunggu persetujuan RM di layar', 'aksi_id': dup['id']}
         a = {'id': f'A{len(proposals) + 1}', 'tipe': tipe, 'company_id': cid, 'nama': name(cid), 'status': 'menunggu', **kw}
         proposals.append(a)
         return {'status': 'diusulkan; menunggu persetujuan RM di layar', 'aksi_id': a['id']}
@@ -339,7 +644,7 @@ def make_executor(store, rm, proposals=None):
             if args.get('produk'): pf = pf[pf.recommended_products.fillna('').str.contains(str(args['produk']).upper())]
             return {'jumlah_cocok': len(pf), 'daftar': _records(_biz(pf), ['name', 'segment', 'district', 'skor_peluang_pct', 'rank_in_segment', 'risk_class', 'alarm',
                                                                             'recommended_products', 'reason', 'peluang_konversi_pct', 'ev_Rp_juta', 'contacted'], n, 1)}
-        if tool in ('company_facts', 'product_opportunities', 'cashflow_trend', 'visit_history', 'investigate_alarm', 'intro_path'):
+        if tool in ('company_facts', 'product_opportunities', 'cashflow_trend', 'visit_history', 'investigate_alarm', 'intro_path', 'bank_shift', 'credit_facility'):
             err = guard(cid)
             if err: return err
         if tool == 'company_facts':
@@ -402,6 +707,62 @@ def make_executor(store, rm, proposals=None):
             return {'jumlah': len(p), 'prospect': _records(p, ['name', 'segment', 'district', 'lewat_nama', 'nilai_M', 'acquisition_score', 'risk_class', 'white_space'], n)}
         if tool == 'intro_path':
             return {'prospect': name(cid), 'jalur': _records(store.intro_paths(cid, rm).set_index('id'), ['name', 'rm_id', 'nilai_M', 'jenis', 'arah', 'milik_saya'], 5)}
+        if tool == 'bank_shift':
+            return bank_shift(store, cid)
+        if tool == 'credit_facility':
+            return credit_facility(store, cid)
+        if tool == 'triage_alerts':
+            if rm == 'Semua RM':
+                return {'error': 'triase hanya untuk satu RM; minta pengguna memilih RM di sidebar'}
+            tr = triage(store, rm, int(args.get('bulan') or 3))
+            for r in tr['baris']:
+                if r['status'] != 'usul':
+                    continue
+                res = (propose('eskalasi', r['id'], alasan=r['detail'], bukti=r['bukti'], sumber='triase') if r['aksi'] == 'eskalasi'
+                       else propose('rencana', r['id'], catatan=r['detail'], hari=None, jam=None, sumber='triase'))
+                r['aksi_id'] = res.get('aksi_id')
+            return {'jumlah': len(tr['baris']), 'per_kelompok': tr['jumlah'], 'ringkasan': tr['ringkasan'],
+                    'nasabah': [{k: r.get(k) for k in ('id', 'nama', 'segmen', 'risiko', 'alarm', 'kelompok', 'kesimpulan', 'bukti', 'detail', 'status', 'aksi_id')}
+                                for r in tr['baris']]}
+        if tool == 'propose_week_plan':
+            from datetime import date
+            from . import kalender as K
+            if rm == 'Semua RM':
+                return {'error': 'rencana minggu hanya untuk satu RM; minta pengguna memilih RM di sidebar'}
+            minggu = args.get('minggu') or 'minggu depan'
+            ws = week_start_for(minggu)
+            off = set(args.get('hari_tidak_bisa') or [])
+            days = [(d['hari'], d.get('kanal') or 'Kunjungan', max(1, min(int(d.get('slot') or 3), 4))) for d in (args.get('hari') or [])] or \
+                   [('Selasa', 'Kunjungan', 3), ('Rabu', 'Telepon', 2), ('Kamis', 'Kunjungan', 2)]
+            from . import planner
+            past = {h for h in planner.HARI if minggu == 'minggu ini' and ws.toordinal() + planner.HARI.index(h) <= date.today().toordinal()}
+            dropped = [h for h, _, _ in days if h in off | past]
+            days = [d for d in dict((d[0], d) for d in days).values() if d[0] not in off | past]
+            if not days:
+                return {'error': 'tidak ada hari tersisa setelah hari yang tidak bisa / sudah lewat dibuang; minta hari lain'}
+            must, notes = [], []
+            for c in [str(x).strip().upper() for x in args.get('wajib') or []]:
+                err = guard(c) if c in store.co.index else {'error': f'{c} tidak ditemukan'}
+                who, why = K.holder(K.load(), c) if not err else (None, '')
+                if err or (who and who != rm):
+                    notes.append(f"{c} tidak bisa dimasukkan: {err['error'] if err else f'dipegang {who} ({why})'}")
+                else:
+                    must.append(c)
+            skip = {str(x).strip().upper() for x in args.get('kecualikan') or []}
+            plan = plan_week(store, rm, (), days, minggu, exclude=K.scheduled_ids(rm) | skip, must=must, focus=args.get('fokus') or 'seimbang')
+            finalize_plan(store, plan, ws, rm)
+            proposals.append({'id': f'A{len(proposals) + 1}', 'tipe': 'rencana_minggu', 'company_id': '', 'nama': f'Rencana {minggu}', 'status': 'menunggu', 'plan': plan})
+            return {'status': 'rencana diusulkan; menunggu persetujuan RM di layar', 'aksi_id': proposals[-1]['id'],
+                    **({'hari_dibuang': dropped} if dropped else {}), **({'catatan': notes} if notes else {}), **plan_brief(plan)}
+        if tool == 'revise_week_plan':
+            from datetime import date
+            base = next((a['plan'] for a in reversed(proposals) if a['tipe'] == 'rencana_minggu'), None) or (plan_ctx or {}).get('plan')
+            if not base:
+                return {'error': 'belum ada rencana minggu untuk direvisi; susun dulu dengan propose_week_plan'}
+            plan, notes = revise_plan(store, base, args.get('operasi') or [], rm)
+            finalize_plan(store, plan, date.fromisoformat(base['minggu_mulai']), rm)
+            proposals.append({'id': f'A{len(proposals) + 1}', 'tipe': 'rencana_minggu', 'company_id': '', 'nama': f"Rencana {plan['minggu']} (revisi)", 'status': 'menunggu', 'plan': plan})
+            return {'status': 'revisi diusulkan; menunggu persetujuan RM di layar', 'aksi_id': proposals[-1]['id'], 'perubahan': notes, **plan_brief(plan)}
         if tool == 'propose_add_to_plan':
             from . import kalender as K
             who, why = K.holder(K.load(), cid)
@@ -430,6 +791,13 @@ Cara kerja:
 - Analisis satu perusahaan: minimal company_facts; tambah cashflow_trend, product_opportunities, visit_history sesuai pertanyaan. Daftar/rekomendasi: periksa alarm & risiko kandidat teratas sebelum merekomendasikan.
 - Untuk "kenapa"/"bagaimana", gali sampai akar lalu hubungkan temuan menjadi cerita yang bisa ditindaklanjuti (apa yang terjadi → artinya → yang perlu dilakukan RM).
 - Tindakan (jadwalkan di Kalender kunjungan, catat kunjungan, eskalasi analis, draf pesan) hanya lewat alat propose_*. Usulkan tindakan bila jelas membantu atau diminta, lalu sampaikan bahwa usulan menunggu persetujuan RM di layar.
+- "Periksa/triase semua alarm": panggil triage_alerts SEKALI (sudah mencakup investigasi, fasilitas kredit, transaksi mitra, dan usulan aksi per nasabah).
+  Jawab dengan tabel per kelompok (nasabah · kesimpulan · bukti utama · aksi), sebut yang paling mendesak, dan jelaskan yang dilewati karena sudah ditangani.
+  Boleh menggali 1–2 kasus yang ambigu (mis. distress sekaligus ekspansi) dengan bank_shift / credit_facility / company_facts.
+- "Susun rencana/jadwal minggu": ubah permintaan RM menjadi parameter propose_week_plan (hari yang tidak bisa, nasabah wajib → cari ID-nya dulu, fokus, kanal & slot).
+  Permintaan perubahan atas rencana yang sedang dibahas ("ganti Kamis jadi telepon", "hapus X", "pindahkan Y ke Jumat jam 10") → revise_week_plan, JANGAN susun ulang dari nol.
+  Jelaskan rencana dengan tabel (hari · jam · nasabah · tujuan) dan jarak tempuh per hari. Satu rencana disetujui sekali di layar.
+- "Kenapa porsi wallet turun" → bank_shift; pertanyaan limit/utilisasi/kolektibilitas → credit_facility. Sampaikan bukti apa adanya: bila data mitra tidak menunjukkan perpindahan, katakan begitu.
 - Draf pesan: sapa perusahaan dengan namanya, perkenalkan diri sebagai {rm} dari BNI, sebut tujuan spesifik (produk/topik dari data) dan waktu yang diminta; sopan, maks 4 kalimat.
 - Jangan memutuskan kelayakan kredit. Nasabah risiko High hanya ditawari produk non-kredit. Bila data tidak ada, katakan terus terang.
 Kamus data (baca dengan benar):
@@ -451,12 +819,18 @@ Format jawaban:
 _FOLLOW = re.compile(r'<<\s*lanjut\s*>>(.*)$', re.S | re.I)
 
 
-def chat(store, rm, question, history=None, on_step=None, focus=None):
-    """Agen percakapan. Mengembalikan dict: jawaban, jejak, usulan aksi, saran lanjutan, cek angka, mode."""
+def chat(store, rm, question, history=None, on_step=None, focus=None, plan_ctx=None):
+    """Agen percakapan. Mengembalikan dict: jawaban, jejak, usulan aksi, saran lanjutan, cek angka, mode.
+    plan_ctx = {'plan': ...} rencana minggu terakhir di percakapan ini (supaya RM bisa merevisinya)."""
     fokus = f" Perusahaan yang sedang dibuka RM: {store.co.name.get(focus, focus)} ({focus})." if focus in store.co.index else ''
+    if plan_ctx and plan_ctx.get('plan'):
+        p = plan_ctx['plan']
+        fokus += (f" Ada rencana minggu ({p['minggu']}, mulai {p.get('minggu_mulai')}) yang sedang dibahas: "
+                  + '; '.join(f"{d['hari']}: " + ', '.join(f"{it['jam']} {it['nama']} ({it['id']})" for it in d['item']) for d in p['hari'])
+                  + '. Perubahan atasnya pakai revise_week_plan.')
     sys = llm.SYSTEM + AGENT_RULES.format(rm=rm, n=len(store.portfolio(rm)), fokus=fokus)
     proposals = []
-    ans, trace = llm.run_tools(sys, question, TOOLS, make_executor(store, rm, proposals), history=history, on_step=on_step)
+    ans, trace = llm.run_tools(sys, question, TOOLS, make_executor(store, rm, proposals, plan_ctx), history=history, on_step=on_step, max_steps=14)
     if ans is None:
         ex = make_executor(store, rm); s = ex('portfolio_summary', {})
         top = ex('list_priority', {'n': 5})['daftar']
@@ -466,7 +840,7 @@ def chat(store, rm, question, history=None, on_step=None, focus=None):
     m = _FOLLOW.search(ans or '')
     lanjut = [x.strip(' -*') for x in m.group(1).split('|') if x.strip(' -*')][:3] if m else []
     ans = _FOLLOW.sub('', ans).strip()
-    facts = [t[2] for t in trace] + [question] + [h['content'] for h in (history or [])]
+    facts = [t[2] for t in trace] + [question] + [h['content'] for h in (history or [])] + ([plan_brief(plan_ctx['plan'])] if plan_ctx and plan_ctx.get('plan') else [])
     jam = re.findall(r'(?:jam|pukul)\s*(\d{1,2}[.:]\d{2})', ans, re.I)
     n_num, bad = R.check_numbers({'jawaban': ans}, facts, extra_allowed=jam)
     return {'jawaban': ans, 'jejak': trace, 'usulan': proposals, 'lanjut': lanjut, 'cek': (n_num, bad), 'mode': 'LLM'}

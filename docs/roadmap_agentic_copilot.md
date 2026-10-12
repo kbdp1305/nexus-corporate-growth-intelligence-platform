@@ -30,12 +30,13 @@ RM Copilot (`app/egi/agent.py`, `app/egi/llm.py`, `app/views/6_copilot.py`) suda
   - Cara kerja: cari catatan per RM/perusahaan/periode; cocokkan kata kunci `issue_product_map` → ringkas per masalah beserta produk solusinya.
   - Nilai demo: agen mengutip kalimat RM yang asli sebagai bukti.
 
-- [ ] **2. Alat bukti perpindahan bank** (`bank_shift`)
+- [x] **2. Alat bukti perpindahan bank** (`bank_shift`)
+  - *Selesai (dharma-triase).* Catatan data: porsi nilai mitra lewat bank lain tidak berbeda antara nasabah beralarm dan tidak (±27–28%); sinyal yang ada adalah **mitra BNI yang berhenti bertransaksi** (rata-rata 0,77 mitra untuk alarm wallet_erosion vs 0,38 tanpa alarm). Alat melaporkan bukti apa adanya.
   - Pertanyaan contoh: *"Kenapa porsi wallet Graha Abadi turun?"*
   - Cara kerja: dari `counterparty_transactions`, bandingkan mitra yang memakai BNI vs bank lain, nilai transaksi, dan mitra yang baru pindah.
   - Nilai demo: alasan retensi berubah dari "porsi wallet turun 10 poin" menjadi "5 pemasok terbesar sekarang dibayar lewat bank X".
 
-- [ ] **3. Alat fasilitas kredit** (`credit_facility`)
+- [x] **3. Alat fasilitas kredit** (`credit_facility`)
   - Isi: limit, outstanding, utilisasi, kolektibilitas, DPD, watchlist, pembatasan kebijakan.
   - Pemakaian: utilisasi ≥ 85% dan kolektibilitas 1 → peluang tambah limit; DPD/watchlist → tanda bahaya untuk analis.
   - Catatan: tetap tidak memberi keputusan kredit (aturan yang sudah ada).
@@ -49,11 +50,11 @@ Perkiraan: ±6 alat baru di `agent.py` + entri `TOOL_LABEL` + kamus data di prom
 
 ### Tingkat 2: agen yang bekerja lebih mandiri
 
-- [ ] **5. Triase alarm massal**
+- [x] **5. Triase alarm massal**
   - *"Periksa semua alarm saya bulan ini."* → agen menjalankan investigasi untuk setiap nasabah beralarm, mengelompokkan distress vs retensi vs sinyal lemah, lalu membuat beberapa usulan eskalasi/rencana sekaligus.
   - Perlu: tombol **Setujui semua** / per baris di kartu usulan.
 
-- [ ] **6. Rencana minggu dengan rute**
+- [x] **6. Rencana minggu dengan rute**
   - Urutkan kunjungan per hari berdasarkan jarak (lat/lon perusahaan & cabang), kelompokkan per kecamatan.
   - Hasil: satu usulan rencana lengkap (hari, jam, tujuan) yang disetujui sekali.
 

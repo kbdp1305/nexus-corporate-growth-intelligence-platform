@@ -20,7 +20,7 @@ st.write('')
 
 f1, f2, f3 = st.columns([1.4, 1.2, 1.4])
 stat = f1.multiselect('Status', T.ST_TIKET, default=['Baru', 'Diproses'])
-jenis = f2.multiselect('Jenis', ['Koordinasi hasil kunjungan', 'Pendampingan kunjungan'])
+jenis = f2.multiselect('Jenis', ['Koordinasi hasil kunjungan', 'Pendampingan kunjungan', T.ESKALASI])
 divf = [] if is_div else f3.multiselect('Divisi', list(T.DIVISI), format_func=lambda d: T.DIVISI[d])
 v = df[df.status.isin(stat or T.ST_TIKET)]
 if jenis:
