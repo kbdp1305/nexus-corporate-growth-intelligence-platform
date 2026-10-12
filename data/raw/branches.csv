@@ -1,41 +1,41 @@
 branch_id,branch_name,branch_type,latitude,longitude,location_id
-B001,Kantor Cabang Tanah Abang (dummy),KCP,-6.18349,106.82148,L002
-B002,Kantor Cabang Kebayoran Baru (dummy),KCP,-6.25627,106.8346,L007
-B003,Sentra Bisnis Komersial Kramat Jati (dummy),Sentra Bisnis Komersial,-6.22891,106.897,L031
-B004,Sentra Bisnis Komersial Kebayoran Lama (dummy),Sentra Bisnis Komersial,-6.30545,106.82183,L014
-B005,Kantor Cabang Kebayoran Lama II (dummy),KCP,-6.30849,106.80219,L014
-B006,Sentra Bisnis Komersial Bekasi Timur (dummy),Sentra Bisnis Komersial,-6.23168,106.99298,L034
-B007,Sentra Bisnis Komersial Bekasi Barat (dummy),Sentra Bisnis Komersial,-6.25005,106.98391,L033
-B008,Kantor Cabang Sawah Besar (dummy),KCP,-6.17165,106.85223,L006
-B009,Kantor Cabang Pancoran (dummy),KCP,-6.30361,106.78077,L013
-B010,Kantor Cabang Bekasi Barat II (dummy),KCU,-6.26201,107.00164,L033
-B011,Kantor Cabang Menteng (dummy),KCP,-6.16537,106.81915,L003
-B012,Sentra Bisnis Komersial Kebayoran Lama III (dummy),Sentra Bisnis Komersial,-6.31528,106.81537,L014
-B013,Kantor Cabang Pasar Rebo (dummy),KCP,-6.2701,106.84069,L032
-B014,Sentra Bisnis Komersial Karawaci (dummy),Sentra Bisnis Komersial,-6.15783,106.63645,L038
-B015,Kantor Cabang Setiabudi (dummy),KCP,-6.24234,106.79159,L008
-B016,Kantor Cabang Karawaci II (dummy),KCP,-6.17581,106.63023,L038
-B017,Kantor Cabang Setiabudi II (dummy),KCP,-6.25423,106.78673,L008
-B018,Sentra Bisnis Komersial Cengkareng (dummy),Sentra Bisnis Komersial,-6.17386,106.80788,L023
-B019,Kantor Cabang Cipondoh (dummy),KCU,-6.25935,106.62202,L039
-B020,Kantor Cabang Duren Sawit (dummy),KCU,-6.26109,106.87232,L030
-B021,Kantor Cabang Kemayoran (dummy),KCP,-6.20843,106.87935,L005
-B022,Sentra Bisnis Komersial Pademangan (dummy),Sentra Bisnis Komersial,-6.16774,106.85727,L020
-B023,Kantor Cabang Cilandak (dummy),KCP,-6.29412,106.76535,L010
-B024,Kantor Cabang Tanjung Priok (dummy),KCU,-6.08812,106.86132,L016
-B025,Kantor Cabang Bekasi Timur II (dummy),KCP,-6.23676,107.00584,L034
-B026,Sentra Bisnis Komersial Cengkareng II (dummy),Sentra Bisnis Komersial,-6.17809,106.81118,L023
-B027,Sentra Bisnis Komersial Tangerang (dummy),Sentra Bisnis Komersial,-6.18111,106.65721,L037
-B028,Kantor Cabang Bekasi Timur III (dummy),KCU,-6.24164,107.00008,L034
-B029,Kantor Cabang Kebayoran Baru II (dummy),KCU,-6.24745,106.8323,L007
-B030,Kantor Cabang Gambir (dummy),KCP,-6.19518,106.83789,L001
-B031,Kantor Cabang Tanjung Priok II (dummy),KCP,-6.10913,106.84966,L016
-B032,Sentra Bisnis Komersial Senen (dummy),Sentra Bisnis Komersial,-6.16899,106.87687,L004
-B033,Kantor Cabang Cipondoh II (dummy),KCP,-6.25628,106.62226,L039
-B034,Kantor Cabang Cilandak II (dummy),KCU,-6.29328,106.77422,L010
-B035,Kantor Cabang Jatinegara (dummy),KCU,-6.24498,106.94369,L029
-B036,Kantor Cabang Kebon Jeruk (dummy),KCP,-6.14214,106.77309,L022
-B037,Kantor Cabang Jatinegara II (dummy),KCP,-6.24449,106.96293,L029
-B038,Kantor Cabang Tangerang II (dummy),KCP,-6.17766,106.65506,L037
-B039,Sentra Bisnis Komersial Senen II (dummy),Sentra Bisnis Komersial,-6.16065,106.88036,L004
-B040,Kantor Cabang Cilandak III (dummy),KCU,-6.29674,106.7773,L010
+B001,Kantor Cabang Tanah Abang (dummy),KCP,-6.20216,106.80767,L002
+B002,Kantor Cabang Kebayoran Baru (dummy),KCP,-6.24579,106.80448,L007
+B003,Sentra Bisnis Komersial Kramat Jati (dummy),Sentra Bisnis Komersial,-6.27555,106.85723,L031
+B004,Sentra Bisnis Komersial Kebayoran Lama (dummy),Sentra Bisnis Komersial,-6.25258,106.78690,L014
+B005,Kantor Cabang Kebayoran Lama II (dummy),KCP,-6.25398,106.77300,L014
+B006,Sentra Bisnis Komersial Bekasi Timur (dummy),Sentra Bisnis Komersial,-6.23999,107.01826,L034
+B007,Sentra Bisnis Komersial Bekasi Barat (dummy),Sentra Bisnis Komersial,-6.23764,106.98125,L033
+B008,Kantor Cabang Sawah Besar (dummy),KCP,-6.15836,106.82908,L006
+B009,Kantor Cabang Pancoran (dummy),KCP,-6.25804,106.83442,L013
+B010,Kantor Cabang Bekasi Barat II (dummy),KCU,-6.24768,106.99518,L033
+B011,Kantor Cabang Menteng (dummy),KCP,-6.19501,106.82844,L003
+B012,Sentra Bisnis Komersial Kebayoran Lama III (dummy),Sentra Bisnis Komersial,-6.26309,106.78210,L014
+B013,Kantor Cabang Pasar Rebo (dummy),KCP,-6.32251,106.85301,L032
+B014,Sentra Bisnis Komersial Karawaci (dummy),Sentra Bisnis Komersial,-6.17045,106.61302,L038
+B015,Kantor Cabang Setiabudi (dummy),KCP,-6.21265,106.83144,L008
+B016,Kantor Cabang Karawaci II (dummy),KCP,-6.18698,106.60903,L038
+B017,Kantor Cabang Setiabudi II (dummy),KCP,-6.22454,106.82658,L008
+B018,Sentra Bisnis Komersial Cengkareng (dummy),Sentra Bisnis Komersial,-6.15636,106.73717,L023
+B019,Kantor Cabang Cipondoh (dummy),KCU,-6.19312,106.68681,L039
+B020,Kantor Cabang Duren Sawit (dummy),KCU,-6.23563,106.92659,L030
+B021,Kantor Cabang Kemayoran (dummy),KCP,-6.16180,106.86455,L005
+B022,Sentra Bisnis Komersial Pademangan (dummy),Sentra Bisnis Komersial,-6.13219,106.82893,L020
+B023,Kantor Cabang Cilandak (dummy),KCP,-6.29292,106.79167,L010
+B024,Kantor Cabang Tanjung Priok (dummy),KCU,-6.11877,106.88048,L016
+B025,Kantor Cabang Bekasi Timur II (dummy),KCP,-6.24507,107.03112,L034
+B026,Sentra Bisnis Komersial Cengkareng II (dummy),Sentra Bisnis Komersial,-6.16059,106.74047,L023
+B027,Sentra Bisnis Komersial Tangerang (dummy),Sentra Bisnis Komersial,-6.19240,106.64184,L037
+B028,Kantor Cabang Bekasi Timur III (dummy),KCU,-6.24995,107.02536,L034
+B029,Kantor Cabang Kebayoran Baru II (dummy),KCU,-6.23697,106.80218,L007
+B030,Kantor Cabang Gambir (dummy),KCP,-6.16683,106.81873,L001
+B031,Kantor Cabang Tanjung Priok II (dummy),KCP,-6.13978,106.86882,L016
+B032,Sentra Bisnis Komersial Senen (dummy),Sentra Bisnis Komersial,-6.18690,106.84192,L004
+B033,Kantor Cabang Cipondoh II (dummy),KCP,-6.19005,106.68705,L039
+B034,Kantor Cabang Cilandak II (dummy),KCU,-6.29208,106.80054,L010
+B035,Kantor Cabang Jatinegara (dummy),KCU,-6.23704,106.87245,L029
+B036,Kantor Cabang Kebon Jeruk (dummy),KCP,-6.19659,106.78157,L022
+B037,Kantor Cabang Jatinegara II (dummy),KCP,-6.23655,106.89169,L029
+B038,Kantor Cabang Tangerang II (dummy),KCP,-6.18895,106.63969,L037
+B039,Sentra Bisnis Komersial Senen II (dummy),Sentra Bisnis Komersial,-6.18102,106.84157,L004
+B040,Kantor Cabang Cilandak III (dummy),KCU,-6.29554,106.80362,L010
