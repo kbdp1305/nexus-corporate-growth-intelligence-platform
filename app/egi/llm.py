@@ -181,29 +181,6 @@ def visit_extract(note, products):
     return {'respons': resp, 'produk': prod, 'keberatan': keb, 'langkah_berikut': nxt}, 'template'
 
 
-def followup_suggest(ctx: dict, base: dict, kanal_ok):
-    """Hasil kunjungan ini + riwayat kunjungan sebelumnya → saran rencana lanjutan & jadwal ulang.
-    base = saran aturan (tindak.followup_rule), dipakai untuk kunci yang tidak valid / bila LLM tidak tersedia. → (saran, mode)."""
-    out = complete_json('Susun rencana tindak lanjut untuk RM berdasarkan hasil kunjungan terakhir dan riwayat kunjungan sebelumnya ke nasabah yang sama. '
-                        'Bila nasabah perlu pertimbangan ulang, tentukan kapan sebaiknya dijadwalkan ulang (beri waktu nasabah menimbang, tapi jangan sampai minat hilang). '
-                        'Kunci JSON: langkah (1 kalimat perintah yang bisa langsung dikerjakan RM), alasan (1 kalimat singkat, rujuk riwayat bila relevan), '
-                        f"hari (bilangan bulat 1–120: jeda dari hari ini ke jadwal berikutnya), kanal (salah satu: {', '.join(kanal_ok)}), jam (format HH:MM, 08:00–15:00).\n\n"
-                        'KONTEKS:\n' + json.dumps(ctx, ensure_ascii=False, default=str),
-                        ['langkah', 'alasan', 'hari', 'kanal', 'jam'], max_tokens=500)
-    if not out or not str(out.get('langkah') or '').strip():
-        return base, 'aturan'
-    s = dict(base, langkah=str(out['langkah']).strip(), alasan=str(out.get('alasan') or base['alasan']).strip())
-    try:
-        s['hari'] = min(max(int(out.get('hari')), 1), 120)
-    except (TypeError, ValueError):
-        pass
-    if out.get('kanal') in kanal_ok:
-        s['kanal'] = out['kanal']
-    if re.fullmatch(r'(0[89]|1[0-5]):[0-5]\d', str(out.get('jam', '')).strip()):
-        s['jam'] = out['jam'].strip()
-    return s, 'LLM'
-
-
 def draft_message(kind, ctx: dict):
     prompts = {'janji': 'Tulis pesan WhatsApp singkat dan sopan dari RM untuk membuat janji kunjungan.',
                'intro': 'Tulis pesan WhatsApp singkat dan sopan dari RM kepada nasabahnya, meminta bantuan memperkenalkan bank kepada mitra usaha mereka.'}

@@ -3,7 +3,7 @@ from datetime import date, datetime, time, timedelta
 import pandas as pd
 import streamlit as st
 
-from egi import auth, data, kalender as K, llm, state, tindak as T, ui
+from egi import auth, data, kalender as K, llm, saran as S, state, tindak as T, ui
 
 store = data.get_store(); ss = st.session_state
 user = auth.current()
@@ -61,12 +61,9 @@ if tab == 'Feedback kunjungan':
         hit, sug, hold = T.suggest(catatan, produk)
         riwayat = T.history(cid, eid)
         ulang = T.needs_reconsider(hasil, catatan, keberatan)
-        sig = (hasil, catatan, keberatan, tuple(produk))
-        if ss.get(f'fb_sx_{eid}', {}).get('sig') != sig:          # saran LLM usang bila isian berubah
-            ss.pop(f'fb_sx_{eid}', None)
-        saran, mode = T.followup_rule(hasil, catatan, keberatan, produk, hold, riwayat), 'aturan'
-        if f'fb_sx_{eid}' in ss:
-            saran, mode = ss[f'fb_sx_{eid}']['saran'], 'LLM'
+        with st.spinner('Menyusun saran dari model & riwayat nasabah…'):
+            saran, mode, info, analisis = S.suggest(store, cid=cid, hasil=hasil, catatan=catatan, keberatan=keberatan, produk=produk, isu=hit, hold=hold,
+                                                    ulang=ulang, riwayat=riwayat, pakai_llm=bool(catatan.strip()))
         when = T.free_slot(ev['rm_id'], datetime.combine(date.today() + timedelta(days=saran['hari']), time.fromisoformat(saran['jam'])),
                            K.R.DURASI_MENIT.get(saran['kanal'], 60))
 
@@ -76,41 +73,32 @@ if tab == 'Feedback kunjungan':
             ss[f'_auto_{key}'] = auto
 
         def pakai_saran():
-            ss[f'fb_l_{eid}'] = saran['langkah']
-            for key, v in [(f'fb_j_{eid}', True), (f'fb_t_{eid}', when.date()), (f'fb_jm_{eid}', when.time()), (f'fb_kn_{eid}', saran['kanal'])]:
+            for key, v in [(f'fb_l_{eid}', saran['langkah']), (f'fb_m_{eid}', saran['pesan_divisi']), (f'fb_j_{eid}', True), (f'fb_t_{eid}', when.date()),
+                           (f'fb_jm_{eid}', when.time()), (f'fb_kn_{eid}', saran['kanal'])]:
                 ss[key] = ss[f'_auto_{key}'] = v
-
-        def saran_llm():
-            ctx = {'perusahaan': store.co.name.get(cid, cid), 'hari_ini': f'{date.today():%A %d %b %Y}', 'kanal_kunjungan_ini': ev['kanal'],
-                   'hasil': T.HASIL_ID.get(hasil, hasil), 'produk_dibahas': [PNAME.get(p, p) for p in produk], 'catatan': catatan, 'keberatan': keberatan,
-                   'isu': [T.issues().issue_name.get(i, i) for i in hit], 'kredit_ditahan': hold, 'perlu_pertimbangan_ulang': ulang,
-                   'produk_dimiliki': [PNAME.get(p, p) for p in held], 'rekomendasi_model': [PNAME.get(p, p) for p in rec],
-                   'riwayat_kunjungan': [{'tanggal': r.tanggal, 'kanal': r.kanal, 'hasil': T.HASIL_ID.get(r.hasil, r.hasil), 'catatan': r.catatan,
-                                          'keberatan': r.keberatan, 'langkah_lanjut': r.langkah_lanjut} for r in riwayat.head(5).itertuples()]}
-            s, md = llm.followup_suggest(ctx, T.followup_rule(hasil, catatan, keberatan, produk, hold, riwayat), K.KANAL)
-            if md == 'LLM':
-                ss[f'fb_sx_{eid}'] = {'sig': sig, 'saran': s}
-            else:
-                ss.fb_llm_err = llm.complete.last_error or 'LLM tidak membalas dengan format yang benar.'
 
         with b:
             st.markdown('##### 2 · Rencana lanjutan')
             if ulang:
                 st.markdown("<div class='egi-warn'>Nasabah perlu pertimbangan ulang: disarankan menjadwalkan ulang kunjungan setelah nasabah menimbang.</div>",
                             unsafe_allow_html=True)
-            langkah = st.text_input('Langkah berikutnya', key=f'fb_l_{eid}', placeholder='Mis. kirim simulasi payroll & jadwalkan presentasi ke direksi')
-            st.markdown(f"<div class='egi-ai'><div class='h'>Suggestion · {'LLM' if mode == 'LLM' else 'otomatis (aturan)'}</div>{ui.esc(saran['langkah'])}"
-                        f"<div class='src'>{ui.esc(saran['alasan'])}<br>{'Jadwal ulang' if ulang else 'Jadwal berikutnya'}: "
+            follow(f'fb_l_{eid}', saran['langkah'])
+            langkah = st.text_area('Langkah berikutnya', key=f'fb_l_{eid}', height=90, help='Terisi otomatis dari saran di bawah; ubah sesuai kebutuhan.')
+            st.markdown(f"<div class='egi-ai'><div class='h'>Suggestion · {'LLM dari analisis model' if mode == 'LLM' else 'analisis model & data nasabah'}</div>"
+                        f"{ui.esc(saran['langkah'])}<div class='src'>{'Jadwal ulang' if ulang else 'Jadwal berikutnya'}: "
                         f"{when:%a %d %b %Y, %H.%M} · {ui.esc(saran['kanal'])} (slot kosong di kalender {ev['rm_id']})</div></div>", unsafe_allow_html=True)
-            s1, s2, _ = st.columns([1, 1.3, 0.7])
-            s1.button('Pakai saran', key=f'fb_use_{eid}', on_click=pakai_saran, use_container_width=True,
-                      help='Isi langkah berikutnya dan jadwal dengan saran ini; tetap bisa diubah manual.')
-            on = llm.config()['enabled']
-            s2.button('Buat ulang dengan LLM' if mode == 'LLM' else 'Buat saran dengan LLM', key=f'fb_llm_{eid}', on_click=saran_llm, disabled=not on,
-                      use_container_width=True, help='Saran dari catatan, keberatan, dan riwayat kunjungan sebelumnya.' if on
-                      else 'LLM belum dikonfigurasi (LLM_PROVIDER & API key di .env); saran memakai aturan otomatis.')
-            if ss.get('fb_llm_err'):
-                st.caption(f"LLM gagal, saran memakai aturan otomatis: {ss.pop('fb_llm_err')[:160]}")
+            with st.expander('Dasar analisis'):
+                st.markdown('\n'.join(f'- {ui.esc(x)}' for x in saran['alasan']))
+                if analisis['kasus_serupa']['catatan_mirip']:
+                    st.caption('Catatan mirip di log RM: ' + ' · '.join(analisis['kasus_serupa']['catatan_mirip']))
+            if info:
+                st.caption(info)
+            elif mode != 'LLM':
+                st.caption('Saran disusun dari output model risiko, model peluang produk, alarm arus kas, dan kasus serupa di log RM. '
+                           + ('Isi catatan kunjungan agar LLM menulis saran yang lebih spesifik.' if llm.config()['enabled']
+                              else 'Aktifkan LLM (LLM_PROVIDER & API key di .env) agar saran juga ditulis ulang oleh LLM.'))
+            st.button('Kembalikan ke saran', key=f'fb_use_{eid}', on_click=pakai_saran,
+                      help='Timpa langkah, jadwal, dan permintaan ke divisi dengan saran terbaru.')
             follow(f'fb_j_{eid}', hasil in ('Converted', 'Interested') or ulang)
             jadwal = st.toggle('Jadwalkan ulang kunjungan di kalender' if ulang else 'Jadwalkan tindak lanjut di kalender', key=f'fb_j_{eid}')
             lanjut = None
@@ -133,7 +121,8 @@ if tab == 'Feedback kunjungan':
                 y1, y2 = st.columns(2)
                 prio = y1.selectbox('Prioritas', T.PRIORITAS, index=1 if hasil == 'Converted' or hold else 0, key=f'fb_pr_{eid}')
                 tenggat = y2.date_input('Tenggat', date.today() + timedelta(days=5), format='DD/MM/YYYY', key=f'fb_tg_{eid}')
-                pesan = st.text_area('Permintaan ke divisi', key=f'fb_m_{eid}', height=80, placeholder='Mis. mohon simulasi limit KMK dan dokumen yang dibutuhkan.')
+                follow(f'fb_m_{eid}', saran['pesan_divisi'])
+                pesan = st.text_area('Permintaan ke divisi', key=f'fb_m_{eid}', height=100, help='Draf otomatis dari hasil kunjungan & analisis; ubah sesuai kebutuhan.')
             else:
                 prio, tenggat, pesan = 'Normal', '', ''
         if st.button('Simpan feedback' + (f' & kirim {len(divs)} tiket' if divs else ''), type='primary'):

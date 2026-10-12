@@ -120,45 +120,6 @@ def free_slot(rm, start: datetime, menit=60) -> datetime:
     return start
 
 
-def followup_rule(hasil, catatan, keberatan, produk, hold, riwayat: pd.DataFrame) -> dict:
-    """Saran rencana lanjutan tanpa LLM: aturan dari hasil kunjungan ini + riwayat kunjungan sebelumnya.
-    → {langkah, alasan, hari (jeda ke jadwal berikutnya), kanal, jam}."""
-    pn = ', '.join(products().product_name.get(p, p) for p in produk) or 'produk yang dibahas'
-    prev = list(riwayat.hasil)
-    n_sama = sum(h == hasil for h in prev)
-    k = str(keberatan).lower()
-    ke = f"kunjungan ke-{len(prev) + 1}" + (f"; sebelumnya {HASIL_ID.get(prev[0], prev[0]).lower()} ({riwayat.tanggal.iloc[0]})" if prev else '')
-    if hold:
-        return dict(langkah='Libatkan Legal / Risiko Kredit sebelum menawarkan kredit; lanjutkan pembahasan produk non-kredit saja',
-                    alasan=f'Ada isu legal / likuiditas di catatan · {ke}', hari=7, kanal='Kunjungan', jam='10:00')
-    if hasil == 'Converted':
-        return dict(langkah=f'Kirim checklist dokumen onboarding {pn} dan jadwalkan aktivasi bersama divisi pemilik produk',
-                    alasan=f'Nasabah setuju; percepat onboarding sebelum minat turun · {ke}', hari=3, kanal='Telepon', jam='10:00')
-    if needs_reconsider(hasil, catatan, keberatan):
-        if any(w in k for w in ('biaya', 'mahal', 'bunga', 'fee', 'admin', 'harga')):
-            langkah = f'Siapkan simulasi biaya {pn} dan ajukan keringanan ke Pricing, lalu jadwalkan ulang diskusi untuk konfirmasi keputusan'
-        elif 'bank lain' in k or 'pesaing' in k:
-            langkah = f'Siapkan perbandingan layanan {pn} dengan bank lain nasabah, lalu jadwalkan ulang diskusi untuk konfirmasi keputusan'
-        else:
-            langkah = f'Kirim ringkasan proposal {pn} beserta jawaban atas pertanyaan nasabah, lalu jadwalkan ulang diskusi untuk konfirmasi keputusan'
-        return dict(langkah=langkah, alasan=f'Nasabah perlu pertimbangan ulang; beri waktu menimbang sebelum kunjungan ulang · {ke}',
-                    hari=10 if n_sama else 14, kanal='Kunjungan', jam='10:00')
-    if hasil == 'Interested':
-        return dict(langkah=f'Kirim proposal dan simulasi {pn}, lalu presentasikan ke pengambil keputusan',
-                    alasan=f'Nasabah tertarik; jaga momentum · {ke}', hari=7, kanal='Kunjungan', jam='10:00')
-    if hasil == 'Not interested':
-        if n_sama:
-            return dict(langkah='Turunkan prioritas nasabah ini; pantau sinyal arus kas dan tawarkan produk lain bila ada kebutuhan baru',
-                        alasan=f'Sudah {n_sama + 1}× tidak tertarik · {ke}', hari=90, kanal='Telepon', jam='10:00')
-        return dict(langkah='Catat alasan penolakan, lalu hubungi kembali dengan produk alternatif yang lebih sesuai',
-                    alasan=f'Penolakan pertama; coba sudut penawaran lain · {ke}', hari=30, kanal='Telepon', jam='10:00')
-    if n_sama >= 1:                              # No response berulang
-        return dict(langkah='Cari PIC lain (mis. lewat nasabah perantara atau bagian keuangan) dan kirim pesan perkenalan singkat',
-                    alasan=f'Sudah {n_sama + 1}× tidak ada respons · {ke}', hari=7, kanal='Telepon', jam='10:00')
-    return dict(langkah='Hubungi ulang lewat telepon / WhatsApp untuk konfirmasi waktu bertemu',
-                alasan=f'Belum ada respons · {ke}', hari=3, kanal='Telepon', jam='10:00')
-
-
 # ------------------------------------------------------------------ riwayat percakapan tiket
 def thread(row) -> list:
     try:
