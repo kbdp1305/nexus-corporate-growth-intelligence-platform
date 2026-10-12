@@ -39,6 +39,24 @@ section[data-testid="stSidebar"] .stButton button {{ background: #16284A; border
 .egi-title {{ font-size: 13px; color: {INK2}; font-weight: 500; margin-bottom: -6px; }}
 .egi-warn {{ background: #FBEFD6; color: #7A4E00; border-radius: 8px; padding: 8px 12px; font-size: 13px; }}
 div[data-testid="stMetricValue"] {{ font-family: 'IBM Plex Mono', monospace; }}
+.egi-plan {{ background: #FFFFFF; border: 1px solid {LINE}; border-radius: 12px; padding: 14px 16px; margin: 6px 0 10px; }}
+.egi-plan .hd {{ display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }}
+.egi-plan .tt {{ font-size: 14px; font-weight: 700; color: {NAVY}; }}
+.egi-plan .sum {{ font-size: 13.5px; line-height: 1.55; color: #1F2937; background: #F5F7FB; border-radius: 8px; padding: 10px 12px; }}
+.egi-plan .sec {{ font-size: 11.5px; font-weight: 700; color: {INK2}; text-transform: uppercase; letter-spacing: .5px; margin: 14px 0 4px; }}
+.egi-step {{ display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid #EEF0F3; }}
+.egi-step.first {{ border-top: 0; }}
+.egi-step .no {{ flex: 0 0 24px; height: 24px; border-radius: 50%; background: {NAVY2}; color: #FFFFFF; font-size: 12px; font-weight: 700;
+                 display: flex; align-items: center; justify-content: center; margin-top: 1px; }}
+.egi-step .ak {{ font-size: 14px; font-weight: 600; color: {INK}; line-height: 1.45; }}
+.egi-step .mt {{ margin-top: 5px; }}
+.egi-step .al {{ font-size: 12.5px; color: {INK2}; line-height: 1.45; margin-top: 2px; }}
+.egi-obj {{ border-left: 3px solid #E8B04B; background: #FFFBF2; border-radius: 0 8px 8px 0; padding: 7px 10px; margin: 6px 0; font-size: 13.5px; line-height: 1.5; }}
+.egi-obj .k {{ font-weight: 600; color: #7A4E00; }}
+.egi-when {{ display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; background: #E4F1EA; color: #17613F; border-radius: 8px;
+             padding: 9px 12px; margin-top: 14px; font-size: 13.5px; }}
+.egi-when b {{ font-size: 14px; }}
+.egi-when .tj {{ color: #2F5D46; font-size: 13px; }}
 </style>
 """
 

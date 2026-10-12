@@ -1,9 +1,10 @@
+import json
 from datetime import date, datetime, time, timedelta
 
 import pandas as pd
 import streamlit as st
 
-from egi import auth, data, kalender as K, llm, saran as S, state, tindak as T, ui
+from egi import agen_tindak as A, auth, data, kalender as K, llm, state, tindak as T, ui
 
 store = data.get_store(); ss = st.session_state
 user = auth.current()
@@ -48,7 +49,7 @@ if tab == 'Feedback kunjungan':
         held = sorted(store.hold[store.hold.company_id == cid].product_id.unique()) if cid else []
         rec = [p for p in store.prod[store.prod.company_id == cid].sort_values('rank_produk').product_id][:3] if cid else []
 
-        a, b = st.columns([1.25, 1])
+        a, b = st.columns([1, 1.3], gap="large")
         with a:
             st.markdown('##### 1 · Hasil kunjungan')
             hasil = st.radio('Hasil', T.HASIL, format_func=T.HASIL_ID.get, horizontal=True, key=f'fb_h_{eid}')
@@ -61,49 +62,90 @@ if tab == 'Feedback kunjungan':
         hit, sug, hold = T.suggest(catatan, produk)
         riwayat = T.history(cid, eid)
         ulang = T.needs_reconsider(hasil, catatan, keberatan)
-        with st.spinner('Menyusun saran dari model & riwayat nasabah…'):
-            saran, mode, info, analisis = S.suggest(store, cid=cid, hasil=hasil, catatan=catatan, keberatan=keberatan, produk=produk, isu=hit, hold=hold,
-                                                    ulang=ulang, riwayat=riwayat, pakai_llm=bool(catatan.strip()))
-        when = T.free_slot(ev['rm_id'], datetime.combine(date.today() + timedelta(days=saran['hari']), time.fromisoformat(saran['jam'])),
-                           K.R.DURASI_MENIT.get(saran['kanal'], 60))
+        with st.spinner('Agen membaca catatan dan memanggil alat…'):                    # tanpa catatan → None
+            hasil_agen = A.run(store, company_id=cid, rm_id=ev['rm_id'], hasil=hasil, catatan=catatan, keberatan=keberatan, produk=produk, isu=hit,
+                               hold=hold, ulang=ulang, riwayat=riwayat, nonce=ss.get(f'fb_nonce_{eid}', 0))
+        ada = hasil_agen is not None
+        rencana = hasil_agen['rencana'] if ada else {'langkah': [], 'pesan_divisi': '', 'divisi': [], 'perlu_jadwal_ulang': False,
+                                                     'jadwal': {'hari': 7, 'jam': '10:00', 'kanal': 'Kunjungan', 'tujuan': ''}}
+        ulang = ulang or rencana['perlu_jadwal_ulang']
+        jd = rencana['jadwal']
+        when = T.free_slot(ev['rm_id'], datetime.combine(date.today() + timedelta(days=jd['hari']), time.fromisoformat(jd['jam'])),
+                           K.R.DURASI_MENIT.get(jd['kanal'], 60))
+        langkah_auto = A.langkah_teks(rencana) if ada else ''
+        sug = list(dict.fromkeys(sug + rencana['divisi']))
 
-        def follow(key, auto):                                    # isian ikut saran selama belum diubah manual
+        def follow(key, auto):                                    # isian ikut agen selama belum diubah manual
             if key not in ss or ss[key] == ss.get(f'_auto_{key}'):
                 ss[key] = auto
             ss[f'_auto_{key}'] = auto
 
         def pakai_saran():
-            for key, v in [(f'fb_l_{eid}', saran['langkah']), (f'fb_m_{eid}', saran['pesan_divisi']), (f'fb_j_{eid}', True), (f'fb_t_{eid}', when.date()),
-                           (f'fb_jm_{eid}', when.time()), (f'fb_kn_{eid}', saran['kanal'])]:
+            for key, v in [(f'fb_l_{eid}', langkah_auto), (f'fb_m_{eid}', rencana['pesan_divisi']), (f'fb_j_{eid}', True), (f'fb_t_{eid}', when.date()),
+                           (f'fb_jm_{eid}', when.time()), (f'fb_kn_{eid}', jd['kanal'])]:
                 ss[key] = ss[f'_auto_{key}'] = v
+
+        def ulangi_agen():
+            ss[f'fb_nonce_{eid}'] = ss.get(f'fb_nonce_{eid}', 0) + 1
+
+        def plan_html():
+            """Kartu rencana agen: pemahaman, langkah bernomor (pemilik & tenggat), keberatan, jadwal."""
+            ai = hasil_agen['mode'] == 'LLM'
+            tag = ui.badge('Agen AI · LLM', '#E4F1EA', '#17613F') if ai else ui.badge('Agen · tanpa LLM', '#EEF0F3', '#374151')
+            tgt = lambda d: ui.badge('hari ini' if d == 0 else f'{d} hari', *(('#FBEFD6', '#7A4E00') if d <= 2 else ('#EEF0F3', '#374151')))
+            steps = ''.join(
+                f"<div class='egi-step{' first' if i == 1 else ''}'><div class='no'>{i}</div><div>"
+                f"<div class='ak'>{ui.esc(l['aksi'])}</div>"
+                f"<div class='mt'>{ui.badge(l['pemilik'], '#EEF2F9', ui.NAVY2)}{tgt(l['tenggat_hari'])}</div>"
+                + (f"<div class='al'>{ui.esc(l['alasan'])}</div>" if l['alasan'] else '') + '</div></div>'
+                for i, l in enumerate(rencana['langkah'], 1))
+            obj = ''.join(f"<div class='egi-obj'><span class='k'>{ui.esc(k['keberatan'])}</span><br>{ui.esc(k['respon'])}</div>" for k in rencana['keberatan'])
+            return (f"<div class='egi-plan'><div class='hd'><span class='tt'>Suggestion dari Agen Tindak Lanjut</span>{tag}</div>"
+                    + (f"<div class='sum'>{ui.esc(rencana['pemahaman'])}</div>" if rencana['pemahaman'] else '')
+                    + f"<div class='sec'>Langkah berikutnya</div>{steps}"
+                    + (f"<div class='sec'>Menjawab keberatan</div>{obj}" if obj else '')
+                    + f"<div class='egi-when'><b>{'Jadwal ulang' if ulang else 'Jadwal berikutnya'}: {when:%a %d %b %Y · %H.%M}</b>"
+                    f"<span>{ui.esc(jd['kanal'])}</span>" + (f"<span class='tj'>{ui.esc(jd['tujuan'])}</span>" if jd['tujuan'] else '') + '</div></div>')
 
         with b:
             st.markdown('##### 2 · Rencana lanjutan')
             if ulang:
                 st.markdown("<div class='egi-warn'>Nasabah perlu pertimbangan ulang: disarankan menjadwalkan ulang kunjungan setelah nasabah menimbang.</div>",
                             unsafe_allow_html=True)
-            follow(f'fb_l_{eid}', saran['langkah'])
-            langkah = st.text_area('Langkah berikutnya', key=f'fb_l_{eid}', height=90, help='Terisi otomatis dari saran di bawah; ubah sesuai kebutuhan.')
-            st.markdown(f"<div class='egi-ai'><div class='h'>Suggestion · {'LLM dari analisis model' if mode == 'LLM' else 'analisis model & data nasabah'}</div>"
-                        f"{ui.esc(saran['langkah'])}<div class='src'>{'Jadwal ulang' if ulang else 'Jadwal berikutnya'}: "
-                        f"{when:%a %d %b %Y, %H.%M} · {ui.esc(saran['kanal'])} (slot kosong di kalender {ev['rm_id']})</div></div>", unsafe_allow_html=True)
-            with st.expander('Dasar analisis'):
-                st.markdown('\n'.join(f'- {ui.esc(x)}' for x in saran['alasan']))
-                if analisis['kasus_serupa']['catatan_mirip']:
-                    st.caption('Catatan mirip di log RM: ' + ' · '.join(analisis['kasus_serupa']['catatan_mirip']))
-            if info:
-                st.caption(info)
-            elif mode != 'LLM':
-                st.caption('Saran disusun dari output model risiko, model peluang produk, alarm arus kas, dan kasus serupa di log RM. '
-                           + ('Isi catatan kunjungan agar LLM menulis saran yang lebih spesifik.' if llm.config()['enabled']
-                              else 'Aktifkan LLM (LLM_PROVIDER & API key di .env) agar saran juga ditulis ulang oleh LLM.'))
-            st.button('Kembalikan ke saran', key=f'fb_use_{eid}', on_click=pakai_saran,
-                      help='Timpa langkah, jadwal, dan permintaan ke divisi dengan saran terbaru.')
-            follow(f'fb_j_{eid}', hasil in ('Converted', 'Interested') or ulang)
+            follow(f'fb_l_{eid}', langkah_auto)
+            langkah = st.text_area('Langkah berikutnya', key=f'fb_l_{eid}', height=110 if ada else 68,
+                                   help='Terisi otomatis dari Suggestion di bawah; boleh diedit. Isi kolom inilah yang disimpan.')
+            if not ada:
+                st.markdown("<div class='egi-plan'><div class='hd'><span class='tt'>Suggestion dari Agen Tindak Lanjut</span></div>"
+                            "<div class='sum'>Isi <b>catatan hasil kunjungan</b> di bagian 1: siapa yang ditemui, apa yang diminta, kebutuhan, keberatan, "
+                            "dan kapan nasabah bisa dihubungi lagi. Agen akan membaca catatan itu, memeriksa data nasabah dan produk, lalu menyusun "
+                            "langkah berikutnya di sini.</div></div>", unsafe_allow_html=True)
+            else:
+                st.markdown(plan_html(), unsafe_allow_html=True)
+                c1, c2 = st.columns(2)
+                c1.button('Isi ulang dari Suggestion', key=f'fb_use_{eid}', on_click=pakai_saran, use_container_width=True,
+                          help='Timpa isian langkah berikutnya, jadwal, dan permintaan ke divisi yang sudah Anda ubah dengan rencana agen.')
+                c2.button('Susun ulang dengan AI', key=f'fb_rerun_{eid}', on_click=ulangi_agen, use_container_width=True, disabled=not llm.config()['enabled'],
+                          help='Minta agen menyusun rencana baru dari catatan yang sama (butuh LLM aktif).')
+                if hasil_agen['info']:
+                    st.caption(hasil_agen['info'])
+                elif hasil_agen['mode'] != 'LLM' and not llm.config()['enabled']:
+                    st.caption('LLM belum aktif: rencana disusun tanpa AI. Isi LLM_PROVIDER & API key di .env agar agen memahami catatan secara utuh.')
+                e1, e2 = st.columns(2)
+                if rencana['pertanyaan_kunci']:
+                    with e1.expander('Pertanyaan untuk kontak berikutnya'):
+                        st.markdown('\n'.join(f'- {ui.esc(q)}' for q in rencana['pertanyaan_kunci']))
+                with e2.expander(f"Jejak agen · {len(hasil_agen['jejak'])} alat"):
+                    for name, args, out in hasil_agen['jejak']:
+                        arg = ', '.join(f'{k}={v}' for k, v in (args or {}).items()) if name != 'ajukan_rencana' else ''
+                        res = json.dumps(out, ensure_ascii=False, default=str)
+                        st.markdown(f"**{name}**({ui.esc(arg)[:60]})<br><span class='egi-muted'>{ui.esc(res[:160])}{'…' if len(res) > 160 else ''}</span>",
+                                    unsafe_allow_html=True)
+            follow(f'fb_j_{eid}', ada and (hasil in ('Converted', 'Interested') or ulang))
             jadwal = st.toggle('Jadwalkan ulang kunjungan di kalender' if ulang else 'Jadwalkan tindak lanjut di kalender', key=f'fb_j_{eid}')
             lanjut = None
             if jadwal:
-                follow(f'fb_t_{eid}', when.date()); follow(f'fb_jm_{eid}', when.time()); follow(f'fb_kn_{eid}', saran['kanal'])
+                follow(f'fb_t_{eid}', when.date()); follow(f'fb_jm_{eid}', when.time()); follow(f'fb_kn_{eid}', jd['kanal'])
                 x1, x2, x3 = st.columns([1.3, 1, 1.2])
                 tgl = x1.date_input('Tanggal', format='DD/MM/YYYY', key=f'fb_t_{eid}')
                 jam = x2.time_input('Jam', step=900, key=f'fb_jm_{eid}')
@@ -116,12 +158,12 @@ if tab == 'Feedback kunjungan':
                 st.markdown("<div class='egi-warn'>Ada isu legal / tekanan likuiditas: produk kredit ditahan, libatkan Legal atau Risiko Kredit dulu.</div>",
                             unsafe_allow_html=True)
             divs = st.multiselect('Kirim tiket ke divisi', list(T.DIVISI), default=sug, format_func=fmt_div, key=f'fb_d_{eid}_{"-".join(sug)}',
-                                  help='Saran otomatis dari isu di catatan dan pemilik produk yang dibahas; bisa diubah.')
+                                  help='Saran dari isu di catatan, pemilik produk yang dibahas, dan Agen Tindak Lanjut; bisa diubah.')
             if divs:
                 y1, y2 = st.columns(2)
                 prio = y1.selectbox('Prioritas', T.PRIORITAS, index=1 if hasil == 'Converted' or hold else 0, key=f'fb_pr_{eid}')
                 tenggat = y2.date_input('Tenggat', date.today() + timedelta(days=5), format='DD/MM/YYYY', key=f'fb_tg_{eid}')
-                follow(f'fb_m_{eid}', saran['pesan_divisi'])
+                follow(f'fb_m_{eid}', rencana['pesan_divisi'])
                 pesan = st.text_area('Permintaan ke divisi', key=f'fb_m_{eid}', height=100, help='Draf otomatis dari hasil kunjungan & analisis; ubah sesuai kebutuhan.')
             else:
                 prio, tenggat, pesan = 'Normal', '', ''

@@ -50,6 +50,12 @@ def _client():
     return openai.OpenAI(api_key=cfg['key'], base_url=os.getenv('OPENAI_BASE_URL') or None), cfg
 
 
+def _limit(n):
+    """Batas token untuk endpoint OpenAI-compatible. OpenAI resmi (model baru & model penalaran) memakai max_completion_tokens,
+    dan token penalaran ikut dihitung → beri ruang minimal 4000. Endpoint lain (Ollama, Groq, Gemini) tetap max_tokens."""
+    return {'max_tokens': n} if os.getenv('OPENAI_BASE_URL') else {'max_completion_tokens': max(n, 4000)}
+
+
 def complete(prompt, system=SYSTEM, max_tokens=1200):
     """Satu panggilan teks. Mengembalikan None bila LLM tidak tersedia atau gagal."""
     try:
@@ -59,7 +65,7 @@ def complete(prompt, system=SYSTEM, max_tokens=1200):
         if cfg['provider'] == 'anthropic':
             r = cl.messages.create(model=cfg['model'], max_tokens=max_tokens, system=system, messages=[{'role': 'user', 'content': prompt}])
             return ''.join(b.text for b in r.content if getattr(b, 'type', '') == 'text')
-        r = cl.chat.completions.create(model=cfg['model'], max_tokens=max_tokens, messages=[{'role': 'system', 'content': system}, {'role': 'user', 'content': prompt}])
+        r = cl.chat.completions.create(model=cfg['model'], **_limit(max_tokens), messages=[{'role': 'system', 'content': system}, {'role': 'user', 'content': prompt}])
         return r.choices[0].message.content
     except Exception as e:  # jaringan, kuota, model salah → template
         complete.last_error = str(e)
@@ -221,7 +227,7 @@ def run_tools(system, user_msg, tools, executor, max_steps=10):
             msgs = [{'role': 'system', 'content': system}, {'role': 'user', 'content': user_msg}]
             tl = [{'type': 'function', 'function': {'name': t['name'], 'description': t['description'], 'parameters': t['parameters']}} for t in tools]
             for _ in range(max_steps):
-                r = cl.chat.completions.create(model=cfg['model'], messages=msgs, tools=tl, max_tokens=1500)
+                r = cl.chat.completions.create(model=cfg['model'], messages=msgs, tools=tl, **_limit(1500))
                 m = r.choices[0].message
                 if not m.tool_calls:
                     return m.content, trace
