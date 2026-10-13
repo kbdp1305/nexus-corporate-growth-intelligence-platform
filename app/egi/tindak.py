@@ -248,26 +248,54 @@ def set_kegiatan(kid, selesai: bool, user):
     data.audit('progres_kegiatan', user=user, id=kid, selesai=selesai)
 
 
-def reschedule_kegiatan(kid, tanggal: date, alasan, user, jam=None):
-    """Jadwal ulang mendadak: tenggat (dan jam, bila kegiatan terjadwal) digeser; jadwal di kalender ikut digeser."""
+def kanal_kegiatan(row) -> str:
+    """Kanal kalender untuk sebuah kegiatan: dari jenis (kegiatan dadakan) atau ditebak dari teksnya."""
+    if row.get('jenis') in JENIS_DADAKAN:
+        return JENIS_DADAKAN[row['jenis']]
+    if row.get('jenis') in K.KANAL:
+        return row['jenis']
+    t = f"{row.get('judul', '')} {row.get('aksi', '')}".lower()
+    if 'rapat' in t or 'koordinasi' in t or 'diskusi internal' in t:
+        return 'Kunjungan' if 'nasabah' in t or 'direksi' in t else 'Rapat internal'
+    if any(w in t for w in ('telepon', 'telpon', 'hubungi', 'whatsapp', 'konfirmasi')):
+        return 'Telepon'
+    if any(w in t for w in ('kunjung', 'presentasi', 'bertemu', 'datang')):
+        return 'Kunjungan'
+    if any(w in t for w in ('kirim', 'email', 'surel', 'dokumen', 'proposal', 'simulasi')):
+        return 'Email'
+    return 'Rapat internal' if row.get('pemilik') not in ('', 'RM', None) else 'Telepon'
+
+
+def reschedule_kegiatan(kid, tanggal: date, alasan, user, jam=None, kanal=None, nama=''):
+    """Jadwal ulang mendadak untuk tahap apa pun. Tahap yang sudah punya jadwal kalender digeser; tahap yang baru punya
+    tenggat otomatis dibuatkan jadwal di kalender RM pada tanggal & jam baru (lalu dipakai lagi untuk jadwal ulang berikutnya)."""
     row = KEGIATAN.load().set_index('id').loc[kid]
     lama = row.jadwal or row.tenggat
-    jadwal = ''
-    if row.jadwal or jam:                                    # kegiatan berjam (rapat dadakan) → geser jam & kalender
-        m0 = datetime.fromisoformat(row.jadwal) if row.jadwal else None
-        jam = jam or (m0.time() if m0 else datetime.strptime('10:00', '%H:%M').time())
-        m = datetime.combine(tanggal, jam); jadwal = m.isoformat(timespec='minutes')
-        if row.kal_id:
-            ev = K.load().set_index('id')
-            if row.kal_id in ev.index:
-                e = ev.loc[row.kal_id]
-                dur = datetime.fromisoformat(e.selesai) - datetime.fromisoformat(e.mulai) if e.selesai else timedelta(minutes=60)
-                K.T.update(row.kal_id, mulai=jadwal, selesai=(m + dur).isoformat(timespec='minutes'), status='Terjadwal', diubah_pada=now())
+    m0 = datetime.fromisoformat(row.jadwal) if row.jadwal else None
+    jam = jam or (m0.time() if m0 else datetime.strptime('10:00', '%H:%M').time())
+    m = datetime.combine(tanggal, jam); jadwal = m.isoformat(timespec='minutes')
+    kanal = kanal if kanal in K.KANAL else kanal_kegiatan(row.to_dict())
+    ev = K.load().set_index('id')
+    kal_id = row.kal_id if row.kal_id and row.kal_id in ev.index else ''
+    if kal_id:                                               # geser jadwal yang sudah ada (durasi tetap)
+        e = ev.loc[kal_id]
+        dur = datetime.fromisoformat(e.selesai) - datetime.fromisoformat(e.mulai) if e.selesai else timedelta(minutes=60)
+        K.T.update(kal_id, mulai=jadwal, selesai=(m + dur).isoformat(timespec='minutes'), kanal=kanal, status='Terjadwal', diubah_pada=now())
+    else:                                                    # tahap bertenggat → buat jadwal baru di kalender
+        dur = timedelta(minutes=K.R.DURASI_MENIT.get(kanal, 60))
+        _, _, ids = K.T.upsert([{'rm_id': row.rm_id, 'company_id': row.company_id,
+                                 'judul': f"{nama or row.company_id} ({row.company_id}) · {row.judul}", 'kanal': kanal,
+                                 'mulai': jadwal, 'selesai': (m + dur).isoformat(timespec='minutes'), 'lokasi': '',
+                                 'catatan': f"Tahap {row.urutan} tindak lanjut kunjungan {row.tanggal_kunjungan}: {row.aksi}\nDijadwal ulang · alasan: {alasan}",
+                                 'status': 'Terjadwal', 'sumber': 'Progress kegiatan'}], {'dibuat_oleh': user, 'diubah_pada': now()})
+        kal_id = ids[0]
     n = int(float(row.n_jadwal_ulang or 0)) + 1
-    _catat(kid, user, f'Dijadwal ulang dari {str(lama)[:16].replace("T", " ")} ke {(jadwal or tanggal.isoformat())[:16].replace("T", " ")} · alasan: {alasan}',
-           tenggat=tanggal.isoformat(), jadwal=jadwal or row.jadwal, n_jadwal_ulang=n, alasan=alasan,
+    _catat(kid, user, f'Dijadwal ulang dari {str(lama)[:16].replace("T", " ")} ke {jadwal.replace("T", " ")} ({kanal}) · alasan: {alasan}'
+           + ('' if row.kal_id else ' · masuk kalender'),
+           tenggat=tanggal.isoformat(), jadwal=jadwal, kal_id=kal_id, jenis=row.jenis or kanal, n_jadwal_ulang=n, alasan=alasan,
            status='Belum' if row.status == 'Dibatalkan' else row.status)
-    data.audit('jadwal_ulang_kegiatan', user=user, id=kid, ke=str(tanggal), alasan=alasan)
+    data.audit('jadwal_ulang_kegiatan', user=user, id=kid, ke=jadwal, kanal=kanal, kalender=kal_id, alasan=alasan)
+    return kal_id
 
 
 def batal_kegiatan(kid, alasan, user):

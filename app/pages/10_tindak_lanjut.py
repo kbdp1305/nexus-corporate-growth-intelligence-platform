@@ -407,15 +407,18 @@ elif tab == 'Progress kegiatan':
                     with st.form(f'fu_{cid0}', border=False):
                         st.markdown('**Jadwal ulang tahap**')
                         kid = st.selectbox('Tahap', list(bisa_ulang.id), format_func=lambda i: label[i] + (' · dibatalkan' if i in set(g.id[g.status_tampil == 'batal']) else ''))
-                        a1, a2 = st.columns(2)
+                        a1, a2, a3 = st.columns([1.2, 1, 1.3])
                         tgl = a1.date_input('Tanggal baru', today + timedelta(days=1), min_value=today, format='DD/MM/YYYY')
-                        jam = a2.time_input('Jam', time(10, 0), step=900, help='Dipakai untuk kegiatan terjadwal (rapat/kunjungan/telepon).')
+                        jam = a2.time_input('Jam', time(10, 0), step=900)
+                        kanal = a3.selectbox('Kanal di kalender', ['(otomatis)'] + K.KANAL,
+                                             help='Otomatis: mengikuti jenis tahap (rapat, telepon, kunjungan, kirim dokumen lewat email).')
                         alasan = st.selectbox('Alasan', T.ALASAN_ULANG)
                         ket = st.text_input('Keterangan', placeholder='opsional, mis. CFO dinas luar kota sampai Kamis')
+                        st.caption('Jadwal baru langsung masuk Kalender kunjungan; tahap yang sudah ada di kalender digeser.')
                         if st.form_submit_button('Simpan jadwal ulang', type='primary', use_container_width=True):
-                            r = g.set_index('id').loc[kid]
-                            T.reschedule_kegiatan(kid, tgl, alasan + (f' — {ket.strip()}' if ket.strip() else ''), user['username'], jam=jam if r.jadwal else None)
-                            st.toast(f"{label[kid]} dijadwal ulang ke {tgl:%d/%m/%Y}" + (f" {jam:%H.%M}" if r.jadwal else '')); st.rerun()
+                            T.reschedule_kegiatan(kid, tgl, alasan + (f' — {ket.strip()}' if ket.strip() else ''), user['username'], jam=jam,
+                                                  kanal=None if kanal == '(otomatis)' else kanal, nama=store.co.name.get(cid0, cid0))
+                            st.toast(f"{label[kid]} dijadwal ulang ke {tgl:%d/%m/%Y} {jam:%H.%M} · masuk kalender"); st.rerun()
                 bisa_batal, sudah_batal = g[~g.status_tampil.isin(['selesai', 'batal'])], g[g.status_tampil == 'batal']
                 with p2.popover('Batalkan tahap', icon='✖️', use_container_width=True, disabled=not boleh or (bisa_batal.empty and sudah_batal.empty)):
                     if len(bisa_batal):
