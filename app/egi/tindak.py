@@ -2,13 +2,14 @@
 
 Tabel (outputs/app/):
   feedback.csv    satu baris per kunjungan yang sudah diberi feedback
+  kegiatan.csv    satu baris per kegiatan lanjutan yang disetujui RM; status & tenggat untuk pelacakan progres
   requests.csv    pengajuan kunjungan (ke supervisor) dan tiket koordinasi (ke divisi); riwayat percakapan di kolom JSON
 Divisi tujuan disarankan dari catatan RM lewat data/raw/issue_product_map.csv (kata kunci → isu → divisi).
 """
 from __future__ import annotations
 
 import json
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from functools import lru_cache
 
 import pandas as pd
@@ -39,6 +40,14 @@ ST_TIKET = ['Baru', 'Diproses', 'Selesai', 'Ditolak']
 
 FEEDBACK = CsvTable('feedback.csv', ['id', 'event_id', 'rm_id', 'company_id', 'tanggal', 'kanal', 'hasil', 'produk', 'catatan', 'keberatan', 'isu',
                                      'langkah_lanjut', 'jadwal_lanjut_id', 'pertimbangan_ulang', 'tiket', 'dibuat_oleh', 'dibuat_pada'])
+KEGIATAN = CsvTable('kegiatan.csv', ['id', 'feedback_id', 'event_id', 'rm_id', 'company_id', 'tanggal_kunjungan', 'urutan', 'judul', 'aksi', 'pemilik',
+                                     'divisi', 'sumber', 'jenis', 'jadwal', 'kal_id', 'tenggat', 'status', 'selesai_pada', 'n_jadwal_ulang', 'alasan',
+                                     'riwayat', 'dibuat_oleh', 'dibuat_pada', 'diubah_pada'])
+ALASAN_ULANG = ['Nasabah minta diundur', 'PIC nasabah berhalangan', 'Menunggu dokumen / data nasabah', 'Bentrok jadwal RM',
+                'Menunggu respons divisi', 'Lainnya']
+ALASAN_BATAL = ['Nasabah membatalkan', 'Tidak relevan lagi', 'Digantikan kegiatan lain', 'Produk ditahan (risiko / legal)', 'Lainnya']
+JENIS_DADAKAN = {'Rapat internal': 'Rapat internal', 'Rapat dengan nasabah': 'Kunjungan', 'Kunjungan nasabah': 'Kunjungan',
+                 'Telepon nasabah': 'Telepon'}          # jenis kegiatan dadakan → kanal kalender
 REQ = CsvTable('requests.csv', ['id', 'jenis', 'rm_id', 'company_id', 'divisi', 'judul', 'isi', 'prioritas', 'tenggat', 'status', 'ref',
                                 'usulan_mulai', 'usulan_selesai', 'kanal', 'divisi_terlibat', 'event_id', 'riwayat', 'dibuat_oleh', 'dibuat_pada', 'diubah_pada'])
 
@@ -160,7 +169,8 @@ def pending_feedback(rm) -> pd.DataFrame:
     return due.assign(_m=m[due.index]).sort_values('_m', ascending=False)   # m[due.index]: frame kosong tetap kosong
 
 
-def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, langkah, lanjut, divs, prioritas, tenggat, pesan_divisi, user, ulang=False):
+def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, langkah, lanjut, divs, prioritas, tenggat, pesan_divisi, user, ulang=False,
+                  kegiatan=()):
     """Simpan feedback + (opsional) jadwal lanjutan + tiket koordinasi; tandai jadwal selesai; catat ke log aksi RM."""
     cid, rm = ev['company_id'], ev['rm_id']
     nama = store.co.name.get(cid, cid)
@@ -183,6 +193,7 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
     FEEDBACK.upsert([{'id': fb_id, 'event_id': ev['id'], 'rm_id': rm, 'company_id': cid, 'tanggal': ev['mulai'][:10], 'kanal': ev['kanal'],
                       'hasil': hasil, 'produk': ';'.join(produk), 'catatan': catatan, 'keberatan': keberatan, 'isu': ';'.join(isu), 'langkah_lanjut': langkah,
                       'jadwal_lanjut_id': follow_id, 'pertimbangan_ulang': 'ya' if ulang else '', 'tiket': ';'.join(tickets), 'dibuat_oleh': user, 'dibuat_pada': now()}])
+    save_kegiatan(fb_id, ev, kegiatan, user)
     K.set_status(ev['id'], 'Selesai', user)
     if cid in store.co.index:                    # format sama dengan log aksi RM → muncul di Profil › Riwayat
         store.append_visit({'action_id': f"APP-{fb_id}", 'track': 'Deepening' if store.cox.is_client.get(cid, False) else 'Acquisition', 'party_id': cid,
@@ -191,6 +202,122 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
                             'feedback_note': f"{catatan} | keberatan: {keberatan or '-'} | lanjut: {langkah or '-'}"})
     data.audit('feedback_kunjungan', user=user, rm=rm, company=cid, hasil=hasil, tiket=len(tickets), jadwal_lanjut=bool(follow_id), pertimbangan_ulang=ulang)
     return fb_id, follow_id, tickets
+
+
+# ------------------------------------------------------------------ progres kegiatan lanjutan
+def save_kegiatan(fb_id, ev: dict, kegiatan, user):
+    """Kegiatan selanjutnya (saran AI dicentang + manual) → satu baris per kegiatan, tenggat jadi tanggal, status 'Belum'."""
+    rows = []
+    for i, k in enumerate(kegiatan, 1):
+        dv = k.get('divisi')
+        dv = [DIVISI.get(x, x) for x in dv] if isinstance(dv, list) else ([dv] if dv else [])
+        rows.append({'id': f'{fb_id}-{i}', 'feedback_id': fb_id, 'event_id': ev['id'], 'rm_id': ev['rm_id'], 'company_id': ev['company_id'],
+                     'tanggal_kunjungan': ev['mulai'][:10], 'urutan': i, 'judul': k.get('judul') or k['aksi'][:60], 'aksi': k['aksi'],
+                     'pemilik': k.get('pemilik') or 'RM', 'divisi': ';'.join(dv), 'sumber': k.get('sumber', ''),
+                     'jenis': 'Kegiatan', 'tenggat': (date.today() + timedelta(days=int(k.get('tenggat_hari') or 0))).isoformat(), 'status': 'Belum',
+                     'selesai_pada': '', 'n_jadwal_ulang': 0, 'riwayat': json.dumps([_entry(user, 'Dibuat dari feedback kunjungan')], ensure_ascii=False),
+                     'dibuat_oleh': user, 'dibuat_pada': now()})
+    if rows:
+        KEGIATAN.upsert(rows, {'diubah_pada': now()})
+    return len(rows)
+
+
+def kegiatan_for(rm) -> pd.DataFrame:
+    """Kegiatan lanjutan milik RM (atau semua) + status tampilan: selesai (hijau), terlambat (merah, lewat tenggat), berjalan."""
+    df = KEGIATAN.load()
+    df = df if rm == 'Semua RM' else df[df.rm_id == rm]
+    if df.empty:
+        return df.assign(status_tampil=pd.Series(dtype=str), sisa_hari=pd.Series(dtype=float))
+    sisa = (pd.to_datetime(df.tenggat, errors='coerce') - pd.Timestamp(date.today())).dt.days
+    status = (pd.Series('berjalan', index=df.index).mask(sisa < 0, 'terlambat').mask(df.status == 'Selesai', 'selesai')
+              .mask(df.status == 'Dibatalkan', 'batal'))
+    return df.assign(status_tampil=status, sisa_hari=sisa, urutan=pd.to_numeric(df.urutan, errors='coerce'),
+                     n_jadwal_ulang=pd.to_numeric(df.n_jadwal_ulang, errors='coerce').fillna(0).astype(int))
+
+
+def _catat(kid, user, pesan, **fields):
+    """Perbarui satu kegiatan + tambahkan entri ke riwayat perubahannya."""
+    row = KEGIATAN.load().set_index('id').loc[kid]
+    th = thread(row) + [_entry(user, pesan)]
+    KEGIATAN.update(kid, riwayat=json.dumps(th, ensure_ascii=False), diubah_pada=now(), **fields)
+
+
+def set_kegiatan(kid, selesai: bool, user):
+    _catat(kid, user, 'Ditandai selesai' if selesai else 'Tanda selesai dibatalkan',
+           status='Selesai' if selesai else 'Belum', selesai_pada=now() if selesai else '')
+    data.audit('progres_kegiatan', user=user, id=kid, selesai=selesai)
+
+
+def reschedule_kegiatan(kid, tanggal: date, alasan, user, jam=None):
+    """Jadwal ulang mendadak: tenggat (dan jam, bila kegiatan terjadwal) digeser; jadwal di kalender ikut digeser."""
+    row = KEGIATAN.load().set_index('id').loc[kid]
+    lama = row.jadwal or row.tenggat
+    jadwal = ''
+    if row.jadwal or jam:                                    # kegiatan berjam (rapat dadakan) → geser jam & kalender
+        m0 = datetime.fromisoformat(row.jadwal) if row.jadwal else None
+        jam = jam or (m0.time() if m0 else datetime.strptime('10:00', '%H:%M').time())
+        m = datetime.combine(tanggal, jam); jadwal = m.isoformat(timespec='minutes')
+        if row.kal_id:
+            ev = K.load().set_index('id')
+            if row.kal_id in ev.index:
+                e = ev.loc[row.kal_id]
+                dur = datetime.fromisoformat(e.selesai) - datetime.fromisoformat(e.mulai) if e.selesai else timedelta(minutes=60)
+                K.T.update(row.kal_id, mulai=jadwal, selesai=(m + dur).isoformat(timespec='minutes'), status='Terjadwal', diubah_pada=now())
+    n = int(float(row.n_jadwal_ulang or 0)) + 1
+    _catat(kid, user, f'Dijadwal ulang dari {str(lama)[:16].replace("T", " ")} ke {(jadwal or tanggal.isoformat())[:16].replace("T", " ")} · alasan: {alasan}',
+           tenggat=tanggal.isoformat(), jadwal=jadwal or row.jadwal, n_jadwal_ulang=n, alasan=alasan,
+           status='Belum' if row.status == 'Dibatalkan' else row.status)
+    data.audit('jadwal_ulang_kegiatan', user=user, id=kid, ke=str(tanggal), alasan=alasan)
+
+
+def batal_kegiatan(kid, alasan, user):
+    row = KEGIATAN.load().set_index('id').loc[kid]
+    if row.kal_id:
+        K.set_status(row.kal_id, 'Dibatalkan', user)
+    _catat(kid, user, f'Dibatalkan · alasan: {alasan}', status='Dibatalkan', alasan=alasan, selesai_pada='')
+    data.audit('batal_kegiatan', user=user, id=kid, alasan=alasan)
+
+
+def aktifkan_kegiatan(kid, user):
+    row = KEGIATAN.load().set_index('id').loc[kid]
+    if row.kal_id:
+        K.set_status(row.kal_id, 'Terjadwal', user)
+    _catat(kid, user, 'Diaktifkan kembali', status='Belum', alasan='')
+    data.audit('aktifkan_kegiatan', user=user, id=kid)
+
+
+def tambah_dadakan(store, *, company_id, rm_id, feedback_id, event_id, tanggal_kunjungan, setelah, jenis, judul, agenda, mulai: datetime, menit,
+                   pemilik, divisi, ke_kalender, undang_divisi, user):
+    """Rapat / kegiatan dadakan: disisipkan ke alur setelah tahap `setelah` (urutan tahap berikutnya digeser),
+    opsional masuk kalender dan mengundang divisi lewat tiket. → id kegiatan baru."""
+    df = KEGIATAN.load()
+    alur = df[df.feedback_id == feedback_id]
+    for r in alur.itertuples():                              # geser tahap sesudahnya
+        if int(float(r.urutan)) > setelah:
+            KEGIATAN.update(r.id, urutan=int(float(r.urutan)) + 1)
+    nama = store.co.name.get(company_id, company_id)
+    kal_id = ''
+    if ke_kalender:
+        _, _, ids = K.T.upsert([{'rm_id': rm_id, 'company_id': company_id, 'judul': f'{nama} ({company_id}) · {judul}', 'kanal': JENIS_DADAKAN.get(jenis, 'Rapat internal'),
+                                 'mulai': mulai.isoformat(timespec='minutes'), 'selesai': (mulai + timedelta(minutes=int(menit))).isoformat(timespec='minutes'),
+                                 'lokasi': '', 'catatan': f'{jenis} (dadakan): {agenda}', 'status': 'Terjadwal', 'sumber': 'Rapat dadakan'}],
+                               {'dibuat_oleh': user, 'diubah_pada': now()})
+        kal_id = ids[0]
+    tiket = []
+    if undang_divisi and divisi:
+        tiket = create_tickets(divisi, jenis='Undangan rapat dadakan', rm_id=rm_id, company_id=company_id, judul=f'{judul} · {nama}',
+                               isi=f"{rm_id} mengundang divisi Anda ke {jenis.lower()} pada {mulai:%A %d %b %Y, %H.%M} WIB ({int(menit)} menit).\nAgenda: {agenda}",
+                               prioritas='Tinggi', tenggat=mulai.date(), ref=feedback_id, event_id=event_id, user=user)
+    kid = f'{feedback_id}-D{datetime.now():%Y%m%d%H%M%S}'
+    KEGIATAN.upsert([{'id': kid, 'feedback_id': feedback_id, 'event_id': event_id, 'rm_id': rm_id, 'company_id': company_id,
+                      'tanggal_kunjungan': tanggal_kunjungan, 'urutan': setelah + 1, 'judul': judul, 'aksi': agenda or judul, 'pemilik': pemilik,
+                      'divisi': ';'.join(DIVISI.get(d, d) for d in divisi), 'sumber': 'Dadakan', 'jenis': jenis, 'jadwal': mulai.isoformat(timespec='minutes'),
+                      'kal_id': kal_id, 'tenggat': mulai.date().isoformat(), 'status': 'Belum', 'selesai_pada': '', 'n_jadwal_ulang': 0,
+                      'riwayat': json.dumps([_entry(user, f'Ditambahkan sebagai {jenis.lower()} dadakan'
+                                                   + (f' · undangan ke {len(tiket)} divisi' if tiket else ''))], ensure_ascii=False),
+                      'dibuat_oleh': user, 'dibuat_pada': now()}], {'diubah_pada': now()})
+    data.audit('kegiatan_dadakan', user=user, id=kid, jenis=jenis, kalender=bool(kal_id), tiket=len(tiket))
+    return kid, kal_id, tiket
 
 
 # ------------------------------------------------------------------ pengajuan kunjungan
@@ -242,6 +369,8 @@ def badge_counts(user) -> dict:
     if user['role'] == 'divisi':
         return {'tiket baru': int((df.status == 'Baru').sum())}
     out = {'feedback tertunda': len(pending_feedback(user['rm_id'] if user['role'] == 'rm' else 'Semua RM'))}
+    keg = kegiatan_for(user['rm_id'] if user['role'] == 'rm' else 'Semua RM')
+    out['kegiatan terlambat'] = int((keg.status_tampil == 'terlambat').sum()) if len(keg) else 0      # yang dibatalkan tidak dihitung
     if user['role'] == 'supervisor':
         out['pengajuan menunggu'] = int(((df.jenis == 'Pengajuan kunjungan') & (df.status == 'Diajukan')).sum())
     return out
