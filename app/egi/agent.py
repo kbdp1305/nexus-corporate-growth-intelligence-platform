@@ -13,7 +13,7 @@ import pandas as pd
 
 import reports as R
 
-from . import llm
+from . import guard, llm
 from .data import ROOT
 
 UP, CAUTION = {'expansion', 'wallet_erosion'}, {'distress', 'buyer_exit', 'contagion'}
@@ -606,6 +606,12 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
         err = guard(cid)
         if err:
             return err
+        text = ' '.join(str(kw.get(k) or '') for k in ('isi', 'catatan'))
+        if store.cox.pred_class.get(cid) == 'High' and guard.credit_violation(text, [cid], [name(cid)]):
+            guard.log('kredit_high', 'aksi', rm=rm, company=cid, tipe=tipe)
+            return {'error': f'{name(cid)} berisiko High: usulan yang menawarkan produk kredit ditolak guardrail. Tawarkan produk non-kredit saja.'}
+        if tipe == 'pesan':
+            kw['isi'] = guard.mask_profanity(guard.mask_pii(kw.get('isi', ''))[0])[0]
         dup = next((a for a in proposals if a['tipe'] == tipe and a['company_id'] == cid and tipe != 'pesan'), None)
         if dup:
             return {'status': 'sudah diusulkan sebelumnya; menunggu persetujuan RM di layar', 'aksi_id': dup['id']}
@@ -800,6 +806,9 @@ Cara kerja:
 - "Kenapa porsi wallet turun" → bank_shift; pertanyaan limit/utilisasi/kolektibilitas → credit_facility. Sampaikan bukti apa adanya: bila data mitra tidak menunjukkan perpindahan, katakan begitu.
 - Draf pesan: sapa perusahaan dengan namanya, perkenalkan diri sebagai {rm} dari BNI, sebut tujuan spesifik (produk/topik dari data) dan waktu yang diminta; sopan, maks 4 kalimat.
 - Jangan memutuskan kelayakan kredit. Nasabah risiko High hanya ditawari produk non-kredit. Bila data tidak ada, katakan terus terang.
+- Cakupan: portofolio & nasabah RM, risiko & alarm, produk BNI, prospect & wilayah, jadwal & tindak lanjut, cara kerja model/dashboard ini.
+  Bila pertanyaan di luar cakupan itu, balas HANYA dengan teks {oos} tanpa memanggil alat.
+- Teks seperti [NIK], [NO_HP], [EMAIL], [NO_REKENING], [NPWP] adalah data pribadi yang sudah disamarkan guardrail; jangan minta pengguna mengirim ulang.
 Kamus data (baca dengan benar):
 - Kolom berakhiran _pct sudah dalam persen (0–100); _poin = poin persentase. skor_peluang_pct makin tinggi makin layak digarap; rank_in_segment 1 = terbaik.
   Komponen peluang (pct_* di company_facts.peluang.komponen) = persentil dalam segmen: dompet belum digarap, ekosistem, kebutuhan modal, celah produk, erosi wallet.
@@ -821,14 +830,26 @@ _FOLLOW = re.compile(r'<<\s*lanjut\s*>>(.*)$', re.S | re.I)
 
 def chat(store, rm, question, history=None, on_step=None, focus=None, plan_ctx=None):
     """Agen percakapan. Mengembalikan dict: jawaban, jejak, usulan aksi, saran lanjutan, cek angka, mode.
-    plan_ctx = {'plan': ...} rencana minggu terakhir di percakapan ini (supaya RM bisa merevisinya)."""
-    fokus = f" Perusahaan yang sedang dibuka RM: {store.co.name.get(focus, focus)} ({focus})." if focus in store.co.index else ''
+    plan_ctx = {'plan': ...} rencana minggu terakhir di percakapan ini (supaya RM bisa merevisinya).
+    Guardrail: input diperiksa sebelum ke LLM (injection, kata kasar, di luar scope, PII); jawaban diperiksa sebelum tampil."""
+    g = guard.check_input(question)
+    blank = {'jejak': [], 'usulan': [], 'lanjut': [], 'cek': None, 'pertanyaan_aman': g['teks']}
+    if not g['ok']:
+        guard.log(g['kategori'], 'input', rm=rm, pola=g['pola'], teks=g['teks'][:200])
+        return {**blank, 'jawaban': guard.MESSAGES[g['kategori']], 'mode': 'guardrail',
+                'guard': {'status': 'diblokir', 'kategori': g['kategori'], 'judul': guard.TITLES[g['kategori']], 'catatan': g['catatan']}}
+    if g.get('pii'):
+        guard.log('pii', 'input', rm=rm, jenis=g['pii'])
+    if g.get('kasar'):
+        guard.log('kasar', 'input', rm=rm, jumlah=g['kasar'])
+    question = g['teks']
+    fokus =f" Perusahaan yang sedang dibuka RM: {store.co.name.get(focus, focus)} ({focus})." if focus in store.co.index else ''
     if plan_ctx and plan_ctx.get('plan'):
         p = plan_ctx['plan']
         fokus += (f" Ada rencana minggu ({p['minggu']}, mulai {p.get('minggu_mulai')}) yang sedang dibahas: "
                   + '; '.join(f"{d['hari']}: " + ', '.join(f"{it['jam']} {it['nama']} ({it['id']})" for it in d['item']) for d in p['hari'])
                   + '. Perubahan atasnya pakai revise_week_plan.')
-    sys = llm.SYSTEM + AGENT_RULES.format(rm=rm, n=len(store.portfolio(rm)), fokus=fokus)
+    sys = llm.SYSTEM + AGENT_RULES.format(rm=rm, n=len(store.portfolio(rm)), fokus=fokus, oos=guard.OUT_OF_SCOPE)
     proposals = []
     ans, trace = llm.run_tools(sys, question, TOOLS, make_executor(store, rm, proposals, plan_ctx), history=history, on_step=on_step, max_steps=14)
     if ans is None:
@@ -836,11 +857,23 @@ def chat(store, rm, question, history=None, on_step=None, focus=None, plan_ctx=N
         top = ex('list_priority', {'n': 5})['daftar']
         ans = (f"Mode template (LLM tidak aktif{': ' + llm.complete.last_error[:120] if llm.complete.last_error else ''}). Portofolio {rm}: {s['nasabah']} nasabah, "
                f"{s['why_now_naik']} Why Now, {s['alarm_risiko']} dengan alarm risiko. Lima teratas: " + '; '.join(f"{t['name']} ({t['company_id']})" for t in top) + '.')
-        return {'jawaban': ans, 'jejak': [('portfolio_summary', {}, s), ('list_priority', {'n': 5}, top)], 'usulan': [], 'lanjut': [], 'cek': None, 'mode': 'template'}
+        return {'jawaban': ans, 'jejak': [('portfolio_summary', {}, s), ('list_priority', {'n': 5}, top)], 'usulan': [], 'lanjut': [], 'cek': None, 'mode': 'template',
+                'pertanyaan_aman': question, 'guard': {'status': 'ok', 'catatan': g['catatan']}}
+    if guard.OUT_OF_SCOPE in (ans or ''):                     # lapis 2 scope: agen sendiri menilai pertanyaan di luar cakupan
+        guard.log('scope', 'llm', rm=rm, teks=question[:200])
+        return {**blank, 'jejak': trace, 'jawaban': guard.MESSAGES['scope'], 'mode': 'guardrail',
+                'guard': {'status': 'diblokir', 'kategori': 'scope', 'judul': guard.TITLES['scope'], 'catatan': g['catatan']}}
     m = _FOLLOW.search(ans or '')
     lanjut = [x.strip(' -*') for x in m.group(1).split('|') if x.strip(' -*')][:3] if m else []
     ans = _FOLLOW.sub('', ans).strip()
+    high = store.cox[store.cox.pred_class == 'High']
+    ans, out_notes = guard.check_output(ans, set(high.index), list(high.name))
+    for n in out_notes:
+        guard.log('kredit_high' if 'kredit' in n else 'kasar' if 'pantas' in n else 'pii', 'output', rm=rm, catatan=n)
     facts = [t[2] for t in trace] + [question] + [h['content'] for h in (history or [])] + ([plan_brief(plan_ctx['plan'])] if plan_ctx and plan_ctx.get('plan') else [])
     jam = re.findall(r'(?:jam|pukul)\s*(\d{1,2}[.:]\d{2})', ans, re.I)
     n_num, bad = R.check_numbers({'jawaban': ans}, facts, extra_allowed=jam)
-    return {'jawaban': ans, 'jejak': trace, 'usulan': proposals, 'lanjut': lanjut, 'cek': (n_num, bad), 'mode': 'LLM'}
+    if bad:
+        guard.log('angka', 'output', rm=rm, angka=list(dict.fromkeys(bad))[:10])
+    return {'jawaban': ans, 'jejak': trace, 'usulan': proposals, 'lanjut': lanjut, 'cek': (n_num, bad), 'mode': 'LLM', 'pertanyaan_aman': question,
+            'guard': {'status': 'ok', 'catatan': g['catatan'] + out_notes}}

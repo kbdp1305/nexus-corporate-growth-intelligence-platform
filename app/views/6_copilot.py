@@ -4,7 +4,7 @@ from datetime import date, datetime, timedelta
 import pandas as pd
 import streamlit as st
 
-from egi import agent, auth, data, llm, planner, state, ui, viz
+from egi import agent, auth, data, guard, llm, planner, state, ui, viz
 from egi import kalender as K, tindak as T
 import reports as R  # noqa: E402  (src/ ditambahkan ke sys.path oleh egi.data)
 
@@ -381,10 +381,28 @@ else:
         elif n:
             st.caption(f"✓ {n} angka di jawaban cocok dengan data yang dibaca agen")
 
-    if not cfg['enabled']:
+    if cfg.get('killed'):
+        st.markdown("<div class='egi-warn'>🛑 Agen LLM dimatikan (kill switch). Copilot menjawab dengan template ringkasan portofolio; fitur lain tetap berjalan.</div>", unsafe_allow_html=True)
+    elif not cfg['enabled']:
         st.markdown("<div class='egi-warn'>LLM belum aktif: Copilot menjawab dengan template ringkasan portofolio. Isi <code>.env</code> untuk pertanyaan bebas.</div>", unsafe_allow_html=True)
     fokus = f" · fokus {store.co.name.get(ss.focus_company, '')} ({ss.focus_company})" if ss.focus_company else ''
     st.caption(f"Konteks agen: {ss.rm}{fokus} · {len(agent.TOOLS)} alat · mengingat {min(len(ss.chat), 12)} pesan terakhir · tindakan selalu menunggu persetujuan Anda")
+    with st.expander('🛡 Guardrail aktif'):
+        st.markdown('**Input** · prompt injection & jailbreak diblokir · kata kasar disamarkan · pertanyaan di luar cakupan diarahkan · PII (NIK, NPWP, rekening, HP, email) '
+                    'disamarkan sebelum dikirim ke AI\n\n**Proses** · agen hanya memakai alat yang terdaftar, hanya untuk nasabah RM sendiri, maks 14 langkah · '
+                    'setiap tindakan menunggu persetujuan Anda\n\n**Output** · angka dicek terhadap data · tawaran kredit ke nasabah risiko High dihapus · PII & kata kasar disamarkan\n\n'
+                    '**Audit** · pertanyaan (tersamar), jawaban, alat, versi model, dan kejadian guardrail dicatat di log audit')
+        sts = guard.stats(ss.rm)
+        if sts:
+            gc = st.columns(min(len(sts), 6))
+            for col, (k, v) in zip(gc, sorted(sts.items(), key=lambda x: -x[1])):
+                ui.kpi(col, guard.LABELS.get(k, k), str(v), 'kejadian')
+        else:
+            st.caption('Belum ada kejadian guardrail tercatat.')
+        if auth.current() and auth.current()['role'] == 'supervisor':
+            off = st.toggle('Kill switch: matikan agen LLM untuk semua pengguna', value=bool(guard.settings().get('llm_off')))
+            if off != bool(guard.settings().get('llm_off')):
+                guard.set_llm_off(off, auth.current()['username']); st.rerun()
     q = ss.pop('pending_q', None)
     if not ss.chat:
         ex = ['Periksa semua alarm saya 3 bulan terakhir dan siapkan tindakannya', 'Susun rencana minggu depan saya, Rabu saya rapat seharian, fokus retensi',
@@ -395,7 +413,14 @@ else:
                 q = e
     for i, m in enumerate(ss.chat):
         with st.chat_message(m['role']):
-            st.markdown(m['text'])
+            gd = m.get('guard') or {}
+            if gd.get('status') == 'diblokir':
+                bg, fg = ('#EEF0F3', '#374151') if gd['kategori'] == 'scope' else ('#FADFDB', '#9A2416')
+                st.markdown(f"<div class='egi-card' style='background:{bg};color:{fg}'><b>🛡 {ui.esc(gd['judul'])}</b><br>{ui.esc(m['text'])}</div>", unsafe_allow_html=True)
+            else:
+                st.markdown(m['text'])
+            for n in gd.get('catatan', []):
+                st.caption(f"🛡 {n[0].upper() + n[1:]}.")
             if m['role'] == 'assistant':
                 show_check(m)
                 show_actions(m, i)
@@ -423,9 +448,13 @@ else:
                 if a['tipe'] == 'rencana_minggu' and a['status'] == 'menunggu':
                     a['status'] = 'diganti'
             ss.week_plan_ctx = {'plan': new_plans[-1]['plan']}
+        ss.chat[-1]['text'] = res.get('pertanyaan_aman') or q          # yang tersimpan & dikirim ulang sebagai riwayat = versi tersamar
         ss.chat.append({'role': 'assistant', 'text': res['jawaban'] or 'Tidak ada jawaban.', 'trace': res['jejak'], 'usulan': res['usulan'],
-                        'lanjut': res['lanjut'], 'cek': res['cek']})
-        data.audit('chat', rm=ss.rm, pertanyaan=q, alat=[t[0] for t in res['jejak']], usulan=len(res['usulan']), mode=res['mode'])
+                        'lanjut': res['lanjut'], 'cek': res['cek'], 'guard': res.get('guard')})
+        data.audit('chat', rm=ss.rm, pertanyaan=res.get('pertanyaan_aman') or q, jawaban=res['jawaban'], alat=[t[0] for t in res['jejak']],
+                   usulan=[{'tipe': a['tipe'], 'company': a['company_id']} for a in res['usulan']], mode=res['mode'],
+                   model_llm=cfg['model'] if res['mode'] == 'LLM' else None, **guard.versions(),
+                   cek_angka=({'jumlah': res['cek'][0], 'tak_berdasar': list(dict.fromkeys(res['cek'][1]))} if res['cek'] else None), guardrail=res.get('guard'))
         st.rerun()
     if ss.chat and st.button('Mulai percakapan baru'):
         ss.chat = []; ss.week_plan_ctx = None; st.rerun()

@@ -27,6 +27,8 @@ except Exception:  # pragma: no cover
 
 import reports as R
 
+from . import guard
+
 SYSTEM = ("Anda adalah RM Copilot untuk Relationship Manager korporasi sebuah bank di Indonesia. Tulis dalam bahasa Indonesia yang lugas dan profesional. "
           "Aturan: (1) hanya gunakan angka yang ada di FAKTA, jangan menghitung atau mengarang angka baru; (2) jangan memberi keputusan kelayakan kredit, "
           "itu wewenang analis; (3) bandingkan dengan peer bila datanya ada; (4) setiap saran harus bisa dikerjakan RM; (5) data bersifat sintetis.")
@@ -36,7 +38,18 @@ def config():
     prov = os.getenv('LLM_PROVIDER', 'none').lower().strip()
     key = os.getenv('ANTHROPIC_API_KEY') if prov == 'anthropic' else os.getenv('OPENAI_API_KEY', 'ollama' if os.getenv('OPENAI_BASE_URL') else None)
     default_model = {'anthropic': 'claude-sonnet-5-5', 'openai': 'gpt-5.4-mini'}.get(prov, '')
-    return {'provider': prov, 'model': os.getenv('LLM_MODEL', default_model), 'enabled': prov in ('anthropic', 'openai') and bool(key), 'key': key}
+    # kill switch: .env LLM_ENABLED=false atau saklar supervisor (outputs/app/guard_settings.json) → semua fitur kembali ke template
+    killed = os.getenv('LLM_ENABLED', 'true').lower().strip() in ('0', 'false', 'no', 'off') or bool(guard.settings().get('llm_off'))
+    return {'provider': prov, 'model': os.getenv('LLM_MODEL', default_model), 'enabled': prov in ('anthropic', 'openai') and bool(key) and not killed,
+            'key': key, 'killed': killed}
+
+
+def _dlp(text, sumber):
+    """Gerbang DLP: samarkan PII di teks apa pun sebelum keluar ke penyedia LLM."""
+    safe, pii = guard.mask_pii(text)
+    if pii:
+        guard.log('pii', 'gateway', sumber=sumber, jenis=pii)
+    return safe
 
 
 def _is_reasoning(model):
@@ -85,6 +98,7 @@ def complete(prompt, system=SYSTEM, max_tokens=1200):
         cl, cfg = _client()
         if cl is None:
             return None
+        prompt = _dlp(prompt, 'complete')
         if cfg['provider'] == 'anthropic':
             r = cl.messages.create(model=cfg['model'], max_tokens=max_tokens, system=system, messages=[{'role': 'user', 'content': prompt}])
             return ''.join(b.text for b in r.content if getattr(b, 'type', '') == 'text')
@@ -215,7 +229,7 @@ def draft_message(kind, ctx: dict):
                'intro': 'Tulis pesan WhatsApp singkat dan sopan dari RM kepada nasabahnya, meminta bantuan memperkenalkan bank kepada mitra usaha mereka.'}
     txt = complete(prompts[kind] + ' Maksimal 3 kalimat, tanpa angka yang tidak ada di konteks.\nKONTEKS: ' + json.dumps(ctx, ensure_ascii=False), max_tokens=300)
     if txt:
-        return txt.strip(), 'LLM'
+        return guard.mask_profanity(txt.strip())[0], 'LLM'
     if kind == 'janji':
         return (f"Selamat pagi Bapak/Ibu di {ctx.get('nama')}, saya {ctx.get('rm')} dari BNI. Saya ingin berkunjung {ctx.get('waktu', 'minggu ini')} "
                 f"untuk membahas {ctx.get('topik', 'kebutuhan layanan perusahaan')}. Apakah waktu tersebut sesuai?"), 'template'
@@ -232,7 +246,8 @@ def run_tools(system, user_msg, tools, executor, max_steps=12, history=None, on_
     cl, cfg = _client()
     if cl is None:
         return None, []
-    trace, history = [], [h for h in (history or []) if h.get('content')]
+    user_msg = _dlp(user_msg, 'run_tools')
+    trace, history = [], [{**h, 'content': _dlp(h['content'], 'riwayat')} for h in (history or []) if h.get('content')]
 
     def call(name, args):
         try:
