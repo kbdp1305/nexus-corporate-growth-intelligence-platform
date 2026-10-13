@@ -204,10 +204,11 @@ def sidebar(store, rms):
         if c2.button('Keluar', use_container_width=True):
             auth.logout()
         cnt = {k: v for k, v in tindak.badge_counts(user).items() if v}
-        if cnt:                                  # pemberitahuan: feedback tertunda, pengajuan menunggu, tiket baru
+        if cnt:                                  # pemberitahuan: feedback tertunda, kegiatan terlambat, pengajuan menunggu, tiket baru
             st.markdown(' · '.join(f"<span style='color:#F6B48A;font-weight:600'>{v}</span> {k}" for k, v in cnt.items()), unsafe_allow_html=True)
             if user['role'] != 'divisi' and st.button('Buka tindak lanjut', use_container_width=True):
-                ss.tl_tab = 'Pengajuan kunjungan' if cnt.get('pengajuan menunggu') and not cnt.get('feedback tertunda') else 'Feedback kunjungan'
+                ss.tl_tab = ('Feedback kunjungan' if cnt.get('feedback tertunda') else 'Progress kegiatan' if cnt.get('kegiatan terlambat')
+                             else 'Pengajuan kunjungan' if cnt.get('pengajuan menunggu') else 'Feedback kunjungan')
                 go('tindak')
         st.divider()
         if user['role'] == 'divisi':
