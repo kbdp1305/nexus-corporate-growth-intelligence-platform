@@ -47,6 +47,7 @@ KEGIATAN = CsvTable('kegiatan.csv', ['id', 'feedback_id', 'event_id', 'rm_id', '
 ALASAN_ULANG = ['Nasabah minta diundur', 'PIC nasabah berhalangan', 'Menunggu dokumen / data nasabah', 'Bentrok jadwal RM',
                 'Menunggu respons divisi', 'Lainnya']
 ALASAN_BATAL = ['Nasabah membatalkan', 'Tidak relevan lagi', 'Digantikan kegiatan lain', 'Produk ditahan (risiko / legal)', 'Lainnya']
+SUMBER_PROGRES = ('Progress kegiatan', 'Rapat dadakan')   # sumber jadwal kalender yang berasal dari tahap kegiatan
 JENIS_DADAKAN = {'Rapat internal': 'Rapat internal', 'Rapat dengan nasabah': 'Kunjungan', 'Kunjungan nasabah': 'Kunjungan',
                  'Telepon nasabah': 'Telepon'}          # jenis kegiatan dadakan → kanal kalender
 REQ = CsvTable('requests.csv', ['id', 'jenis', 'rm_id', 'company_id', 'divisi', 'judul', 'isi', 'prioritas', 'tenggat', 'status', 'ref',
@@ -185,7 +186,7 @@ def pending_feedback(rm) -> pd.DataFrame:
     done = set(FEEDBACK.load().event_id)
     m = pd.to_datetime(cal.mulai, errors='coerce')
     due = cal[(cal.kanal.isin(['Kunjungan', 'Telepon'])) & (cal.status != 'Dibatalkan') & ((m <= pd.Timestamp(datetime.now())) | (cal.status == 'Selesai'))
-              & ~cal.id.isin(done)]
+              & ~cal.id.isin(done) & ~cal.sumber.isin(SUMBER_PROGRES)]          # tahap progres / rapat dadakan dilacak di Progress kegiatan
     return due.assign(_m=m[due.index]).sort_values('_m', ascending=False)   # m[due.index]: frame kosong tetap kosong
 
 
@@ -215,7 +216,7 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
     FEEDBACK.upsert([{'id': fb_id, 'event_id': ev['id'], 'rm_id': rm, 'company_id': cid, 'tanggal': ev['mulai'][:10], 'kanal': ev['kanal'],
                       'hasil': hasil, 'produk': ';'.join(produk), 'catatan': catatan, 'keberatan': keberatan, 'isu': ';'.join(isu), 'langkah_lanjut': langkah,
                       'jadwal_lanjut_id': follow_id, 'pertimbangan_ulang': 'ya' if ulang else '', 'tiket': ';'.join(tickets), 'dibuat_oleh': user, 'dibuat_pada': now()}])
-    save_kegiatan(fb_id, ev, kegiatan, user)
+    save_kegiatan(fb_id, ev, kegiatan, user, nama=nama)
     K.set_status(ev['id'], 'Selesai', user)
     if cid in store.co.index:                    # format sama dengan log aksi RM → muncul di Profil › Riwayat
         store.append_visit({'action_id': f"APP-{fb_id}", 'track': 'Deepening' if store.cox.is_client.get(cid, False) else 'Acquisition', 'party_id': cid,
@@ -227,8 +228,9 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
 
 
 # ------------------------------------------------------------------ progres kegiatan lanjutan
-def save_kegiatan(fb_id, ev: dict, kegiatan, user):
-    """Kegiatan selanjutnya (saran AI dicentang + manual) → satu baris per kegiatan, tenggat jadi tanggal, status 'Belum'."""
+def save_kegiatan(fb_id, ev: dict, kegiatan, user, nama=''):
+    """Kegiatan selanjutnya (saran AI dicentang + manual) → satu baris per kegiatan, tenggat jadi tanggal, status 'Belum';
+    setiap tahap langsung dipasang di Kalender kunjungan RM pada tanggal tenggatnya."""
     rows = []
     for i, k in enumerate(kegiatan, 1):
         dv = k.get('divisi')
@@ -239,9 +241,50 @@ def save_kegiatan(fb_id, ev: dict, kegiatan, user):
                      'jenis': 'Kegiatan', 'tenggat': (date.today() + timedelta(days=int(k.get('tenggat_hari') or 0))).isoformat(), 'status': 'Belum',
                      'selesai_pada': '', 'n_jadwal_ulang': 0, 'riwayat': json.dumps([_entry(user, 'Dibuat dari feedback kunjungan')], ensure_ascii=False),
                      'dibuat_oleh': user, 'dibuat_pada': now()})
+    for r in rows:
+        r['kal_id'], r['jadwal'] = pasang_kalender(r, nama, user)
     if rows:
         KEGIATAN.upsert(rows, {'diubah_pada': now()})
     return len(rows)
+
+
+def _buat_jadwal(row: dict, mulai: datetime, kanal, nama, user, status='Terjadwal', catatan=''):
+    """Satu jadwal kalender untuk satu tahap kegiatan. → id jadwal."""
+    dur = timedelta(minutes=K.R.DURASI_MENIT.get(kanal, 60))
+    _, _, ids = K.T.upsert([{'rm_id': row['rm_id'], 'company_id': row['company_id'],
+                             'judul': f"{nama or row['company_id']} ({row['company_id']}) · {row['judul']}", 'kanal': kanal,
+                             'mulai': mulai.isoformat(timespec='minutes'), 'selesai': (mulai + dur).isoformat(timespec='minutes'), 'lokasi': '',
+                             'catatan': f"Tahap {row['urutan']} tindak lanjut kunjungan {row['tanggal_kunjungan']}: {row['aksi']}" + (f"\n{catatan}" if catatan else ''),
+                             'status': status, 'sumber': 'Progress kegiatan'}], {'dibuat_oleh': user, 'diubah_pada': now()})
+    return ids[0]
+
+
+def pasang_kalender(row: dict, nama, user):
+    """Tahap bertenggat → jadwal di kalender pada tanggal tenggat (slot kosong mulai 10.00, tidak melewati tenggat).
+    Status kalender mengikuti status tahap. → (id jadwal, waktu mulai iso)."""
+    kanal = kanal_kegiatan(row)
+    tg = date.fromisoformat(str(row['tenggat'])[:10])
+    awal = datetime.combine(tg, datetime.strptime('10:00', '%H:%M').time())
+    m = free_slot(row['rm_id'], awal, K.R.DURASI_MENIT.get(kanal, 60))
+    m = m if m.date() == tg else awal                        # slot kosong hari itu; bila penuh / akhir pekan tetap di tanggal tenggat
+    status = {'Selesai': 'Selesai', 'Dibatalkan': 'Dibatalkan'}.get(row.get('status'), 'Terjadwal')
+    return _buat_jadwal(row, m, kanal, nama, user, status), m.isoformat(timespec='minutes')
+
+
+def sinkron_kalender(rm, nama_of, user) -> int:
+    """Tahap yang belum punya jadwal kalender (mis. dibuat sebelum fitur ini) → dipasang di kalender. → jumlah yang dipasang."""
+    df = KEGIATAN.load()
+    df = df if rm == 'Semua RM' else df[df.rm_id == rm]
+    if df.empty:
+        return 0
+    ada = set(K.load().id)
+    n = 0
+    perlu = ~df.kal_id.isin(ada) & (df.status != 'Dibatalkan') & ~((df.sumber == 'Dadakan') & (df.kal_id == ''))   # dadakan tanpa kalender = pilihan RM
+    for r in df[perlu].to_dict('records'):
+        kal_id, jadwal = pasang_kalender(r, nama_of(r['company_id']), user)
+        KEGIATAN.update(r['id'], kal_id=kal_id, jadwal=r['jadwal'] or jadwal, diubah_pada=now())
+        n += 1
+    return n
 
 
 def kegiatan_for(rm) -> pd.DataFrame:
@@ -253,7 +296,8 @@ def kegiatan_for(rm) -> pd.DataFrame:
     sisa = (pd.to_datetime(df.tenggat, errors='coerce') - pd.Timestamp(date.today())).dt.days
     status = (pd.Series('berjalan', index=df.index).mask(sisa < 0, 'terlambat').mask(df.status == 'Selesai', 'selesai')
               .mask(df.status == 'Dibatalkan', 'batal'))
-    return df.assign(status_tampil=status, sisa_hari=sisa, urutan=pd.to_numeric(df.urutan, errors='coerce'),
+    waktu = pd.to_datetime(df.jadwal.where((df.jadwal != '') & (df.kal_id != ''), df.tenggat), errors='coerce')   # jadwal kalender, atau tenggat
+    return df.assign(status_tampil=status, sisa_hari=sisa, urutan=pd.to_numeric(df.urutan, errors='coerce'), waktu=waktu,
                      n_jadwal_ulang=pd.to_numeric(df.n_jadwal_ulang, errors='coerce').fillna(0).astype(int))
 
 
@@ -265,6 +309,9 @@ def _catat(kid, user, pesan, **fields):
 
 
 def set_kegiatan(kid, selesai: bool, user):
+    row = KEGIATAN.load().set_index('id').loc[kid]
+    if row.kal_id:
+        K.set_status(row.kal_id, 'Selesai' if selesai else 'Terjadwal', user)
     _catat(kid, user, 'Ditandai selesai' if selesai else 'Tanda selesai dibatalkan',
            status='Selesai' if selesai else 'Belum', selesai_pada=now() if selesai else '')
     data.audit('progres_kegiatan', user=user, id=kid, selesai=selesai)
@@ -303,14 +350,8 @@ def reschedule_kegiatan(kid, tanggal: date, alasan, user, jam=None, kanal=None, 
         e = ev.loc[kal_id]
         dur = datetime.fromisoformat(e.selesai) - datetime.fromisoformat(e.mulai) if e.selesai else timedelta(minutes=60)
         K.T.update(kal_id, mulai=jadwal, selesai=(m + dur).isoformat(timespec='minutes'), kanal=kanal, status='Terjadwal', diubah_pada=now())
-    else:                                                    # tahap bertenggat → buat jadwal baru di kalender
-        dur = timedelta(minutes=K.R.DURASI_MENIT.get(kanal, 60))
-        _, _, ids = K.T.upsert([{'rm_id': row.rm_id, 'company_id': row.company_id,
-                                 'judul': f"{nama or row.company_id} ({row.company_id}) · {row.judul}", 'kanal': kanal,
-                                 'mulai': jadwal, 'selesai': (m + dur).isoformat(timespec='minutes'), 'lokasi': '',
-                                 'catatan': f"Tahap {row.urutan} tindak lanjut kunjungan {row.tanggal_kunjungan}: {row.aksi}\nDijadwal ulang · alasan: {alasan}",
-                                 'status': 'Terjadwal', 'sumber': 'Progress kegiatan'}], {'dibuat_oleh': user, 'diubah_pada': now()})
-        kal_id = ids[0]
+    else:                                                    # tahap tanpa jadwal → buat jadwal baru di kalender
+        kal_id = _buat_jadwal({**row.to_dict(), 'id': kid}, m, kanal, nama, user, catatan=f'Dijadwal ulang · alasan: {alasan}')
     n = int(float(row.n_jadwal_ulang or 0)) + 1
     _catat(kid, user, f'Dijadwal ulang dari {str(lama)[:16].replace("T", " ")} ke {jadwal.replace("T", " ")} ({kanal}) · alasan: {alasan}'
            + ('' if row.kal_id else ' · masuk kalender'),
