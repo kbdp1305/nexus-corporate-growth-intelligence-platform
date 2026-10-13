@@ -31,17 +31,24 @@ def show_thread(row):
 if tab == 'Feedback kunjungan':
     due = T.pending_feedback(ss.rm)
     pre = ss.pop('fb_event', None)
-    if pre and pre not in set(due.id):            # jadwal yang belum lewat tapi dipilih dari kalender
-        cal = K.load(); row = cal[cal.id == pre]
-        if len(row):
+    if pre:                                       # dipilih dari Kalender / Profil: di-pin sampai feedback-nya disimpan,
+        ss['fb_pin'] = ss['fb_sel'] = pre         # agar tetap ada saat halaman dijalankan ulang (klik radio, isian, dll.)
+    pin = ss.get('fb_pin')
+    if pin and pin not in set(due.id):            # jadwal yang belum lewat tapi dipilih dari kalender
+        cal = K.load(); row = cal[cal.id == pin]
+        if len(row) and pin not in set(T.FEEDBACK.load().event_id):
             due = pd.concat([row.assign(_m=pd.to_datetime(row.mulai)), due])
+        else:
+            ss.pop('fb_pin', None)
     if due.empty:
         st.info('Tidak ada kunjungan yang menunggu feedback. Jadwal kunjungan/telepon yang sudah lewat di Kalender kunjungan akan muncul di sini.')
     else:
         st.markdown(f"**{len(due)} kunjungan menunggu feedback**")
         ids = list(due.id)
         lab = {r.id: f"{pd.Timestamp(r.mulai):%a %d %b %H.%M} · {r.kanal} · {r.judul}" + (f" · {r.rm_id}" if ss.rm == 'Semua RM' else '') for r in due.itertuples()}
-        eid = st.selectbox('Kunjungan', ids, index=ids.index(pre) if pre in ids else 0, format_func=lab.get)
+        if ss.get('fb_sel') not in ids:           # pilihan lama sudah tidak ada (mis. feedback-nya sudah disimpan)
+            ss.pop('fb_sel', None)
+        eid = st.selectbox('Kunjungan', ids, key='fb_sel', format_func=lab.get)
         ev = due[due.id == eid].iloc[0].to_dict()
         if not auth.can_edit(ev['rm_id']):
             st.caption('Hanya RM pemilik jadwal yang bisa mengisi feedback.'); st.stop()
@@ -238,23 +245,7 @@ if tab == 'Feedback kunjungan':
                 st.button('Tambah kegiatan', key=f'fb_add_{eid}', on_click=tambah_manual, use_container_width=True,
                           help='Masukkan kegiatan ini ke daftar di atas (kolom kegiatan harus diisi).')
 
-            # ---------------- jadwal berikutnya
-            with st.container(border=True):
-                ui.section('◷', 'Jadwal ulang' if ulang else 'Jadwal berikutnya', 'Slot kosong dicari otomatis di kalender ' + ev['rm_id'])
-                follow(f'fb_j_{eid}', ada and (hasil in ('Converted', 'Interested') or ulang))
-                jadwal = st.toggle('Masukkan ke kalender', key=f'fb_j_{eid}')
-                lanjut = None
-                if jadwal:
-                    follow(f'fb_t_{eid}', when.date()); follow(f'fb_jm_{eid}', when.time()); follow(f'fb_kn_{eid}', jd['kanal'])
-                    x1, x2, x3 = st.columns([1.3, 1, 1.2])
-                    tgl = x1.date_input('Tanggal', format='DD/MM/YYYY', key=f'fb_t_{eid}')
-                    jam = x2.time_input('Jam', step=900, key=f'fb_jm_{eid}')
-                    kanal = x3.selectbox('Kanal', K.KANAL, key=f'fb_kn_{eid}')
-                    m = datetime.combine(tgl, jam); lanjut = (m, m + timedelta(minutes=K.R.DURASI_MENIT.get(kanal, 60)), kanal)
-                    st.markdown(f"<div class='egi-when' style='margin-top:4px'><b>{ui.tanggal(m)} · {m:%H.%M}</b><span>{ui.esc(kanal)}</span>"
-                                + (f"<span class='tj'>{ui.esc(jd['tujuan'])}</span>" if jd['tujuan'] else '') + '</div>', unsafe_allow_html=True)
-                elif ada:
-                    st.caption(f"Saran agen: {ui.tanggal(when)}, {when:%H.%M} · {jd['kanal']}. Nyalakan untuk memasukkannya ke kalender.")
+        lanjut = None                                       # rapat / kunjungan lanjutan diisi sebagai kegiatan (otomatis masuk kalender per tenggat)
         st.write('')
         manual_tiket = [k for k in ss[mk] if isinstance(k.get('divisi'), list) and k['divisi']]
         n_tiket = len(divs) + sum(len(k['divisi']) for k in manual_tiket)
@@ -305,6 +296,9 @@ if tab == 'Feedback kunjungan':
 
 # ================================================================== progress kegiatan lanjutan
 elif tab == 'Progress kegiatan':
+    n_baru = T.sinkron_kalender(ss.rm, lambda c: store.co.name.get(c, c), user['username'])   # tahap lama tanpa jadwal → kalender
+    if n_baru:
+        st.toast(f'{n_baru} tahap dimasukkan ke Kalender kunjungan sesuai tenggatnya')
     keg = T.kegiatan_for(ss.rm)
     if keg.empty:
         st.info('Belum ada kegiatan lanjutan. Kegiatan yang dicentang atau ditambahkan di Feedback kunjungan muncul di sini setelah feedback disimpan.')
@@ -337,32 +331,37 @@ elif tab == 'Progress kegiatan':
                    'batal': 'Dibatalkan', 'terlambat': f"Lewat {int(-r.sisa_hari)} hari"}.get(
                 r.status_tampil, 'Tenggat hari ini' if r.sisa_hari == 0 else f"Sisa {int(r.sisa_hari)} hari")
             dv = ', '.join(d for d in str(r.divisi).split(';') if d)
-            kapan = f"{r.jenis} · {pd.Timestamp(r.jadwal):%d/%m %H.%M}" if r.jadwal else f"Tenggat {tg:%d/%m/%Y}"
-            tags = (ui.badge('Dadakan', '#EDE9F6', '#4C3A86') if r.sumber == 'Dadakan' else '') \
+            kapan = f"Tenggat {tg:%d/%m/%Y}" + (f"<br>📅 Kalender {pd.Timestamp(r.jadwal):%d/%m %H.%M}" if r.jadwal and r.kal_id else '')
+            tags = (ui.badge(f'Dadakan · {r.jenis}', '#EDE9F6', '#4C3A86') if r.sumber == 'Dadakan' else '') \
                 + (ui.badge(f'Dijadwal ulang {r.n_jadwal_ulang}×', '#FBEFD6', '#7A4E00') if r.n_jadwal_ulang else '')
             return (f"<div class='egi-node {r.status_tampil}{' aktif' if aktif else ''}' title='{ui.esc(r.aksi)}'>"
-                    f"<span class='n'>Tahap {int(r.urutan)} · {lab}</span><b>{ui.esc(r.judul)}</b>"
+                    f"<span class='n'>Tahap {int(r.nomor)} · {lab}</span><b>{ui.esc(r.judul)}</b>"
                     f"<span class='m'>{ui.esc(r.pemilik)}" + (f" · koordinasi {ui.esc(dv)}" if dv else '') + f"<br>{kapan}</span>"
                     + (f"<span class='m al'>Alasan: {ui.esc(r.alasan)}</span>" if r.alasan and r.status_tampil == 'batal' else '')
                     + (f"<div class='tg'>{tags}</div>" if tags else '') + '</div>')
 
-        def urut(g):                                                # perusahaan dengan tahap lewat tenggat dulu, lalu tenggat terdekat
-            belum = g[~g.status_tampil.isin(['selesai', 'batal'])]
-            return (not bool((g.status_tampil == 'terlambat').any()), belum.sisa_hari.min() if len(belum) else 9999)
+        # tahap dalam satu alur diurutkan menurut waktunya (jadwal kalender, atau tenggat); nomor tahap mengikuti urutan itu
+        keg = keg.sort_values(['feedback_id', 'waktu', 'urutan'])
+        keg['nomor'] = keg.groupby('feedback_id').cumcount() + 1
+        # perusahaan: yang feedback kunjungannya paling baru disimpan tampil paling atas
+        disimpan = keg.groupby('feedback_id').dibuat_pada.min()                 # waktu feedback disimpan = saat tahap pertama dibuat
+        keg['fb_simpan'] = keg.feedback_id.map(disimpan)
+        terbaru = keg.groupby('company_id').fb_simpan.max().sort_values(ascending=False)
 
         tampil = 0
-        for _, g in sorted(keg.groupby('company_id'), key=lambda x: urut(x[1])):
+        for cid_g in terbaru.index:
+            g = keg[keg.company_id == cid_g]
             if want and not (g.status_tampil == want).any():
                 continue
             tampil += 1
-            g = g.sort_values(['tanggal_kunjungan', 'urutan'])
+            g = g.sort_values(['fb_simpan', 'waktu', 'urutan'], ascending=[False, True, True])
             cid0, rm0 = g.company_id.iloc[0], g.rm_id.iloc[0]
             hidup = g[g.status_tampil != 'batal']
             done, total = int((hidup.status_tampil == 'selesai').sum()), len(hidup)
             late, batal = int((g.status_tampil == 'terlambat').sum()), int((g.status_tampil == 'batal').sum())
             boleh = auth.can_edit(rm0)
             n_kunj = g.feedback_id.nunique()
-            label = {r.id: f"{int(r.urutan)}. {r.judul}" + (f" ({pd.Timestamp(r.tanggal_kunjungan):%d/%m})" if n_kunj > 1 else '') for r in g.itertuples()}
+            label = {r.id: f"{int(r.nomor)}. {r.judul}" + (f" ({pd.Timestamp(r.tanggal_kunjungan):%d/%m})" if n_kunj > 1 else '') for r in g.itertuples()}
             with st.container(border=True):
                 right = ui.badge(f'{done}/{total} tahap selesai', *(('#E4F1EA', '#17613F') if total and done == total else ('#EEF0F3', '#374151'))) \
                     + (ui.badge(f'{late} lewat tenggat', '#FADFDB', '#9A2416') if late else '') \
@@ -371,8 +370,8 @@ elif tab == 'Progress kegiatan':
 
                 # ---- flowchart: satu alur per kunjungan
                 html = ''
-                for fid, v in sorted(g.groupby('feedback_id'), key=lambda x: x[1].tanggal_kunjungan.iloc[0]):
-                    v = v.sort_values('urutan')
+                for fid, v in sorted(g.groupby('feedback_id'), key=lambda x: x[1].fb_simpan.iloc[0], reverse=True):   # kunjungan terbaru dulu
+                    v = v.sort_values(['waktu', 'urutan'])
                     sisa = v[~v.status_tampil.isin(['selesai', 'batal'])]
                     aktif_id = sisa.id.iloc[0] if len(sisa) else None
                     parts = [f"<div class='egi-node start'><span class='n'>Kunjungan</span><b>{ui.tanggal(pd.Timestamp(v.tanggal_kunjungan.iloc[0]))}</b>"
