@@ -116,7 +116,7 @@ def login_page(rms):
 
 def logout():
     data.audit('logout', user=current()['username'])
-    for k in ['user', 'plan', 'chat', 'agent_result', 'focus_company', 'focus_district', 'rm']:
+    for k in list(st.session_state):
         st.session_state.pop(k, None)
     st.query_params.clear()
     st.rerun()

@@ -145,6 +145,16 @@ def apply_theme():
     st.markdown(CSS, unsafe_allow_html=True)
 
 
+def operation(fn, *args, **kwargs):
+    """Surface validation/storage failures without a page traceback."""
+    try:
+        return fn(*args, **kwargs)
+    except ValueError as error:
+        st.error(str(error)); st.stop()
+    except OSError:
+        st.error('Perubahan tidak tersimpan. Coba lagi setelah penyimpanan tersedia.'); st.stop()
+
+
 def fmt(x, d=1, pct=False):
     if x is None or (isinstance(x, (float, np.floating)) and not np.isfinite(x)):
         return '—'

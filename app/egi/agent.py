@@ -591,19 +591,21 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
     plan_ctx: rencana minggu terakhir dari percakapan sebelumnya (untuk revise_week_plan)."""
     proposals = proposals if proposals is not None else []
     mine = set(store.portfolio(rm).index)
+    from .profile_workspace import accessible_ids
+    allowed = accessible_ids(store, {'role': 'supervisor' if rm == 'Semua RM' else 'rm', 'rm_id': rm})
 
-    def guard(cid):
+    def check_company(cid):
         if cid not in store.co.index:
             return {'error': f'{cid} tidak ditemukan; cari dengan search_company'}
-        if rm != 'Semua RM' and store.cox.is_client.get(cid) and store.co.rm_id.get(cid) != rm:
-            return {'error': f'{cid} nasabah RM lain ({store.co.rm_id.get(cid)}); di luar portofolio {rm}'}
+        if cid not in allowed:
+            return {'error': f'{cid} di luar portofolio dan prospect jaringan {rm}'}
         return None
 
     def name(cid):
         return store.co.name.get(cid, cid)
 
     def propose(tipe, cid, **kw):
-        err = guard(cid)
+        err = check_company(cid)
         if err:
             return err
         text = ' '.join(str(kw.get(k) or '') for k in ('isi', 'catatan'))
@@ -626,7 +628,7 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
             cid = str(cid).strip().upper()
         if tool == 'search_company':
             q = str(args.get('query', '')).lower().strip()
-            c = store.cox if not args.get('hanya_portofolio') else store.cox[store.cox.index.isin(mine)]
+            c = store.cox[store.cox.index.isin(mine if args.get('hanya_portofolio') else allowed)]
             hay = (c.index.str.lower() + ' ' + c.name.str.lower() + ' ' + c.industry.str.lower() + ' ' + c.district.str.lower())
             toks = q.split()
             hit = c[hay.apply(lambda h: all(t in h for t in toks))].copy()
@@ -651,14 +653,14 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
             return {'jumlah_cocok': len(pf), 'daftar': _records(_biz(pf), ['name', 'segment', 'district', 'skor_peluang_pct', 'rank_in_segment', 'risk_class', 'alarm',
                                                                             'recommended_products', 'reason', 'peluang_konversi_pct', 'ev_Rp_juta', 'contacted'], n, 1)}
         if tool in ('company_facts', 'product_opportunities', 'cashflow_trend', 'visit_history', 'investigate_alarm', 'intro_path', 'bank_shift', 'credit_facility'):
-            err = guard(cid)
+            err = check_company(cid)
             if err: return err
         if tool == 'company_facts':
             return _slim(R.fact_pack(store, cid))
         if tool == 'compare_companies':
             out = []
             for c in [str(x).strip().upper() for x in args.get('company_ids', [])][:5]:
-                err = guard(c)
+                err = check_company(c)
                 if err: out.append({'id': c, **err}); continue
                 fp = R.fact_pack(store, c); k, ak, pl = fp['keuangan'], fp['arus_kas'], fp.get('peluang')
                 out.append({'id': c, 'nama': fp['nama'], 'segmen': fp['segmen'], 'tipe': fp['tipe'], 'kecamatan': fp['kecamatan'], 'risiko': fp['risiko']['kelas'],
@@ -701,7 +703,7 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
             d = store.districts(); k = next((i for i in d.index if i.lower() == str(args.get('kecamatan', '')).lower()), None)
             if k is None: return {'error': 'kecamatan tidak dikenal', 'pilihan': list(d.index)}
             pf = candidates(store, rm); pf = pf[pf.district == k]
-            acq = store.acq.join(store.cox[['name', 'district']]); acq = acq[acq.district == k].sort_values('acquisition_score', ascending=False)
+            acq = store.acq.join(store.cox[['name', 'district']]); acq = acq[(acq.district == k) & acq.index.isin(allowed)].sort_values('acquisition_score', ascending=False)
             return {'kecamatan': k, 'peringkat': int(list(d.index).index(k)) + 1, 'dari': len(d), **json.loads(_biz(d).loc[[k]].drop(columns=['pen']).round(2).to_json(orient='records'))[0],
                     'nasabah_saya': _records(_biz(pf), ['name', 'segment', 'skor_peluang_pct', 'risk_class', 'alarm', 'contacted'], 8, 1),
                     'prospect_teratas': _records(acq, ['name', 'segment', 'acquisition_score', 'risk_class'], 8)}
@@ -748,7 +750,7 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
                 return {'error': 'tidak ada hari tersisa setelah hari yang tidak bisa / sudah lewat dibuang; minta hari lain'}
             must, notes = [], []
             for c in [str(x).strip().upper() for x in args.get('wajib') or []]:
-                err = guard(c) if c in store.co.index else {'error': f'{c} tidak ditemukan'}
+                err = check_company(c) if c in store.co.index else {'error': f'{c} tidak ditemukan'}
                 who, why = K.holder(K.load(), c) if not err else (None, '')
                 if err or (who and who != rm):
                     notes.append(f"{c} tidak bisa dimasukkan: {err['error'] if err else f'dipegang {who} ({why})'}")
@@ -765,6 +767,9 @@ def make_executor(store, rm, proposals=None, plan_ctx=None):
             base = next((a['plan'] for a in reversed(proposals) if a['tipe'] == 'rencana_minggu'), None) or (plan_ctx or {}).get('plan')
             if not base:
                 return {'error': 'belum ada rencana minggu untuk direvisi; susun dulu dengan propose_week_plan'}
+            from .copilot_flow import plan_matches
+            if not plan_matches(base, rm):
+                return {'error': 'rencana berasal dari RM atau konteks minggu yang berbeda; susun ulang rencana'}
             plan, notes = revise_plan(store, base, args.get('operasi') or [], rm)
             finalize_plan(store, plan, date.fromisoformat(base['minggu_mulai']), rm)
             proposals.append({'id': f'A{len(proposals) + 1}', 'tipe': 'rencana_minggu', 'company_id': '', 'nama': f"Rencana {plan['minggu']} (revisi)", 'status': 'menunggu', 'plan': plan})
@@ -832,6 +837,13 @@ def chat(store, rm, question, history=None, on_step=None, focus=None, plan_ctx=N
     """Agen percakapan. Mengembalikan dict: jawaban, jejak, usulan aksi, saran lanjutan, cek angka, mode.
     plan_ctx = {'plan': ...} rencana minggu terakhir di percakapan ini (supaya RM bisa merevisinya).
     Guardrail: input diperiksa sebelum ke LLM (injection, kata kasar, di luar scope, PII); jawaban diperiksa sebelum tampil."""
+    from .profile_workspace import accessible_ids
+    from .copilot_flow import plan_matches
+    allowed = accessible_ids(store, {'role': 'supervisor' if rm == 'Semua RM' else 'rm', 'rm_id': rm})
+    if focus not in allowed:
+        focus = None
+    if plan_ctx and not plan_matches(plan_ctx.get('plan'), rm):
+        plan_ctx = None
     g = guard.check_input(question)
     blank = {'jejak': [], 'usulan': [], 'lanjut': [], 'cek': None, 'pertanyaan_aman': g['teks']}
     if not g['ok']:

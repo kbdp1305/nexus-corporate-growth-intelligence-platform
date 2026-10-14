@@ -1,24 +1,68 @@
 import json
+import uuid
 from datetime import date, datetime, timedelta
 
 import pandas as pd
 import streamlit as st
 
-from egi import agent, auth, data, guard, llm, planner, state, ui, viz
+from egi import agent, auth, copilot_flow as flow, data, guard, llm, planner, profile_workspace as PW, sim, state, ui, viz
 from egi import kalender as K, tindak as T
 import reports as R  # noqa: E402  (src/ ditambahkan ke sys.path oleh egi.data)
 
 store = data.get_store(); ss = st.session_state
-TASKS = {'chat': 'Tanya Copilot', 'triase': 'Triase alarm', 'plan': 'Rencana minggu', 'alarm': 'Investigasi alarm', 'brief': 'Siapkan kunjungan'}
+user = auth.current()
+if not user or user['role'] not in ('rm', 'supervisor'):
+    st.stop()
+if user['role'] == 'rm':
+    ss.rm = user['rm_id']
+allowed = PW.accessible_ids(store, user)
+context_rm = (user['username'], ss.rm)
+if ss.get('_copilot_context_rm') != context_rm:
+    if ss.get('_copilot_context_rm') is not None:
+        ss.agent_result = None; ss.chat = []; ss.week_plan_ctx = None
+        ss.plan_to_cal = None; ss.triage_msg = None
+    ss._copilot_context_rm = context_rm
+if ss.focus_company and ss.focus_company not in allowed:
+    ss.focus_company = None
+    st.info('Fokus perusahaan dilepas karena berada di luar cakupan akun saat ini.')
+TASKS = {'chat': 'Tanya Copilot', 'triase': 'Tinjau Temuan', 'plan': 'Susun Rencana', 'alarm': 'Tinjau Temuan', 'brief': 'Siapkan Bahan Kunjungan'}
 cfg = llm.config()
 
-ui.page_header(f"{ss.rm} · {'LLM ' + cfg['provider'] + ' · ' + cfg['model'] if cfg['enabled'] else 'mode template (tanpa LLM)'} · setiap tindakan menunggu persetujuan Anda", 'RM Copilot')
-inv = {v: k for k, v in TASKS.items()}
+ui.page_header(f"{ss.rm} · Data analisis per {data.SNAPSHOT:%d/%m/%Y} · tindakan dijalankan setelah persetujuan Anda", 'RM Copilot')
+with st.container(border=True):
+    focus_text, focus_control = st.columns([2, 1])
+    if ss.focus_company:
+        focus_text.markdown(f"**Perusahaan aktif:** {ui.esc(store.co.name.get(ss.focus_company, ss.focus_company))}", unsafe_allow_html=True)
+        focus_text.caption(f'{ss.focus_company} · {ss.rm}')
+    else:
+        focus_text.markdown(f'**Konteks aktif: Portofolio {ss.rm}**')
+        focus_text.caption('Pilih perusahaan untuk membahas kebutuhan atau menyiapkan bahan kunjungan.')
+    with focus_control.popover('Ganti / Lepas Fokus', use_container_width=True):
+        options = [None] + sorted(allowed, key=lambda cid: str(store.co.name.get(cid, cid)))
+        chosen = st.selectbox('Perusahaan dalam cakupan akun', options,
+                              index=options.index(ss.focus_company) if ss.focus_company in options else 0,
+                              format_func=lambda cid: 'Portofolio (tanpa fokus perusahaan)' if cid is None else f'{store.co.name.get(cid, cid)} · {cid}',
+                              key=f'copilot_focus_pick_{ss.rm}')
+        if st.button('Terapkan Fokus', key='copilot_apply_focus'):
+            ss.focus_company = chosen
+            st.rerun()
+with st.expander('Informasi layanan & rincian teknis'):
+    st.caption(f"{'AI aktif: ' + cfg['provider'] + ' · ' + cfg['model'] if cfg['enabled'] else 'Mode ringkasan otomatis; pertanyaan bebas belum tersedia.'}")
+    st.caption(f'{len(agent.TOOLS)} alat tersedia · hasil analisis mengikuti data yang tersedia · jejak proses ada pada rincian hasil.')
+inv = {'Tanya Copilot': 'chat', 'Siapkan Bahan Kunjungan': 'brief', 'Susun Rencana': 'plan'}
 want = ss.get('copilot_task') or 'chat'
-if ss.get('_task_seen') != want or 'task_sel' not in ss:     # lompatan dari halaman lain memilih tugasnya
+if want not in TASKS:
+    want = 'chat'
+if ss.get('_task_seen') != want or 'task_sel' not in ss or ss.task_sel not in TASKS.values():
     ss['task_sel'] = TASKS[want]
-pick = st.segmented_control('Tugas', list(TASKS.values()), key='task_sel')
-task = inv.get(pick or TASKS['chat'])
+    if want in ('triase', 'alarm'):
+        ss.copilot_review_mode = 'Analisis Perusahaan' if want == 'alarm' else 'Ringkas Temuan Portofolio'
+pick = st.segmented_control('Tugas', ['Tanya Copilot', 'Siapkan Bahan Kunjungan', 'Tinjau Temuan', 'Susun Rencana'], key='task_sel')
+if pick == 'Tinjau Temuan':
+    review = st.radio('Cakupan tinjauan', ['Ringkas Temuan Portofolio', 'Analisis Perusahaan'], horizontal=True, key='copilot_review_mode')
+    task = 'alarm' if review == 'Analisis Perusahaan' else 'triase'
+else:
+    task = inv.get(pick or TASKS['chat'], 'chat')
 ss.copilot_task = ss._task_seen = task
 
 
@@ -34,19 +78,31 @@ def show_trace(trace):
 
 def approve_plan(plan, week_start):
     """Simpan rencana yang disetujui (JSON + audit) dan masukkan ke Kalender kunjungan. Mengembalikan pesan hasil."""
+    error = flow.plan_scope_error(plan, ss.rm, allowed)
+    if error or not flow.plan_matches(plan, ss.rm, week_start):
+        return {'ok': False, 'status': 'gagal', 'message': error or 'Minggu rencana telah berubah. Susun ulang sebelum menyetujui.'}
+    rows = K.from_plan(plan, week_start)
+    n_new, n_upd, rej = K.upsert(K.fit_free(rows, ss.rm), user['username'])
+    success = n_new + n_upd
+    status = 'disetujui' if not rej and success else 'sebagian berhasil' if success else 'gagal'
+    message = f'{n_new} jadwal baru, {n_upd} diperbarui di Kalender kunjungan'
+    if rej:
+        message += '. Dilewati: ' + '; '.join(f'{j} — {w}' for j, w in rej)
+    elif not success:
+        message = 'Tidak ada jadwal yang berhasil disimpan.'
     out = data.APP_OUT / 'plans'; out.mkdir(parents=True, exist_ok=True)
     f = out / f"rencana_{ss.rm}_{datetime.now():%Y%m%d_%H%M%S}.json"
-    plan['status'] = f"disetujui {ss.rm} {date.today():%d %b %Y}"
+    plan['status'] = status
+    plan['hasil_kalender'] = {'baru': n_new, 'diperbarui': n_upd, 'ditolak': rej}
     f.write_text(json.dumps(plan, ensure_ascii=False, indent=1, default=str), encoding='utf-8')
     data.audit('setujui_rencana', rm=ss.rm, berkas=f.name, minggu_mulai=str(week_start), pesan_disetujui=sum(bool(m.get('ok')) for m in plan['pesan']))
-    if ss.rm == 'Semua RM':
-        return f'Rencana disimpan: outputs/app/plans/{f.name}.'
-    n_new, n_upd, rej = K.upsert(K.fit_free(K.from_plan(plan, week_start), ss.rm), auth.current()['username'])
-    return f'{n_new} jadwal baru, {n_upd} diperbarui di Kalender kunjungan' + (f". {len(rej)} dilewati: " + '; '.join(f'{j} — {w}' for j, w in rej) if rej else '')
+    return {'ok': bool(success), 'status': status, 'message': message}
 
 
 def escalate(cid, alasan, bukti=None):
     """Eskalasi yang disetujui RM → tiket ke divisi Risiko Kredit / Remedial (halaman Koordinasi divisi) + log audit."""
+    if cid not in allowed:
+        raise ValueError('Perusahaan berada di luar cakupan akun.')
     bukti = bukti if bukti is not None else agent.investigate(store, cid)['evidence']
     rm = K.owner(store, ss.rm, cid) or ss.rm
     ids = T.escalate(rm_id=rm, company_id=cid, nama=store.co.name.get(cid, cid), alasan=alasan, bukti=bukti, user=auth.current()['username'])
@@ -56,87 +112,137 @@ def escalate(cid, alasan, bukti=None):
 
 # ================================================================== rencana minggu
 if task == 'plan':
-    a, b = st.columns([1, 1.4])
-    with a:
-        st.markdown('**Hari & kanal**')
+    if ss.rm == 'Semua RM':
+        st.info('Pilih satu RM di sidebar untuk menyusun rencana kunjungan.'); st.stop()
+    st.caption('Atur minggu dan kapasitas → susun usulan → pilih kegiatan → simpan ke kalender.')
+    with st.container(border=True):
+        st.markdown('### 1. Tentukan minggu rencana')
+        context, period = st.columns([1, 2])
+        context.markdown(f'**Portofolio {ui.esc(ss.rm)}**')
+        context.caption('Rencana mencakup portofolio RM dan prospect dalam jaringan yang dapat diakses.')
+        nxt = ss.get('plan_week_start') or date.today() + timedelta(days=7 - date.today().weekday())
+        week_start = period.date_input('Minggu dimulai', nxt, format='DD/MM/YYYY', key='copilot_plan_week',
+                                      help='Tanggal pilihan disesuaikan ke Senin pada minggu yang sama.')
+        week_start = week_start - timedelta(days=week_start.weekday())
+        period.caption(f'Senin {week_start:%d/%m/%Y} sampai Jumat {week_start + timedelta(days=4):%d/%m/%Y}')
+        week = f'minggu {week_start:%d/%m/%Y}'
+    a, b = st.columns([1.25, 1], gap='large')
+    with a, st.container(border=True):
+        st.markdown('### 2. Atur kapasitas kegiatan')
+        st.caption('Pilih hari, kanal, dan jumlah kegiatan yang sanggup Anda lakukan. Tambahkan baris untuk hari lain.')
         days = st.data_editor(pd.DataFrame([('Selasa', 'Kunjungan', 3), ('Rabu', 'Telepon', 2), ('Kamis', 'Kunjungan', 2)], columns=['hari', 'kanal', 'slot']),
                               num_rows='dynamic', hide_index=True, use_container_width=True, key='days_ed',
                               column_config={'hari': st.column_config.SelectboxColumn('Hari', options=['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']),
                                              'kanal': st.column_config.SelectboxColumn('Kanal', options=['Kunjungan', 'Telepon']),
-                                             'slot': st.column_config.NumberColumn('Slot', min_value=1, max_value=4, step=1)})
-        week = st.text_input('Label minggu', 'minggu depan')
-        nxt = ss.get('plan_week_start') or date.today() + timedelta(days=7 - date.today().weekday())
-        week_start = st.date_input('Senin minggu rencana', nxt, format='DD/MM/YYYY')
-        week_start = week_start - timedelta(days=week_start.weekday())
-    with b:
+                                             'slot': st.column_config.NumberColumn('Jumlah kegiatan', min_value=1, max_value=4, step=1)})
+        capacity = int(pd.to_numeric(days.slot, errors='coerce').fillna(0).sum())
+        st.caption(f'Kapasitas yang diminta: {capacity} kegiatan. Usulan dapat lebih sedikit sesuai slot dan perusahaan yang tersedia.')
+        generate = st.button('Susun rencana', type='primary', use_container_width=True)
+    with b, st.container(border=True):
         wk = K.active(ss.rm) if ss.rm != 'Semua RM' else K.active('Semua RM').iloc[0:0]
         wk = wk[(wk._m.dt.date >= week_start) & (wk._m.dt.date < week_start + timedelta(days=5))].sort_values('_m')
-        st.markdown(f"**Sudah di Kalender kunjungan** · {week_start:%d %b} – {week_start + timedelta(days=4):%d %b} · {len(wk)} jadwal")
+        st.markdown('### Agenda yang sudah ada')
+        st.caption(f'{len(wk)} agenda pada minggu terpilih')
+        if wk.empty:
+            st.caption('Belum ada agenda. Copilot akan mengusulkan kegiatan sesuai kapasitas Anda.')
         for r in wk.head(8).itertuples():
             st.markdown(f"- {state.when(r.mulai)} · {ui.esc(r.judul)} <span class='egi-muted'>{r.kanal} · {r.sumber}</span>", unsafe_allow_html=True)
-        st.caption('Copilot hanya mengisi slot yang masih kosong dan tidak menggandakan perusahaan yang sudah terjadwal. '
-                   'Tambah jadwal satu per satu lewat tombol 📅 Jadwalkan di Daftar prioritas, Profil, Wilayah, atau Prospect.')
-    if st.button('Susun rencana', type='primary'):
+        if len(wk) > 8:
+            st.caption(f'+{len(wk) - 8} agenda lainnya di Kalender kunjungan.')
+        st.caption('Agenda yang sudah ada tetap dipertahankan. Copilot mencari slot kosong untuk kegiatan baru.')
+    if generate:
+        ss.plan_to_cal = None
         dd = [(r.hari, r.kanal, int(r.slot)) for r in days.dropna().itertuples()]
         with st.spinner('Copilot memeriksa portofolio, alarm, wilayah, dan jaringan…'):
             plan = agent.plan_week(store, ss.rm, (), dd or None, week, exclude=K.scheduled_ids(ss.rm))
-            planner.refresh_kpi(plan, store)
+            agent.finalize_plan(store, plan, week_start, ss.rm)
             ss.agent_result = ('plan', plan)
         data.audit('susun_rencana', rm=ss.rm, minggu_mulai=str(week_start))
     res = ss.agent_result
-    if res and res[0] == 'plan':
+    if res and res[0] == 'plan' and not flow.plan_matches(res[1], ss.rm, week_start):
+        st.info('RM atau minggu rencana telah berubah. Klik Susun rencana untuk membuat usulan yang sesuai.')
+    if res and res[0] == 'plan' and flow.plan_matches(res[1], ss.rm, week_start):
         plan = res[1]
+        plan.setdefault('_ui_id', uuid.uuid4().hex[:10])
+        selections = set()
+        st.markdown('### 3. Tinjau dan pilih kegiatan')
+        st.caption('Centang kegiatan yang ingin dimasukkan ke kalender. Buka profil perusahaan bila perlu sebelum memilih.')
         k = st.columns(4)
         for col, (l, v, sub) in zip(k, plan['kpi']):
             ui.kpi(col, l, v, sub)
         st.write('')
-        ui.ai_box('Ringkasan rencana', plan['ringkasan'], 'alur agen deterministik: portofolio → alarm → prioritas → risiko → area → jaringan')
-        show_trace(plan['jejak'])
+        with st.expander('Ringkasan dan alasan penyusunan'):
+            ui.ai_box('Ringkasan rencana', plan['ringkasan'], 'Portofolio, temuan, peluang, dan ketersediaan agenda')
+            show_trace(plan['jejak'])
         for di, d in enumerate(plan['hari']):
-            st.markdown(f"#### {d['hari']} · {d['tema']}")
-            for it in d['item']:
-                x1, x2, x3 = st.columns([0.6, 4, 1.2])
-                x1.markdown(f"**{it['jam']}**")
-                x2.markdown(f"**{ui.esc(it['nama'])}** <span class='egi-muted'>{it['id']} · {ui.esc(it['info'])} · peluang {it['peluang']}</span><br>{ui.esc(it['tujuan'])}"
-                            f"<br><span class='egi-muted'>Siapkan: {ui.esc(it['siapkan'])}</span>", unsafe_allow_html=True)
-                if x3.button('Profil', key=f"pl_{di}_{it['id']}"):
-                    state.focus_company(it['id'])
+            with st.container(border=True):
+                channel = d.get('kanal', 'Kunjungan')
+                day_date = week_start + timedelta(days=planner.HARI.index(d['hari']))
+                st.markdown(f"#### {d['hari']} · {day_date.day} {state.BULAN[day_date.month - 1]}")
+                st.markdown(ui.badge(channel, '#EEF2F9' if channel == 'Telepon' else '#FDEBDD',
+                                     ui.NAVY2 if channel == 'Telepon' else '#9A3412')
+                            + f" <span class='egi-muted'>{len(d['item'])} usulan · {ui.esc(d['tema'])}</span>", unsafe_allow_html=True)
+                if not d['item']:
+                    st.caption('Belum ada usulan untuk hari ini. Coba ubah kapasitas atau minggu rencana.')
+                for it in d['item']:
+                    checkbox, x1, x2, x3 = st.columns([0.3, 0.6, 4, 1.2], vertical_alignment='center')
+                    if checkbox.checkbox('Pilih kegiatan', value=True, key=f'plan_item_{plan["_ui_id"]}_{di}_{it["id"]}', label_visibility='collapsed'):
+                        selections.add((di, it['id']))
+                    x1.markdown(f"**{it['jam']}**")
+                    x2.markdown(f"**{ui.esc(it['nama'])}** <span class='egi-muted'>{it['id']} · {ui.esc(it['info'])} · peluang {it['peluang']}</span><br>{ui.esc(it['tujuan'])}"
+                                f"<br><span class='egi-muted'>Siapkan: {ui.esc(it['siapkan'])}</span>", unsafe_allow_html=True)
+                    if x3.button('Profil', key=f"pl_{di}_{it['id']}"):
+                        state.focus_company(it['id'])
 
         # -------------------------------------------------------------- rute perjalanan per hari
         visit = [d for d in plan['hari'] if d.get('kanal', 'Kunjungan') == 'Kunjungan' and d['item']]
         if visit:
-            st.markdown('#### Rute kunjungan')
-            r1, r2 = st.columns([1.6, 1])
-            pick = r2.segmented_control('Hari', [d['hari'] for d in visit], default=visit[0]['hari'], key='route_day') or visit[0]['hari']
-            d = next(x for x in visit if x['hari'] == pick)
-            stops = pd.DataFrame([{'lat': planner.coords(store, it['id'])[0], 'lon': planner.coords(store, it['id'])[1], 'no': str(i + 1),
-                                   'rgb': viz.MINE_RGB if store.cox.is_client.get(it['id'], False) else viz.PROSPECT_RGB,
-                                   'label': f"<b>{i + 1}. {ui.esc(it['nama'])}</b><br>{it['jam']} · {ui.esc(it['info'])}"} for i, it in enumerate(d['item'])])
-            with r1:
-                st.pydeck_chart(viz.route_deck(stops, viz.branch_points(store.branches)), height=380)
-            with r2:
-                legs = [planner.km(planner.coords(store, x['id']), planner.coords(store, y['id'])) for x, y in zip(d['item'], d['item'][1:])]
-                st.markdown(f"**{d['hari']}** · {len(d['item'])} kunjungan · ±{sum(legs):.1f} km · ±{sum(legs) / planner.SPEED_KMH * 60:.0f} menit di jalan")
-                for i, it in enumerate(d['item']):
-                    st.markdown(f"**{i + 1}.** {it['jam']} · {ui.esc(it['nama'])}" + (f"<br><span class='egi-muted'>↓ {legs[i]:.1f} km</span>" if i < len(legs) else ''),
-                                unsafe_allow_html=True)
-                if len(d['item']) >= 3 and st.button(f"Optimalkan rute {d['hari']}", key=f"opt_{d['hari']}", use_container_width=True,
-                                                     help='Urutan tetangga terdekat; slot jam hari itu tetap, hanya urutan kunjungan yang berubah.'):
-                    before = planner.route_km(store, d['item']); planner.optimize(store, d)
-                    st.toast(f"{d['hari']}: rute {before:.1f} → {planner.route_km(store, d['item']):.1f} km"); st.rerun()
-                st.caption('Navy = nasabah · oranye = prospect · ◯ = cabang BNI. Jarak garis lurus; waktu tempuh perkiraan (±20 km/jam).')
+            with st.expander('Opsional: lihat dan optimalkan rute kunjungan'):
+                st.markdown('#### Rute kunjungan')
+                r1, r2 = st.columns([1.6, 1])
+                pick = r2.segmented_control('Hari', [d['hari'] for d in visit], default=visit[0]['hari'], key='route_day') or visit[0]['hari']
+                d = next(x for x in visit if x['hari'] == pick)
+                stops = pd.DataFrame([{'lat': planner.coords(store, it['id'])[0], 'lon': planner.coords(store, it['id'])[1], 'no': str(i + 1),
+                                       'rgb': viz.MINE_RGB if store.cox.is_client.get(it['id'], False) else viz.PROSPECT_RGB,
+                                       'label': f"<b>{i + 1}. {ui.esc(it['nama'])}</b><br>{it['jam']} · {ui.esc(it['info'])}"} for i, it in enumerate(d['item'])])
+                with r1:
+                    st.pydeck_chart(viz.route_deck(stops, viz.branch_points(store.branches)), height=380)
+                with r2:
+                    legs = [planner.km(planner.coords(store, x['id']), planner.coords(store, y['id'])) for x, y in zip(d['item'], d['item'][1:])]
+                    st.markdown(f"**{d['hari']}** · {len(d['item'])} kunjungan · ±{sum(legs):.1f} km · ±{sum(legs) / planner.SPEED_KMH * 60:.0f} menit di jalan")
+                    for i, it in enumerate(d['item']):
+                        st.markdown(f"**{i + 1}.** {it['jam']} · {ui.esc(it['nama'])}" + (f"<br><span class='egi-muted'>↓ {legs[i]:.1f} km</span>" if i < len(legs) else ''),
+                                    unsafe_allow_html=True)
+                    if len(d['item']) >= 3 and st.button(f"Optimalkan rute {d['hari']}", key=f"opt_{d['hari']}", use_container_width=True,
+                                                         help='Urutan tetangga terdekat; slot jam hari itu tetap, hanya urutan kunjungan yang berubah.'):
+                        before = planner.route_km(store, d['item']); planner.optimize(store, d)
+                        st.toast(f"{d['hari']}: rute {before:.1f} → {planner.route_km(store, d['item']):.1f} km"); st.rerun()
+                    st.caption('Navy = nasabah · oranye = prospect · ◯ = cabang BNI. Jarak garis lurus; waktu tempuh perkiraan (±20 km/jam).')
 
         if plan['pesan']:
-            st.markdown('#### Draf pesan (centang yang disetujui)')
-            for i, m in enumerate(plan['pesan']):
-                c1, c2 = st.columns([0.3, 5])
-                m['ok'] = c1.checkbox('ok', key=f"msg_ok_{i}_{m['ke']}", label_visibility='collapsed')
-                m['isi'] = c2.text_area(f"Ke {m['ke']} · {m['kanal']}", m['isi'], key=f"msg_{i}_{m['ke']}", height=90)
+            with st.expander('Opsional: siapkan draf pesan'):
+                st.caption('Draf dapat diedit dan disertakan dalam PDF. Pesan tidak dikirim saat menyimpan rencana.')
+                st.markdown('#### Draf pesan (centang yang disetujui)')
+                for i, m in enumerate(plan['pesan']):
+                    c1, c2 = st.columns([0.3, 5])
+                    m['ok'] = c1.checkbox('ok', key=f"msg_ok_{i}_{m['ke']}", label_visibility='collapsed')
+                    m['isi'] = c2.text_area(f"Ke {m['ke']} · {m['kanal']}", m['isi'], key=f"msg_{i}_{m['ke']}", height=90)
+        chosen_plan = flow.selected_plan(plan, selections)
+        agent.finalize_plan(store, chosen_plan, week_start, ss.rm)
+        st.markdown('### 4. Simpan kegiatan terpilih')
+        st.caption(f'{len(selections)} kegiatan dipilih. Jadwal yang sudah ada tetap dipertahankan; hanya kegiatan terpilih yang ditambahkan atau diperbarui.')
+        with st.expander('Tinjau jadwal yang akan disimpan', expanded=True):
+            previous_times = {(day['hari'], item['id']): item['jam'] for day in plan['hari'] for item in day['item']}
+            preview = [{'Hari': day['hari'], 'Jam': item['jam'], 'Perusahaan': item['nama'], 'Kanal': day.get('kanal', 'Kunjungan'), 'Tujuan': item['tujuan'],
+                        'Perubahan jam': f"{previous_times[(day['hari'], item['id'])]} → {item['jam']}" if previous_times[(day['hari'], item['id'])] != item['jam'] else 'Tidak berubah'}
+                       for day in chosen_plan['hari'] for item in day['item']]
+            st.dataframe(pd.DataFrame(preview), hide_index=True, use_container_width=True)
         c1, c2 = st.columns(2)
-        if c1.button('Setujui rencana', type='primary', use_container_width=True):
-            ss.plan_to_cal = approve_plan(plan, week_start)
-            st.success('Rencana disimpan di outputs/app/plans/. Pesan tidak dikirim otomatis.')
-        buf = R.weekly_plan_pdf({**plan, 'pesan': [m for m in plan['pesan'] if m.get('ok')] or plan['pesan']})
+        if c1.button('Setujui rencana', type='primary', use_container_width=True, disabled=not selections):
+            result = approve_plan(chosen_plan, week_start)
+            ss.plan_to_cal = result['message']
+            (st.success if result['status'] == 'disetujui' else st.warning if result['ok'] else st.error)(result['message'])
+        buf = R.weekly_plan_pdf({**chosen_plan, 'pesan': [m for m in plan['pesan'] if m.get('ok')]})
         c2.download_button('Unduh PDF rencana', buf.getvalue(), file_name=f"rencana_minggu_{ss.rm}.pdf", mime='application/pdf', use_container_width=True)
         if ss.get('plan_to_cal'):
             st.info(ss.plan_to_cal)
@@ -149,7 +255,7 @@ elif task == 'alarm':
     pf = agent.candidates(store, ss.rm)
     al = pf[pf.alarm != ''] if not pf.empty else pf
     opts = list(al.index)
-    if ss.focus_company and ss.focus_company not in opts and ss.focus_company in store.co.index:
+    if ss.focus_company and ss.focus_company not in opts and ss.focus_company in allowed:
         opts = [ss.focus_company] + opts
     if not opts:
         st.info('Tidak ada nasabah beralarm dalam 3 bulan terakhir.'); st.stop()
@@ -241,35 +347,73 @@ elif task == 'triase':
 # ================================================================== siapkan kunjungan
 elif task == 'brief':
     mine = list(store.portfolio(ss.rm).sort_values('opportunity_score', ascending=False).index)
-    if ss.focus_company and ss.focus_company not in mine and ss.focus_company in store.co.index:
+    if ss.focus_company and ss.focus_company not in mine and ss.focus_company in allowed:
         mine = [ss.focus_company] + mine
-    cid = st.selectbox('Perusahaan', mine, index=mine.index(ss.focus_company) if ss.focus_company in mine else 0, format_func=lambda c: f"{store.co.name[c]} · {c}")
+    mine = [cid for cid in mine if cid in allowed]
+    if not mine:
+        st.info('Belum ada perusahaan dalam cakupan akun untuk bahan kunjungan.'); st.stop()
+    brief_company_key = f'copilot_brief_company_{ss.rm}'
+    seen_key = f'copilot_brief_focus_seen_{ss.rm}'
+    if ss.get(seen_key) != ss.focus_company:
+        if ss.focus_company in mine:
+            ss[brief_company_key] = ss.focus_company
+        ss[seen_key] = ss.focus_company
+    def update_brief_focus():
+        ss.focus_company = ss[brief_company_key]
+        ss[seen_key] = ss.focus_company
+    cid = st.selectbox('Perusahaan', mine, index=mine.index(ss.focus_company) if ss.focus_company in mine else 0,
+                       format_func=lambda c: f"{store.co.name[c]} · {c}", key=brief_company_key, on_change=update_brief_focus)
     fp = R.fact_pack(store, cid)
     narr, mode = (ss.narr[cid][0], ss.narr[cid][1]) if cid in ss.get('narr', {}) else (llm.template_company(fp), 'template')
     row = agent.candidates(store, ss.rm).reindex([cid]).iloc[0].to_dict() if cid in store.portfolio(ss.rm).index else {}
     tujuan, peluang = agent._purpose(store, cid, row) if row else ('Prospect: perkenalan dan pemetaan kebutuhan.', '—')
-    a, b = st.columns([1.3, 1])
+    a, b = st.columns([1.85, 1])
     with a:
-        ui.ai_box('Tujuan kunjungan', tujuan, 'aturan Copilot di atas skor NB08')
-        st.write('')
-        ui.ai_box('Ringkasan untuk dibawa', narr['ringkasan'], 'paket fakta', mode)
-        st.markdown('**Pertanyaan pembuka**')
+        ui.ai_box('Kondisi Nasabah', narr['ringkasan'], f'Data per {data.SNAPSHOT:%d/%m/%Y}')
+        with st.container(border=True):
+            st.markdown('#### Kontak Terakhir')
+            if fp['kunjungan']:
+                last = fp['kunjungan'][-1]
+                st.caption(f"{last['tgl']} · {last['kanal']} · {T.HASIL_ID.get(last['respons'], last['respons'])}")
+                st.write(last['catatan'])
+            else:
+                st.caption('Belum ada kontak tercatat; mulai dengan perkenalan dan pemetaan kebutuhan.')
+        st.markdown('#### Pertanyaan Pembuka')
         for q in narr['pertanyaan']:
             st.markdown(f'- {q}')
-    with b:
-        st.markdown('**Produk yang dibawa**')
-        for p in (fp.get('produk') or [])[:3]:
-            st.markdown(f"- **{p['produk']}** · peluang {ui.fmt(p['peluang'], 0)}% · EV Rp {ui.fmt(p['ev'], 1)} juta" + (' · *ditunda (risiko)*' if p['ditunda'] else ''))
-        st.markdown('**Jangan lupa**')
+        st.markdown('#### Hal yang Perlu Dikonfirmasi')
         if fp['anomali']['jenis_3bln']:
-            st.markdown(f"- Ada alarm {', '.join(fp['anomali']['jenis_3bln'])}: tanyakan penyebabnya.")
-        if fp['kunjungan']:
-            last = fp['kunjungan'][-1]; st.markdown(f"- Kontak terakhir {last['tgl']} ({last['respons']}): {last['catatan']}")
+            st.write(f"Konfirmasi penyebab temuan: {', '.join(fp['anomali']['jenis_3bln'])}.")
+        else:
+            st.caption('Konfirmasi kebutuhan bisnis, PIC pengambil keputusan, dan langkah berikutnya.')
         if fp['risiko']['kelas'] == 'High':
-            st.markdown('- Risiko High: jangan menawarkan kredit.')
-        wa, m = llm.draft_message('janji', {'nama': fp['nama'], 'rm': ss.rm, 'waktu': 'minggu ini', 'topik': tujuan[:120]}) if st.button('Draf pesan janji temu') else (None, None)
-        if wa:
-            st.text_area(f'Draf ({m})', wa, height=110)
+            st.warning('Risiko High: penawaran kredit ditunda. Koordinasikan kelayakan dengan analis.')
+    with b:
+        ui.ai_box('Arah Pembicaraan', tujuan)
+        st.markdown('#### Produk yang Boleh Ditawarkan')
+        products = fp.get('produk') or []
+        names = sim.catalog().product_name
+        eligible = [p for p in products if not p['ditunda']]
+        for p in eligible[:3]:
+            with st.container(border=True):
+                st.markdown(f"**{names.get(p['produk'], p['produk'])}**")
+                st.caption(p['produk'])
+                st.metric('Estimasi konversi', ui.fmt(p['peluang'], 1, pct=True), help='Estimasi model untuk penawaran produk ini, bukan kepastian konversi.')
+        if not eligible:
+            st.caption('Belum ada rekomendasi produk yang boleh ditawarkan. Gali kebutuhan nasabah terlebih dahulu.')
+        held = [p for p in products if p['ditunda']]
+        if held:
+            with st.expander('Produk ditunda — bukan bahan penawaran'):
+                for p in held:
+                    st.write(f"{names.get(p['produk'], p['produk'])}: ditunda karena risiko.")
+        draft_key = f'copilot_brief_draft_{ss.rm}_{cid}'
+        if st.button('Draf pesan janji temu'):
+            ss[draft_key] = llm.draft_message('janji', {'nama': fp['nama'], 'rm': ss.rm, 'waktu': 'minggu ini', 'topik': tujuan[:120]})
+        if ss.get(draft_key):
+            wa, m = ss[draft_key]
+            edited = st.text_area('Draf pesan — edit sebelum dikirim', wa, height=130, key=f'{draft_key}_text')
+            with st.expander('Salin draf pesan'):
+                st.code(edited, language=None)
         buf, _ = R.company_summary_pdf(fp, narr, generated_by='Copilot (LLM)' if mode == 'LLM' else 'Copilot (template)')
         st.download_button('Unduh ringkasan eksekutif (PDF)', buf.getvalue(), file_name=f'ringkasan_{cid}.pdf', mime='application/pdf', use_container_width=True)
 
@@ -289,28 +433,51 @@ else:
             res = 'selesai'
         return f"**{agent.TOOL_LABEL.get(name, name)}** <span class='egi-muted'>{ui.esc(a)} → {ui.esc(res)}</span>"
 
-    def run_action(a, msg_i):
+    def execute_action(a, msg_i):
         cid = a['company_id']
+        if a.get('_rm', ss.rm) != ss.rm:
+            raise ValueError('Usulan berasal dari konteks RM yang berbeda.')
         if a['tipe'] == 'rencana_minggu':
-            ss.plan_to_cal = approve_plan(a['plan'], date.fromisoformat(a['plan']['minggu_mulai']))
-            a['status'] = 'disetujui'; a['hasil'] = ss.plan_to_cal
+            result = approve_plan(a['plan'], date.fromisoformat(a['plan']['minggu_mulai']))
+            ss.plan_to_cal = result['message']
+            a['status'] = result['status']; a['hasil'] = result['message']
             return
+        if cid not in allowed:
+            raise ValueError('Perusahaan berada di luar cakupan akun.')
         if a['tipe'] == 'eskalasi':
             ids = escalate(cid, a.get('alasan', ''), a.get('bukti'))
             a['status'] = 'disetujui'; a['hasil'] = 'tiket dibuat untuk divisi Risiko' if ids else 'sudah ada tiket eskalasi terbuka'
             return
         if a['tipe'] == 'rencana':
-            state.schedule_now(store, cid, a.get('catatan', ''), 'Copilot · chat', (a.get('hari'), a.get('jam')) if a.get('hari') else None, rerun=False)
+            status, row = K.schedule(store, ss.rm, cid, user['username'], a.get('catatan', ''), 'Copilot · chat',
+                                     (a.get('hari'), a.get('jam')) if a.get('hari') else None)
+            if status == 'gagal':
+                raise ValueError(row)
+            a['hasil'] = ('Sudah terjadwal' if status == 'sudah' else 'Jadwal tersimpan') + f": {state.when(row['mulai'])}"
         elif a['tipe'] == 'kunjungan':
             c = store.cox.loc[cid]
-            store.append_visit({'action_id': f"APP-{pd.Timestamp.now():%Y%m%d%H%M%S}", 'track': 'Deepening' if c.is_client else 'Acquisition', 'party_id': cid,
-                                'product_id': a.get('produk', ''), 'rm_id': ss.rm, 'contact_date': date.today().isoformat(), 'channel': a.get('kanal', 'Visit'),
+            owner, _ = K.holder(K.load(), cid)
+            action_rm = owner or K.owner(store, ss.rm, cid)
+            if not action_rm or not auth.can_edit(action_rm):
+                raise ValueError('Pilih RM pemilik yang sesuai sebelum mencatat kontak perusahaan ini.')
+            T.record_contact(store, {'action_id': f"APP-{pd.Timestamp.now():%Y%m%d%H%M%S}", 'track': 'Deepening' if c.is_client else 'Acquisition', 'party_id': cid,
+                                'product_id': a.get('produk', ''), 'rm_id': action_rm, 'contact_date': pd.Timestamp.now(tz='Asia/Bangkok').date().isoformat(), 'channel': a.get('kanal', 'Kunjungan'),
                                 'tier_at_contact': '', 'response': a['respons'], 'converted': int(a['respons'] == 'Converted'), 'deal_value_idr_mn': 0.0, 'rm_rating': '',
-                                'feedback_note': f"{a.get('catatan', '')} | sumber: Copilot"})
+                                'feedback_note': f"{a.get('catatan', '')} | sumber: Copilot"}, user['username'])
         elif a['tipe'] == 'pesan':
             a['isi'] = ss.get(f"act_txt_{msg_i}_{a['id']}", a['isi'])
         data.audit(f"copilot_{a['tipe']}", rm=ss.rm, company=cid, **{k: v for k, v in a.items() if k not in ('id', 'tipe', 'company_id', 'status')})
         a['status'] = 'disetujui'
+
+    def run_action(a, msg_i):
+        if a['status'] != 'menunggu':
+            return
+        try:
+            execute_action(a, msg_i)
+        except Exception as error:
+            a['status'] = 'gagal'
+            a['hasil'] = str(error)
+            data.audit('copilot_aksi_gagal', rm=ss.rm, company=a.get('company_id'), tipe=a['tipe'], alasan=str(error))
 
     def show_plan(a, msg_i):
         p = a['plan']
@@ -335,7 +502,11 @@ else:
                     st.caption(a['hasil'])
             if c2.button('Buka rute & draf pesan', key=f"opp_{msg_i}_{a['id']}", use_container_width=True,
                          help='Buka rencana ini di tab Rencana minggu: peta rute, optimasi urutan, draf pesan, PDF.'):
-                ss.agent_result = ('plan', p); ss.plan_week_start = date.fromisoformat(p['minggu_mulai']); ss.copilot_task = 'plan'; st.rerun()
+                if not flow.plan_matches(p, ss.rm):
+                    st.error('Rencana ini tidak sesuai konteks RM aktif.')
+                else:
+                    ss.agent_result = ('plan', p); ss.plan_week_start = date.fromisoformat(p['minggu_mulai'])
+                    ss.copilot_plan_week = ss.plan_week_start; ss.copilot_task = 'plan'; st.rerun()
 
     def show_actions(m, msg_i):
         if not m.get('usulan'):
@@ -384,9 +555,9 @@ else:
     if cfg.get('killed'):
         st.markdown("<div class='egi-warn'>🛑 Agen LLM dimatikan (kill switch). Copilot menjawab dengan template ringkasan portofolio; fitur lain tetap berjalan.</div>", unsafe_allow_html=True)
     elif not cfg['enabled']:
-        st.markdown("<div class='egi-warn'>LLM belum aktif: Copilot menjawab dengan template ringkasan portofolio. Isi <code>.env</code> untuk pertanyaan bebas.</div>", unsafe_allow_html=True)
+        st.info('Pertanyaan bebas belum tersedia. Ringkasan portofolio dan tugas terstruktur tetap dapat digunakan; hubungi administrator untuk mengaktifkan layanan AI.')
     fokus = f" · fokus {store.co.name.get(ss.focus_company, '')} ({ss.focus_company})" if ss.focus_company else ''
-    st.caption(f"Konteks agen: {ss.rm}{fokus} · {len(agent.TOOLS)} alat · mengingat {min(len(ss.chat), 12)} pesan terakhir · tindakan selalu menunggu persetujuan Anda")
+    st.caption(f"Konteks percakapan: {ss.rm}{fokus} · usulan tindakan menunggu persetujuan Anda")
     with st.expander('🛡 Guardrail aktif'):
         st.markdown('**Input** · prompt injection & jailbreak diblokir · kata kasar disamarkan · pertanyaan di luar cakupan diarahkan · PII (NIK, NPWP, rekening, HP, email) '
                     'disamarkan sebelum dikirim ke AI\n\n**Proses** · agen hanya memakai alat yang terdaftar, hanya untuk nasabah RM sendiri, maks 14 langkah · '
@@ -443,6 +614,8 @@ else:
                                  on_step=lambda n, a, o: st.markdown(step_line(n, a, o), unsafe_allow_html=True))
                 box.update(label=f"Selesai · {len(res['jejak'])} langkah · {res['mode']}", state='complete', expanded=False)
         new_plans = [a for a in res['usulan'] if a['tipe'] == 'rencana_minggu']
+        for proposal in res['usulan']:
+            proposal['_rm'] = ss.rm
         if new_plans:                     # rencana terbaru jadi bahan revisi berikutnya; versi lama yang belum disetujui ditandai diganti
             for a in [a for m in ss.chat for a in m.get('usulan', [])] + new_plans[:-1]:
                 if a['tipe'] == 'rencana_minggu' and a['status'] == 'menunggu':

@@ -1,156 +1,267 @@
 import pandas as pd
+import plotly.express as px
 import streamlit as st
 
-from egi import agent, data, state, ui, viz
+from egi import agent, auth, data, state, tindak, ui, viz
 from egi import kalender as K
 
-store = data.get_store(); ss = st.session_state
-co = store.cox
+store = data.get_store()
+ss = st.session_state
+user = auth.current()
+if not user or user['role'] not in ('rm', 'supervisor'):
+    st.stop()
+supervisor = user['role'] == 'supervisor'
+today = pd.Timestamp.now(tz='Asia/Bangkok').tz_localize(None).normalize()
+now = pd.Timestamp.now(tz='Asia/Bangkok').tz_localize(None)
+week_start = today - pd.Timedelta(days=today.weekday())
+week_end = week_start + pd.Timedelta(days=7)
+period = f'{state.BULAN[data.SNAPSHOT.month - 1]} {data.SNAPSHOT.year}'
+ui.page_header(f'Data peluang & temuan: {period} · Agenda operasional: {today:%d/%m/%Y}', 'Insight Perusahaan')
 
-ui.page_header('Data per 30 Jun 2026 · 7 kota · 40 kecamatan', 'Peluang pertumbuhan Jabodetabek')
+# Use the authenticated account, not a saved widget value, for RM scope.
+if supervisor:
+    scope = st.segmented_control('Cakupan', ['Portofolio RM', 'Seluruh bank'],
+                                 default='Seluruh bank' if ss.rm == 'Semua RM' else 'Portofolio RM', key='ov_scope')
+    if scope == 'Portofolio RM':
+        rms = sorted(store.co.rm_id.dropna().unique())
+        rm = st.selectbox('Portofolio RM', rms, index=rms.index(ss.rm) if ss.rm in rms else 0, key='ov_rm')
+    else:
+        rm = 'Semua RM' if scope == 'Seluruh bank' else ss.rm
+else:
+    rm = user['rm_id']
+ss.rm = rm
+st.caption(f"{'Seluruh bank' if rm == 'Semua RM' else 'Portofolio ' + rm} · Temuan dan potensi: {period} · Progress: tanggal operasional")
 
-# ------------------------------------------------------------------ hari ini (per RM)
-if ss.rm != 'Semua RM':
-    pf = agent.candidates(store, ss.rm)
-    wn_rm = store.why_now(pf.index, months=1).sort_values('score', ascending=False).drop_duplicates('company_id')
-    wn_rm = wn_rm.assign(urut=~wn_rm.event_type.isin(agent.CAUTION)).sort_values(['urut', 'score'], ascending=[True, False])
-    fresh = pf[(pf.opportunity_score >= 0.75) & ~pf.contacted & ~pf.index.isin(K.scheduled_ids(ss.rm))]
-    fu = store.followups(ss.rm)
-    late = fu[fu.telat_hari > 0]
-    with st.container(border=True):
-        st.markdown(f"#### Hari ini · {ss.rm}")
-        st.caption(f"{len(wn_rm)} alarm bulan ini · {len(fresh)} prioritas belum dihubungi · {len(late)} tindak lanjut terlambat · "
-                   f"{len(K.upcoming(ss.rm, 7))} jadwal 7 hari ke depan · data per {data.SNAPSHOT:%d %b %Y}")
-        h1, h2, h3 = st.columns(3)
-        with h1:
-            st.markdown('**Alarm baru** · risiko dulu')
-            for r in wn_rm.head(3).itertuples():
-                a, b = st.columns([4, 1.3])
-                a.markdown(f"{ui.event_badge(r.event_type)} {ui.esc(store.co.name.get(r.company_id, r.company_id))}<br>"
-                           f"<span class='egi-muted'>{r.company_id} · {ui.EVENT_STYLE.get(r.event_type, ('', '', '', ''))[3]}</span>", unsafe_allow_html=True)
-                if b.button('Profil', key=f'hi_al_{r.company_id}'):
-                    state.focus_company(r.company_id)
-            if wn_rm.empty:
-                st.caption('Tidak ada alarm bulan ini.')
-        with h2:
-            st.markdown('**Prioritas belum dihubungi**')
-            for cid, r in fresh.head(3).iterrows():
-                a, b = st.columns([4, 1.3])
-                a.markdown(f"{ui.esc(r['name'])}<br><span class='egi-muted'>{cid} · {r.segment} · skor {ui.fmt(r.opportunity_score * 100, 0)} · {r.recommended_products}</span>",
-                           unsafe_allow_html=True)
-                if b.button('📅 Jadwalkan', key=f'hi_pr_{cid}'):
-                    state.schedule_visit(store, cid, f"Prioritas belum dihubungi. {r.recommended_products}", 'Overview · Hari ini')
-            if fresh.empty:
-                st.caption('Semua prioritas sudah dihubungi atau ada di rencana.')
-        with h3:
-            st.markdown(f'**Tindak lanjut** · {data.FOLLOWUP_DAYS} hari setelah "tertarik"')
-            for r in fu.head(3).itertuples():
-                a, b = st.columns([4, 1.3])
-                when = f"terlambat {r.telat_hari} hari" if r.telat_hari > 0 else f"jatuh tempo {r.jatuh_tempo:%d %b}"
-                a.markdown(f"{ui.esc(r.name)}<br><span class='egi-muted'>{r.party_id} · {r.product_id} · kontak {r.contact_date} · "
-                           f"<b style='color:{'#9A2416' if r.telat_hari > 0 else ui.INK2}'>{when}</b></span>", unsafe_allow_html=True)
-                if b.button('Profil', key=f'hi_fu_{r.party_id}'):
-                    state.focus_company(r.party_id)
-            if fu.empty:
-                st.caption('Tidak ada tindak lanjut tertunda.')
-        b1, b2, _ = st.columns([1.2, 1.2, 3])
-        if b1.button('Susun rencana minggu di Copilot', use_container_width=True):
-            ss.copilot_task = 'plan'; state.go('copilot')
-        if b2.button('Tanya Copilot soal hari ini', use_container_width=True):
-            ss.copilot_task = 'chat'
-            ss.pending_q = 'Apa yang paling penting saya kerjakan hari ini? Pertimbangkan alarm baru, prioritas yang belum dihubungi, dan tindak lanjut yang terlambat.'
-            state.go('copilot')
+base = store.cox if rm == 'Semua RM' else store.cox[store.cox.rm_id == rm]
+f1, f2, f3 = st.columns(3)
+city = f1.selectbox('Kota', ['Semua'] + sorted(base.city.dropna().unique()), key='ov_city')
+industry = f2.selectbox('Industri', ['Semua'] + sorted(base.industry.dropna().unique()), key='ov_industry')
+segment = f3.selectbox('Segmen Nasabah', ['Semua'] + data.SEGS, key='ov_segment')
+co = base.copy()
+if city != 'Semua': co = co[co.city == city]
+if industry != 'Semua': co = co[co.industry == industry]
+if segment != 'Semua': co = co[(co.customer_type == 'Prospect') | (co.segment == segment)]
+ids = co.index
+pf = agent.candidates(store, rm)
+pf = pf[pf.index.isin(ids)]
+alarms = store.why_now(ids, months=1)
+alarms = alarms[alarms.ym == data.REF_MONTH].sort_values('score', ascending=False)
+fresh = pf[(pf.opportunity_score >= 0.75) & ~pf.contacted & ~pf.index.isin(K.scheduled_ids(rm, now=now.to_pydatetime()))]
+fu = store.followups(rm)
+fu = fu[fu.party_id.isin(ids)].copy()
+fu['telat_hari'] = (today - fu.jatuh_tempo.dt.normalize()).dt.days
+due = fu[fu.jatuh_tempo < today + pd.Timedelta(days=8)]
+keg = tindak.kegiatan_for(rm).copy()
+keg = keg[keg.company_id.isin(ids)]
+if not keg.empty:
+    keg['sisa_hari'] = (pd.to_datetime(keg.tenggat, errors='coerce').dt.normalize() - today).dt.days
+    keg['status_tampil'] = 'berjalan'
+    keg.loc[keg.sisa_hari < 0, 'status_tampil'] = 'terlambat'
+    keg.loc[keg.status == 'Selesai', 'status_tampil'] = 'selesai'
+    keg.loc[keg.status == 'Dibatalkan', 'status_tampil'] = 'batal'
+agenda = K.active(rm)
+agenda = agenda[(agenda._m >= week_start) & (agenda._m < week_end)
+                & (agenda.status == 'Terjadwal') & agenda.company_id.isin(ids)].sort_values('_m')
+urgent = keg[(keg.status_tampil.isin(['berjalan', 'terlambat'])) & (keg.sisa_hari <= 7)]
+active = keg[keg.status_tampil != 'batal']
 
-f1, f2, f3, f4, f5 = st.columns([1.2, 1, 1, 1, 1.3])
-scope = f1.segmented_control('Cakupan', ['Seluruh bank', 'Portofolio saya'], default='Seluruh bank', disabled=ss.rm == 'Semua RM') or 'Seluruh bank'
-kota = f2.selectbox('Kota', ['Semua'] + sorted(co.city.unique()))
-ind = f3.selectbox('Industri', ['Semua'] + sorted(co.industry.unique()))
-seg = f4.selectbox('Segmen', ['Semua'] + data.SEGS)
+k = st.columns(4)
+ui.kpi(k[0], 'Nasabah dengan temuan', ui.fmt(alarms.company_id.nunique(), 0), f'{period} · {len(alarms)} alarm')
+ui.kpi(k[1], 'Perlu dihubungi', ui.fmt(len(fresh), 0), 'Skor peluang ≥ 75 · belum dihubungi atau dijadwalkan')
+ui.kpi(k[2], 'Tindak lanjut jatuh tempo', ui.fmt(len(due) + len(urgent), 0), 'Kontak tertarik + kegiatan · sampai 7 hari ke depan', color='#9A2416')
+ui.kpi(k[3], 'Agenda Minggu Ini', ui.fmt(len(agenda), 0), f'{week_start:%d/%m}–{(week_end - pd.Timedelta(days=1)):%d/%m} · terjadwal')
 
-c = co.copy()
-if scope == 'Portofolio saya' and ss.rm != 'Semua RM':
-    c = c[c.rm_id == ss.rm]
-if kota != 'Semua': c = c[c.city == kota]
-if ind != 'Semua': c = c[c.industry == ind]
-if seg != 'Semua': c = c[c.segment == seg]
-cl = c[c.is_client]
-dist = store.districts(seg=seg)
-ws = dist[dist.white_space]
-wn = store.why_now(cl.index, months=1)
-logd = store.log_all[(store.log_all.track == 'Deepening') & store.log_all.party_id.isin(cl.index)]
+ACTION = {
+    'distress': 'Konfirmasi kondisi pembayaran dan koordinasikan dengan analis risiko.',
+    'buyer_exit': 'Konfirmasi aktivitas pembeli utama dan kebutuhan transaksi nasabah.',
+    'contagion': 'Pantau pembayaran dari anchor dan koordinasikan risiko rantai pasok.',
+    'expansion': 'Konfirmasi ekspansi dan kebutuhan modal kerja sesuai kelayakan risiko.',
+    'wallet_erosion': 'Hubungi PIC treasury untuk membahas retensi transaksi di BNI.',
+    'spike': 'Verifikasi apakah lonjakan transaksi berulang atau hanya sekali.'}
 
-k = st.columns(5)
-ui.kpi(k[0], 'Perusahaan', ui.fmt(len(c), 0), f"{ui.fmt(len(cl), 0)} nasabah · {ui.fmt(len(c) - len(cl), 0)} prospect")
-ui.kpi(k[1], 'Produk aktif per nasabah', f"{ui.fmt(store.n_prod.reindex(cl.index).mean(), 1)} / 8", 'P01 dipegang semua nasabah')
-ui.kpi(k[2], 'Omzet belum lewat BNI', f"Rp {ui.fmt(ws.gap_T.sum(), 1)} T", f'di {len(ws)} kecamatan white-space', color='#B4470A')
-ui.kpi(k[3], 'Nasabah beralarm bulan ini', ui.fmt(wn.company_id.nunique(), 0),
-       ' · '.join(f"{ui.EVENT_STYLE[e][2].lower()} {n}" for e, n in wn.groupby('event_type').company_id.nunique().sort_values(ascending=False).head(3).items()))
-ui.kpi(k[4], 'Konversi bila didatangi', ui.fmt(logd.converted.mean() * 100, 0, pct=True) if len(logd) else '—', 'aksi RM Jan–Jun 2026')
-st.write('')
+st.subheader('Perlu Aksi')
+left, right = st.columns([1.15, 1])
+with left, st.container(border=True):
+    st.markdown(f'#### Temuan · {period}')
+    st.caption(f'Periode {period} · satu temuan utama per nasabah; seluruh alarm tersedia di detail.')
+    events = ['Semua'] + sorted(alarms.event_type.unique())
+    event = st.selectbox('Jenis temuan', events, format_func=lambda x: ui.EVENT_STYLE.get(x, ('', '', x, ''))[2], key='ov_event')
+    findings = alarms if event == 'Semua' else alarms[alarms.event_type == event]
+    for r in findings.drop_duplicates('company_id').head(4).itertuples():
+        a, b = st.columns([4, 1])
+        a.markdown(f"{ui.event_badge(r.event_type)} **{ui.esc(store.co.name.get(r.company_id, r.company_id))}**", unsafe_allow_html=True)
+        a.caption(f'{r.company_id} · {period}')
+        a.write(str(r.reason) if pd.notna(r.reason) else 'Detail insight belum tersedia.')
+        a.caption('Aksi: ' + ACTION.get(r.event_type, 'Konfirmasi temuan bersama nasabah.'))
+        if b.button('Profil', key=f'ov_alarm_{r.company_id}'):
+            state.focus_company(r.company_id)
+    if findings.empty:
+        st.info('Tidak ada temuan untuk cakupan dan jenis ini.')
+    with st.expander('Lihat seluruh alarm'):
+        details = findings[['company_id', 'event_type', 'reason', 'score']].copy()
+        details.insert(1, 'nama', details.company_id.map(store.co.name))
+        st.dataframe(details, hide_index=True, use_container_width=True,
+                     column_config={'company_id': 'ID', 'nama': 'Nasabah', 'event_type': 'Temuan', 'reason': 'Insight', 'score': 'Skor alarm'})
 
-m1, m2 = st.columns([1.6, 1])
-with m1:
-    st.subheader('Peta peluang')
-    pts = c[['longitude', 'latitude', 'name', 'segment', 'district', 'is_client']].rename(columns={'longitude': 'lon', 'latitude': 'lat'})
-    pts['rgb'] = [viz.CLIENT_RGB if x else viz.PROSPECT_RGB for x in pts.is_client]
-    pts['label'] = pts.name + '<br>' + pts.segment.astype(str) + ' · ' + pts.district + ' · ' + pts.is_client.map({True: 'nasabah', False: 'prospect'})
-    d = dist.copy(); d['radius'] = 250 + 1800 * (d.gap_T / d.gap_T.max()) ** 0.5
-    d['label'] = [f"<b>{i}</b> · skor {s:.0f}<br>{p:.0f} prospect · Rp {g:,.1f} T · penetrasi {pen:.0%}" for i, s, p, g, pen in zip(d.index, d.skor, d.prospect, d.gap_T, d.pen)]
-    poly = viz.district_polygons(d, store.shapes, 'gap_T')
-    st.pydeck_chart(viz.deck(pts, d, polygons=poly, branches=viz.branch_points(store.branches)))
-    st.markdown(viz.scale_legend('Omzet belum lewat BNI', f"Rp {d.gap_T.min():,.1f} T", f"Rp {d.gap_T.max():,.1f} T"), unsafe_allow_html=True)
-    st.caption('White-space = penetrasi rendah dan tanpa cabang. Kota Bekasi tanpa poligon OSM, ditampilkan sebagai lingkaran.')
-with m2:
-    st.subheader('Kecamatan paling potensial')
-    t = dist.head(8)[['kota', 'skor', 'prospect', 'gap_T', 'pen']].reset_index(); t['pen'] *= 100
-    st.dataframe(t, hide_index=True, use_container_width=True, height=330,
-                 column_config={'district': 'Kecamatan', 'kota': 'Kota', 'skor': st.column_config.ProgressColumn('Skor', min_value=0, max_value=100, format='%d'),
-                                'prospect': 'Prospect', 'gap_T': st.column_config.NumberColumn('Rp T', format='%.1f'), 'pen': st.column_config.NumberColumn('Penetrasi', format='%.0f%%')})
-    pick = st.selectbox('Fokus ke kecamatan', ['—'] + list(dist.index[:15]))
-    if pick != '—' and st.button('Buka di Potensi wilayah', use_container_width=True):
-        state.focus_district(pick, 'wilayah')
+with right, st.container(border=True):
+    st.markdown('#### Tindak lanjut jatuh tempo')
+    st.caption('Tanggal operasional · keterlambatan dan tenggat 7 hari ke depan')
+    for r in urgent.sort_values('sisa_hari').head(3).itertuples():
+        st.markdown(f'**{ui.esc(store.co.name.get(r.company_id, r.company_id))}**', unsafe_allow_html=True)
+        st.write(r.judul)
+        st.caption(f"{r.aksi or 'Konfirmasi tahap berikutnya'} · " +
+                   (f'terlambat {abs(int(r.sisa_hari))} hari' if r.sisa_hari < 0 else f'tenggat {r.tenggat}'))
+    for r in due.head(3).itertuples():
+        a, b = st.columns([4, 1])
+        name = store.co.name.get(r.party_id, r.party_id)
+        a.markdown(f'**{ui.esc(name) if pd.notna(name) else r.party_id}**', unsafe_allow_html=True)
+        a.caption(f'{r.product_id} · konfirmasi minat dan sepakati langkah berikutnya')
+        a.caption(f'Tenggat {r.jatuh_tempo:%d/%m/%Y} · ' +
+                  (f'terlambat {r.telat_hari} hari' if r.telat_hari > 0 else 'jatuh tempo dalam 7 hari'))
+        if b.button('Profil', key=f'ov_due_{r.party_id}'):
+            state.focus_company(r.party_id)
+    if due.empty and urgent.empty:
+        st.success('Tidak ada tindak lanjut jatuh tempo dalam 7 hari.')
+    if st.button('Buka tindak lanjut', key='ov_followup'):
+        ss.tl_tab = 'Progress kegiatan'; state.go('tindak')
 
-s1, s2 = st.columns(2)
-with s1:
-    st.subheader('Tiga segmen skala')
-    prof = data.read_optional('outputs/08_segmentation/C_segment_profile.csv')
-    cols = st.columns(3)
-    for col, sname in zip(cols, data.SEGS):
-        g = c[c.segment == sname]
-        conv = prof.set_index(prof.columns[0]).loc[sname, 'konversi_aksi_RM'] if prof is not None else float('nan')
-        ui.kpi(col, sname, ui.fmt(int(g.is_client.sum()), 0), f"nasabah · {int((~g.is_client).sum())} prospect · omzet median Rp {ui.fmt(g.rev_bn.median(), 1)} M · konversi RM {ui.fmt(conv * 100, 0)}%",
-               color=ui.SEG_COLOR[sname])
-    st.caption('Ranking RM dibuat per segmen: konversi bila didatangi naik dari segmen kecil ke besar.')
-with s2:
-    st.subheader('Penetrasi produk')
-    pen = store.hold[store.hold.company_id.isin(cl.index)].groupby('product_id').company_id.nunique().reindex(sorted(store.hold.product_id.unique())).fillna(0) / max(len(cl), 1) * 100
-    pen = pen.sort_values(ascending=False)
-    credit = set(store.hold.loc[store.hold.utilization.notna(), 'product_id'])
-    st.plotly_chart(viz.hbar([p + (' (kredit)' if p in credit else '') for p in pen.index], pen.values, [f'{v:.0f}%' for v in pen.values], h=290, xmax=115), use_container_width=True)
+st.subheader('Peluang Nasabah')
+with st.container(border=True):
+    chart, detail = st.columns([1.4, 1])
+    with chart:
+        st.markdown('#### Peta peluang portofolio')
+        st.caption('Klik titik untuk memilih nasabah. Warna menunjukkan segmen; bentuk titik menunjukkan kelas risiko.')
+        if not pf.empty:
+            plot = pf.join(co[['gap_bn', 'pred_class']]).reset_index()
+            plot = plot.rename(columns={plot.columns[0]: 'company_id'})
+            plot['skor'] = plot.opportunity_score * 100
+            plot['risiko'] = plot.pred_class.fillna('Belum tersedia')
+            fig = px.scatter(plot, x='gap_bn', y='skor', color='segment', symbol='risiko', hover_name='name',
+                             custom_data=['company_id'], hover_data={'gap_bn': ':.1f', 'skor': ':.0f', 'company_id': True},
+                             color_discrete_map=ui.SEG_COLOR, category_orders={'segment': data.SEGS},
+                             symbol_map={'Low': 'circle', 'Medium': 'diamond', 'High': 'x', 'Belum tersedia': 'square'},
+                             labels={'gap_bn': 'Estimasi omzet belum lewat BNI (Rp miliar)', 'skor': 'Skor peluang', 'risiko': 'Risiko', 'segment': 'Segmen'})
+            fig.update_traces(marker_size=12)
+            viz._layout(fig, 340, legend=True)
+            fig.add_hline(y=75, line_dash='dot', line_color=ui.INK2)
+            selection = st.plotly_chart(fig, use_container_width=True, key=f'ov_opportunities_{rm}', on_select='rerun', selection_mode='points')
+            points = selection['selection']['points']
+            picked = points[-1]['customdata'][0] if points and points[-1].get('customdata') else None
+        else:
+            picked = None
+            st.info('Tidak ada skor peluang dalam cakupan ini.')
+    with detail:
+        st.markdown('#### Perlu Dihubungi')
+        if picked in pf.index:
+            r = pf.loc[picked]
+            st.markdown(f"**{ui.esc(r['name'])}**", unsafe_allow_html=True)
+            purpose, _ = agent._purpose(store, picked, r.to_dict())
+            st.write(purpose)
+            state.company_actions(store, picked, 'ov_selected', sumber='Overview · Peluang')
+            st.divider()
+        for cid, r in fresh.head(3).iterrows():
+            st.markdown(f"**{ui.esc(r['name'])}**", unsafe_allow_html=True)
+            st.caption(f'{cid} · skor {r.opportunity_score * 100:.0f} · {r.recommended_products}')
+            purpose, _ = agent._purpose(store, cid, r.to_dict())
+            st.write(purpose)
+            a, b = st.columns(2)
+            if a.button('Profil', key=f'ov_fresh_{cid}', use_container_width=True):
+                state.focus_company(cid)
+            if b.button('Jadwalkan', key=f'ov_schedule_{cid}', use_container_width=True):
+                state.schedule_visit(store, cid, purpose, 'Overview · Peluang')
+        if fresh.empty:
+            st.caption('Semua prioritas sudah dihubungi atau dijadwalkan.')
 
-g1, g2 = st.columns(2)
-with g1:
-    st.subheader('Celah produk terbesar per kecamatan')
-    pr = store.prod[store.prod.company_id.isin(cl.index) & (store.prod.need_score >= 0.5)].join(co[['district', 'city']], on='company_id')
-    if len(pr):
-        gp = pr.groupby(['district', 'product_id']).size().rename('celah').reset_index().sort_values('celah', ascending=False).drop_duplicates('district').head(8)
-        gp['nasabah'] = gp.district.map(cl.groupby('district').size()); gp['pct'] = gp.celah / gp.nasabah * 100
-        st.dataframe(gp[['district', 'product_id', 'celah', 'pct']], hide_index=True, use_container_width=True,
-                     column_config={'district': 'Kecamatan', 'product_id': 'Produk', 'celah': 'Nasabah celah', 'pct': st.column_config.NumberColumn('% nasabah', format='%.0f%%')})
-    st.caption('Celah = produk yang dipegang ≥ 50% peer sesegmen & industri tetapi belum dimiliki. Produk kredit hanya ditawarkan bila risiko bukan High.')
-with g2:
-    st.subheader('Industri')
-    top = store.opp[store.opp.rank_in_segment <= 50].index
-    it = c.groupby('industry').agg(perusahaan=('name', 'size'), top50=('name', lambda s: s.index.isin(top).sum())).sort_values('perusahaan', ascending=False).reset_index()
-    st.dataframe(it, hide_index=True, use_container_width=True,
-                 column_config={'industry': 'Industri', 'perusahaan': st.column_config.ProgressColumn('Perusahaan', min_value=0, max_value=int(it.perusahaan.max()), format='%d'),
-                                'top50': st.column_config.ProgressColumn('Masuk Top-50 segmen', min_value=0, max_value=max(int(it.top50.max()), 1), format='%d')})
+st.subheader('Progress & Jadwal')
+progress, schedule = st.columns(2)
+with progress, st.container(border=True):
+    st.markdown('#### Progress Tindak Lanjut')
+    st.caption('Status seluruh kegiatan aktif · tenggat mengikuti tanggal operasional')
+    if active.empty:
+        st.info('Belum ada kegiatan tindak lanjut. Tambahkan melalui feedback kunjungan.')
+    else:
+        labels = {'berjalan': 'Berjalan', 'terlambat': 'Terlambat', 'selesai': 'Selesai'}
+        counts = active.status_tampil.map(labels).value_counts().rename_axis('Status').reset_index(name='Kegiatan')
+        fig = px.pie(counts, names='Status', values='Kegiatan', hole=0.65, color='Status',
+                     color_discrete_map={'Berjalan': ui.NAVY2, 'Terlambat': '#9A2416', 'Selesai': '#17613F'})
+        viz._layout(fig, 260, legend=True)
+        fig.update_traces(textinfo='label+value', hovertemplate='%{label}: %{value} kegiatan (%{percent})<extra></extra>')
+        st.plotly_chart(fig, use_container_width=True, key='ov_progress')
+        completed = int((active.status_tampil == 'selesai').sum())
+        st.progress(completed / len(active), text=f'{completed} dari {len(active)} tahap selesai')
+        status = st.selectbox('Tampilkan tahap', ['Semua', 'Terlambat', 'Berjalan', 'Selesai'], key='ov_status')
+        rows = active if status == 'Semua' else active[active.status_tampil.map(labels) == status]
+        table = rows[['company_id', 'judul', 'aksi', 'tenggat', 'status_tampil']].copy()
+        table['company_id'] = table.company_id.map(store.co.name).fillna(table.company_id)
+        table['status_tampil'] = table.status_tampil.map(labels)
+        st.dataframe(table, hide_index=True, use_container_width=True,
+                     column_config={'company_id': 'Nasabah', 'judul': 'Tahap', 'aksi': 'Aksi berikutnya', 'tenggat': 'Tenggat', 'status_tampil': 'Status'})
+    if st.button('Kelola progress', key='ov_manage_progress'):
+        ss.tl_tab = 'Progress kegiatan'; state.go('tindak')
 
-st.subheader(f'Alarm terbaru · Jun 2026 ({store.alerts_src})')
-al = wn.sort_values('score', ascending=False).drop_duplicates('company_id').groupby('event_type').head(2).head(8)
-for r in al.itertuples():
-    a, b, cbtn = st.columns([3, 5, 1.2])
-    a.markdown(f"**{ui.esc(store.co.name.get(r.company_id, r.company_id))}**<br><span class='egi-muted'>{r.company_id} · {co.segment.get(r.company_id)} · {ui.EVENT_STYLE.get(r.event_type, ('', '', '', ''))[3]}</span>", unsafe_allow_html=True)
-    b.markdown(ui.event_badge(r.event_type) + f" <span class='egi-muted'>{ui.esc(r.reason)}</span>", unsafe_allow_html=True)
-    if cbtn.button('Profil', key=f'al_{r.company_id}_{r.event_type}'):
-        state.focus_company(r.company_id)
+with schedule, st.container(border=True):
+    st.markdown('#### Agenda Minggu Ini')
+    st.caption(f'Senin–Minggu · {week_start:%d/%m/%Y}–{(week_end - pd.Timedelta(days=1)):%d/%m/%Y}')
+    if agenda.empty:
+        st.info('Belum ada agenda terjadwal minggu ini.')
+    else:
+        channel_colors = {'Kunjungan': ('#E7EDF8', '#1E3A6E'), 'Telepon': ('#E4F1EA', '#17613F'),
+                          'Email': ('#FBEFD6', '#7A4E00'), 'Rapat internal': ('#EDE9F6', '#4C3A86')}
+        for r in agenda.itertuples():
+            a, b = st.columns([4, 1])
+            bg, fg = channel_colors.get(r.kanal, ('#EEF0F3', '#374151'))
+            a.markdown(f"<span style='display:inline-block;padding:3px 10px;border-radius:12px;"
+                       f"background:{bg};color:{fg};font-size:12px;font-weight:600'>{ui.esc(r.kanal)}</span>", unsafe_allow_html=True)
+            a.markdown(f'**{ui.esc(r.judul)}**', unsafe_allow_html=True)
+            a.caption(state.when(r.mulai))
+            if b.button('Buka', key=f'ov_agenda_{r.id}'):
+                state.open_calendar(r.id, r.mulai)
+            st.divider()
+    if st.button('Buka kalender', key='ov_calendar'):
+        state.open_calendar()
+
+if st.button('Susun rencana aksi', type='primary', key='ov_plan'):
+    ss.copilot_task = 'plan'
+    state.go('copilot')
+
+with st.expander('Analisis portofolio: produk, segmen, dan industri'):
+    st.caption(f'Cakupan {rm} · data {period}')
+    a, b = st.columns(2)
+    clients = co[co.is_client]
+    with a:
+        st.markdown('**Peluang produk pada nasabah**')
+        products = store.prod[store.prod.company_id.isin(clients.index) & (store.prod.need_score >= 0.5) & ~store.prod.ditunda_risiko]
+        if products.empty:
+            st.caption('Belum ada celah produk yang memenuhi kriteria.')
+        else:
+            gaps = products.groupby('product_id').company_id.nunique().sort_values(ascending=False)
+            master = data.read_optional('data/raw/product_master.csv')
+            names = master.set_index('product_id').product_name if master is not None else pd.Series(dtype=str)
+            for start in range(0, len(gaps), 2):
+                cards = st.columns(2)
+                for card, (pid, count) in zip(cards, gaps.iloc[start:start + 2].items()):
+                    ui.kpi(card, f'{pid} · {names.get(pid, pid)}', f'{count} nasabah',
+                           f'{count / max(len(clients), 1):.0%} dari portofolio nasabah', color=ui.NAVY2)
+            st.caption('Jumlah nasabah dengan celah produk; produk yang ditunda karena risiko dikecualikan.')
+    with b:
+        st.markdown('**Komposisi portofolio**')
+        dim = st.radio('Kelompokkan berdasarkan', ['Segmen', 'Industri'], horizontal=True, key='ov_composition')
+        counts = co.groupby('segment' if dim == 'Segmen' else 'industry').size().sort_values(ascending=False)
+        if counts.empty:
+            st.caption('Belum ada perusahaan dalam cakupan ini.')
+        elif dim == 'Segmen':
+            composition = counts.rename_axis('Segmen').reset_index(name='Perusahaan')
+            fig = px.pie(composition, names='Segmen', values='Perusahaan', color='Segmen',
+                         color_discrete_map=ui.SEG_COLOR, category_orders={'Segmen': data.SEGS})
+            fig.update_traces(textinfo='label+percent',
+                              hovertemplate='%{label}: %{value} perusahaan (%{percent})<extra></extra>')
+            viz._layout(fig, 340, legend=True)
+            st.plotly_chart(fig, use_container_width=True, key='ov_segment_pie')
+            st.caption('Warna segmen sama dengan titik pada Peta peluang portofolio.')
+        else:
+            st.plotly_chart(viz.hbar(counts.index, counts.values, h=260), use_container_width=True, key='ov_industry_chart')
+    if st.button('Jelajahi Potensi Wilayah', key='ov_region'):
+        state.go('wilayah')
+
+if co.empty:
+    st.info('Tidak ada perusahaan yang sesuai filter. Ubah filter untuk melihat portofolio.')

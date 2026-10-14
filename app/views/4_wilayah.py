@@ -1,86 +1,143 @@
+import hashlib
+
 import pandas as pd
 import streamlit as st
 
-from egi import data, state, ui, viz
+from egi import auth, data, profile_workspace as PW, region_hover, regions, state, ui, viz
+from egi import kalender as K
 
-store = data.get_store(); ss = st.session_state
+store = data.get_store()
+ss = st.session_state
+user = auth.current()
+if not user or user['role'] not in ('rm', 'supervisor'):
+    st.stop()
+supervisor = user['role'] == 'supervisor'
+if not supervisor:
+    ss.rm = user['rm_id']
 
-ui.page_header('Skor potensi per kecamatan dari lat/lon perusahaan · bobot bisa diatur', 'Potensi wilayah')
+ui.page_header(f'Penetrasi BNI per kecamatan · Data per {data.SNAPSHOT:%d/%m/%Y}', 'Potensi Wilayah')
+st.caption('Penetrasi = perusahaan nasabah BNI ÷ seluruh perusahaan dalam dataset pada wilayah dan filter yang dipilih. '
+           'Angka ini menggambarkan cakupan dataset, bukan keseluruhan pasar korporasi.')
+f1, f2, f3 = st.columns(3)
+city = f1.selectbox('Kota', ['Semua'] + sorted(store.cox.city.dropna().unique()), key='region_city')
+segment = f2.selectbox('Segmen Nasabah (titik & detail)', ['Semua'] + data.SEGS, key='region_segment')
+industry = f3.selectbox('Industri', ['Semua'] + sorted(store.cox.industry.dropna().unique()), key='region_industry')
+companies = store.cox.copy()
+if city != 'Semua': companies = companies[companies.city == city]
+if industry != 'Semua': companies = companies[companies.industry == industry]
+stats = regions.aggregate(store, companies)
+if city != 'Semua': stats = stats[stats.kota == city]
+allowed = PW.accessible_ids(store, user)
+relevant = companies[companies.index.isin(allowed)]
+relevant = relevant[relevant.is_client | (relevant.customer_type == 'Prospect')]
+if segment != 'Semua':
+    relevant = relevant[(relevant.customer_type == 'Prospect') | (relevant.segment == segment)]
+st.caption('Segmen hanya memfilter nasabah pada titik dan detail. Prospect tetap ditampilkan lintas segmen; penetrasi wilayah mengikuti kota dan industri.')
+st.caption('Warna wilayah: agregat BNI sesuai filter. Detail perusahaan: ' + ('seluruh bank (supervisor).' if supervisor else 'portofolio Anda dan prospect jaringan.'))
 
-with st.expander('Bobot skor wilayah', expanded=False):
-    x = st.columns(5)
-    w = {'gap': x[0].slider('Omzet belum lewat BNI', 0, 5, data.DEFAULT_W['gap']), 'prospect': x[1].slider('Jumlah prospect', 0, 5, data.DEFAULT_W['prospect']),
-         'low_pen': x[2].slider('Penetrasi rendah', 0, 5, data.DEFAULT_W['low_pen']), 'poi': x[3].slider('Kepadatan POI', 0, 5, data.DEFAULT_W['poi']),
-         'eksp': x[4].slider('Alarm ekspansi', 0, 5, data.DEFAULT_W['eksp'])}
-    st.caption(f'White-space = penetrasi < {data.WS_PEN:.0%} dan tidak ada cabang di kecamatan itu. Skor = rata-rata tertimbang persentil (0–100).')
-f1, f2 = st.columns([1, 3])
-seg = f1.selectbox('Segmen', ['Semua'] + data.SEGS)
-METRIC = {'Skor potensi': ('skor', False, lambda v: f'{v:.0f}'), 'Omzet belum lewat BNI': ('gap_T', False, lambda v: f'Rp {v:,.1f} T'),
-          'Jumlah prospect': ('prospect', False, lambda v: f'{v:.0f}'), 'Penetrasi rendah': ('pen', True, lambda v: f'{v:.0%}')}
-metric = f2.segmented_control('Warna kecamatan', list(METRIC), default='Skor potensi') or 'Skor potensi'
-dist = store.districts(w, seg)
-focus = ss.focus_district if ss.focus_district in dist.index else dist.index[0]
+a, b, c = st.columns(3)
+show_clients = a.checkbox('Nasabah BNI' if supervisor else 'Nasabah Saya', value=True, key='region_clients')
+show_prospects = b.checkbox('Prospect' if supervisor else 'Prospect Jaringan', value=True, key='region_prospects')
+show_branches = c.checkbox('Cabang BNI', value=True, key='region_branches')
+highlight = st.selectbox('Sorot Perusahaan di Peta', ['Semua', 'Potensial atau Ada Temuan', 'Sangat Potensial',
+                                                    'Sinyal Risiko', 'Momentum Peluang', 'Dengan Temuan'], key='region_highlight')
+st.caption('★ Sangat potensial (skor ≥75) · ! merah: distress/pembeli keluar/efek berantai · ↑ hijau: ekspansi/erosi wallet · • ungu: temuan lain. '
+           'Sinyal berasal dari 3 bulan data terakhir; simbol dapat muncul bersamaan. Filter sorotan hanya mengubah titik pada peta.')
+points = relevant[((relevant.is_client) & show_clients) | ((~relevant.is_client) & show_prospects)]
+signature = hashlib.sha1(f'{city}|{segment}|{industry}|{user["role"]}|{ss.rm}'.encode()).hexdigest()[:10]
+map_key = f'region_map_{signature}'
+pick_key = f'region_pick_{signature}'
+options = ['Pilih wilayah'] + list(stats.index)
+if ss.get(pick_key) not in options:
+    ss[pick_key] = ss.focus_district if ss.focus_district in stats.index else options[0]
 
-m1, m2 = st.columns([1.6, 1])
-with m1:
-    c = store.cox if seg == 'Semua' else store.cox[store.cox.segment == seg]
-    pts = c[['longitude', 'latitude', 'name', 'segment', 'district', 'is_client', 'rm_id']].rename(columns={'longitude': 'lon', 'latitude': 'lat'}).copy()
-    pts['rgb'] = [viz.MINE_RGB if (cl and r == ss.rm) else viz.CLIENT_RGB if cl else viz.PROSPECT_RGB for cl, r in zip(pts.is_client, pts.rm_id)]
-    pts['label'] = pts.name + '<br>' + pts.segment.astype(str) + ' · ' + pts.district + ' · ' + pts.is_client.map({True: 'nasabah', False: 'prospect'})
-    d = dist.copy(); d['radius'] = 250 + 1800 * (d.skor / 100) ** 1.5
-    d['label'] = [f"<b>{i}</b> · skor {s:.0f}<br>{p:.0f} prospect · Rp {g:,.1f} T · penetrasi {pen:.0%}" + (' · white-space' if ws else '')
-                  for i, s, p, g, pen, ws in zip(d.index, d.skor, d.prospect, d.gap_T, d.pen, d.white_space)]
-    col, inv, fmt = METRIC[metric]
-    poly = viz.district_polygons(d, store.shapes, col, focus=focus if ss.focus_district else None, invert=inv)
-    st.pydeck_chart(viz.deck(pts, d, focus=focus if ss.focus_district else None, polygons=poly, branches=viz.branch_points(store.branches)))
-    lo, hi = (d[col].max(), d[col].min()) if inv else (d[col].min(), d[col].max())
-    st.markdown(viz.scale_legend(metric, fmt(lo), fmt(hi), mine=True, focus=bool(ss.focus_district)), unsafe_allow_html=True)
-    st.caption('White-space = penetrasi rendah dan tanpa cabang. Kota Bekasi tanpa poligon OSM, ditampilkan sebagai lingkaran.')
-with m2:
-    t = dist[['kota', 'skor', 'prospect', 'pen', 'gap_T', 'white_space']].reset_index(); t['pen'] *= 100
-    ev = st.dataframe(t, hide_index=True, use_container_width=True, height=470, on_select='rerun', selection_mode='single-row', key='dist_tbl',
-                      column_config={'district': 'Kecamatan', 'kota': 'Kota', 'skor': st.column_config.ProgressColumn('Skor', min_value=0, max_value=100, format='%d'),
-                                     'prospect': 'Prospect', 'pen': st.column_config.NumberColumn('Penetrasi', format='%.0f%%'),
-                                     'gap_T': st.column_config.NumberColumn('Rp T', format='%.1f'), 'white_space': 'White-space'})
-    rows = ev.selection.rows if ev and hasattr(ev, 'selection') else []
-    if rows and t.district.iloc[rows[0]] != ss.focus_district:
-        state.focus_district(t.district.iloc[rows[0]]); st.rerun()
+focus = ss.get(pick_key)
+if focus not in stats.index:
+    focus = None
+map_col, detail = st.columns([1.85, 1])
+with map_col:
+    st.markdown('#### Penetrasi BNI per Kecamatan')
+    st.caption('Semakin gelap, semakin rendah penetrasi. Klik wilayah untuk melihat peluang. Hover titik perusahaan untuk ringkasan dan tombol Selengkapnya.')
+    branches = store.branches if show_branches else None
+    event = region_hover.render(region_hover.payload(store, stats, points, branches, K.claims(), focus, highlight), key=map_key)
+    if event and event.get('nonce') != ss.get('region_handled_event'):
+        ss.region_handled_event = event.get('nonce')
+        if event.get('action') == 'company' and event.get('company_id') in points.index:
+            state.focus_company(event['company_id'])
+        elif event.get('action') == 'district' and event.get('district') in stats.index:
+            ss[pick_key] = event['district']
+            ss.focus_district = event['district']
+            st.rerun()
+    gradient = ', '.join(viz.SEQ_RAMP)
+    st.markdown(f"<div style='font-size:12px'>100% <span style='display:inline-block;width:180px;height:12px;"
+                f"background:linear-gradient(90deg,{gradient});border-radius:6px'></span> 0% · "
+                "<span style='display:inline-block;width:12px;height:12px;background:#BEC3CB'></span> Tanpa data</div>", unsafe_allow_html=True)
+    st.caption('Skala warna tetap 0–100%, termasuk saat filter berubah. Cabang ditandai lingkaran putih; '
+               'nasabah biru, prospect oranye. Kecamatan tanpa batas poligon, termasuk Kota Bekasi, ditampilkan sebagai lingkaran berwarna.')
+    st.caption('? Sangat Potensial: skor peluang atau akuisisi ?75/100. Skor merupakan indikator model, bukan jaminan konversi.')
+    with st.expander('Daftar penetrasi wilayah', expanded=False):
+        table = stats[['kota', 'perusahaan', 'nasabah', 'prospect', 'penetrasi']].reset_index()
+        table['penetrasi'] *= 100
+        st.dataframe(table, hide_index=True, use_container_width=True,
+                     column_config={'district': 'Kecamatan', 'kota': 'Kota', 'perusahaan': 'Perusahaan dalam data',
+                                    'nasabah': 'Nasabah BNI', 'prospect': 'Prospect dalam data',
+                                    'penetrasi': st.column_config.NumberColumn('Penetrasi BNI', format='%.0f%%')})
 
-# ------------------------------------------------------------------ drill-down
-r = dist.loc[focus]
-st.subheader(f'{focus}, {r.kota}')
-k = st.columns(5)
-ui.kpi(k[0], 'Skor wilayah', ui.fmt(r.skor, 0), f"peringkat {list(dist.index).index(focus) + 1} dari {len(dist)}", color=ui.ORANGE)
-ui.kpi(k[1], 'Perusahaan', ui.fmt(r.n, 0), f"{int(r.nasabah)} nasabah · {int(r.prospect)} prospect")
-ui.kpi(k[2], 'Penetrasi', ui.fmt(r.pen * 100, 0, pct=True), 'white-space' if r.white_space else '')
-ui.kpi(k[3], 'Omzet belum lewat BNI', f"Rp {ui.fmt(r.gap_T, 1)} T", f"{int(r.besar)} perusahaan S3")
-ui.kpi(k[4], 'Cabang', 'ada' if r.cabang else 'tidak ada', f"jarak rata-rata {ui.fmt(r.jarak, 1)} km")
-st.write('')
-kanal = ('Tidak ada cabang dan jarak > 5 km: kumpulkan kunjungan dalam satu hari (cluster visit) dan pakai telepon untuk S1.' if not r.cabang and r.jarak > 5 else
-         'Tidak ada cabang: jadwalkan hari kunjungan khusus kecamatan ini; pertimbangkan kas keliling/agen untuk payroll.' if not r.cabang else
-         'Ada cabang: libatkan tim cabang untuk walk-in dan event komunitas usaha; RM fokus ke S2/S3.')
-ui.ai_box('Saran kanal', kanal, 'aturan kanal berdasarkan cabang & jarak (bukan LLM)')
-
-cc = store.cox[store.cox.district == focus]
-a, b = st.columns(2)
-with a:
-    st.markdown('**Prospect teratas di kecamatan ini** (skor akuisisi)')
-    p = store.acq[store.acq.index.isin(cc.index)].join(cc[['name']]).sort_values('acquisition_score', ascending=False).head(8)
-    for pid, x in p.iterrows():
-        y1, y2, y3 = st.columns([3, 1, 1])
-        y1.markdown(f"{ui.esc(x['name'])}<br><span class='egi-muted'>{pid} · {x.segment} · risiko {x.risk_class} · skor {x.acquisition_score:.2f}</span>", unsafe_allow_html=True)
-        if y2.button('Profil', key=f'wp_{pid}'): state.focus_company(pid)
-        if y3.button('📅', key=f'wr_{pid}', help='Jadwalkan di Kalender kunjungan'): state.schedule_visit(store, pid, sumber=f'Potensi wilayah · {focus}')
-with b:
-    st.markdown('**Nasabah dengan peluang tertinggi**')
-    o = store.opp[store.opp.index.isin(cc.index)].join(cc[['name', 'rm_id']]).sort_values('opportunity_score', ascending=False).head(8)
-    for cid, x in o.iterrows():
-        y1, y2, y3 = st.columns([3, 1, 1])
-        y1.markdown(f"{ui.esc(x['name'])}{' ★' if x.rm_id == ss.rm else ''}<br><span class='egi-muted'>{cid} · {x.segment} · {x.rm_id} · skor {x.opportunity_score:.2f}</span>", unsafe_allow_html=True)
-        if y2.button('Profil', key=f'wo_{cid}'): state.focus_company(cid)
-        if y3.button('📅', key=f'wq_{cid}', help='Jadwalkan di Kalender kunjungan'): state.schedule_visit(store, cid, sumber=f'Potensi wilayah · {focus}')
-    rms = cc[cc.is_client].rm_id.value_counts().head(5)
-    st.caption('RM aktif di sini: ' + ', '.join(f'{i} ({n})' for i, n in rms.items()) + ' · ★ = nasabah Anda')
-
-if st.button(f'Lihat daftar prioritas saya di {focus}', use_container_width=True):
-    state.focus_district(focus, 'prioritas')
+with detail, st.container(border=True):
+    selected = st.selectbox('Pilih wilayah untuk melihat peluang', options, key=pick_key)
+    focus = selected if selected in stats.index else None
+    if focus is None:
+        st.info('Pilih wilayah pada peta atau daftar pilihan untuk melihat peluang yang bisa ditindaklanjuti.')
+    else:
+        ss.focus_district = focus
+        row = stats.loc[focus]
+        local = relevant[relevant.district == focus]
+        prospects = local[local.customer_type == 'Prospect']
+        customers = local[local.is_client]
+        st.markdown(f'#### {ui.esc(focus)}', unsafe_allow_html=True)
+        st.caption(row.kota)
+        a, b = st.columns(2)
+        a.metric('Penetrasi BNI', ui.fmt(row.penetrasi * 100, 0, pct=True))
+        b.metric('Perusahaan dalam data', int(row.perusahaan))
+        st.caption(f'{row.nasabah} nasabah BNI · {row.prospect} prospect dalam dataset')
+        if row.perusahaan == 0:
+            st.info('Tidak ada data perusahaan untuk filter ini. Penetrasi belum dapat dihitung.')
+        else:
+            if row.penetrasi < data.WS_PEN:
+                st.markdown(ui.badge(f'Penetrasi rendah (<{data.WS_PEN:.0%})', '#FBEFD6', '#7A4E00'), unsafe_allow_html=True)
+            st.caption(f"Dukungan cabang: {'tersedia' if row.cabang else 'belum tersedia'} · jarak rata-rata perusahaan ke cabang {ui.fmt(row.jarak, 1)} km")
+        st.markdown('#### Peluang yang Bisa Saya Tindaklanjuti' if not supervisor else '#### Peluang Perusahaan di Wilayah Ini')
+        st.caption(f'{len(customers)} nasabah relevan · {len(prospects)} prospect relevan sesuai filter')
+        if local.empty:
+            st.info('Belum ada nasabah atau prospect dalam cakupan akun Anda di wilayah ini. Penetrasi rendah belum tentu berarti peluang yang dapat langsung dikerjakan.')
+        else:
+            st.write(f'Wilayah ini memiliki {len(prospects)} prospect relevan dan {len(customers)} nasabah dalam cakupan Anda. '
+                     'Konfirmasi kebutuhan dan jalur masuk sebelum merencanakan kunjungan.')
+        claims = K.claims()
+        for title, scores, subset, score_col in [
+            ('Prospect Relevan', store.acq, prospects, 'acquisition_score'),
+            ('Nasabah Berpeluang', store.opp, customers, 'opportunity_score')]:
+            st.markdown(f'**{title}**')
+            ranked = scores[scores.index.isin(subset.index)].sort_values(score_col, ascending=False).head(4)
+            if ranked.empty:
+                st.caption('Belum ada perusahaan dengan skor untuk cakupan ini.')
+            for cid, score in ranked.iterrows():
+                company = subset.loc[cid]
+                st.markdown(f"**{ui.esc(company['name'])}**", unsafe_allow_html=True)
+                st.caption(f'{cid} · {company.segment} · skor prioritas {ui.fmt(score[score_col] * 100, 1)}/100')
+                st.markdown(ui.risk_badge(score.risk_class), unsafe_allow_html=True)
+                owner = claims.get(cid, '') if not company.is_client else company.rm_id
+                locked = bool(not supervisor and owner and owner != user['rm_id'])
+                if locked:
+                    st.caption(f'Dipegang {owner}; koordinasikan dengan RM tersebut sebelum menjadwalkan.')
+                if not company.is_client:
+                    paths = store.intro_paths(cid, ss.rm if not supervisor else '')
+                    if not paths.empty:
+                        path = paths.iloc[0]
+                        st.caption(f"Jalur masuk: {path['name']} · RM {path.rm_id}")
+                a, b = st.columns(2)
+                if a.button('Profil', key=f'region_profile_{cid}', use_container_width=True): state.focus_company(cid)
+                if b.button('Jadwalkan', key=f'region_schedule_{cid}', disabled=locked, use_container_width=True):
+                    state.schedule_visit(store, cid, sumber=f'Potensi Wilayah · {focus}')
+        if st.button('Lihat Daftar Prioritas di Wilayah Ini', key='region_priority', use_container_width=True):
+            state.focus_district(focus, 'prioritas')

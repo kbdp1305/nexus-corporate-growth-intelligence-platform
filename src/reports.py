@@ -187,7 +187,8 @@ def fact_pack(D: Data, cid: str) -> dict:
     fp['jaringan']['mitra_distress'] = len(dis)
     fp['jaringan']['nilai_distress_M'] = pros[pros.id.isin(dis)].v.sum() / 1000
     # riwayat kunjungan
-    lg = D.log[D.log.party_id == cid].sort_values('contact_date')
+    all_logs = getattr(D, 'log_all', D.log)
+    lg = all_logs[all_logs.party_id == cid].sort_values('contact_date', kind='stable')
     fp['kunjungan'] = [{'tgl': x.contact_date, 'rm': x.rm_id, 'produk': x.product_id, 'kanal': x.channel, 'respons': x.response, 'catatan': x.feedback_note} for x in lg.itertuples()]
     return fp
 

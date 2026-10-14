@@ -27,8 +27,31 @@ def show_thread(row):
                     + (f" · <b>{ui.esc(e['status'])}</b>" if e.get('status') else '') + f"</span><br>{ui.esc(e['pesan'])}", unsafe_allow_html=True)
 
 
+def run_operation(fn, *args, **kwargs):
+    try:
+        return fn(*args, **kwargs)
+    except (ValueError, OSError) as error:
+        st.error(str(error))
+        st.stop()
+
+
 # ================================================================== feedback kunjungan
 if tab == 'Feedback kunjungan':
+    st.caption('Satu agenda memiliki satu feedback. Kontak dari Profil dan Copilot memakai catatan yang sama. '
+               'Hasil yang dipilih berlaku untuk semua produk yang dicantumkan; pisahkan catatan bila hasil produk berbeda.')
+    with st.expander('Catat kontak tanpa jadwal'):
+        owner = ss.rm if ss.rm != 'Semua RM' else sorted(store.co.rm_id.dropna().unique())[0]
+        if user['role'] == 'supervisor':
+            owner = st.selectbox('RM pelaksana kontak', sorted(store.co.rm_id.dropna().unique()), key='contact_owner')
+        choices = T.assignment_ids(store, owner, user)
+        with st.form('contact_unplanned'):
+            company = st.selectbox('Perusahaan kontak', choices, format_func=fmt_co)
+            day = st.date_input('Tanggal kontak', date.today(), max_value=date.today(), format='DD/MM/YYYY')
+            hour = st.time_input('Jam kontak', time(9), step=900)
+            channel = st.selectbox('Kanal kontak', ['Kunjungan', 'Telepon', 'Email'])
+            if st.form_submit_button('Buka form hasil kontak'):
+                event = run_operation(T.contact_event, store, owner, company, datetime.combine(day, hour), channel, user['username'], reuse_existing=False)
+                ss.fb_event = event['id']; st.rerun()
     due = T.pending_feedback(ss.rm)
     pre = ss.pop('fb_event', None)
     if pre:                                       # dipilih dari Kalender / Profil: di-pin sampai feedback-nya disimpan,
@@ -36,7 +59,7 @@ if tab == 'Feedback kunjungan':
     pin = ss.get('fb_pin')
     if pin and pin not in set(due.id):            # jadwal yang belum lewat tapi dipilih dari kalender
         cal = K.load(); row = cal[cal.id == pin]
-        if len(row) and pin not in set(T.FEEDBACK.load().event_id):
+        if len(row) and auth.can_edit(row.iloc[0].rm_id) and row.iloc[0].sumber not in T.SUMBER_PROGRES and row.iloc[0].status != 'Dibatalkan' and pin not in set(T.FEEDBACK.load().event_id):
             due = pd.concat([row.assign(_m=pd.to_datetime(row.mulai)), due])
         else:
             ss.pop('fb_pin', None)
@@ -202,6 +225,8 @@ if tab == 'Feedback kunjungan':
                     st.caption('Belum ada kegiatan. Centang langkah yang disarankan, atau tambahkan kegiatan sendiri di bawah.')
                 n_ai = len(disetujui)
                 for i, k in enumerate(kegiatan, 1):
+                    k['tenggat_hari'] = st.number_input(f'Tenggat tahap {i} (hari dari hari ini)', min_value=0, max_value=120,
+                                                       value=int(k['tenggat_hari']), key=f'fb_deadline_{eid}_{i}')
                     src = ui.badge('Saran AI', '#EEF2F9', ui.NAVY2) if k['sumber'] == 'Saran AI' else ui.badge('Manual', '#FDEBDD', '#9A3412')
                     tiket = (ui.badge(f"Prioritas {k['prioritas']}", '#FADFDB', '#9A2416') if k.get('prioritas') in ('Tinggi', 'Mendesak') else '') \
                         + (ui.badge(f"tiket s.d. {k['tenggat']:%d/%m}", '#EEF0F3', '#374151') if k.get('tenggat') else '')
@@ -248,7 +273,11 @@ if tab == 'Feedback kunjungan':
         lanjut = None                                       # rapat / kunjungan lanjutan diisi sebagai kegiatan (otomatis masuk kalender per tenggat)
         st.write('')
         manual_tiket = [k for k in ss[mk] if isinstance(k.get('divisi'), list) and k['divisi']]
-        n_tiket = len(divs) + sum(len(k['divisi']) for k in manual_tiket)
+        task_divs = [set(T.division_keys(k.get('divisi')) + T.division_keys(k.get('pemilik'))) for k in kegiatan]
+        covered = set().union(*task_divs) if task_divs else set()
+        n_tiket = len(set(divs) - covered) + sum(len(divisions) for divisions in task_divs)
+        if n_tiket:
+            st.caption(f'{n_tiket} tiket akan dibuat saat disimpan. Kegiatan dengan penanggung jawab divisi otomatis memiliki tiket terkait.')
         if st.button('Simpan feedback' + (f' & kirim {n_tiket} tiket' if n_tiket else ''), type='primary', use_container_width=True):
             if not catatan.strip():
                 st.error('Isi catatan hasil kunjungan dulu.')
@@ -258,20 +287,14 @@ if tab == 'Feedback kunjungan':
                                                  langkah=langkah.strip(), lanjut=lanjut, divs=divs, prioritas=prio, tenggat=tenggat, pesan_divisi=pesan.strip(),
                                                  user=user['username'], ulang=ulang, kegiatan=kegiatan)
                     nama = store.co.name.get(cid, cid)
-                    for k in manual_tiket:                             # tiket per kegiatan manual, dengan prioritas/tenggat/permintaannya sendiri
-                        tk += T.create_tickets(k['divisi'], jenis='Koordinasi kegiatan', rm_id=ev['rm_id'], company_id=cid,
-                                               judul=f"{A.judul_singkat(k['aksi'], 6)} · {nama}",
-                                               isi=f"Kegiatan: {k['aksi']}\n" + (f"Permintaan: {k['pesan']}\n" if k.get('pesan') else '')
-                                                   + f"Hasil kunjungan {ev['mulai'][:10]}: {T.HASIL_ID.get(hasil, hasil)}.",
-                                               prioritas=k.get('prioritas', 'Normal'), tenggat=k.get('tenggat', ''), ref=fb, event_id=ev['id'], user=user['username'])
                     ss.pop(mk, None)
-                    tujuan = [fmt_div(d) for d in divs] + [fmt_div(d) for k in manual_tiket for d in k['divisi']]
+                    tujuan = [fmt_div(d) for d in set(divs) | covered]
                     ss.fb_done = f"Feedback tersimpan · jadwal ditandai selesai · dicatat ke riwayat nasabah" \
                                  + ((' · jadwal ulang masuk kalender' if ulang else ' · tindak lanjut masuk kalender') if fu else '') \
                                  + (f" · {len(kegiatan)} kegiatan masuk Progress kegiatan" if kegiatan else '') \
                                  + (f" · {len(tk)} tiket ke {', '.join(dict.fromkeys(tujuan))}" if tk else '')
                     st.rerun()
-                except ValueError as e:                              # jadwal lanjutan ditolak kalender: belum ada yang tersimpan
+                except (ValueError, OSError) as e:
                     st.error(str(e))
     if ss.get('fb_done'):
         st.success(ss.pop('fb_done'))
@@ -299,14 +322,16 @@ if tab == 'Feedback kunjungan':
 
 # ================================================================== progress kegiatan lanjutan
 elif tab == 'Progress kegiatan':
-    n_baru = T.sinkron_kalender(ss.rm, lambda c: store.co.name.get(c, c), user['username'])   # tahap lama tanpa jadwal → kalender
-    if n_baru:
-        st.toast(f'{n_baru} tahap dimasukkan ke Kalender kunjungan sesuai tenggatnya')
+    st.caption('Perubahan kalender memperbarui tahap terkait. Tahap yang melibatkan divisi selesai setelah seluruh tiket terkait selesai. '
+               'Tanggal dan keterlambatan menggunakan tanggal operasional hari ini.')
     keg = T.kegiatan_for(ss.rm)
     if keg.empty:
         st.info('Belum ada kegiatan lanjutan. Kegiatan yang dicentang atau ditambahkan di Feedback kunjungan muncul di sini setelah feedback disimpan.')
     else:
         stt = keg.status_tampil
+        missing = keg[~keg.kal_id.isin(K.load().id) & keg.status.ne('Dibatalkan')]
+        if len(missing):
+            st.warning(f'{len(missing)} kegiatan belum terhubung ke agenda. Gunakan Jadwal ulang untuk menentukan waktu kerja yang tersedia.')
         k1, k2, k3, k4 = st.columns(4)
         hidup = stt != 'batal'                                       # tahap yang dibatalkan tidak dihitung dalam progres
         ui.kpi(k1, 'Kegiatan aktif', str(int(hidup.sum())), f"{keg.company_id.nunique()} perusahaan" + (f" · {int((~hidup).sum())} dibatalkan" if (~hidup).any() else ''))
@@ -325,7 +350,12 @@ elif tab == 'Progress kegiatan':
             pilih = set(ss.get(key) or [])
             for kid in ids:
                 if (kid in pilih) != (keg.loc[keg.id == kid, 'status'].iloc[0] == 'Selesai'):
-                    T.set_kegiatan(kid, kid in pilih, user['username'])
+                    try:
+                        T.set_kegiatan(kid, kid in pilih, user['username'])
+                    except (ValueError, OSError) as error:
+                        ss[key] = list(T.KEGIATAN.load().loc[lambda f: f.id.isin(ids) & f.status.eq('Selesai'), 'id'])
+                        st.toast(str(error))
+                        break
 
         def node(r, aktif):
             """Satu kotak flowchart: status, judul, pemilik/koordinasi, tenggat/jadwal, tanda dadakan & jadwal ulang."""
@@ -418,7 +448,7 @@ elif tab == 'Progress kegiatan':
                         ket = st.text_input('Keterangan', placeholder='opsional, mis. CFO dinas luar kota sampai Kamis')
                         st.caption('Jadwal baru langsung masuk Kalender kunjungan; tahap yang sudah ada di kalender digeser.')
                         if st.form_submit_button('Simpan jadwal ulang', type='primary', use_container_width=True):
-                            T.reschedule_kegiatan(kid, tgl, alasan + (f' — {ket.strip()}' if ket.strip() else ''), user['username'], jam=jam,
+                            run_operation(T.reschedule_kegiatan, kid, tgl, alasan + (f' — {ket.strip()}' if ket.strip() else ''), user['username'], jam=jam,
                                                   kanal=None if kanal == '(otomatis)' else kanal, nama=store.co.name.get(cid0, cid0))
                             st.toast(f"{label[kid]} dijadwal ulang ke {tgl:%d/%m/%Y} {jam:%H.%M} · masuk kalender"); st.rerun()
                 bisa_batal, sudah_batal = g[~g.status_tampil.isin(['selesai', 'batal'])], g[g.status_tampil == 'batal']
@@ -430,13 +460,13 @@ elif tab == 'Progress kegiatan':
                             alasan = st.selectbox('Alasan', T.ALASAN_BATAL)
                             ket = st.text_input('Keterangan', placeholder='opsional')
                             if st.form_submit_button('Batalkan tahap ini', use_container_width=True):
-                                T.batal_kegiatan(kid, alasan + (f' — {ket.strip()}' if ket.strip() else ''), user['username'])
+                                run_operation(T.batal_kegiatan, kid, alasan + (f' — {ket.strip()}' if ket.strip() else ''), user['username'])
                                 st.toast(f'{label[kid]} dibatalkan'); st.rerun()
                     if len(sudah_batal):
                         st.markdown('**Aktifkan kembali**')
                         kid2 = st.selectbox('Tahap yang dibatalkan', list(sudah_batal.id), format_func=label.get, key=f'pg_akt_{cid0}')
                         if st.button('Aktifkan kembali', key=f'pg_aktb_{cid0}', use_container_width=True):
-                            T.aktifkan_kegiatan(kid2, user['username']); st.toast(f'{label[kid2]} aktif kembali'); st.rerun()
+                            run_operation(T.aktifkan_kegiatan, kid2, user['username']); st.toast(f'{label[kid2]} aktif kembali'); st.rerun()
                 with p3.popover('Tambah rapat / kegiatan dadakan', icon='➕', use_container_width=True, disabled=not boleh):
                     with st.form(f'fd_{cid0}', border=False):
                         st.markdown('**Rapat / kegiatan dadakan**')
@@ -460,13 +490,13 @@ elif tab == 'Progress kegiatan':
                         pemilik = c_a.selectbox('Penanggung jawab', OWNERS)
                         divisi = c_b.multiselect('Undang divisi', list(T.DIVISI), format_func=lambda d: T.DIVISI[d])
                         kal = st.checkbox('Masukkan ke kalender', value=True)
-                        undang = st.checkbox('Kirim undangan (tiket) ke divisi yang diundang', value=True)
+                        undang = st.checkbox('Kirim undangan (tiket) ke divisi yang diundang', value=True, disabled=not kal) and kal
                         if st.form_submit_button('Tambahkan ke alur', type='primary', use_container_width=True):
                             if not judul.strip():
                                 st.error('Isi judul kegiatan.')
                             else:
                                 v0 = g[g.feedback_id == pos[0]].iloc[0]
-                                _, kal_id, tk = T.tambah_dadakan(store, company_id=cid0, rm_id=rm0, feedback_id=pos[0], event_id=v0.event_id,
+                                _, kal_id, tk = run_operation(T.tambah_dadakan, store, company_id=cid0, rm_id=rm0, feedback_id=pos[0], event_id=v0.event_id,
                                                                  tanggal_kunjungan=v0.tanggal_kunjungan, setelah=pos[1], jenis=jenis, judul=judul.strip(),
                                                                  agenda=agenda.strip(), mulai=datetime.combine(tgl, jam), menit=menit, pemilik=pemilik,
                                                                  divisi=divisi, ke_kalender=kal, undang_divisi=undang, user=user['username'])
@@ -512,7 +542,7 @@ else:
                     except ValueError as e:
                         st.error(str(e))
                 if c2.button('Tolak', key=f"no_{r['id']}", use_container_width=True):
-                    T.decide_visit(store, r, False, kom, user['username']); st.toast('Ditolak'); st.rerun()
+                    run_operation(T.decide_visit, store, r, False, kom, user['username']); st.toast('Ditolak'); st.rerun()
         st.divider()
 
     st.markdown('#### Ajukan kunjungan')
@@ -522,7 +552,9 @@ else:
     else:
         owner = user['rm_id']
     mine = list(store.co.index[store.co.rm_id == owner])
-    opts = mine + [c for c in store.co.index if c not in set(mine)]
+    opts = T.assignment_ids(store, owner, user)
+    st.caption('Kunjungan rutin dapat dijadwalkan langsung. Gunakan pengajuan untuk kunjungan yang membutuhkan '
+               'persetujuan atau pendampingan. Persetujuan supervisor membuat agenda; ketersediaan pendamping menunggu konfirmasi divisi.')
     pre = ss.get('pj_company') or ss.focus_company
     a, b = st.columns([1.25, 1])
     with a:

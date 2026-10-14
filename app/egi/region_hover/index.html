@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="leaflet.css">
+<script src="leaflet.js"></script>
+<style>.company-pin{background:none;border:0}.pin-dot{width:11px;height:11px;border:1.5px solid white;border-radius:50%;box-shadow:0 1px 3px #0005;display:block}.pin-symbols{position:absolute;left:7px;top:-10px;display:flex;gap:1px;white-space:nowrap;pointer-events:none}.pin-symbol{font:700 10px system-ui;min-width:12px;height:12px;line-height:12px;text-align:center;border:1px solid white;border-radius:50%;box-shadow:0 1px 3px #0004}.pin-star{background:#fff1bf;color:#7a4e00}.pin-risk{background:#b42318;color:white}.pin-momentum{background:#17613f;color:white}.pin-other{background:#6046a0;color:white}.signal-list{font-size:12px;margin:7px 0;padding:0;list-style:none}.signal-list li{margin-top:5px}</style>
+<style>html,body{margin:0;font:13px system-ui,sans-serif}#map{height:520px;border-radius:10px}.leaflet-popup-content{line-height:1.6;margin:16px}.company-name{font-size:16px;font-weight:650;color:#0f1e3a}.potential{color:#7a4e00;background:#fbefd6;padding:3px 8px;border-radius:8px;display:inline-block;margin:6px 0}.muted{color:#66758b}.detail-button{display:block;width:100%;background:#c2500a;color:white;border:0;border-radius:7px;padding:9px 12px;margin-top:10px;cursor:pointer;font-weight:600}</style>
+</head><body><div id="map"></div><div id="map-status" style="display:none;position:absolute;top:12px;left:50px;right:12px;z-index:1000;background:white;padding:8px;border-radius:6px;color:#7a4e00"></div><script>
+const send=(type,extra={})=>parent.postMessage({isStreamlitMessage:true,type,...extra},'*');
+const value=data=>send('streamlit:setComponentValue',{value:{...data,nonce:Date.now()},dataType:'json'});
+const escape=s=>String(s??'—').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const decimal=n=>Number(n).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1});
+let map, closeTimer, tileLayer, renderId=0;
+window.addEventListener('message',event=>{
+ if(event.data.type!=='streamlit:render')return;
+ const p=event.data.args.payload;
+ if(typeof L==='undefined'){document.getElementById('map').textContent='Peta belum dapat dimuat. Periksa koneksi internet lalu refresh halaman.';return;}
+ if(map)map.remove();
+ const generation=++renderId;
+ map=L.map('map',{scrollWheelZoom:false}).setView(p.center,p.zoom);
+ const status=document.getElementById('map-status');status.style.display='none';
+ const providers=[
+   {url:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'},
+   {url:'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',attribution:'&copy; OpenStreetMap contributors &copy; CARTO'}
+ ];
+ const loadBasemap=index=>{
+   if(generation!==renderId)return;
+   if(tileLayer)map.removeLayer(tileLayer);
+   let failures=0,switched=false;
+   const provider=providers[index];
+   tileLayer=L.tileLayer(provider.url,{attribution:provider.attribution,maxZoom:19});
+   tileLayer.on('tileload',()=>{if(generation===renderId)status.style.display='none';});
+   tileLayer.on('tileerror',()=>{
+     if(generation!==renderId||switched)return;
+     if(++failures<3)return;
+     switched=true;
+     if(index+1<providers.length){status.textContent='Mencoba basemap cadangan…';status.style.display='block';loadBasemap(index+1);}
+     else{status.textContent='Basemap belum dapat dimuat. Periksa akses internet ke OpenStreetMap/CARTO. Data wilayah dan perusahaan tetap tersedia.';status.style.display='block';}
+   });
+   tileLayer.addTo(map);
+ };
+ loadBasemap(0);
+ p.regions.forEach(r=>{
+   const opts={color:r.color,fillColor:r.color,fillOpacity:.65,weight:0};
+   const shapes=r.rings.length?r.rings.map(ring=>L.polygon(ring.map(x=>[x[1],x[0]]),opts)):[L.circle(r.center,{...opts,radius:900})];
+   shapes.forEach(shape=>shape.addTo(map).bindTooltip(r.label,{sticky:true}).on('click',()=>value({action:'district',district:r.district})));
+ });
+ p.branches.forEach(b=>L.circleMarker(b.center,{radius:5,color:'#111827',weight:2,fillColor:'white',fillOpacity:1}).addTo(map).bindTooltip(escape(b.name)));
+ p.companies.forEach(c=>{
+   const signals=c.signals||[];
+   const risk=signals.some(s=>s.category==='risk'),momentum=signals.some(s=>s.category==='momentum'),other=signals.some(s=>s.category==='other');
+   const filter=p.highlight||'Semua';
+   if(filter==='Sangat Potensial'&&!c.potential)return;
+   if(filter==='Sinyal Risiko'&&!risk)return;
+   if(filter==='Momentum Peluang'&&!momentum)return;
+   if(filter==='Dengan Temuan'&&!signals.length)return;
+   if(filter==='Potensial atau Ada Temuan'&&!c.potential&&!signals.length)return;
+   const badges=(c.potential?'<span class="pin-symbol pin-star">★</span>':'')+(risk?'<span class="pin-symbol pin-risk">!</span>':'')+(momentum?'<span class="pin-symbol pin-momentum">↑</span>':'')+(other?'<span class="pin-symbol pin-other">•</span>':'');
+   const icon=L.divIcon({className:'company-pin',html:`<span class="pin-dot" style="background:${c.client?'#1e3a6e':'#eb6834'}"></span><span class="pin-symbols">${badges}</span>`,iconSize:[14,14],iconAnchor:[7,7],popupAnchor:[0,-6]});
+   const marker=L.marker(c.center,{icon,zIndexOffset:risk?300:c.potential?200:signals.length?100:0}).addTo(map);
+   const card=document.createElement('div');
+   card.innerHTML=`<div class="company-name">${escape(c.name)}</div>${c.potential?'<div class="potential">⭐ Sangat Potensial</div>':''}<div class="muted">${escape(c.id)} · ${escape(c.industry)}<br>${escape(c.district)} · ${escape(c.segment)}</div><div>${c.client?'Nasabah BNI':'Prospect'} · Risiko ${escape(c.risk)}</div><div title="Peringkat relatif dalam segmen. Bukan probabilitas konversi; skor 100 berarti posisi tertinggi dalam kelompok pembanding." style="cursor:help">${c.client?'Skor prioritas':'Skor akuisisi'} ⓘ: <b>${c.score===null?'—':decimal(c.score)+'/100'}</b></div><div title="${c.conversion==null?'Belum tersedia untuk prospect. Skor akuisisi tidak dapat digunakan sebagai probabilitas konversi.':'Estimasi model untuk konversi produk rekomendasi teratas. Terpisah dari skor prioritas dan bukan kepastian nasabah akan setuju.'}" style="cursor:help">Probabilitas konversi ⓘ: <b>${c.conversion==null?'Belum tersedia':decimal(c.conversion)+'%'}</b></div><div class="muted">RM: ${escape(c.owner)}<br>Data ${escape(p.date)}</div>`;
+   if(signals.length){const list=document.createElement('ul');list.className='signal-list';list.innerHTML=signals.slice(0,3).map(s=>`<li><b>${s.category==='risk'?'🔴':s.category==='momentum'?'↑':'•'} ${escape(s.label)}</b> · ${escape(s.month)}<br><span class="muted">${escape(s.reason)}</span></li>`).join('');card.appendChild(list);}
+   const button=document.createElement('button');button.textContent='Selengkapnya';button.className='detail-button';
+   button.onclick=e=>{e.stopPropagation();value({action:'company',company_id:c.id});};card.appendChild(button);
+   marker.bindPopup(card,{closeButton:true,autoPan:false,maxWidth:310});
+   const cancel=()=>clearTimeout(closeTimer);
+   const close=()=>{cancel();closeTimer=setTimeout(()=>marker.closePopup(),350);};
+   marker.on('mouseover',()=>{cancel();marker.openPopup();});marker.on('mouseout',close);
+   marker.on('popupopen',()=>{const popup=marker.getPopup().getElement();popup.onmouseenter=cancel;popup.onmouseleave=close;});
+ });
+ send('streamlit:setFrameHeight',{height:520});
+});
+send('streamlit:componentReady',{apiVersion:1});send('streamlit:setFrameHeight',{height:520});
+</script></body></html>

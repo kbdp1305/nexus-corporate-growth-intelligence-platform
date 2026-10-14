@@ -13,14 +13,14 @@ import pandas as pd
 import reports as R
 
 from . import data
-from .tables import CsvTable, now
+from .tables import CsvTable, now, transactional
 
 COLS = ['id', 'rm_id', 'company_id', 'judul', 'kanal', 'mulai', 'selesai', 'lokasi', 'catatan', 'status', 'sumber', 'dibuat_oleh', 'diubah_pada']
 KANAL = ['Kunjungan', 'Telepon', 'Email', 'Rapat internal']
 STATUS = ['Terjadwal', 'Selesai', 'Dibatalkan']
 WARNA = {'Kunjungan': '#C2500A', 'Telepon': '#1E3A6E', 'Email': '#4D6FAE', 'Rapat internal': '#6B7280'}
 T = CsvTable('calendar.csv', COLS)
-load, delete = T.load, T.delete
+load = T.load
 
 
 CLAIM_DAYS = 30          # klaim prospect bertahan selama ada jadwal aktif + 30 hari setelah kunjungan terakhir
@@ -59,21 +59,34 @@ def claims(now=None) -> dict:
     return df.groupby('company_id').rm_id.last().to_dict()
 
 
-def check(df, r, now=None):
+def check(df, r, now=None, ignore_owner=False):
     """Alasan penolakan, atau None. Hanya jadwal berstatus Terjadwal yang dijaga (Selesai/Dibatalkan boleh diedit bebas)."""
+    try:
+        m = pd.Timestamp(r['mulai'])
+        s = pd.Timestamp(r.get('selesai') or m + pd.Timedelta(minutes=60))
+        if pd.isna(m) or pd.isna(s) or s <= m:
+            return 'Jam selesai harus setelah jam mulai.'
+    except (ValueError, TypeError, KeyError):
+        return 'Tanggal atau jam jadwal tidak valid.'
+    if r.get('status') == 'Selesai':
+        from . import tindak
+        for kid in tindak.KEGIATAN.load().loc[lambda f: f.kal_id == r.get('id'), 'id']:
+            reason = tindak.completion_block(kid)
+            if reason:
+                return reason
     if r.get('status', 'Terjadwal') != 'Terjadwal':
         return None
     others = df[df.id != r['id']]
     cid = r.get('company_id') or ''
-    if cid:
+    if cid and not ignore_owner:
         who, why = holder(others, cid, now)
         if who and who != r['rm_id']:
             _, names = _owner_map()
             return f"{names.get(cid, cid)} dipegang {who} ({why}). Satu perusahaan hanya ditangani satu RM."
     m, s = pd.Timestamp(r['mulai']), pd.Timestamp(r['selesai'] or r['mulai']) + (pd.Timedelta(0) if r['selesai'] else pd.Timedelta(minutes=60))
     mine = others[(others.rm_id == r['rm_id']) & (others.status != 'Dibatalkan')]
-    mm = pd.to_datetime(mine.mulai, errors='coerce')
-    ms = pd.to_datetime(mine.selesai, errors='coerce').fillna(mm + pd.Timedelta(minutes=60))
+    mm = pd.to_datetime(mine.mulai, errors='coerce', format='mixed')
+    ms = pd.to_datetime(mine.selesai, errors='coerce', format='mixed').fillna(mm + pd.Timedelta(minutes=60))
     clash = mine[(mm < s) & (ms > m)]
     if len(clash):
         c = clash.iloc[0]
@@ -81,7 +94,8 @@ def check(df, r, now=None):
     return None
 
 
-def upsert(rows: list[dict], user: str):
+@transactional
+def upsert(rows: list[dict], user: str, *, _internal=False):
     """Tambah/perbarui jadwal berdasarkan id, dengan penjaga: tidak boleh bertabrakan (per RM) dan satu perusahaan satu RM.
     Mengembalikan (baru, diperbarui, ditolak) — ditolak = [(judul, alasan)]."""
     stamp = {'dibuat_oleh': user, 'diubah_pada': now()}
@@ -92,6 +106,11 @@ def upsert(rows: list[dict], user: str):
         for r in rows:
             r = {**r, **stamp, 'id': r.get('id') or uuid.uuid4().hex[:12]}
             r = {k: '' if r.get(k) is None else str(r.get(k)) for k in COLS}
+            if not _internal:
+                from . import auth, tindak
+                actor = auth.current()
+                if not actor or not auth.can_edit(r['rm_id']) or (r['company_id'] and r['company_id'] not in tindak.assignment_ids(data.get_store(), r['rm_id'], actor)):
+                    rejected.append((r['judul'], 'Agenda berada di luar akses akun Anda.')); continue
             why = check(df, r)
             if why:
                 rejected.append((r['judul'], why)); continue
@@ -101,31 +120,59 @@ def upsert(rows: list[dict], user: str):
             else:
                 df = pd.concat([df, pd.DataFrame([r])], ignore_index=True); new += 1
         T._write(df)
+        from . import tindak
+        for r in rows:
+            if r.get('id') in set(df.id) and not any(j == r.get('judul') for j, _ in rejected):
+                tindak.sync_calendar_event(r['id'], user)
     return new, upd, rejected
 
 
+@transactional
 def transfer(cid, to_rm, user):
     """Supervisor: pindahkan klaim prospect — jadwal Terjadwal perusahaan ini berpindah ke RM lain (dicek bentrok di kalender RM tujuan)."""
+    from . import auth
+    if not auth.current() or auth.current()['role'] != 'supervisor':
+        return 0, [('', 'Serah terima hanya dapat dilakukan supervisor.')]
+    if cid in _owner_map()[0]:
+        return 0, [('', 'Fitur ini hanya untuk prospect.')]
     df = load()
-    live = pd.to_datetime(df.mulai, errors='coerce') >= pd.Timestamp(datetime.now() - timedelta(days=CLAIM_DAYS))   # hanya jadwal dalam masa klaim
-    rows = [{**r, 'rm_id': to_rm} for r in df[(df.company_id == cid) & (df.status == 'Terjadwal') & live].to_dict('records')]
+    rows = [{**r, 'rm_id': to_rm} for r in df[(df.company_id == cid) & (df.status == 'Terjadwal')].to_dict('records')]
     if not rows:
         return 0, [('', 'Tidak ada jadwal aktif untuk dipindahkan.')]
     with T._lock:
         cur = load()
         cur = cur[~cur.id.isin([r['id'] for r in rows])]
-        bad = [(r['judul'], check(cur, r)) for r in rows]
-        bad = [b for b in bad if b[1]]
+        bad = []
+        checking = cur.copy()
+        for row in rows:
+            reason = check(checking, row, ignore_owner=True)
+            if reason:
+                bad.append((row['judul'], reason))
+            checking = pd.concat([checking, pd.DataFrame([row])], ignore_index=True)
         if bad:
             return 0, bad
         cur = pd.concat([cur, pd.DataFrame(rows)], ignore_index=True)
         cur.loc[cur.id.isin([r['id'] for r in rows]), ['dibuat_oleh', 'diubah_pada']] = [user, now()]
         T._write(cur)
+        from . import tindak
+        tindak.transfer_work(cid, to_rm, user)
     return len(rows), []
 
 
-def set_status(event_id, status, user):
-    T.update(event_id, status=status, diubah_pada=now())
+def set_status(event_id, status, user, *, _internal=False):
+    row = load().set_index('id').loc[event_id].to_dict()
+    row.update(id=event_id, status=status)
+    _, _, rejected = upsert([row], user, _internal=_internal)
+    if rejected:
+        raise ValueError(rejected[0][1])
+
+
+@transactional
+def delete(event_id):
+    from . import tindak
+    if event_id in set(tindak.FEEDBACK.load().event_id):
+        raise ValueError('Agenda dengan feedback tidak dapat dihapus; riwayat harus dipertahankan.')
+    set_status(event_id, 'Dibatalkan', 'kalender')
 
 
 def for_rm(rm) -> pd.DataFrame:

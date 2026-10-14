@@ -158,7 +158,8 @@ def template_company(fp):
             v = rat[key]; pos = 'lebih baik dari' if v['persentil'] >= 60 else ('lebih buruk dari' if v['persentil'] <= 40 else 'setara dengan')
             parts.append(f"{lab} {f(v['2025'], 2)} {pos} median peer {f(v['median_peer'], 2)}")
         keu = f"Dibanding {k['n_peer']} peer ({k['peer']}): " + '; '.join(parts) + '. Kelayakan kredit tetap dinilai analis.'
-    risiko = f"Kelas {r['kelas']} (Low {f(r['p_low'], 1)}%, Medium {f(r['p_med'], 1)}%, High {f(r['p_high'], 1)}%). Pendorong utama: " + '; '.join(r['alasan']) + '.'
+    reasons = [reason for reason in r['alasan'] if isinstance(reason, str) and reason.strip()]
+    risiko = f"Kelas {r['kelas']} (Low {f(r['p_low'], 1)}%, Medium {f(r['p_med'], 1)}%, High {f(r['p_high'], 1)}%). Pendorong utama: " + ('; '.join(reasons) or 'alasan belum tersedia') + '.'
     if an['resmi_3bln']:
         anom = f"Ada alarm dalam 3 bulan terakhir: {', '.join(an['jenis_3bln'])}. Cek arus kas dan riwayat sebelum menawarkan produk kredit."
     elif an['sinyal_bawah_ambang']:

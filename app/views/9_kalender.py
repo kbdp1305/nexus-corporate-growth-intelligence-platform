@@ -12,7 +12,8 @@ except ImportError:              # komponen opsional: tanpa itu tetap ada tabel 
 
 store = data.get_store(); ss = st.session_state
 user = auth.current()
-ui.page_header(f"{ss.rm} · jadwal bersama, tersimpan di outputs/app/calendar.csv", 'Kalender kunjungan')
+ui.page_header(f"{ss.rm} · agenda kunjungan dan kegiatan tindak lanjut", 'Kalender kunjungan')
+st.caption('Jadwalkan langsung untuk agenda rutin. Kunjungan dengan pendampingan atau persetujuan khusus diajukan melalui Tindak lanjut kunjungan.')
 
 df = K.for_rm(ss.rm)
 today = date.today()
@@ -33,8 +34,8 @@ def _parse(s):
 
 
 def _company_opts():
-    mine = list(store.co.index[store.co.rm_id == ss.rm]) if ss.rm != 'Semua RM' else []
-    return [''] + mine + [c for c in store.co.index if c not in set(mine)]
+    owner = ss.rm if ss.rm != 'Semua RM' else sorted(store.co.rm_id.dropna().unique())[0]
+    return [''] + T.assignment_ids(store, owner, user)
 
 
 def _fmt_co(c):
@@ -76,7 +77,7 @@ with cal_col:
                     r['mulai'] = _parse(ev['start']).isoformat(timespec='minutes')
                     if ev.get('end'):
                         r['selesai'] = _parse(ev['end']).isoformat(timespec='minutes')
-                    _, _, rej = K.upsert([r], user['username'])
+                    _, _, rej = ui.operation(K.upsert, [r], user['username'])
                     if rej:                               # ditolak: kalender dirender ulang ke posisi semula
                         ss.cal_ver = ss.get('cal_ver', 0) + 1; ss._toast = f'Tidak dipindah: {rej[0][1]}'
                     else:
@@ -109,7 +110,7 @@ with side:
         if save:
             r.update(mulai=datetime.combine(tgl, jm).isoformat(timespec='minutes'), selesai=datetime.combine(tgl, js).isoformat(timespec='minutes'),
                      status=status, lokasi=lok, catatan=cat)
-            _, _, rej = K.upsert([r], user['username'])
+            _, _, rej = ui.operation(K.upsert, [r], user['username'])
             if rej:
                 st.error(f'Tidak disimpan: {rej[0][1]}')
             else:
@@ -118,8 +119,8 @@ with side:
         b1, b2, b3 = st.columns(3)
         if r['company_id'] in store.co.index and b1.button('Profil', use_container_width=True):
             state.focus_company(r['company_id'])
-        if editable and b2.button('Hapus', use_container_width=True):
-            K.delete(sel); data.audit('kalender_hapus', user=user['username'], id=sel); ss.cal_sel = None; st.rerun()
+        if editable and b2.button('Batalkan agenda', use_container_width=True):
+            ui.operation(K.set_status, sel, 'Dibatalkan', user['username']); data.audit('kalender_batal', user=user['username'], id=sel); ss.cal_sel = None; st.rerun()
         if b3.button('Tutup', use_container_width=True):
             ss.cal_sel = None; st.rerun()
         fb = T.FEEDBACK.load(); fb = fb[fb.event_id == sel]
@@ -128,7 +129,10 @@ with side:
             st.markdown(f"<div class='egi-card'><b>Feedback:</b> {ui.esc(T.HASIL_ID.get(f0.hasil, f0.hasil))}<br>{ui.esc(f0.catatan)}"
                         + (f"<br><span class='egi-muted'>Lanjut: {ui.esc(f0.langkah_lanjut)}</span>" if f0.langkah_lanjut else '')
                         + f"<br><span class='egi-muted'>{len([x for x in f0.tiket.split(';') if x])} tiket koordinasi</span></div>", unsafe_allow_html=True)
-        elif editable and r['kanal'] in ('Kunjungan', 'Telepon') and r['status'] != 'Dibatalkan':
+        elif r['sumber'] in T.SUMBER_PROGRES:
+            if st.button('Buka kegiatan terkait', use_container_width=True):
+                ss.tl_tab = 'Progress kegiatan'; state.go('tindak')
+        elif editable and r['kanal'] in ('Kunjungan', 'Telepon', 'Email') and r['status'] != 'Dibatalkan' and r['company_id']:
             if st.button('Isi feedback & tindak lanjut', type='primary', use_container_width=True):
                 ss.fb_event = sel; ss.tl_tab = 'Feedback kunjungan'; state.go('tindak')
         if user['role'] == 'supervisor' and r['company_id'] and not store.cox.is_client.get(r['company_id'], False) and r['status'] == 'Terjadwal':
@@ -136,7 +140,7 @@ with side:
                 rms_ = [x for x in sorted(store.co.rm_id.dropna().unique()) if x != r['rm_id']]
                 to = st.selectbox('RM tujuan', rms_, key=f'tr_{sel}')
                 if st.button('Pindahkan semua jadwal aktif perusahaan ini', key=f'trb_{sel}', use_container_width=True):
-                    n, bad = K.transfer(r['company_id'], to, user['username'])
+                    n, bad = ui.operation(K.transfer, r['company_id'], to, user['username'])
                     if bad:
                         st.error('Tidak dipindah: ' + '; '.join(f'{j}: {w}' for j, w in bad))
                     else:
@@ -153,7 +157,7 @@ with side:
                 owner = st.selectbox('Untuk RM', rms, index=rms.index(ss.rm) if ss.rm in rms else 0)
             else:
                 owner = user['rm_id']
-            opts_co = _company_opts()
+            opts_co = [''] + T.assignment_ids(store, owner, user)
             fc0 = ss.focus_company if ss.focus_company in opts_co else ''
             cid = st.selectbox('Perusahaan', opts_co, index=opts_co.index(fc0), format_func=_fmt_co)
             judul = st.text_input('Judul (opsional bila perusahaan dipilih)')
@@ -174,7 +178,7 @@ with side:
                 nama = judul.strip() or f"{store.co.name.get(cid, cid)} ({cid})"
                 row = {'rm_id': owner, 'company_id': cid, 'judul': nama, 'kanal': kanal, 'mulai': datetime.combine(tgl, jm).isoformat(timespec='minutes'),
                        'selesai': datetime.combine(tgl, js).isoformat(timespec='minutes'), 'lokasi': lok, 'catatan': cat, 'status': 'Terjadwal', 'sumber': 'Manual'}
-                _, _, rej = K.upsert([row], user['username'])
+                _, _, rej = ui.operation(K.upsert, [row], user['username'])
                 if rej:
                     st.error(f'Tidak ditambahkan: {rej[0][1]}')
                 else:

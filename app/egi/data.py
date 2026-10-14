@@ -178,16 +178,26 @@ class Store(R.Data):
         last = lg.sort_values('contact_date').groupby('party_id').tail(1)
         f = last[last.response == 'Interested'].copy()
         f['jatuh_tempo'] = pd.to_datetime(f.contact_date) + pd.Timedelta(days=days)
-        f['telat_hari'] = (SNAPSHOT - f.jatuh_tempo).dt.days
+        f['telat_hari'] = (pd.Timestamp.now().normalize() - f.jatuh_tempo).dt.days
         f['name'] = f.party_id.map(self.co.name)
         return f.sort_values('jatuh_tempo')
 
     # ---------------------------------------------------------- tulis (dashboard)
     def append_visit(self, row: dict):
-        APP_OUT.mkdir(parents=True, exist_ok=True)
-        f = APP_OUT / 'visit_log.csv'
-        pd.DataFrame([row]).to_csv(f, mode='a', header=not f.exists(), index=False)
-        self.load_app_log()
+        from .tables import WRITE_LOCK
+        with WRITE_LOCK:
+            APP_OUT.mkdir(parents=True, exist_ok=True)
+            f = APP_OUT / 'visit_log.csv'
+            frame = pd.read_csv(f, keep_default_na=False) if f.exists() else pd.DataFrame()
+            if len(frame) and (frame.action_id == row['action_id']).any():
+                return
+            if row.get('event_id') and 'event_id' in frame and frame.event_id.eq(row['event_id']).any():
+                return
+            frame = pd.concat([frame, pd.DataFrame([row])], ignore_index=True)
+            tmp = f.with_suffix('.tmp')
+            frame.to_csv(tmp, index=False)
+            tmp.replace(f)
+            self.load_app_log()
 
 
 def audit(event: str, **kw):

@@ -1,74 +1,189 @@
+from datetime import date
+
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from egi import agent, data, state, ui, viz
+from egi import data, performance as P, state, tindak as T, ui, viz
 
-store = data.get_store(); ss = st.session_state
-ui.page_header(f'{ss.rm} · aksi RM Jan–Jun 2026 (+ catatan dari dashboard)', 'Kinerja saya')
+store = data.get_store()
+ss = st.session_state
+ui.page_header(f'{ss.rm} · aktivitas, hasil tercatat, dan progres tindak lanjut', 'Kinerja Saya')
 if ss.rm == 'Semua RM':
-    st.info('Pilih satu RM di sidebar untuk melihat kinerja.'); st.stop()
+    st.info('Pilih satu RM di sidebar untuk melihat kinerja.')
+    st.stop()
 
-L = store.log_all.copy()
-L['bulan'] = L.contact_date.astype(str).str[:7]
-L['converted'] = pd.to_numeric(L.converted, errors='coerce').fillna(0)
-L['deal_value_idr_mn'] = pd.to_numeric(L.deal_value_idr_mn, errors='coerce').fillna(0)
-me = L[L.rm_id == ss.rm]
-per = L.groupby('rm_id').agg(aksi=('party_id', 'size'), konversi=('converted', 'mean'), deal=('deal_value_idr_mn', 'sum'))
-med = per.median()
+history = P.contacts(store.log_all, ss.rm)
+latest = history.tanggal.max() if len(history) else data.SNAPSHOT
+months = pd.period_range(min(history.tanggal.min(), data.SNAPSHOT) if len(history) else data.SNAPSHOT,
+                         max(latest, pd.Timestamp(date.today())), freq='M')[::-1]
+labels = {str(m): f'{ui.BULAN[m.month - 1]} {m.year}' for m in months}
+a, b = st.columns([1, 2])
+mode = a.selectbox('Periode', ['Bulanan', 'Rentang tanggal'], key='perf_period')
+if mode == 'Bulanan':
+    month = b.selectbox('Bulan', list(labels), index=list(labels).index(str(latest.to_period('M'))),
+                        format_func=labels.get, key='perf_month')
+    period = pd.Period(month, 'M')
+    start, end = period.start_time.normalize(), period.end_time.normalize()
+    previous = period - 1
+    prev_start, prev_end = previous.start_time.normalize(), previous.end_time.normalize()
+else:
+    dates = b.date_input('Rentang tanggal', value=(latest.replace(day=1).date(), latest.date()),
+                         key='perf_dates', format='DD/MM/YYYY')
+    if len(dates) != 2:
+        st.info('Pilih tanggal awal dan akhir.')
+        st.stop()
+    start, end = map(pd.Timestamp, dates)
+    span = end - start + pd.Timedelta(days=1)
+    prev_end, prev_start = start - pd.Timedelta(days=1), start - span
 
-k = st.columns(4)
-ui.kpi(k[0], 'Aksi', ui.fmt(len(me), 0), f"median RM {ui.fmt(med.aksi, 0)}")
-ui.kpi(k[1], 'Tingkat konversi', ui.fmt(me.converted.mean() * 100, 0, pct=True) if len(me) else '—', f"median RM {ui.fmt(med.konversi * 100, 0)}%", color=ui.ORANGE)
-ui.kpi(k[2], 'Nilai deal', f"Rp {ui.fmt(me.deal_value_idr_mn.sum() / 1000, 1)} M", f"median RM Rp {ui.fmt(med.deal / 1000, 1)} M")
-rank = int((per.konversi > (me.converted.mean() if len(me) else 0)).sum()) + 1
-ui.kpi(k[3], 'Peringkat konversi', f'{rank} / {len(per)}', 'di antara semua RM')
-st.write('')
+st.caption(f'Periode {ui.tanggal(start)} – {ui.tanggal(end)} · '
+           f'Kontak terakhir tercatat: {ui.tanggal(latest) if len(history) else "belum ada"}. '
+           'Data sintetis Jan–Jun 2026 dan catatan yang ditambahkan melalui dashboard.')
+selected = P.between(history, start, end)
+current, before = P.metrics(history, start, end), P.metrics(history, prev_start, prev_end)
+cols = st.columns(4)
+cards = [('Perusahaan Dihubungi', 'companies'), ('Aktivitas Kontak', 'contacts'),
+         ('Konversi Tercatat', 'conversions'), ('Nilai Deal Tercatat', 'deal_bn')]
+for col, (label, key) in zip(cols, cards):
+    money = key == 'deal_bn'
+    value = f'Rp {ui.fmt(current[key], 2)} miliar' if money else ui.fmt(current[key], 0)
+    diff = current[key] - before[key]
+    delta = ('+' if diff > 0 else '') + ui.fmt(diff, 2 if money else 0)
+    ui.kpi(col, label, value, f'{delta}{" miliar" if money else ""} dibanding periode sebelumnya')
+with st.expander('Definisi metrik dan kelengkapan data'):
+    st.markdown('**Perusahaan Dihubungi:** perusahaan unik dengan kontak pada periode terpilih. '
+                '**Aktivitas Kontak:** jumlah catatan kontak, termasuk kontak berulang. '
+                '**Konversi Tercatat:** pasangan perusahaan–produk yang pertama kali dicatat '
+                'sebagai Converted pada periode terpilih; status ini berarti setuju/onboarding, '
+                'belum merupakan bukti realisasi bisnis. '
+                '**Nilai Deal Tercatat:** penjumlahan nilai deal pada catatan kontak dalam periode, '
+                'bukan pendapatan bank dan belum direkonsiliasi terhadap transaksi aktual.')
+    st.caption(f'Pembanding: {ui.tanggal(prev_start)} – {ui.tanggal(prev_end)}. '
+               'Catatan dari dashboard belum menyediakan nilai deal; nilai nol tidak memastikan tidak ada deal.')
+    st.caption(f'{int(selected.sumber.eq("dashboard").sum())} dari {len(selected)} kontak periode ini berasal dari dashboard. '
+               'Rasio konversi peluang belum ditampilkan karena siklus peluang belum dicatat secara konsisten.')
 
-a, b = st.columns([1.4, 1])
-with a:
-    mm = me.groupby('bulan').agg(aksi=('party_id', 'size'), konv=('converted', 'sum')).reset_index()
-    allm = L.groupby(['bulan', 'rm_id']).size().groupby('bulan').median()
-    fig = go.Figure()
-    fig.add_bar(x=mm.bulan, y=mm.aksi, name='aksi saya', marker_color=ui.NAVY2)
-    fig.add_bar(x=mm.bulan, y=mm.konv, name='konversi saya', marker_color=ui.ORANGE)
-    fig.add_scatter(x=allm.index, y=allm.values, name='median aksi RM', mode='lines+markers', line=dict(color='#9AA0A9', dash='dot'))
-    st.plotly_chart(viz._layout(fig, 300, legend=True, legend_orientation='h', title='Aksi & konversi per bulan', barmode='group'), use_container_width=True)
-with b:
-    ch = me.groupby('channel').agg(aksi=('party_id', 'size'), konversi=('converted', 'mean'))
-    chall = L.groupby('channel').converted.mean().rename('konversi_semua_RM')
-    ch = ch.join(chall).reset_index()
-    for c in ('konversi', 'konversi_semua_RM'): ch[c] *= 100
+st.subheader(f'Komposisi Hasil Kontak · {labels[month]}' if mode == 'Bulanan' else 'Komposisi Hasil Kontak Periode Terpilih')
+st.caption('Setiap irisan menunjukkan hasil catatan kontak pada periode terpilih. '
+           'Kontak berulang ikut dihitung; persentase ini bukan tingkat konversi perusahaan atau peluang.')
+status_labels = {'Converted': 'Setuju / onboarding', 'Interested': 'Tertarik',
+                 'Not interested': 'Tidak tertarik', 'No response': 'Tidak ada respons'}
+status_colors = {'Setuju / onboarding': '#16A34A', 'Tertarik': '#2563EB',
+                 'Tidak tertarik': '#F59E0B', 'Tidak ada respons': '#94A3B8',
+                 'Status belum tersedia': '#CBD5E1'}
+if selected.empty:
+    st.info('Belum ada catatan kontak pada periode ini. Angka nol menunjukkan tidak ada catatan yang tersedia.')
+else:
+    outcomes = selected.response.map(status_labels).fillna('Status belum tersedia')
+    counts = outcomes.value_counts().reindex(list(status_colors), fill_value=0)
+    counts = counts[counts > 0]
+    fig = go.Figure(go.Pie(
+        labels=counts.index.tolist(), values=counts.tolist(), hole=.68, sort=False,
+        marker=dict(colors=[status_colors[label] for label in counts.index],
+                    line=dict(color='white', width=2)),
+        textinfo='percent', textposition='inside',
+        hovertemplate='%{label}<br>%{value} kontak ? %{percent}<extra></extra>',
+    ))
+    fig = viz._layout(fig, 360, legend=True)
+    fig.update_layout(legend=dict(orientation='h', x=.5, xanchor='center', y=-.08, yanchor='top'))
+    fig.add_annotation(x=.5, y=.5, xref='paper', yref='paper', showarrow=False,
+                       text=f'<b>{ui.fmt(len(selected), 0)}</b><br>Total kontak',
+                       font=dict(size=20, color=ui.NAVY2))
+    fig.update_layout(margin=dict(l=15, r=15, t=15, b=65))
+    st.plotly_chart(fig, use_container_width=True, key='perf_outcomes')
+
+with st.expander('Lihat tren aktivitas dan hasil tercatat'):
+    # Satu bulan menggunakan kelompok mingguan, rentang lebih panjang per bulan.
+    frequency = 'W-SUN' if start.to_period('M') == end.to_period('M') else 'M'
+    periods = pd.period_range(start, end, freq=frequency)
+    labels_trend = []
+    for period in periods:
+        if frequency == 'W-SUN':
+            first = max(period.start_time.normalize(), start)
+            last = min(period.end_time.normalize(), end)
+            days = str(first.day) if first == last else f'{first.day}–{last.day}'
+            labels_trend.append(f'{days}<br>{state.BULAN[first.month - 1]} {first.year}')
+        else:
+            labels_trend.append(f'{state.BULAN[period.month - 1]}<br>{period.year}')
+    contacts_trend = selected.groupby(selected.tanggal.dt.to_period(frequency)).size().reindex(periods, fill_value=0)
+    wins = P.between(P.first_conversions(history), start, end)
+    wins_trend = wins.groupby(wins.tanggal.dt.to_period(frequency)).size().reindex(periods, fill_value=0)
+    for values, name, color in [(contacts_trend, 'Aktivitas kontak', ui.NAVY2),
+                                (wins_trend, 'Konversi tercatat', ui.ORANGE)]:
+        trend = go.Figure(go.Scatter(x=list(range(len(periods))), y=values, mode='lines+markers',
+                                     name=name, line=dict(color=color),
+                                     customdata=[label.replace('<br>', ' ') for label in labels_trend],
+                                     hovertemplate='%{customdata}<br>' + name + ': %{y}<extra></extra>'))
+        trend = viz._layout(trend, 260, title=name)
+        tick_step = max(1, (len(periods) + 11) // 12)
+        ticks = list(range(0, len(periods), tick_step))
+        if ticks[-1] != len(periods) - 1:
+            ticks.append(len(periods) - 1)
+        trend.update_xaxes(tickmode='array', tickvals=ticks,
+                           ticktext=[labels_trend[i] for i in ticks], tickangle=0,
+                           title_text='Minggu' if frequency == 'W-SUN' else 'Bulan', automargin=True)
+        trend.update_yaxes(title_text='Jumlah kontak' if name == 'Aktivitas kontak' else 'Jumlah konversi',
+                           rangemode='tozero', tickformat=',d')
+        trend.update_layout(margin=dict(l=45, r=15, t=45, b=75))
+        st.plotly_chart(trend, use_container_width=True,
+                        key='perf_trend_' + ('contacts' if name == 'Aktivitas kontak' else 'conversions'))
+    st.caption('Konversi tercatat dihitung sekali per perusahaan–produk; hasil kontak Converted pada donut dapat mencakup catatan berulang.')
+
+st.subheader('Progres tindak lanjut')
+keg = T.kegiatan_for(ss.rm)
+created = pd.to_datetime(keg.dibuat_pada, errors='coerce').dt.normalize()
+keg = keg[created.between(start, end)]
+st.caption('Kegiatan yang dibuat pada periode terpilih, dengan status terkini saat halaman dibuka. '
+           'Keterlambatan dihitung terhadap tanggal hari ini; kegiatan dibatalkan dipisahkan.')
+progress_cols = st.columns(4)
+for col, status, title in zip(progress_cols, ['selesai', 'berjalan', 'terlambat', 'batal'],
+                             ['Selesai', 'Berjalan', 'Terlambat', 'Dibatalkan']):
+    ui.kpi(col, title, str(int(keg.status_tampil.eq(status).sum())))
+if keg.empty:
+    st.caption('Belum ada kegiatan tindak lanjut yang dibuat pada periode ini.')
+if st.button('Buka Progress Kegiatan', key='perf_progress'):
+    ss.tl_tab = 'Progress kegiatan'
+    state.go('tindak')
+
+st.subheader('Pipeline yang perlu perhatian')
+as_of = min(end, pd.Timestamp(date.today()))
+st.caption(f'Peluang berstatus tertarik berdasarkan riwayat sampai {ui.tanggal(as_of)}, '
+           'termasuk kontak sebelum periode. Pasangan perusahaan–produk yang pernah Converted dikeluarkan. '
+           'Urutan dimulai dari kontak yang paling lama menunggu.')
+pipe = P.pipeline(history, as_of)
+if pipe.empty:
+    st.caption('Tidak ada peluang tertarik yang belum dikonversi dalam catatan sampai akhir periode ini.')
+else:
+    names = T.products().product_name.to_dict()
+    table = pd.DataFrame({
+        'Perusahaan': pipe.party_id.map(store.co.name).fillna(pipe.party_id),
+        'Produk': pipe.product_id.map(names).fillna(pipe.product_id),
+        'Kontak Terakhir': pipe.tanggal.dt.strftime('%d/%m/%Y'),
+        'Hari Menunggu': pipe.hari_menunggu,
+        'Status': pipe.hari_menunggu.map(lambda days: 'Perlu ditinjau · ≥14 hari' if days >= 14 else 'Tertarik'),
+        'Catatan': pipe.feedback_note.fillna(''),
+    }).reset_index(drop=True)
+    st.dataframe(table, hide_index=True, use_container_width=True,
+                 column_config={'Hari Menunggu': st.column_config.NumberColumn(help='Hari sejak kontak terakhir sampai tanggal acuan pipeline yang tercantum di atas.')})
+    if st.button('Buka Tindak Lanjut Kunjungan', key='perf_followup'):
+        ss.tl_tab = 'Progress kegiatan'
+        state.go('tindak')
+
+with st.expander('Analisis tambahan: kanal dan segmen'):
+    st.caption('Hasil kontak Converted dibagi jumlah kontak pada kelompok yang sama. '
+               'Ini rasio hasil kontak, bukan probabilitas atau rasio konversi peluang; kontak berulang ikut dihitung.')
+    def breakdown(frame, column, label):
+        grouped = frame.groupby(column, dropna=False).agg(
+            Kontak=('party_id', 'size'), Perusahaan=('party_id', 'nunique'),
+            Hasil_Converted=('is_conversion', 'sum')).reset_index()
+        grouped['Rasio Hasil Kontak'] = grouped.Hasil_Converted / grouped.Kontak * 100
+        st.dataframe(grouped.rename(columns={column: label, 'Hasil_Converted': 'Kontak Converted'}),
+                     hide_index=True, use_container_width=True,
+                     column_config={'Rasio Hasil Kontak': st.column_config.NumberColumn(format='%.1f%%')})
     st.markdown('**Per kanal**')
-    st.dataframe(ch, hide_index=True, use_container_width=True,
-                 column_config={'channel': 'Kanal', 'aksi': 'Aksi', 'konversi': st.column_config.NumberColumn('Konversi saya', format='%.0f%%'),
-                                'konversi_semua_RM': st.column_config.NumberColumn('Semua RM', format='%.0f%%')})
-    seg = me.join(store.cox.segment, on='party_id').groupby('segment').converted.agg(['size', 'mean']).reset_index()
-    seg['mean'] *= 100
-    st.markdown('**Per segmen**')
-    st.dataframe(seg, hide_index=True, use_container_width=True, column_config={'segment': 'Segmen', 'size': 'Aksi', 'mean': st.column_config.NumberColumn('Konversi', format='%.0f%%')})
-
-c1, c2 = st.columns(2)
-with c1:
-    st.subheader('Pipeline: tertarik, belum konversi')
-    last = me.sort_values('contact_date').groupby(['party_id', 'product_id']).tail(1)
-    pipe = last[last.response == 'Interested'].join(store.co[['name']], on='party_id').sort_values('contact_date', ascending=False)
-    for r in pipe.head(8).itertuples():
-        y1, y2 = st.columns([4, 1])
-        y1.markdown(f"**{ui.esc(r.name if isinstance(r.name, str) else r.party_id)}** <span class='egi-muted'>{r.party_id} · {r.product_id} · {r.contact_date} · {ui.esc(r.feedback_note)}</span>", unsafe_allow_html=True)
-        if r.party_id in store.co.index and y2.button('Profil', key=f'kp_{r.party_id}_{r.product_id}'):
-            state.focus_company(r.party_id)
-    if pipe.empty:
-        st.caption('Tidak ada.')
-with c2:
-    st.subheader('Prioritas yang belum disentuh')
-    pf = agent.candidates(store, ss.rm)
-    un = pf[(pf.opportunity_score >= .75) & ~pf.contacted].head(8) if not pf.empty else pf
-    for cid, r in un.iterrows():
-        y1, y2 = st.columns([4, 1])
-        y1.markdown(f"**{ui.esc(r['name'])}** <span class='egi-muted'>{cid} · {r.segment} · skor {r.opportunity_score:.2f}</span>", unsafe_allow_html=True)
-        if y2.button('📅 Jadwalkan', key=f'ku_{cid}'):
-            state.schedule_visit(store, cid, 'Prioritas yang belum disentuh', 'Kinerja saya')
-    if len(un) == 0:
-        st.caption('Semua nasabah prioritas sudah dihubungi.')
-st.caption('Konversi = aksi dengan respons Converted / semua aksi. Catatan dari dashboard ikut dihitung sejak disimpan.')
+    breakdown(selected, 'channel', 'Kanal')
+    st.markdown('**Per segmen nasabah**')
+    clients = selected[selected.party_id.isin(store.cox.index[store.cox.is_client])].join(store.cox.segment, on='party_id')
+    breakdown(clients, 'segment', 'Segmen')
+    st.caption('Prospect tidak dikelompokkan berdasarkan segmen.')

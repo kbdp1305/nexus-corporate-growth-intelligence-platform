@@ -67,6 +67,7 @@ def ego_graph(center_name, ego):
                                  marker=dict(size=8 + 14 * np.sqrt(g.nilai / ego.nilai.max()), color=col.get(t, '#999'),
                                              line=dict(color=['#9A2416' if d else 'white' for d in g.distress], width=[3 if d else 1 for d in g.distress])),
                                  text=[f"{n}<br>Rp {v / 1000:,.1f} M/thn{'<br><b>alarm distress</b>' if d else ''}" for n, v, d in zip(g.nama, g.nilai, g.distress)],
+                                 customdata=[[i] for i in g.id],
                                  hovertemplate='%{text}<extra></extra>'))
     fig.add_trace(go.Scatter(x=[pos['C'][0]], y=[pos['C'][1]], mode='markers+text', marker=dict(size=26, color='#0F1E3A'), text=[center_name[:28]],
                              textposition='bottom center', hoverinfo='skip', showlegend=False))

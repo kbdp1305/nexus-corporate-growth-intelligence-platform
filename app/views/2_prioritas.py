@@ -1,180 +1,258 @@
+import hashlib
+
 import pandas as pd
 import streamlit as st
 
-from egi import agent, data, state, ui, viz
+from egi import agent, auth, data, llm, profile_workspace as PW, sim, state, ui, viz
 from egi import kalender as K
 
-store = data.get_store(); ss = st.session_state
-
-PLAYBOOK = {
-    'S1 Kecil': 'Kanal murah dulu: telepon / email, paket produk standar (P01 + payroll). Kunjungan hanya untuk skor ≥ 0,85 atau ada alarm ekspansi.',
-    'S2 Menengah': 'Campuran: kunjungan untuk Top-20, telepon untuk sisanya. Fokus celah produk yang sudah dipegang peer sesegmen.',
-    'S3 Besar': 'Kunjungan tatap muka dan solusi ekosistem (supply-chain financing, cash management). Libatkan analis untuk produk kredit.',
-}
-PLAYBOOK_P = {
-    'S1 Kecil': 'Minta perkenalan dari nasabah sendiri lewat pesan singkat, lalu telepon. Tawarkan paket pembukaan standar (giro + virtual account).',
-    'S2 Menengah': 'Perkenalan lewat nasabah anchor, lalu kunjungan. Mulai dari produk transaksi yang menghubungkan ke nasabah (VA, payroll).',
-    'S3 Besar': 'Pendekatan ekosistem: tawarkan pembiayaan rantai pasok bersama anchor. Libatkan tim korporasi dan analis sejak awal.',
-}
-COMP = {'pct_dompet_belum_digarap': 'Dompet belum digarap', 'pct_ekosistem': 'Ekosistem', 'pct_kebutuhan_modal': 'Kebutuhan modal',
-        'pct_celah_produk': 'Celah produk', 'pct_erosi_wallet': 'Erosi wallet'}
-COMP_P = {'pct_skala': 'Skala (omzet)', 'pct_ekosistem': 'Ekosistem', 'pct_jalur_kenalan': 'Jalur kenalan'}
-
-ui.page_header(f'{ss.rm} · peringkat dibuat per segmen', 'Daftar prioritas')
-pf = agent.candidates(store, ss.rm)
-sched = K.scheduled_ids(ss.rm)
+store = data.get_store()
+ss = st.session_state
+user = auth.current()
+if not user or user['role'] not in ('rm', 'supervisor'):
+    st.stop()
+if user['role'] == 'rm':
+    ss.rm = user['rm_id']
+rm = ss.rm
+catalog = sim.catalog()
 claims = K.claims()
+scheduled = K.scheduled_ids(rm)
+contacted = store.contacted(rm)
 
+ui.page_header(f'{rm} · Data per {data.SNAPSHOT:%d/%m/%Y} · prioritas dibandingkan dalam segmen yang sama', 'Daftar Prioritas')
+requested = ss.pop('priority_requested', None)
+if requested:
+    ss.priority_mode = 'Prospect'
+    ss.priority_status = 'Semua'
+    ss.priority_risk = 'Semua'
+    ss.priority_district = []
+    ss.priority_hide_other = False
+    ss.priority_focus = requested
+    ss.priority_request_version = ss.get('priority_request_version', 0) + 1
+mode = st.segmented_control('Tampilkan', ['Nasabah', 'Prospect'], default='Nasabah', key='priority_mode') or 'Nasabah'
+prospect = mode == 'Prospect'
 
-def prospect_frame(rm):
-    """Prospect RM: yang bertransaksi dengan nasabahnya (jaringan) + yang sudah ia klaim lewat jadwal. Supervisor 'Semua RM': semua prospect."""
-    acq = store.acq.join(store.cox[['name', 'district', 'industry']])
-    net = store.prospects_for(rm) if rm != 'Semua RM' else pd.DataFrame(columns=['lewat_nama', 'nilai_M', 'lewat'])
-    ids = set(acq.index) if rm == 'Semua RM' else (set(net.index) | {c for c, r in claims.items() if r == rm and c in acq.index})
-    p = acq.loc[sorted(ids)].copy()
-    p['lewat_nama'] = net.lewat_nama.reindex(p.index).fillna('—')
-    p['nilai_M'] = net.nilai_M.reindex(p.index).fillna(0.0)
-    p['pemegang'] = pd.Series(claims).reindex(p.index).fillna('')
-    p['white_space'] = p.district.isin(set(store.districts().query('white_space').index))
-    return p
-
-
-pr = prospect_frame(ss.rm)
-lab_n = f"{'Nasabah' if ss.rm == 'Semua RM' else 'Nasabah saya'} · {len(pf)}"
-mode = st.segmented_control('Tampilkan', [lab_n, f'Prospect · {len(pr)}'], default=lab_n, key='prio_mode') or lab_n
-
-# ================================================================== nasabah
-if mode.startswith('Nasabah'):
-    if pf.empty:
-        st.info('RM ini belum punya nasabah dengan skor peluang.'); st.stop()
-    f1, f2, f3, f4 = st.columns([2, 1.2, 1, 1])
-    kec = f1.multiselect('Kecamatan', sorted(pf.district.unique()), default=[ss.focus_district] if ss.focus_district in set(pf.district) else [])
-    prods = sorted({p.strip() for s in pf.recommended_products.dropna() for p in str(s).split(',') if p.strip()})
-    prod = f2.selectbox('Produk disarankan', ['Semua'] + prods)
-    only_wn = f3.toggle('Hanya Why Now')
-    hide_c = f4.toggle('Sembunyikan yang sudah dihubungi')
-    v = pf.copy()
-    if kec: v = v[v.district.isin(kec)]
-    if prod != 'Semua': v = v[v.recommended_products.fillna('').str.contains(prod)]
-    if only_wn: v = v[v.why_up]
-    if hide_c: v = v[~v.contacted]
-
-    k = st.columns(4)
-    ui.kpi(k[0], 'Nasabah di portofolio', ui.fmt(len(pf), 0), ' · '.join(f"{s.split()[0]} {int((pf.segment == s).sum())}" for s in data.SEGS))
-    ui.kpi(k[1], 'Skor peluang ≥ 0,75', ui.fmt(int((pf.opportunity_score >= .75).sum()), 0), f"{int(((pf.opportunity_score >= .75) & ~pf.contacted).sum())} belum pernah dihubungi", color=ui.ORANGE)
-    ui.kpi(k[2], 'Why Now (3 bulan)', ui.fmt(int(pf.why_up.sum()), 0), 'ekspansi / erosi wallet')
-    top10 = pf.nlargest(10, 'opportunity_score').ev_idr_mn   # Rp juta, 1 tahun, produk teratas per nasabah (asumsi ilustratif NB08)
-    ui.kpi(k[3], 'Nilai harapan Top-10', f"Rp {ui.fmt(top10.sum(), 1)} jt", f"{int((top10 > 0).sum())} dari {len(top10)} ber-EV positif · 1 tahun, asumsi ilustratif")
-    st.write('')
-
-    tabs = st.tabs([f"{s} · {int((v.segment == s).sum())}" for s in data.SEGS])
-    for tab, sname in zip(tabs, data.SEGS):
-        with tab:
-            st.markdown(f"<div class='egi-card' style='border-left:4px solid {ui.SEG_COLOR[sname]}'><b>Playbook {sname}.</b> {PLAYBOOK[sname]}</div>", unsafe_allow_html=True)
-            g = v[v.segment == sname].copy()
-            if g.empty:
-                st.caption('Tidak ada nasabah yang cocok dengan filter.'); continue
-            g['status'] = g.caution.map({True: '⚠ alarm risiko', False: ''}) + g.why_up.map({True: ' ↑ Why Now', False: ''}) + g.contacted.map({True: '', False: ' · baru'}) + pd.Series(g.index.isin(sched), index=g.index).map({True: ' · 📅 terjadwal', False: ''})
-            t = g[['name', 'district', 'opportunity_score', 'rank_in_segment', 'risk_class', 'status', 'recommended_products', 'p_convert', 'ev_idr_mn']].reset_index()
-            ev = st.dataframe(t, hide_index=True, use_container_width=True, height=min(38 + 35 * len(t), 460), on_select='rerun', selection_mode='single-row', key=f'tbl_{sname}',
-                              column_config={'company_id': 'ID', 'name': 'Perusahaan', 'district': 'Kecamatan',
-                                             'opportunity_score': st.column_config.ProgressColumn('Skor peluang', min_value=0, max_value=1, format='%.2f'),
-                                             'rank_in_segment': st.column_config.NumberColumn('Peringkat', format='%d'), 'risk_class': 'Risiko', 'status': 'Status',
-                                             'recommended_products': 'Produk disarankan', 'p_convert': st.column_config.NumberColumn('P(konversi)', format='%.2f'),
-                                             'ev_idr_mn': st.column_config.NumberColumn('EV (Rp juta)', format='%.1f',
-                                                                                         help='Nilai harapan 1 tahun untuk produk teratas: P(konversi) × deal × margin − biaya aksi. Asumsi ilustratif NB08.')})
-            rows = ev.selection.rows if ev and hasattr(ev, 'selection') else []
-            cid = t.company_id.iloc[rows[0]] if rows else t.company_id.iloc[0]
-            r = g.loc[cid]
-            st.markdown(f"#### {ui.esc(r['name'])} <span class='egi-muted'>{cid} · {ui.esc(r.district)}</span>", unsafe_allow_html=True)
-            a, b = st.columns([1.1, 1])
-            with a:
-                st.markdown(ui.risk_badge(r.risk_class) + ''.join(ui.event_badge(e.strip()) for e in str(r.alarm).split(',') if e.strip()), unsafe_allow_html=True)
-                ui.ai_box('Kenapa nasabah ini', str(r.reason), source='komponen skor peluang NB08 + aturan risiko')
-                state.company_actions(store, cid, f'pr_{sname}', sumber='Daftar prioritas')
-            with b:
-                comps = {lab: float(r[c]) * 100 for c, lab in COMP.items() if c in r.index and pd.notna(r[c])}
-                st.plotly_chart(viz.hbar(list(comps), list(comps.values()), [f'{x:.0f}' for x in comps.values()], h=210, xmax=115,
-                                         title='Komponen (persentil di segmen)'), use_container_width=True, key=f'cmp_{sname}_{cid}')
-    st.caption('Skor = persentil gabungan komponen di dalam segmen + bonus Why Now; risiko High → produk kredit ditunda, Medium → kredit × 0,5. '
-               'Pilih baris untuk melihat alasannya.')
-
-# ================================================================== prospect
+if prospect:
+    frame = store.acq.join(store.cox[['name', 'district', 'industry']]).copy()
+    net = store.prospects_for(rm)
+    allowed = set(frame.index) if rm == 'Semua RM' else set(net.index) | {cid for cid, owner in claims.items() if owner == rm}
+    frame = frame[frame.index.isin(allowed)].copy()
+    frame['lewat_nama'] = net.get('lewat_nama', pd.Series(dtype=str)).reindex(frame.index).fillna('Belum ada jalur langsung')
+    frame['nilai_M'] = net.get('nilai_M', pd.Series(dtype=float)).reindex(frame.index).fillna(0)
+    frame['penghubung'] = net.get('lewat', pd.Series(dtype=object)).map(len).reindex(frame.index).fillna(0).astype(int)
+    frame['pemegang'] = pd.Series(claims, dtype=str).reindex(frame.index).fillna('')
+    frame['contacted'] = frame.index.isin(contacted)
+    frame['why_up'] = False
+    score_col = 'acquisition_score'
 else:
-    if pr.empty:
-        st.info('Belum ada prospect yang terhubung ke nasabah RM ini atau yang sudah diklaim lewat jadwal.'); st.stop()
-    mine = pr.pemegang == ss.rm
-    other = (pr.pemegang != '') & ~mine
-    f1, f2, f3, f4 = st.columns([2, 1.2, 1, 1])
-    kec = f1.multiselect('Kecamatan', sorted(pr.district.unique()), default=[ss.focus_district] if ss.focus_district in set(pr.district) else [], key='pp_kec')
-    urut = f2.selectbox('Urutkan', ['Skor akuisisi', 'Nilai relasi dengan nasabah saya'] if ss.rm != 'Semua RM' else ['Skor akuisisi'], key='pp_sort')
-    no_high = f3.toggle('Sembunyikan risiko High', value=True, key='pp_high')
-    no_other = f4.toggle('Sembunyikan milik RM lain', value=True, key='pp_other', disabled=ss.rm == 'Semua RM',
-                         help='Prospect yang sedang diklaim RM lain (satu perusahaan, satu RM).')
-    v = pr.copy()
-    if kec: v = v[v.district.isin(kec)]
-    if no_high: v = v[v.risk_class != 'High']
-    if no_other and ss.rm != 'Semua RM': v = v[~other.reindex(v.index)]
-    v = v.sort_values('acquisition_score' if urut == 'Skor akuisisi' else 'nilai_M', ascending=False)
+    frame = agent.candidates(store, rm).copy()
+    score_col = 'opportunity_score'
 
-    k = st.columns(4)
-    ui.kpi(k[0], 'Prospect di jaringan saya' if ss.rm != 'Semua RM' else 'Prospect', ui.fmt(len(pr), 0),
-           ' · '.join(f"{s.split()[0]} {int((pr.segment == s).sum())}" for s in data.SEGS))
-    ui.kpi(k[1], 'Diklaim saya', ui.fmt(int(mine.sum()), 0), 'punya jadwal aktif / kunjungan ≤ 30 hari', color=ui.ORANGE)
-    ui.kpi(k[2], 'Dipegang RM lain', ui.fmt(int(other.sum()), 0), 'tidak bisa dijadwalkan (satu perusahaan, satu RM)')
-    ui.kpi(k[3], 'Risiko High', ui.fmt(int((pr.risk_class == 'High').sum()), 0), 'produk kredit ditunda')
-    st.write('')
+if frame.empty:
+    for column in ['name', 'district', 'segment', 'contacted', 'why_up', 'risk_class', score_col,
+                   'recommended_products', 'prio', 'ev_idr_mn']:
+        if column not in frame:
+            frame[column] = pd.Series(dtype=bool if column in ('contacted', 'why_up') else object)
 
-    tabs = st.tabs([f"{s} · {int((v.segment == s).sum())}" for s in data.SEGS])
-    for tab, sname in zip(tabs, data.SEGS):
-        with tab:
-            st.markdown(f"<div class='egi-card' style='border-left:4px solid {ui.SEG_COLOR[sname]}'><b>Playbook akuisisi {sname}.</b> {PLAYBOOK_P[sname]}</div>",
-                        unsafe_allow_html=True)
-            g = v[v.segment == sname].copy()
-            if g.empty:
-                st.caption('Tidak ada prospect yang cocok dengan filter.'); continue
-            g['status'] = [' · '.join(x for x in [('✋ diklaim saya' if h == ss.rm else f'🔒 {h}' if h else ''), ('📅 terjadwal' if c in sched else ''),
-                                                 ('white-space' if ws else '')] if x)
-                           for c, h, ws in zip(g.index, g.pemegang, g.white_space)]
-            cols = ['name', 'district', 'acquisition_score', 'rank_in_segment', 'risk_class', 'status'] + (['lewat_nama', 'nilai_M'] if ss.rm != 'Semua RM' else [])
-            t = g[cols].reset_index()
-            ev = st.dataframe(t, hide_index=True, use_container_width=True, height=min(38 + 35 * len(t), 460), on_select='rerun', selection_mode='single-row', key=f'ptbl_{sname}',
-                              column_config={'company_id': 'ID', 'name': 'Prospect', 'district': 'Kecamatan',
-                                             'acquisition_score': st.column_config.ProgressColumn('Skor akuisisi', min_value=0, max_value=1, format='%.2f',
-                                                                                                  help='Persentil di segmen dari skala + ekosistem + jalur kenalan (NB08). Deskriptif, belum tervalidasi.'),
-                                             'rank_in_segment': st.column_config.NumberColumn('Peringkat', format='%d'), 'risk_class': 'Risiko', 'status': 'Status',
-                                             'lewat_nama': 'Lewat nasabah saya', 'nilai_M': st.column_config.NumberColumn('Nilai relasi (Rp M/thn)', format='%.1f')})
-            rows = ev.selection.rows if ev and hasattr(ev, 'selection') else []
-            pid = t.company_id.iloc[rows[0]] if rows else t.company_id.iloc[0]
-            r = g.loc[pid]
-            st.markdown(f"#### {ui.esc(r['name'])} <span class='egi-muted'>{pid} · {ui.esc(r.industry)} · {ui.esc(r.district)}</span>", unsafe_allow_html=True)
-            a, b = st.columns([1.1, 1])
-            with a:
-                badges = ui.risk_badge(r.risk_class) + (ui.badge('white-space', '#FDEBDD', '#9A3412') if r.white_space else '')
-                if r.pemegang and r.pemegang != ss.rm:
-                    badges += ui.badge(f'dipegang {r.pemegang}', '#EEF0F3', '#374151')
-                elif r.pemegang == ss.rm:
-                    badges += ui.badge('diklaim saya', '#E4F1EA', '#17613F')
-                st.markdown(badges, unsafe_allow_html=True)
-                why = (f"Skala persentil {r.pct_skala * 100:.0f} di {sname}, ekosistem {r.pct_ekosistem * 100:.0f}, dan "
-                       f"{int(r.relasi_dengan_nasabah_BNI)} relasi aktif dengan nasabah BNI (persentil jalur kenalan {r.pct_jalur_kenalan * 100:.0f}).")
-                if r.risk_class == 'High':
-                    why += ' Risiko High: tawarkan produk non-kredit saja.'
-                ui.ai_box('Kenapa prospect ini', why, source='skor akuisisi NB08 (deskriptif, belum tervalidasi)')
-                paths = store.intro_paths(pid, ss.rm) if ss.rm != 'Semua RM' else store.intro_paths(pid, '')
-                if len(paths):
-                    best = paths.iloc[0]
-                    txt = (f"Lewat nasabah Anda sendiri, {best['name']} (Rp {ui.fmt(best.nilai_M, 1)} M/thn, {best.jenis})." if best.milik_saya else
-                           f"Jalur terkuat lewat {best['name']} milik {best.rm_id}; koordinasikan dengan RM tersebut.")
-                    st.markdown(f"**Jalan masuk.** {ui.esc(txt)}")
-                if r.pemegang and r.pemegang != ss.rm and ss.rm != 'Semua RM':
-                    st.caption(f'Sedang dipegang {r.pemegang}. Satu perusahaan hanya ditangani satu RM; minta supervisor memindahkan klaim bila perlu.')
-                state.company_actions(store, pid, f'pp_{sname}', sumber='Daftar prioritas · prospect')
-                if st.button('Jalur kenalan & draf perkenalan', key=f'pp_intro_{sname}_{pid}', use_container_width=True):
-                    ss.prospect_focus = pid; state.go('prospect')
-            with b:
-                comps = {lab: float(r[c]) * 100 for c, lab in COMP_P.items() if pd.notna(r[c])}
-                st.plotly_chart(viz.hbar(list(comps), list(comps.values()), [f'{x:.0f}' for x in comps.values()], h=170, xmax=115,
-                                         title='Komponen skor akuisisi (persentil di segmen)'), use_container_width=True, key=f'pcmp_{sname}_{pid}')
-    st.caption('Prospect = perusahaan yang bertransaksi dengan nasabah Anda, ditambah yang sudah Anda klaim lewat jadwal. Skor akuisisi bersifat deskriptif '
-               '(belum ada data konversi prospect untuk memvalidasinya). Prospect yang sudah dijadwalkan RM lain dikunci untuk RM itu selama ada jadwal aktif + 30 hari.')
+frame['status'] = ['Sudah Terjadwal' if cid in scheduled else 'Sudah Dihubungi' if hit else 'Belum Dihubungi'
+                   for cid, hit in zip(frame.index, frame.contacted)]
+frame['score'] = frame[score_col] * 100
+frame['name'] = frame['name'].fillna(pd.Series(frame.index, index=frame.index))
+
+if prospect:
+    f2, f3, f4 = st.columns(3)
+else:
+    f1, f2, f3, f4 = st.columns(4)
+segment = 'Semua prospect' if prospect else f1.selectbox('Segmen', data.SEGS, key='priority_segment')
+status = f2.selectbox('Status hubungan', ['Semua', 'Belum Dihubungi', 'Sudah Dihubungi', 'Sudah Terjadwal'], key='priority_status')
+risk = f3.selectbox('Risiko', ['Semua', 'Low', 'Medium', 'High'], key='priority_risk')
+if prospect:
+    sort_options = ['Nilai relasi', 'Jumlah nasabah penghubung', 'Skor akuisisi']
+    product = None
+    sort = f4.selectbox('Urutkan', sort_options, key='priority_prospect_sort')
+    st.caption('Urutan default memakai nilai relasi aktif dengan nasabah BNI yang teramati dalam data. Skor akuisisi tersedia sebagai informasi tambahan prototipe.')
+else:
+    products = sorted({p.strip() for value in frame.recommended_products.dropna() for p in str(value).split(',') if p.strip()})
+    product = f4.selectbox('Peluang produk', ['Semua'] + products, key='priority_product',
+                           format_func=lambda pid: catalog.product_name.get(pid, pid))
+    sort = st.segmented_control('Urutkan', ['Prioritas aksi', 'Skor peluang', 'Estimasi nilai'], default='Prioritas aksi', key='priority_sort') or 'Prioritas aksi'
+    st.caption('Prioritas aksi = skor peluang + bonus momentum + bonus belum dihubungi. Urutan aksi berbeda dari peringkat model per segmen.')
+
+with st.expander('Filter tambahan & pendekatan' if prospect else 'Filter tambahan & pendekatan segmen'):
+    a, b = st.columns(2)
+    district = a.multiselect('Kecamatan', sorted(frame.district.dropna().unique()),
+                             default=[ss.focus_district] if ss.focus_district in set(frame.district) else [], key='priority_district')
+    if prospect:
+        hide_other = b.checkbox('Sembunyikan prospect milik RM lain', value=True, disabled=user['role'] == 'supervisor', key='priority_hide_other')
+        momentum = False
+    else:
+        momentum = b.checkbox('Hanya Momentum Peluang', key='priority_momentum', help='Ekspansi atau erosi wallet dalam 3 bulan data terakhir.')
+        hide_other = False
+    approaches = {'S1 Kecil': 'Mulai dengan telepon atau email dan solusi transaksi standar.',
+                  'S2 Menengah': 'Pilih kanal sesuai peluang produk dan kebutuhan nasabah.',
+                  'S3 Besar': 'Siapkan solusi ekosistem dan libatkan analis untuk pembiayaan.'}
+    if not prospect:
+        st.caption(approaches[segment])
+    if prospect:
+        st.caption('Utamakan perkenalan lewat nasabah anchor. Prospect yang dipegang RM lain membutuhkan koordinasi sebelum dijadwalkan.')
+
+view = frame.copy() if prospect else frame[frame.segment == segment].copy()
+if status != 'Semua': view = view[view.status == status]
+if risk != 'Semua': view = view[view.risk_class == risk]
+if district: view = view[view.district.isin(district)]
+if momentum: view = view[view.why_up]
+if product and product != 'Semua':
+    view = view[view.recommended_products.fillna('').map(lambda value: product in [p.strip() for p in str(value).split(',')])]
+if prospect and hide_other and user['role'] == 'rm':
+    view = view[(view.pemegang == '') | (view.pemegang == rm)]
+sort_col = ({'Skor akuisisi': 'acquisition_score', 'Nilai relasi': 'nilai_M', 'Jumlah nasabah penghubung': 'penghubung'} if prospect else
+            {'Prioritas aksi': 'prio', 'Skor peluang': 'opportunity_score', 'Estimasi nilai': 'ev_idr_mn'})[sort]
+sort_columns = ([sort_col, 'penghubung' if sort_col == 'nilai_M' else 'nilai_M'] if prospect and sort != 'Skor akuisisi' else
+                [sort_col, score_col] if sort_col != score_col else [sort_col])
+view = view.sort_values(sort_columns, ascending=False, kind='stable')
+
+st.caption(f'{len(view)} hasil sesuai filter · {segment} · {len(frame)} perusahaan dalam cakupan {rm}')
+k = st.columns(4)
+ui.kpi(k[0], 'Hasil sesuai filter', str(len(view)), segment)
+ui.kpi(k[1], 'Belum Dihubungi', str(int((view.status == 'Belum Dihubungi').sum())), 'Dari hasil filter')
+ui.kpi(k[2], 'Sudah Terjadwal', str(int((view.status == 'Sudah Terjadwal').sum())), 'Dari hasil filter')
+if prospect:
+    ui.kpi(k[3], 'Belum diklaim', str(int((view.pemegang == '').sum())), 'Dari hasil filter')
+else:
+    ui.kpi(k[3], 'Estimasi nilai Top-10', f'Rp {ui.fmt(view.head(10).ev_idr_mn.sum(), 1)} jt', '10 teratas sesuai urutan aktif · asumsi 1 tahun')
+
+table, detail = st.columns([1.85, 1])
+cid = None
+with table:
+    st.markdown('#### Antrean Prioritas')
+    st.caption('Klik baris untuk membuka detail di kanan. Skor 0–100; peringkat model hanya dibandingkan dalam segmen.')
+    if view.empty:
+        st.info('Tidak ada perusahaan yang sesuai filter. Ubah segmen atau filter lainnya.')
+    else:
+        display = view[['name', 'risk_class', 'status'] if prospect else ['name', 'score', 'risk_class', 'status']].copy()
+        display.insert(0, 'urutan', range(1, len(display) + 1))
+        if not prospect:
+            display['probabilitas_konversi'] = view.p_convert * 100
+        if prospect:
+            if sort == 'Skor akuisisi':
+                display['score'] = view.score
+            display['pemegang'] = view.pemegang.replace('', 'Belum diklaim')
+            display['jalur_masuk'] = view.lewat_nama
+            display['nilai_relasi'] = view.nilai_M
+            display['penghubung'] = view.penghubung
+        else:
+            display['produk'] = view.recommended_products.fillna('').map(
+                lambda value: ', '.join(catalog.product_name.get(p.strip(), p.strip()) for p in str(value).split(',') if p.strip()))
+            display['temuan'] = ['Alarm risiko' if caution else 'Momentum Peluang' if up else '—'
+                                  for caution, up in zip(view.caution, view.why_up)]
+        display.index.name = 'company_id'
+        display = display.reset_index()
+        def cell_color(value):
+            colors = {'High': ('#FADFDB', '#9A2416'), 'Medium': ('#FBEFD6', '#7A4E00'), 'Low': ('#E4F1EA', '#17613F'),
+                      'Belum Dihubungi': ('#FBEFD6', '#7A4E00'), 'Sudah Dihubungi': ('#EEF0F3', '#374151'),
+                      'Sudah Terjadwal': ('#E7EDF8', ui.NAVY2)}
+            bg, fg = colors.get(value, ('white', ui.INK))
+            return f'background-color: {bg}; color: {fg}'
+        styled = display.style.map(cell_color, subset=['risk_class', 'status'])
+        # Changing the ordered IDs creates a fresh selection, avoiding stale row indices after filtering/sorting.
+        signature = hashlib.sha1((rm + mode + sort + str(ss.get('priority_request_version', 0)) + '|'.join(view.index)).encode()).hexdigest()[:12]
+        selected = st.dataframe(styled, hide_index=True, use_container_width=True, height=490,
+                                on_select='rerun', selection_mode='single-row', key=f'priority_table_{signature}',
+                                column_config={'company_id': None, 'urutan': 'Urutan',
+                                               'name': 'Perusahaan', 'score': st.column_config.ProgressColumn('Skor prioritas', min_value=0, max_value=100, format='%.1f',
+                                                   help='Posisi relatif dalam segmen, bukan probabilitas konversi. Skor 100 menunjukkan posisi tertinggi dalam segmen.'),
+                                               'probabilitas_konversi': st.column_config.NumberColumn('Probabilitas konversi', format='%.1f%%',
+                                                   help='Estimasi model untuk produk rekomendasi teratas. Bukan kepastian nasabah akan setuju. Belum tersedia untuk prospect.'),
+                                               'jalur_masuk': 'Nasabah penghubung', 'penghubung': 'Jumlah penghubung',
+                                               'nilai_relasi': st.column_config.NumberColumn('Relasi (Rp M/tahun)', format='%.1f',
+                                                   help='Nilai relasi tahunan yang tercatat dengan nasabah BNI dalam cakupan ini; bukan omzet prospect.'),
+                                               'risk_class': 'Risiko', 'status': 'Hubungan', 'produk': 'Peluang produk', 'temuan': 'Temuan', 'pemegang': 'Pemegang'})
+        rows = selected['selection']['rows']
+        if rows and 0 <= rows[0] < len(view):
+            cid = view.index[rows[0]]
+            if prospect:
+                ss.priority_focus = cid
+        elif prospect and ss.get('priority_focus') in view.index:
+            cid = ss.priority_focus
+
+with detail, st.container(border=True):
+    st.markdown('#### Prospect Terpilih' if prospect else '#### Nasabah Terpilih')
+    if cid is None:
+        st.caption('Pilih satu perusahaan dari tabel untuk melihat alasan prioritas, konteks hubungan, dan tindakan.')
+    else:
+        row = view.loc[cid]
+        st.markdown(f"**{ui.esc(row['name'])}**", unsafe_allow_html=True)
+        st.caption(f'{cid} · {row.industry} · {row.district}')
+        bg, fg = {'Belum Dihubungi': ('#FBEFD6', '#7A4E00'), 'Sudah Dihubungi': ('#EEF0F3', '#374151'),
+                  'Sudah Terjadwal': ('#E7EDF8', ui.NAVY2)}[row.status]
+        st.markdown(ui.risk_badge(row.risk_class) + ui.badge(row.status, bg, fg), unsafe_allow_html=True)
+        st.caption(f'Skor prioritas {ui.fmt(row.score, 1)}/100 · peringkat model {int(row.rank_in_segment)} di {row.segment}')
+        if row.risk_class == 'High': st.warning('Produk kredit ditunda. Fokus pada produk non-kredit dan konfirmasi kondisi nasabah.')
+        elif row.risk_class == 'Medium': st.caption('Rekomendasi kredit memakai penyesuaian risiko Medium.')
+        if prospect:
+            why = f'{int(row.penghubung)} nasabah penghubung dalam cakupan Anda, dengan nilai relasi tercatat Rp {ui.fmt(row.nilai_M, 1)} miliar per tahun.'
+            purpose = f'Perkenalan dan konfirmasi kebutuhan transaksi {row["name"]}.'
+        else:
+            why = str(row.reason)
+            purpose, _ = agent._purpose(store, cid, row.to_dict())
+        ui.ai_box('Alasan Prioritas', why)
+        if prospect:
+            paths = store.intro_paths(cid, rm if rm != 'Semua RM' else '')
+            if not paths.empty:
+                st.markdown('#### Jalur Masuk Terbaik')
+                labels = [f"{path['name']} · {path.jenis} · RM {path.rm_id}" for _, path in paths.iterrows()]
+                chosen = st.selectbox('Nasabah penghubung untuk perkenalan', range(len(paths)),
+                                      format_func=lambda i: labels[i], key=f'priority_path_{cid}')
+                best = paths.iloc[chosen]
+                st.caption(f'{best.arah} · Rp {ui.fmt(best.nilai_M, 1)} miliar/tahun')
+                if best.milik_saya:
+                    st.success('Jalur melalui nasabah Anda sendiri. Konfirmasi kesediaan PIC untuk memperkenalkan.')
+                elif rm != 'Semua RM':
+                    st.info(f'Nasabah penghubung ditangani {best.rm_id}. Koordinasikan perkenalan dengan RM tersebut.')
+                with st.expander('Seluruh jalur alternatif'):
+                    st.dataframe(paths[['name', 'rm_id', 'jenis', 'arah', 'nilai_M', 'milik_saya']], hide_index=True,
+                                 use_container_width=True, column_config={'name': 'Nasabah penghubung', 'rm_id': 'RM',
+                                     'jenis': 'Hubungan bisnis', 'arah': 'Arah relasi', 'nilai_M': 'Rp miliar/tahun', 'milik_saya': 'Nasabah saya'})
+                if st.button('Buat Draf Permintaan Perkenalan', key=f'priority_intro_{cid}', use_container_width=True):
+                    message, source = llm.draft_message('intro', {'perantara': best['name'], 'prospect': row['name']})
+                    ss.priority_intro_draft = {'cid': cid, 'path': best.id, 'name': best['name'], 'message': message, 'mode': source}
+                draft = ss.get('priority_intro_draft')
+                if draft and draft['cid'] == cid and draft['path'] == best.id:
+                    text = st.text_area('Draf pesan — edit sebelum dikirim', draft['message'], height=170,
+                                        key=f'priority_intro_text_{cid}_{best.id}_{draft["message"][:20]}')
+                    if st.button('Setujui Draf', key=f'priority_approve_{cid}'):
+                        data.audit('setujui_pesan_intro', prospect=cid, perantara=best['name'], rm=rm, isi=text)
+                        st.success('Draf disetujui. Kirim melalui kanal komunikasi Anda.')
+            else:
+                st.caption('Belum ada nasabah penghubung yang tercatat. Konfirmasi jalur masuk sebelum menghubungi prospect.')
+            st.caption('Skor akuisisi bersifat deskriptif; belum tervalidasi dengan data konversi prospect.')
+        else:
+            st.write(purpose)
+            st.metric('Probabilitas konversi', ui.fmt(row.p_convert * 100, 1, pct=True),
+                      help='Estimasi model untuk produk rekomendasi teratas; bukan skor prioritas atau kepastian konversi.')
+            st.caption(f'Estimasi nilai bersih Rp {ui.fmt(row.ev_idr_mn, 1)} jt')
+            for event in str(row.alarm).split(','):
+                if event.strip(): st.markdown(ui.event_badge(event.strip()), unsafe_allow_html=True)
+        logs, _, upcoming, _ = PW.context(store, cid, user)
+        st.divider()
+        st.markdown('**Konteks Hubungan**')
+        if logs.empty: st.caption('Belum ada kontak tercatat.')
+        else:
+            last = logs.iloc[0]
+            st.caption(f'Kontak terakhir {last.contact_date} · {last.channel} · {last.response}')
+        if upcoming.empty: st.caption('Belum ada agenda mendatang.')
+        else: st.caption(f'Agenda berikutnya: {state.when(upcoming.iloc[0].mulai)} · {upcoming.iloc[0].kanal}')
+        owner = row.pemegang if prospect else rm
+        locked = bool(prospect and owner and owner != rm and user['role'] == 'rm')
+        if locked: st.info(f'Prospect dipegang {owner}. Koordinasikan dengan RM tersebut atau supervisor.')
+        if st.button('Lihat Profil', key=f'priority_profile_{cid}', use_container_width=True): state.focus_company(cid)
+        if st.button('Jadwalkan', key=f'priority_schedule_{cid}', disabled=locked, use_container_width=True):
+            state.schedule_visit(store, cid, purpose, 'Daftar Prioritas')
+        if st.button('Siapkan Bahan Kunjungan', key=f'priority_brief_{cid}', use_container_width=True):
+            ss.focus_company = cid; ss.copilot_task = 'brief'; state.go('copilot')
+        with st.expander('Rincian skor'):
+            keys = {'pct_skala': 'Skala', 'pct_ekosistem': 'Ekosistem', 'pct_jalur_kenalan': 'Jalur kenalan'} if prospect else {
+                'pct_dompet_belum_digarap': 'Wallet belum digarap', 'pct_ekosistem': 'Ekosistem', 'pct_kebutuhan_modal': 'Kebutuhan modal',
+                'pct_celah_produk': 'Celah produk', 'pct_erosi_wallet': 'Erosi wallet'}
+            values = {label: row[key] * 100 for key, label in keys.items() if key in row and pd.notna(row[key])}
+            st.plotly_chart(viz.hbar(list(values), list(values.values()), h=220, xmax=115), use_container_width=True)

@@ -7,23 +7,56 @@ from __future__ import annotations
 
 import threading
 import uuid
+from contextlib import contextmanager
+from functools import wraps
 from datetime import datetime
 
 import pandas as pd
 
 from . import data
 
+WRITE_LOCK = threading.RLock()
+TABLES = []
+
+
+@contextmanager
+def transaction():
+    """Serialize one workflow and restore its files if any step fails (one server)."""
+    with WRITE_LOCK:
+        paths = {t.file for t in TABLES} | {data.APP_OUT / 'visit_log.csv', data.APP_OUT / 'audit_log.jsonl'}
+        before = {p: p.read_bytes() if p.exists() else None for p in paths}
+        try:
+            yield
+        except Exception:
+            for path, content in before.items():
+                if content is None:
+                    path.unlink(missing_ok=True)
+                else:
+                    path.write_bytes(content)
+            data.get_store().load_app_log()
+            raise
+
+
+def transactional(fn):
+    @wraps(fn)
+    def wrapped(*args, **kwargs):
+        with transaction():
+            return fn(*args, **kwargs)
+    return wrapped
+
 
 class CsvTable:
     def __init__(self, name, cols):
         self.file = data.APP_OUT / name
         self.cols = cols
-        self._lock = threading.Lock()
+        self._lock = WRITE_LOCK
+        TABLES.append(self)
 
     def load(self) -> pd.DataFrame:
-        if not self.file.exists():
-            return pd.DataFrame(columns=self.cols)
-        return pd.read_csv(self.file, dtype=str, keep_default_na=False).reindex(columns=self.cols, fill_value='')
+        with self._lock:
+            if not self.file.exists():
+                return pd.DataFrame(columns=self.cols)
+            return pd.read_csv(self.file, dtype=str, keep_default_na=False).reindex(columns=self.cols, fill_value='')
 
     def _write(self, df):
         data.APP_OUT.mkdir(parents=True, exist_ok=True)

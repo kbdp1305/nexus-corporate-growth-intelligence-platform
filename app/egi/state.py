@@ -7,10 +7,10 @@ from datetime import datetime
 
 from . import auth, llm, tindak
 from . import kalender as K
-from .ui import esc
+from .ui import esc, operation
 
 PAGE = {'overview': 'views/1_overview.py', 'prioritas': 'views/2_prioritas.py', 'profil': 'views/3_profil.py', 'wilayah': 'views/4_wilayah.py',
-        'prospect': 'views/5_prospect.py', 'copilot': 'views/6_copilot.py', 'kinerja': 'views/7_kinerja.py', 'metodologi': 'views/8_metodologi.py',
+        'prospect': 'views/2_prioritas.py', 'copilot': 'views/6_copilot.py', 'kinerja': 'views/7_kinerja.py', 'metodologi': 'views/8_metodologi.py',
         'kalender': 'views/9_kalender.py', 'tindak': 'views/10_tindak_lanjut.py', 'koordinasi': 'views/11_koordinasi.py'}
 
 
@@ -30,6 +30,9 @@ def init(store):
 
 
 def go(page_key):
+    if page_key == 'prospect':
+        st.session_state.priority_mode = 'Prospect'
+        st.session_state.priority_requested = st.session_state.get('prospect_focus')
     st.switch_page(PAGE[page_key])
 
 
@@ -37,6 +40,7 @@ def focus_company(cid, open_profile=True):
     st.session_state.focus_company = cid
     st.query_params['company'] = cid
     if open_profile:
+        st.session_state.profile_requested = cid
         go('profil')
 
 
@@ -203,6 +207,17 @@ def sidebar(store, rms):
             auth.change_password_form()
         if c2.button('Keluar', use_container_width=True):
             auth.logout()
+        llm_active = llm.config()['enabled']
+        llm_label = 'LLM Aktif' if llm_active else 'LLM Tidak Aktif'
+        llm_color = '#86EFAC' if llm_active else '#FCD34D'
+        llm_hint = ('LLM diaktifkan dan kredensial tersedia. Status koneksi diperiksa saat digunakan.'
+                    if llm_active else 'LLM belum dikonfigurasi atau sedang dinonaktifkan.')
+        st.markdown(
+            f'<span title="{esc(llm_hint)}" style="display:inline-flex;align-items:center;gap:6px;'
+            f'font-size:12px;color:{llm_color} !important;margin:8px 0">'
+            f'<span style="color:{llm_color} !important" aria-hidden="true">●</span> {llm_label}</span>',
+            unsafe_allow_html=True,
+        )
         cnt = {k: v for k, v in tindak.badge_counts(user).items() if v}
         if cnt:                                  # pemberitahuan: feedback tertunda, kegiatan terlambat, pengajuan menunggu, tiket baru
             st.markdown(' · '.join(f"<span style='color:#F6B48A;font-weight:600'>{v}</span> {k}" for k, v in cnt.items()), unsafe_allow_html=True)
@@ -214,19 +229,6 @@ def sidebar(store, rms):
         if user['role'] == 'divisi':
             st.caption('Data per 30 Jun 2026 · data sintetis v8')
             return
-        st.markdown('**Fokus**')
-        if ss.focus_company:
-            c1, c2 = st.columns([5, 1])
-            c1.markdown(f"{esc(store.co.name.get(ss.focus_company, ss.focus_company))}<br><span style='font-size:11px'>{ss.focus_company}</span>", unsafe_allow_html=True)
-            if c2.button('×', key='clr_c', help='Lepas fokus perusahaan'):
-                ss.focus_company = None; st.query_params.clear(); st.rerun()
-        if ss.focus_district:
-            c1, c2 = st.columns([5, 1])
-            c1.markdown(f'Kecamatan {esc(ss.focus_district)}')
-            if c2.button('×', key='clr_d', help='Lepas fokus kecamatan'):
-                ss.focus_district = None; st.rerun()
-        if not ss.focus_company and not ss.focus_district:
-            st.caption('tidak ada')
         note = ss.get('sched_notice')
         if note:
             with st.container(border=True):
@@ -237,21 +239,9 @@ def sidebar(store, rms):
                     ss.sched_notice = None; open_calendar(note['id'], note['mulai'])
                 if note['baru']:
                     if c2.button('Batalkan', key='sn_undo', use_container_width=True, help='Hapus jadwal ini dari kalender'):
-                        K.delete(note['id']); ss.sched_notice = None; ss._toast = f"Dibatalkan: {note['nama']}"; st.rerun()
+                        operation(K.delete, note['id']); ss.sched_notice = None; ss._toast = f"Dibatalkan: {note['nama']}"; st.rerun()
                 elif c2.button('Tutup', key='sn_close', use_container_width=True):
                     ss.sched_notice = None; st.rerun()
-        up = K.upcoming(ss.rm, 7)
-        st.markdown(f"**Jadwal 7 hari** · {len(up)}")
-        for r in up.head(6).itertuples():
-            st.markdown(f"<span style='font-size:12px'>{when(r.mulai)} · {'📞 ' if r.kanal == 'Telepon' else ''}{esc(r.judul.rsplit(' (', 1)[0])}</span>",
-                        unsafe_allow_html=True)
-        if len(up) > 6:
-            st.caption(f'+{len(up) - 6} lainnya')
-        if not len(up):
-            st.caption('Belum ada. Klik 📅 Jadwalkan di daftar mana pun.')
-        if st.button('Buka Kalender kunjungan', use_container_width=True):
-            open_calendar()
-        st.divider()
         cfg = llm.config()
         st.caption(f"Copilot: {'LLM · ' + cfg['provider'] + ' · ' + cfg['model'] if cfg['enabled'] else 'mode template (tanpa LLM)'}")
         st.caption('Data per 30 Jun 2026 · data sintetis v8')
