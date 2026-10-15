@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import io
 import re
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -187,13 +187,14 @@ def fact_pack(D: Data, cid: str) -> dict:
     fp['jaringan']['mitra_distress'] = len(dis)
     fp['jaringan']['nilai_distress_M'] = pros[pros.id.isin(dis)].v.sum() / 1000
     # riwayat kunjungan
-    lg = D.log[D.log.party_id == cid].sort_values('contact_date')
+    all_logs = getattr(D, 'log_all', D.log)
+    lg = all_logs[all_logs.party_id == cid].sort_values('contact_date', kind='stable')
     fp['kunjungan'] = [{'tgl': x.contact_date, 'rm': x.rm_id, 'produk': x.product_id, 'kanal': x.channel, 'respons': x.response, 'catatan': x.feedback_note} for x in lg.itertuples()]
     return fp
 
 
 # ------------------------------------------------------------------ validasi angka narasi
-_NUM = re.compile(r'(?<![\w])[−-]?\d[\d.]*(?:,\d+)?')
+_NUM = re.compile(r'(?<![\w−-])[−-]?\d[\d.]*(?:,\d+)?')   # angka setelah huruf/tanda hubung (RM-029, C0844) bukan nilai
 
 
 def _variants(x):
@@ -215,7 +216,8 @@ def _collect(o, acc):
     elif isinstance(o, (list, tuple)):
         for v in o: _collect(v, acc)
     elif isinstance(o, str):
-        acc |= set(m.group().lstrip('−-') for m in _NUM.finditer(o)) | set(m.group() for m in _NUM.finditer(o))
+        found = [m.group() for m in _NUM.finditer(o)]
+        acc |= set(found) | {f.lstrip('−-') for f in found} | {f.lstrip('−-').replace('.', ',') for f in found if re.fullmatch(r'\d+\.\d+', f.lstrip('−-'))}
     else:
         acc |= _variants(o)
     return acc
@@ -406,3 +408,60 @@ def weekly_plan_pdf(plan: dict, out=None, today=None):
     doc.build(s, onFirstPage=_footer_fn(f"Disusun RM Copilot · data per 30 Jun 2026 · bukan keputusan kredit · disetujui oleh {plan['rm']}"),
               onLaterPages=_footer_fn(f"Rencana kunjungan {plan['rm']} · {plan['minggu']}"))
     return buf
+
+
+# ------------------------------------------------------------------ Kalender (.ics) rencana kunjungan
+HARI_IDX = {'Senin': 0, 'Selasa': 1, 'Rabu': 2, 'Kamis': 3, 'Jumat': 4, 'Sabtu': 5, 'Minggu': 6}
+DURASI_MENIT = {'Kunjungan': 90, 'Telepon': 30}
+_VTZ_WIB = ['BEGIN:VTIMEZONE', 'TZID:Asia/Jakarta', 'BEGIN:STANDARD', 'DTSTART:19700101T000000',
+            'TZOFFSETFROM:+0700', 'TZOFFSETTO:+0700', 'TZNAME:WIB', 'END:STANDARD', 'END:VTIMEZONE']
+
+
+def _ics_esc(s):
+    return str(s).replace('\\', '\\\\').replace(';', '\\;').replace(',', '\\,').replace('\r\n', '\\n').replace('\n', '\\n')
+
+
+def _ics_fold(line):
+    """RFC 5545: baris maks. 75 oktet, lanjutan diawali spasi."""
+    out, cur = [], b''
+    for ch in line:
+        b = ch.encode('utf-8')
+        if len(cur) + len(b) > (75 if not out else 74):
+            out.append(cur.decode('utf-8')); cur = b''
+        cur += b
+    out.append(cur.decode('utf-8'))
+    return '\r\n '.join(out)
+
+
+def calendar_ics(events, cal_name='Rencana kunjungan RM'):
+    """events: [{'uid','mulai' (datetime WIB),'menit','judul','deskripsi','lokasi'}] → bytes .ics (zona Asia/Jakarta)."""
+    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//EGI//RM Copilot//ID', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+         f'X-WR-CALNAME:{_ics_esc(cal_name)}', 'X-WR-TIMEZONE:Asia/Jakarta'] + _VTZ_WIB
+    for e in events:
+        end = e['mulai'] + timedelta(minutes=e['menit'])
+        L += ['BEGIN:VEVENT', f"UID:{e['uid']}", f'DTSTAMP:{stamp}',
+              f"DTSTART;TZID=Asia/Jakarta:{e['mulai']:%Y%m%dT%H%M%S}", f"DTEND;TZID=Asia/Jakarta:{end:%Y%m%dT%H%M%S}",
+              f"SUMMARY:{_ics_esc(e['judul'])}", f"DESCRIPTION:{_ics_esc(e['deskripsi'])}"]
+        if e.get('lokasi'):
+            L.append(f"LOCATION:{_ics_esc(e['lokasi'])}")
+        L += ['STATUS:TENTATIVE', 'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:-PT30M', f"DESCRIPTION:{_ics_esc(e['judul'])}", 'END:VALARM', 'END:VEVENT']
+    L.append('END:VCALENDAR')
+    return ('\r\n'.join(_ics_fold(x) for x in L) + '\r\n').encode('utf-8')
+
+
+def plan_events(plan: dict, week_start: date):
+    """Rencana minggu → daftar event kalender. week_start = hari Senin minggu rencana; hari & jam diambil dari plan."""
+    ev = []
+    for d in plan['hari']:
+        kanal = d.get('kanal') or ('Telepon' if d['tema'].startswith('telepon') else 'Kunjungan')
+        tgl = week_start + timedelta(days=HARI_IDX.get(d['hari'], 0))
+        for it in d['item']:
+            hh, mm_ = (int(x) for x in it['jam'].split('.'))
+            ev.append({'uid': f"{plan['rm']}-{it['id']}-{tgl:%Y%m%d}@egi-rm-copilot",
+                       'mulai': datetime(tgl.year, tgl.month, tgl.day, hh, mm_), 'menit': DURASI_MENIT.get(kanal, 60),
+                       'judul': f"{kanal}: {it['nama']} ({it['id']})",
+                       'deskripsi': f"{it['info']}\nTujuan: {it['tujuan']}\nPeluang: {it['peluang']}\nSiapkan: {it['siapkan']}\n"
+                                    f"Tema hari: {d['tema']} · Rencana {plan['rm']} ({plan['status']})",
+                       'lokasi': f"Kec. {it['kecamatan']}" if kanal == 'Kunjungan' and it.get('kecamatan') else ''})
+    return ev

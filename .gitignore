@@ -17,3 +17,4 @@ data/archive/*.zip
 
 # Log pemakaian dashboard (lokal)
 outputs/app/
+outputs/guardrail/_redteam_app/

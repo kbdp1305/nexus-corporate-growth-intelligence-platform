@@ -9,12 +9,10 @@ pr = store.prospects_for(ss.rm)
 if pr.empty:
     st.info('Belum ada prospect yang terhubung ke nasabah RM ini.'); st.stop()
 
-f1, f2, f3 = st.columns([1, 1, 1])
-seg = f1.selectbox('Segmen', ['Semua'] + data.SEGS)
-no_high = f2.toggle('Sembunyikan risiko High', value=True)
-ws_only = f3.toggle('Hanya kecamatan white-space')
+f1, f2 = st.columns(2)
+no_high = f1.toggle('Sembunyikan risiko High', value=True)
+ws_only = f2.toggle('Hanya kecamatan white-space')
 v = pr.copy()
-if seg != 'Semua': v = v[v.segment == seg]
 if no_high: v = v[v.risk_class != 'High']
 if ws_only: v = v[v.white_space]
 
@@ -67,4 +65,4 @@ with b:
         if st.button('Setujui draf', type='primary'):
             data.audit('setujui_pesan_intro', prospect=pid, perantara=best['name'] if best is not None else None, rm=ss.rm, isi=txt)
             st.success('Draf disetujui dan dicatat di log audit. Kirim lewat WhatsApp Anda sendiri.')
-    state.company_actions(store, pid, 'pros')
+    state.company_actions(store, pid, 'pros', sumber='Prospect lewat jaringan')
