@@ -18,11 +18,11 @@ class RegionTests(unittest.TestCase):
     def setUpClass(cls):
         cls.store = data.get_store()
 
-    def page(self, role='rm'):
+    def page(self, role='rm', view='Semua RM'):
         app = AppTest.from_file(str(ROOT / 'app/app.py'), default_timeout=30)
         app.session_state['user'] = {'username': 'region-test', 'nama': 'Test', 'role': role,
                                      'rm_id': 'RM-001' if role == 'rm' else 'Semua RM'}
-        app.session_state['rm'] = 'Semua RM'
+        app.session_state['rm'] = view
         app.run()
         app.switch_page('views/4_wilayah.py').run()
         return app
@@ -83,6 +83,17 @@ class RegionTests(unittest.TestCase):
         app.run()
         self.assertFalse(app.exception)
         self.assertEqual(app.session_state['rm'], 'Semua RM')
+
+    def test_supervisor_view_as_rm_counts_only_that_rm(self):
+        for role, view in [('rm', 'Semua RM'), ('supervisor', 'RM-001')]:
+            app = self.page(role, view)
+            self.assertFalse(app.exception)
+            label = 'Nasabah Saya' if role == 'rm' else 'Nasabah RM-001'
+            self.assertEqual(app.checkbox(key='region_clients').label, label)
+            table = app.dataframe[0].value
+            own = self.store.cox[self.store.cox.is_client & self.store.cox.rm_id.eq('RM-001')]
+            self.assertNotIn('nasabah', table.columns)
+            self.assertEqual(int(table.nasabah_saya.sum()), len(own))
 
     def test_segment_filter_keeps_prospects_and_penetration(self):
         with patch('egi.region_hover.render', return_value=None) as render:

@@ -22,13 +22,14 @@ def company_signals(store, ids):
     return result
 
 
-def payload(store, stats, points, branches, claims, focus=None, highlight='Semua'):
+def payload(store, stats, points, branches, claims, focus=None, highlight='Semua', owner_label='Anda'):
     areas = []
     for district, row in stats.iterrows():
         rgb = regions.penetration_color(row.penetrasi)
+        clients = (f'{int(row.nasabah_saya)} nasabah {ui.esc(owner_label)} · {row.perusahaan} perusahaan dalam data' if 'nasabah_saya' in row
+                   else f'{row.nasabah} nasabah / {row.perusahaan} perusahaan dalam data')
         label = f'<b>{ui.esc(district)}</b><br>' + (
-            f'Penetrasi BNI {row.penetrasi:.0%}<br>{row.nasabah} nasabah / {row.perusahaan} perusahaan dalam data'
-            if row.perusahaan else 'Tanpa data perusahaan untuk filter ini')
+            f'Penetrasi BNI {row.penetrasi:.0%}<br>{clients}' if row.perusahaan else 'Tanpa data perusahaan untuk filter ini')
         areas.append({'district': district, 'rings': store.shapes.get(district, []), 'center': [row.lat, row.lon],
                       'color': '#%02x%02x%02x' % tuple(rgb[:3]), 'label': label})
     companies = []

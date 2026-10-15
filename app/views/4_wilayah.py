@@ -14,6 +14,10 @@ if not user or user['role'] not in ('rm', 'supervisor'):
 supervisor = user['role'] == 'supervisor'
 if not supervisor:
     ss.rm = user['rm_id']
+view_rm = ss.get('rm', 'Semua RM') if supervisor else user['rm_id']
+scoped = view_rm != 'Semua RM'                       # RM, atau supervisor yang "Lihat sebagai" RM tertentu
+scope_user = {'role': 'rm', 'rm_id': view_rm} if supervisor and scoped else user
+owner_label = 'Anda' if not supervisor else view_rm   # dipakai di teks jumlah nasabah
 
 ui.page_header(f'Penetrasi BNI per kecamatan · Data per {data.SNAPSHOT:%d/%m/%Y}', 'Potensi Wilayah')
 st.caption('Penetrasi = perusahaan nasabah BNI ÷ seluruh perusahaan dalam dataset pada wilayah dan filter yang dipilih. '
@@ -27,17 +31,20 @@ if city != 'Semua': companies = companies[companies.city == city]
 if industry != 'Semua': companies = companies[companies.industry == industry]
 stats = regions.aggregate(store, companies)
 if city != 'Semua': stats = stats[stats.kota == city]
-allowed = PW.accessible_ids(store, user)
+if scoped:                                             # hanya jumlah nasabah yang dipegang RM ini
+    mine = companies[companies.is_client & (companies.rm_id == view_rm)]
+    stats = stats.assign(nasabah_saya=mine.groupby('district').size().reindex(stats.index, fill_value=0).astype(int))
+allowed = PW.accessible_ids(store, scope_user)
 relevant = companies[companies.index.isin(allowed)]
 relevant = relevant[relevant.is_client | (relevant.customer_type == 'Prospect')]
 if segment != 'Semua':
     relevant = relevant[(relevant.customer_type == 'Prospect') | (relevant.segment == segment)]
 st.caption('Segmen hanya memfilter nasabah pada titik dan detail. Prospect tetap ditampilkan lintas segmen; penetrasi wilayah mengikuti kota dan industri.')
-st.caption('Warna wilayah: agregat BNI sesuai filter. Detail perusahaan: ' + ('seluruh bank (supervisor).' if supervisor else 'portofolio Anda dan prospect jaringan.'))
+st.caption('Warna wilayah: agregat BNI sesuai filter. Detail perusahaan: ' + (f'portofolio {owner_label} dan prospect jaringan.' if scoped else 'seluruh bank (supervisor).'))
 
 a, b, c = st.columns(3)
-show_clients = a.checkbox('Nasabah BNI' if supervisor else 'Nasabah Saya', value=True, key='region_clients')
-show_prospects = b.checkbox('Prospect' if supervisor else 'Prospect Jaringan', value=True, key='region_prospects')
+show_clients = a.checkbox(('Nasabah Saya' if not supervisor else f'Nasabah {view_rm}') if scoped else 'Nasabah BNI', value=True, key='region_clients')
+show_prospects = b.checkbox('Prospect Jaringan' if scoped else 'Prospect', value=True, key='region_prospects')
 show_branches = c.checkbox('Cabang BNI', value=True, key='region_branches')
 highlight = st.selectbox('Sorot Perusahaan di Peta', ['Semua', 'Potensial atau Ada Temuan', 'Sangat Potensial',
                                                     'Sinyal Risiko', 'Momentum Peluang', 'Dengan Temuan'], key='region_highlight')
@@ -59,7 +66,7 @@ with map_col:
     st.markdown('#### Penetrasi BNI per Kecamatan')
     st.caption('Semakin gelap, semakin rendah penetrasi. Klik wilayah untuk melihat peluang. Hover titik perusahaan untuk ringkasan dan tombol Selengkapnya.')
     branches = store.branches if show_branches else None
-    event = region_hover.render(region_hover.payload(store, stats, points, branches, K.claims(), focus, highlight), key=map_key)
+    event = region_hover.render(region_hover.payload(store, stats, points, branches, K.claims(), focus, highlight, owner_label=owner_label), key=map_key)
     if event and event.get('nonce') != ss.get('region_handled_event'):
         ss.region_handled_event = event.get('nonce')
         if event.get('action') == 'company' and event.get('company_id') in points.index:
@@ -76,11 +83,12 @@ with map_col:
                'nasabah biru, prospect oranye. Kecamatan tanpa batas poligon, termasuk Kota Bekasi, ditampilkan sebagai lingkaran berwarna.')
     st.caption('? Sangat Potensial: skor peluang atau akuisisi ?75/100. Skor merupakan indikator model, bukan jaminan konversi.')
     with st.expander('Daftar penetrasi wilayah', expanded=False):
-        table = stats[['kota', 'perusahaan', 'nasabah', 'prospect', 'penetrasi']].reset_index()
+        client_col = 'nasabah_saya' if scoped else 'nasabah'
+        table = stats[['kota', 'perusahaan', client_col, 'prospect', 'penetrasi']].reset_index()
         table['penetrasi'] *= 100
         st.dataframe(table, hide_index=True, use_container_width=True,
                      column_config={'district': 'Kecamatan', 'kota': 'Kota', 'perusahaan': 'Perusahaan dalam data',
-                                    'nasabah': 'Nasabah BNI', 'prospect': 'Prospect dalam data',
+                                    'nasabah': 'Nasabah BNI', 'nasabah_saya': 'Nasabah Saya' if not supervisor else f'Nasabah {view_rm}', 'prospect': 'Prospect dalam data',
                                     'penetrasi': st.column_config.NumberColumn('Penetrasi BNI', format='%.0f%%')})
 
 with detail, st.container(border=True):
@@ -99,14 +107,16 @@ with detail, st.container(border=True):
         a, b = st.columns(2)
         a.metric('Penetrasi BNI', ui.fmt(row.penetrasi * 100, 0, pct=True))
         b.metric('Perusahaan dalam data', int(row.perusahaan))
-        st.caption(f'{row.nasabah} nasabah BNI · {row.prospect} prospect dalam dataset')
+        st.caption(f'{int(row.nasabah_saya)} nasabah {owner_label} · {row.prospect} prospect dalam dataset' if scoped
+                   else f'{row.nasabah} nasabah BNI · {row.prospect} prospect dalam dataset')
         if row.perusahaan == 0:
             st.info('Tidak ada data perusahaan untuk filter ini. Penetrasi belum dapat dihitung.')
         else:
             if row.penetrasi < data.WS_PEN:
                 st.markdown(ui.badge(f'Penetrasi rendah (<{data.WS_PEN:.0%})', '#FBEFD6', '#7A4E00'), unsafe_allow_html=True)
             st.caption(f"Dukungan cabang: {'tersedia' if row.cabang else 'belum tersedia'} · jarak rata-rata perusahaan ke cabang {ui.fmt(row.jarak, 1)} km")
-        st.markdown('#### Peluang yang Bisa Saya Tindaklanjuti' if not supervisor else '#### Peluang Perusahaan di Wilayah Ini')
+        st.markdown('#### Peluang yang Bisa Saya Tindaklanjuti' if not supervisor
+                    else f'#### Peluang {view_rm} di Wilayah Ini' if scoped else '#### Peluang Perusahaan di Wilayah Ini')
         st.caption(f'{len(customers)} nasabah relevan · {len(prospects)} prospect relevan sesuai filter')
         if local.empty:
             st.info('Belum ada nasabah atau prospect dalam cakupan akun Anda di wilayah ini. Penetrasi rendah belum tentu berarti peluang yang dapat langsung dikerjakan.')
@@ -131,7 +141,7 @@ with detail, st.container(border=True):
                 if locked:
                     st.caption(f'Dipegang {owner}; koordinasikan dengan RM tersebut sebelum menjadwalkan.')
                 if not company.is_client:
-                    paths = store.intro_paths(cid, ss.rm if not supervisor else '')
+                    paths = store.intro_paths(cid, view_rm if scoped else '')
                     if not paths.empty:
                         path = paths.iloc[0]
                         st.caption(f"Jalur masuk: {path['name']} · RM {path.rm_id}")

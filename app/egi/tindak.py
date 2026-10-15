@@ -293,8 +293,6 @@ def save_feedback(store, ev: dict, *, hasil, produk, catatan, keberatan, isu, la
     cid, rm = ev['company_id'], ev['rm_id']
     if not auth.can_edit(rm) or cid not in assignment_ids(store, rm, auth.current()):
         raise ValueError('Hanya RM pemilik atau supervisor yang dapat menyimpan feedback.')
-    if pd.Timestamp(ev['mulai']) > pd.Timestamp.now():
-        raise ValueError('Waktu kunjungan masih mendatang. Sesuaikan tanggal/jam aktual di kalender sebelum mencatat hasil.')
     if ev.get('sumber') in SUMBER_PROGRES:
         raise ValueError('Agenda ini merupakan tahap kegiatan; perbarui melalui Progress kegiatan.')
     existing = FEEDBACK.load()
